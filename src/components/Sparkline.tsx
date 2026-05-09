@@ -3,14 +3,14 @@ import { Area, AreaChart, ResponsiveContainer } from "recharts";
 type Tone = "accent" | "ok" | "high" | "crit";
 
 const TONE_STROKE: Record<Tone, string> = {
-  accent: "#0a0a0a",
+  accent: "#a75c3f",
   ok: "#2a7044",
   high: "#b8861a",
   crit: "#b54a2a",
 };
 
 const TONE_FILL: Record<Tone, string> = {
-  accent: "#0a0a0a",
+  accent: "#a75c3f",
   ok: "#2a7044",
   high: "#b8861a",
   crit: "#b54a2a",

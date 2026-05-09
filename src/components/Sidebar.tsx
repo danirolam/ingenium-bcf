@@ -63,7 +63,7 @@ export function Sidebar({
           >
             <it.icon className="sb-icon" size={16} strokeWidth={1.8} aria-hidden="true" />
             <span className="sb-num">{it.num}</span>
-            <span style={{ flex: 1 }}>{it.label}</span>
+            <span className="sb-label">{it.label}</span>
             {it.tally && <span className="sb-tag">{it.tally}</span>}
           </button>
         ))}

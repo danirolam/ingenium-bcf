@@ -23,29 +23,9 @@ export function Toast({
   if (!message) return null;
   return (
     <div className="rd-toast">
-      <span
-        style={{
-          width: 6,
-          height: 6,
-          borderRadius: "50%",
-          background: "var(--ok)",
-          boxShadow: "0 0 0 3px rgba(52, 211, 153, 0.18)",
-          flexShrink: 0,
-        }}
-      />
-      <span style={{ flex: 1 }}>{message}</span>
-      <kbd
-        style={{
-          fontFamily: "var(--mono)",
-          fontSize: 10,
-          letterSpacing: "0.04em",
-          color: "var(--ink-4)",
-          border: "1px solid var(--border-2)",
-          borderRadius: 4,
-          padding: "1px 5px",
-          background: "transparent",
-        }}
-      >
+      <span className="rd-toast-pip" />
+      <span className="rd-toast-message">{message}</span>
+      <kbd className="rd-toast-kbd">
         Esc
       </kbd>
     </div>

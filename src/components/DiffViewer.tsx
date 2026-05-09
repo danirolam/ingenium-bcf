@@ -1,6 +1,6 @@
 import { diffWordsWithSpace } from "diff";
-import { Fragment, useMemo } from "react";
-import { GitCompareArrows } from "lucide-react";
+import { Fragment, useMemo, useState } from "react";
+import { GitCompareArrows, Info } from "lucide-react";
 
 type InlinePart = { op: "eq" | "add" | "del"; t: string };
 
@@ -83,12 +83,73 @@ export function buildDiffBlocks(oldText: string, newText: string): Block[] {
   return blocks;
 }
 
-function renderInline(parts: InlinePart[]) {
+function renderInline(parts: InlinePart[], onExplain: () => void) {
   return parts.map((p, i) => {
-    if (p.op === "del") return <span className="del" key={i}>{p.t}</span>;
-    if (p.op === "add") return <span className="add" key={i}>{p.t}</span>;
+    if (p.op === "del") {
+      return (
+        <button className="diff-token del" key={i} type="button" onClick={onExplain}>
+          {p.t}
+        </button>
+      );
+    }
+    if (p.op === "add") {
+      return (
+        <button className="diff-token add" key={i} type="button" onClick={onExplain}>
+          {p.t}
+        </button>
+      );
+    }
     return <span key={i}>{p.t}</span>;
   });
+}
+
+function phraseFromParts(parts: InlinePart[], op: InlinePart["op"]) {
+  return parts
+    .filter((p) => p.op === op)
+    .map((p) => p.t)
+    .join(" ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 180);
+}
+
+function insightForBlock(block: Block) {
+  if (block.kind === "changed") {
+    const added = phraseFromParts(block.new, "add");
+    const removed = phraseFromParts(block.old, "del");
+    return {
+      title: `${block.label} is being revised`,
+      purpose: "This is an amendment to existing law. It keeps the section in place, but changes the legal test or obligation inside it.",
+      how: "Text highlighted in green is the proposed operative wording. Text highlighted in red is wording that would no longer govern once the bill is in force.",
+      why: added
+        ? `The practical review point is the new language: "${added}${added.length === 180 ? "..." : ""}".`
+        : removed
+          ? `The practical review point is what disappears: "${removed}${removed.length === 180 ? "..." : ""}".`
+          : "The practical review point is whether the revised wording changes scope, timing, discretion, or compliance burden.",
+    };
+  }
+  if (block.kind === "added") {
+    return {
+      title: `${block.label} would be added`,
+      purpose: "This creates new statutory text. It is not just commentary; if enacted, it becomes part of the operative law.",
+      how: "The new provision has to be read with the definitions, regulation-making powers, and coming-into-force language around it.",
+      why: "For client impact, this is where new permissions, deadlines, review standards, or compliance duties usually appear.",
+    };
+  }
+  if (block.kind === "removed") {
+    return {
+      title: `${block.label} would be removed`,
+      purpose: "This deletes current statutory language. That can narrow a duty, remove a condition, or shift the legal analysis elsewhere.",
+      how: "Counsel should confirm whether the bill replaces the rule in another section or truly removes the requirement.",
+      why: "For client impact, deletions matter when existing policies, contracts, or operating procedures still assume the old rule applies.",
+    };
+  }
+  return {
+    title: `${block.label}`,
+    purpose: "This section provides context for interpreting the amendment.",
+    how: "Read it with the surrounding definitions and related provisions before treating the change as isolated.",
+    why: "Context avoids overstating the client impact.",
+  };
 }
 
 export function DiffViewer({
@@ -107,15 +168,28 @@ export function DiffViewer({
   versionBLabel: string;
 }) {
   const blocks = useMemo(() => buildDiffBlocks(oldText, newText), [oldText, newText]);
+  const [openInsight, setOpenInsight] = useState<number | null>(null);
   const materialChanges = blocks.filter(
     (b) => b.kind === "changed" || b.kind === "added" || b.kind === "removed",
   ).length;
 
-  const renderSide = (b: Block, side: "L" | "R") => {
+  const renderLabel = (label: string, index: number) => (
+    <button
+      type="button"
+      className="diff-label-button"
+      onClick={() => setOpenInsight((current) => (current === index ? null : index))}
+      aria-expanded={openInsight === index}
+    >
+      {label}
+    </button>
+  );
+
+  const renderSide = (b: Block, side: "L" | "R", index: number) => {
+    const explain = () => setOpenInsight((current) => (current === index ? null : index));
     if (b.kind === "unchanged") {
       return (
         <div className="diff-block">
-          <div className="lbl">{b.label}</div>
+          <div className="lbl">{renderLabel(b.label, index)}</div>
           <div className="txt">{b.text}</div>
         </div>
       );
@@ -123,8 +197,8 @@ export function DiffViewer({
     if (b.kind === "changed") {
       return (
         <div className="diff-block changed">
-          <div className="lbl">{b.label}</div>
-          <div className="txt">{renderInline(side === "L" ? b.old : b.new)}</div>
+          <div className="lbl">{renderLabel(b.label, index)}</div>
+          <div className="txt">{renderInline(side === "L" ? b.old : b.new, explain)}</div>
         </div>
       );
     }
@@ -132,7 +206,7 @@ export function DiffViewer({
       if (side === "L") return <div className="diff-block diff-placeholder" />;
       return (
         <div className="diff-block added">
-          <div className="lbl">{b.label}</div>
+          <div className="lbl">{renderLabel(b.label, index)}</div>
           <div className="txt">{b.text}</div>
         </div>
       );
@@ -141,7 +215,7 @@ export function DiffViewer({
       if (side === "R") return <div className="diff-block diff-placeholder" />;
       return (
         <div className="diff-block removed">
-          <div className="lbl">{b.label}</div>
+          <div className="lbl">{renderLabel(b.label, index)}</div>
           <div className="txt">{b.text}</div>
         </div>
       );
@@ -212,10 +286,37 @@ export function DiffViewer({
               </div>
             );
           }
+          const insight = insightForBlock(b);
           return (
             <Fragment key={i}>
-              <div>{renderSide(b, "L")}</div>
-              <div>{renderSide(b, "R")}</div>
+              <div>{renderSide(b, "L", i)}</div>
+              <div>{renderSide(b, "R", i)}</div>
+              {openInsight === i && (
+                <div className="diff-insight-row">
+                  <div className="diff-insight">
+                    <div className="diff-insight-icon">
+                      <Info size={15} strokeWidth={2} aria-hidden="true" />
+                    </div>
+                    <div>
+                      <div className="diff-insight-title">{insight.title}</div>
+                      <div className="diff-insight-grid">
+                        <div>
+                          <b>What it is for</b>
+                          <span>{insight.purpose}</span>
+                        </div>
+                        <div>
+                          <b>How it works</b>
+                          <span>{insight.how}</span>
+                        </div>
+                        <div>
+                          <b>Why it matters</b>
+                          <span>{insight.why}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </Fragment>
           );
         })}

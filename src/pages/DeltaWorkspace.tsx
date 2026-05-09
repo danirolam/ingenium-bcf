@@ -35,9 +35,12 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
       api.lawVersions.get(id).then(setLv).catch(console.error);
       return;
     }
-    // Fallback: pick the most recent law version.
+    // Fallback: keep the demo anchored to the CPPA comparison instead of a
+    // recently ingested unrelated bill that may not share the same base Act.
     api.lawVersions.list().then((all) => {
-      if (all.length > 0) setLv(all[0]);
+      const demoMatch = all.find((item) => item.sourceBillNumber === "C-27");
+      if (demoMatch) setLv(demoMatch);
+      else if (all.length > 0) setLv(all[0]);
     });
   }, [nav.params.lawVersionId]);
 

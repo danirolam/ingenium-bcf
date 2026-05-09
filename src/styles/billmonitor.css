@@ -6,10 +6,13 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 0;
   margin-bottom: 24px;
-  background: var(--panel);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(255, 253, 248, 0)),
+    var(--panel);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 .bm-cell {
   padding: 22px 24px 22px;
@@ -25,7 +28,7 @@
 }
 .bm-cell .stat-l {
   font-size: 12.5px;
-  letter-spacing: -0.005em;
+  letter-spacing: 0;
   color: var(--ink-3);
   font-family: var(--sans);
   font-weight: 500;
@@ -35,7 +38,7 @@
   font-family: var(--sans);
   font-size: 34px;
   font-weight: 600;
-  letter-spacing: -0.035em;
+  letter-spacing: 0;
   color: var(--ink);
   font-variant-numeric: tabular-nums;
   line-height: 1;
@@ -104,6 +107,7 @@
 /* ───────── Segmented tabs ───────── */
 .seg {
   border-bottom: 1px solid var(--border);
+  padding-left: 2px;
 }
 .seg-list {
   position: relative;
@@ -121,13 +125,13 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 9px 14px 11px;
+  padding: 10px 14px 12px;
   display: inline-flex;
   align-items: baseline;
   gap: 8px;
   color: var(--ink-3);
   font-family: var(--sans);
-  letter-spacing: -0.005em;
+  letter-spacing: 0;
   outline: none;
   transition: color 0.15s ease;
 }
@@ -169,7 +173,7 @@
   left: 0;
   width: 0;
   height: 1.5px;
-  background: var(--ink);
+  background: var(--accent-warm);
   pointer-events: none;
   border-radius: 999px;
 }
