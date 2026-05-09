@@ -54,8 +54,9 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
       Promise.all([api.bills.get(billId), api.bills.lawVersions(billId)])
         .then(([b, ls]) => {
           setBill(b);
-          setLvs(ls);
-          setActiveId(ls[0]?.id ?? null);
+          const list = Array.isArray(ls) ? ls : [];
+          setLvs(list);
+          setActiveId(list[0]?.id ?? null);
         })
         .catch((err) => {
           console.error(err);
@@ -499,7 +500,7 @@ function DeltaRightRail({
               </div>
             ))}
             <div className="dw-detail-text">
-              Bill clauses: {bill?.clauses.length ?? "—"}. Distinct target Acts: {lvs.length}.
+              Bill clauses: {bill?.clauses?.length ?? "—"}. Distinct target Acts: {lvs.length}.
               {bill?.sourceUrl && (
                 <>
                   {" "}
