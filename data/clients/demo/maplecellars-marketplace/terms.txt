@@ -1,0 +1,13 @@
+MapleCellars Marketplace operates a Canadian online marketplace for wines, spirits, and specialty alcoholic beverages sold by licensed suppliers.
+
+MapleCellars does not manufacture beverages. It hosts supplier listings, processes customer orders, coordinates delivery with licensed partners, and requires suppliers to represent that listed products comply with applicable law.
+
+Current supplier terms say: "Supplier is solely responsible for ensuring that all products, product descriptions, labels, warnings, packaging, and sales practices comply with applicable federal, provincial, and municipal laws."
+
+Operational facts:
+- Lists alcoholic beverages from third-party suppliers.
+- Relies on supplier compliance warranties.
+- Displays product images and label information online.
+- May remove listings that create legal or reputational risk.
+- Does not currently require a specific alcohol warning-label certification.
+

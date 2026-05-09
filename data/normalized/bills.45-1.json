@@ -1,0 +1,4345 @@
+[
+  {
+    "billId": 13953578,
+    "session": "45-1",
+    "number": "C-265",
+    "title": "An Act to amend the Food and Drugs Act (List of Therapeutic Products Pre-approved for Special Access)",
+    "longTitle": "An Act to amend the Food and Drugs Act (List of Therapeutic Products Pre-approved for Special Access)",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on May 8, 2026 (House of Commons)",
+    "latestActivityDate": "2026-05-08T09:30:00-04:00",
+    "sponsor": "Marcus Powlowski",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-265/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-265/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-265/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "health_relevant",
+      "high_demo_value"
+    ],
+    "score": 13,
+    "recommendation": "analyze_now"
+  },
+  {
+    "billId": 13608745,
+    "session": "45-1",
+    "number": "C-11",
+    "title": "Military Justice System Modernization Act",
+    "longTitle": "An Act to amend the National Defence Act and other Acts",
+    "status": "At third reading in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Debate at third reading on May 8, 2026 (House of Commons)",
+    "latestActivityDate": "2026-05-08T08:15:00-04:00",
+    "sponsor": "Hon. David J. McGuinty",
+    "type": "House Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80702,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-11/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-11/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-11/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "high_demo_value",
+      "late_stage"
+    ],
+    "score": 10,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13590170,
+    "session": "45-1",
+    "number": "C-230",
+    "title": "An Act to amend the Financial Administration Act and to make consequential amendments to other Acts (debt forgiveness registry)",
+    "longTitle": "An Act to amend the Financial Administration Act and to make consequential amendments to other Acts (debt forgiveness registry)",
+    "status": "House of Commons bill awaiting first reading in the Senate",
+    "stage": "Third reading",
+    "latestActivity": "Third reading on May 7, 2026 (House of Commons)",
+    "latestActivityDate": "2026-05-07T14:15:15-04:00",
+    "sponsor": "Adam Chambers",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-230/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-230/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-230/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "commercial_relevant",
+      "high_demo_value",
+      "late_stage"
+    ],
+    "score": 13,
+    "recommendation": "analyze_now"
+  },
+  {
+    "billId": 14075197,
+    "session": "45-1",
+    "number": "S-247",
+    "title": "National Framework on Food Allergy Act",
+    "longTitle": "An Act to establish a national framework on food allergy",
+    "status": "At second reading in the Senate",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on May 7, 2026 (Senate)",
+    "latestActivityDate": "2026-05-07T06:25:00-04:00",
+    "sponsor": "Sen. Andrew Cardozo",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-247/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-247/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-247/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "framework_bill",
+      "health_relevant"
+    ],
+    "score": 3,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13881240,
+    "session": "45-1",
+    "number": "S-5",
+    "title": "Connected Care for Canadians Act",
+    "longTitle": "An Act respecting the interoperability of health information technology and to prohibit data blocking by health information technology vendors",
+    "status": "At third reading in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Debate at third reading on May 7, 2026 (Senate)",
+    "latestActivityDate": "2026-05-07T06:15:00-04:00",
+    "sponsor": "Sen. Pierre Moreau",
+    "type": "Senate Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-5/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-5/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-5/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "health_relevant",
+      "late_stage",
+      "tech_relevant"
+    ],
+    "score": 16,
+    "recommendation": "analyze_now"
+  },
+  {
+    "billId": 13541851,
+    "session": "45-1",
+    "number": "S-214",
+    "title": "An Act to amend the Special Economic Measures Act (disposal of foreign state assets)",
+    "longTitle": "An Act to amend the Special Economic Measures Act (disposal of foreign state assets)",
+    "status": "At third reading in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Committee report presented without amendment on May 7, 2026 (Senate)",
+    "latestActivityDate": "2026-05-07T06:00:00-04:00",
+    "sponsor": "Sen. Donna Dasko",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-214/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-214/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-214/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "committee_stage",
+      "high_demo_value",
+      "late_stage"
+    ],
+    "score": 12,
+    "recommendation": "analyze_now"
+  },
+  {
+    "billId": 13948667,
+    "session": "45-1",
+    "number": "C-263",
+    "title": "Silver Alert National Framework Act",
+    "longTitle": "An Act to establish a national framework for silver alerts",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on May 6, 2026 (House of Commons)",
+    "latestActivityDate": "2026-05-06T13:30:00-04:00",
+    "sponsor": "Raquel Dancho",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-263/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-263/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-263/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "framework_bill"
+    ],
+    "score": -1,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 14071880,
+    "session": "45-1",
+    "number": "C-31",
+    "title": "Budget 2025 Implementation Act, No. 2",
+    "longTitle": "A second Act to implement certain provisions of the budget tabled in Parliament on November 4, 2025",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on May 6, 2026 (House of Commons)",
+    "latestActivityDate": "2026-05-06T12:31:47.67-04:00",
+    "sponsor": "Hon. François-Philippe Champagne",
+    "type": "House Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-31/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-31/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-31/first-reading"
+    },
+    "categories": [],
+    "score": 0,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 14049789,
+    "session": "45-1",
+    "number": "C-30",
+    "title": "Spring Economic Update 2026 Implementation Act",
+    "longTitle": "An Act to implement certain provisions of the spring economic update tabled in Parliament on April 28, 2026",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on May 6, 2026 (House of Commons)",
+    "latestActivityDate": "2026-05-06T12:30:00-04:00",
+    "sponsor": "Hon. François-Philippe Champagne",
+    "type": "House Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-30/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-30/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-30/first-reading"
+    },
+    "categories": [],
+    "score": 0,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 14019746,
+    "session": "45-1",
+    "number": "C-277",
+    "title": "Regulating the Online Use of Deepfakes Act",
+    "longTitle": "An Act to provide for the regulation of the online use of deepfakes and for related transparency measures",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on May 6, 2026 (House of Commons)",
+    "latestActivityDate": "2026-05-06T11:34:21.75-04:00",
+    "sponsor": "Michael Coteau",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-277/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-277/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-277/first-reading"
+    },
+    "categories": [
+      "defeated_or_inactive",
+      "tech_relevant"
+    ],
+    "score": -1,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13669451,
+    "session": "45-1",
+    "number": "C-13",
+    "title": "An Act to implement the Protocol on the Accession of the United Kingdom of Great Britain and Northern Ireland to the Comprehensive and Progressive Agreement for Trans-Pacific Partnership",
+    "longTitle": "An Act to implement the Protocol on the Accession of the United Kingdom of Great Britain and Northern Ireland to the Comprehensive and Progressive Agreement for Trans-Pacific Partnership",
+    "status": "Royal assent received",
+    "stage": "Royal assent",
+    "latestActivity": "Royal assent on May 6, 2026 (Senate)",
+    "latestActivityDate": "2026-05-06T06:05:00-04:00",
+    "sponsor": "Hon. Maninder Sidhu",
+    "type": "House Government Bill",
+    "royalAssentDate": "2026-05-06T06:05:00-04:00",
+    "latestBillTextTypeId": 80704,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-13/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-13/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-13/first-reading"
+    },
+    "categories": [
+      "royal_assent"
+    ],
+    "score": 3,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13824752,
+    "session": "45-1",
+    "number": "C-18",
+    "title": "Canada-Indonesia Comprehensive Economic Partnership Agreement Implementation Act",
+    "longTitle": "An Act to implement the Comprehensive Economic Partnership Agreement between Canada and Indonesia",
+    "status": "Royal assent received",
+    "stage": "Royal assent",
+    "latestActivity": "Royal assent on May 6, 2026 (Senate)",
+    "latestActivityDate": "2026-05-06T06:05:00-04:00",
+    "sponsor": "Hon. Maninder Sidhu",
+    "type": "House Government Bill",
+    "royalAssentDate": "2026-05-06T06:05:00-04:00",
+    "latestBillTextTypeId": 80704,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-18/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-18/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-18/first-reading"
+    },
+    "categories": [
+      "royal_assent"
+    ],
+    "score": 3,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13951565,
+    "session": "45-1",
+    "number": "C-268",
+    "title": "Spectrum Policy Framework for Canada Act",
+    "longTitle": "An Act respecting the Spectrum Policy Framework for Canada",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on May 5, 2026 (House of Commons)",
+    "latestActivityDate": "2026-05-05T14:01:49-04:00",
+    "sponsor": "Marianne Dandurand",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-268/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-268/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-268/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "framework_bill",
+      "tech_relevant"
+    ],
+    "score": 4,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 14019015,
+    "session": "45-1",
+    "number": "S-246",
+    "title": "Wartime Service Recognition Act",
+    "longTitle": "An Act respecting the recognition of wartime service",
+    "status": "At consideration in committee in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Referral to committee on May 5, 2026 (Senate)",
+    "latestActivityDate": "2026-05-05T07:00:00-04:00",
+    "sponsor": "Sen. Hassan Yussuff",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-246/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-246/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-246/first-reading"
+    },
+    "categories": [
+      "committee_stage",
+      "creates_new_act",
+      "symbolic_bill"
+    ],
+    "score": -4,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13707662,
+    "session": "45-1",
+    "number": "S-239",
+    "title": "Canadian Prosperity Act",
+    "longTitle": "An Act to amend the Competition Act",
+    "status": "At second reading in the Senate",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on May 5, 2026 (Senate)",
+    "latestActivityDate": "2026-05-05T06:45:00-04:00",
+    "sponsor": "Sen. Martin Klyne",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-239/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-239/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-239/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "commercial_relevant",
+      "high_demo_value"
+    ],
+    "score": 10,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13541971,
+    "session": "45-1",
+    "number": "S-219",
+    "title": "Judicial Independence Day Act",
+    "longTitle": "An Act to establish Judicial Independence Day",
+    "status": "At consideration in committee in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Referral to committee on May 5, 2026 (Senate)",
+    "latestActivityDate": "2026-05-05T06:40:00-04:00",
+    "sponsor": "Sen. Pierre Moreau",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-219/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-219/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-219/first-reading"
+    },
+    "categories": [
+      "committee_stage",
+      "creates_new_act"
+    ],
+    "score": 2,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13540351,
+    "session": "45-1",
+    "number": "S-213",
+    "title": "An Act to amend the Canada Elections Act (demographic information)",
+    "longTitle": "An Act to amend the Canada Elections Act (demographic information)",
+    "status": "At second reading in the Senate",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on May 5, 2026 (Senate)",
+    "latestActivityDate": "2026-05-05T06:25:00-04:00",
+    "sponsor": "Sen. Donna Dasko",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-213/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-213/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-213/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "high_demo_value"
+    ],
+    "score": 7,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 14053824,
+    "session": "45-1",
+    "number": "C-276",
+    "title": "Framework on the Access to and Use of Cash Act",
+    "longTitle": "An Act to establish a framework for the continued access to and use of cash in Canada and to make related amendments to other Acts",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on May 4, 2026 (House of Commons)",
+    "latestActivityDate": "2026-05-04T11:38:23.707-04:00",
+    "sponsor": "Ted Falk",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-276/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-276/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-276/first-reading"
+    },
+    "categories": [
+      "commercial_relevant",
+      "creates_new_act",
+      "defeated_or_inactive",
+      "framework_bill"
+    ],
+    "score": -8,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13548203,
+    "session": "45-1",
+    "number": "S-228",
+    "title": "An Act to amend the Criminal Code (sterilization procedures)",
+    "longTitle": "An Act to amend the Criminal Code (sterilization procedures)",
+    "status": "At third reading in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Debate at third reading on May 4, 2026 (House of Commons)",
+    "latestActivityDate": "2026-05-04T07:04:25-04:00",
+    "sponsor": "Sen. Yvonne Boyer",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-228/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-228/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-228/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "late_stage"
+    ],
+    "score": 7,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13878167,
+    "session": "45-1",
+    "number": "C-20",
+    "title": "Build Canada Homes Act",
+    "longTitle": "An Act respecting the establishment of Build Canada Homes",
+    "status": "At report stage in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Committee report presented without an amendment on May 4, 2026 (House of Commons)",
+    "latestActivityDate": "2026-05-04T05:01:41.31-04:00",
+    "sponsor": "Hon. Gregor Robertson",
+    "type": "House Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-20/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-20/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-20/first-reading"
+    },
+    "categories": [
+      "committee_stage",
+      "creates_new_act"
+    ],
+    "score": 2,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13589558,
+    "session": "45-1",
+    "number": "C-240",
+    "title": "Offender Rehabilitation Act",
+    "longTitle": "An Act to amend the Criminal Code, to make related amendments to the Corrections and Conditional Release Act and to amend the Controlled Drugs and Substances Act",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on May 1, 2026 (House of Commons)",
+    "latestActivityDate": "2026-05-01T09:30:00.657-04:00",
+    "sponsor": "Kelly DeRidder",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-240/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-240/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-240/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "high_demo_value"
+    ],
+    "score": 7,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13954018,
+    "session": "45-1",
+    "number": "C-267",
+    "title": "National Framework on the Durability of Electronic Products and Essential Home Appliances Act",
+    "longTitle": "An Act to establish a national framework to promote the durability of electronic products and essential home appliances",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on April 30, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-30T13:30:00.907-04:00",
+    "sponsor": "Abdelhaq Sari",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-267/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-267/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-267/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "framework_bill"
+    ],
+    "score": -1,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13541954,
+    "session": "45-1",
+    "number": "S-209",
+    "title": "Protecting Young Persons from Exposure to Pornography Act",
+    "longTitle": "An Act to restrict young persons’ online access to pornographic material",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Placed in the Order of Precedence on April 30, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-30T10:24:13.35-04:00",
+    "sponsor": "Sen. Julie Miville-Dechêne",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-209/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-209/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-209/first-reading"
+    },
+    "categories": [
+      "tech_relevant"
+    ],
+    "score": 5,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13590613,
+    "session": "45-1",
+    "number": "C-9",
+    "title": "Combatting Hate Act",
+    "longTitle": "An Act to amend the Criminal Code (hate propaganda, hate crime and access to religious or cultural places)",
+    "status": "At consideration in committee in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Referral to committee on April 30, 2026 (Senate)",
+    "latestActivityDate": "2026-04-30T06:20:00-04:00",
+    "sponsor": "Hon. Sean Fraser",
+    "type": "House Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-9/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-9/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-9/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "committee_stage"
+    ],
+    "score": 6,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13870255,
+    "session": "45-1",
+    "number": "C-260",
+    "title": "Preventing Coercion of Persons Not Seeking Medical Assistance in Dying Act",
+    "longTitle": "An Act to amend the Criminal Code (medical assistance in dying — protection against coercion)",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on April 29, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-29T13:30:00.947-04:00",
+    "sponsor": "Garnett Genuis",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-260/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-260/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-260/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "health_relevant"
+    ],
+    "score": 8,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13698308,
+    "session": "45-1",
+    "number": "S-3",
+    "title": "An Act to amend the Weights and Measures Act, the Electricity and Gas Inspection Act, the Weights and Measures Regulations and the Electricity and Gas Inspection Regulations",
+    "longTitle": "An Act to amend the Weights and Measures Act, the Electricity and Gas Inspection Act, the Weights and Measures Regulations and the Electricity and Gas Inspection Regulations",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on April 29, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-29T11:30:00.597-04:00",
+    "sponsor": "Sen. Pierre Moreau",
+    "type": "Senate Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-3/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-3/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-3/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "high_demo_value"
+    ],
+    "score": 7,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 14023030,
+    "session": "45-1",
+    "number": "C-28",
+    "title": "Canadian Space Launch Act",
+    "longTitle": "An Act to amend the Aeronautics Act and other Acts",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on April 28, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-28T11:00:00.497-04:00",
+    "sponsor": "Hon. Steven MacKinnon",
+    "type": "House Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-28/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-28/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-28/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "high_demo_value"
+    ],
+    "score": 7,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13541884,
+    "session": "45-1",
+    "number": "S-205",
+    "title": "Providing Alternatives to Isolation and Ensuring Oversight and Remedies in the Correctional System Act (Tona’s Law)",
+    "longTitle": "An Act to amend the Corrections and Conditional Release Act",
+    "status": "Senate bill awaiting first reading in the House of Commons",
+    "stage": "Third reading",
+    "latestActivity": "Third reading on April 28, 2026 (Senate)",
+    "latestActivityDate": "2026-04-28T06:25:00-04:00",
+    "sponsor": "Sen. Kim Pate",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-205/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-205/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-205/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "high_demo_value",
+      "late_stage"
+    ],
+    "score": 10,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 14034077,
+    "session": "45-1",
+    "number": "C-275",
+    "title": "An Act to amend the Criminal Code (sexual assault material)",
+    "longTitle": "An Act to amend the Criminal Code (sexual assault material)",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on April 28, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-28T06:02:52.58-04:00",
+    "sponsor": "Burton Bailey",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-275/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-275/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-275/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "defeated_or_inactive"
+    ],
+    "score": -6,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13584104,
+    "session": "45-1",
+    "number": "C-225",
+    "title": "An Act to amend the Criminal Code",
+    "longTitle": "An Act to amend the Criminal Code",
+    "status": "At second reading in the Senate",
+    "stage": "First reading",
+    "latestActivity": "First reading on April 28, 2026 (Senate)",
+    "latestActivityDate": "2026-04-28T06:00:00-04:00",
+    "sponsor": "Frank Caputo",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-225/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-225/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-225/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "high_demo_value"
+    ],
+    "score": 7,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 14031568,
+    "session": "45-1",
+    "number": "C-29",
+    "title": "Financial Crimes Agency Act",
+    "longTitle": "An Act to establish the Financial Crimes Agency and to make consequential amendments to certain Acts and regulations",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on April 27, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-27T11:10:39.24-04:00",
+    "sponsor": "Hon. François-Philippe Champagne",
+    "type": "House Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-29/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-29/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-29/first-reading"
+    },
+    "categories": [
+      "commercial_relevant",
+      "creates_new_act"
+    ],
+    "score": 3,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13548190,
+    "session": "45-1",
+    "number": "S-226",
+    "title": "Jury Duty Appreciation Week Act",
+    "longTitle": "An Act respecting Jury Duty Appreciation Week",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on April 24, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-24T09:02:05-04:00",
+    "sponsor": "Sen. Lucie Moncion",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-226/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-226/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-226/first-reading"
+    },
+    "categories": [
+      "creates_new_act"
+    ],
+    "score": 0,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13986893,
+    "session": "45-1",
+    "number": "C-25",
+    "title": "Strong and Free Elections Act",
+    "longTitle": "An Act to amend the Canada Elections Act and to enact An Act to change the names of certain electoral districts, 2026",
+    "status": "At consideration in committee in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Second reading and referral to committee on April 24, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-24T09:02:05-04:00",
+    "sponsor": "Hon. Steven MacKinnon",
+    "type": "House Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-25/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-25/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-25/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "committee_stage",
+      "creates_new_act",
+      "high_demo_value"
+    ],
+    "score": 9,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13951690,
+    "session": "45-1",
+    "number": "C-266",
+    "title": "National Framework on Skilled Trades and Labour Mobility Act",
+    "longTitle": "An Act to establish a national framework respecting skilled trades and labour mobility",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on April 23, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-23T13:30:33-04:00",
+    "sponsor": "Parm Bains",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-266/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-266/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-266/first-reading"
+    },
+    "categories": [
+      "commercial_relevant",
+      "creates_new_act",
+      "framework_bill"
+    ],
+    "score": 2,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13563649,
+    "session": "45-1",
+    "number": "C-8",
+    "title": "An Act respecting cyber security, amending the Telecommunications Act and making consequential amendments to other Acts",
+    "longTitle": "An Act respecting cyber security, amending the Telecommunications Act and making consequential amendments to other Acts",
+    "status": "At consideration in committee in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Referral to committee on April 23, 2026 (Senate)",
+    "latestActivityDate": "2026-04-23T06:20:00-04:00",
+    "sponsor": "Hon. Gary Anandasangaree",
+    "type": "House Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-8/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-8/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-8/first-reading"
+    },
+    "categories": [
+      "committee_stage",
+      "creates_new_act",
+      "tech_relevant"
+    ],
+    "score": 11,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13583696,
+    "session": "45-1",
+    "number": "C-234",
+    "title": "Living Donor Recognition Medal Act",
+    "longTitle": "An Act respecting the establishment and award of a Living Donor Recognition Medal",
+    "status": "At second reading in the Senate",
+    "stage": "First reading",
+    "latestActivity": "First reading on April 23, 2026 (Senate)",
+    "latestActivityDate": "2026-04-23T06:05:00-04:00",
+    "sponsor": "Ziad Aboultaif",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-234/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-234/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-234/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "symbolic_bill"
+    ],
+    "score": -6,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13865078,
+    "session": "45-1",
+    "number": "C-21",
+    "title": "Red River Métis Self-Government Recognition and Implementation Treaty Act",
+    "longTitle": "An Act to give effect to the Red River Métis Self-Government Recognition and Implementation Treaty and to make consequential amendments to other Acts",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on April 22, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-22T12:59:30-04:00",
+    "sponsor": "Hon. Rebecca Alty",
+    "type": "House Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-21/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-21/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-21/first-reading"
+    },
+    "categories": [
+      "symbolic_bill"
+    ],
+    "score": -6,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13554334,
+    "session": "45-1",
+    "number": "S-230",
+    "title": "National Strategy for Soil Health Act",
+    "longTitle": "An Act respecting the development of a national strategy for soil health protection, conservation and enhancement",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Placed in the Order of Precedence on April 22, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-22T12:06:34.887-04:00",
+    "sponsor": "Sen. Robert Black",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-230/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-230/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-230/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "framework_bill",
+      "health_relevant"
+    ],
+    "score": 3,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13583158,
+    "session": "45-1",
+    "number": "C-226",
+    "title": "National Framework for Food Price Transparency Act",
+    "longTitle": "An Act to establish a national framework to improve food price transparency",
+    "status": "At consideration in committee in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Second reading and referral to committee on April 22, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-22T11:45:00-04:00",
+    "sponsor": "Gurbux Saini",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-226/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-226/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-226/first-reading"
+    },
+    "categories": [
+      "committee_stage",
+      "creates_new_act",
+      "framework_bill"
+    ],
+    "score": 1,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13590474,
+    "session": "45-1",
+    "number": "C-238",
+    "title": "An Act to amend the Criminal Code (restitution orders)",
+    "longTitle": "An Act to amend the Criminal Code (restitution orders)",
+    "status": "At consideration in committee in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Second reading and referral to committee on April 22, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-22T11:30:00-04:00",
+    "sponsor": "Viviane Lapointe",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-238/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-238/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-238/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "committee_stage"
+    ],
+    "score": 6,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13541972,
+    "session": "45-1",
+    "number": "S-211",
+    "title": "National Framework on Sports Betting Advertising Act",
+    "longTitle": "An Act respecting a national framework on sports betting advertising",
+    "status": "At consideration in committee in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Second reading and referral to committee on April 22, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-22T11:15:00-04:00",
+    "sponsor": "Sen. Marty Deacon",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-211/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-211/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-211/first-reading"
+    },
+    "categories": [
+      "committee_stage",
+      "creates_new_act",
+      "framework_bill"
+    ],
+    "score": 1,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13586188,
+    "session": "45-1",
+    "number": "C-222",
+    "title": "Relieving Grieving Parents of an Administrative Burden Act (Evan's Law)",
+    "longTitle": "An Act to amend the Employment Insurance Act and the Canada Labour Code (death of a child)",
+    "status": "At report stage in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Committee report presented with amendments on April 22, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-22T04:59:39.637-04:00",
+    "sponsor": "Hon. Terry Beech",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80702,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-222/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-222/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-222/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "commercial_relevant",
+      "committee_stage",
+      "high_demo_value"
+    ],
+    "score": 12,
+    "recommendation": "analyze_now"
+  },
+  {
+    "billId": 13605049,
+    "session": "45-1",
+    "number": "C-10",
+    "title": "Commissioner for Modern Treaty Implementation Act",
+    "longTitle": "An Act respecting the Commissioner for Modern Treaty Implementation",
+    "status": "At third reading in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Concurrence at report stage on April 21, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-21T15:00:07-04:00",
+    "sponsor": "Hon. Rebecca Alty",
+    "type": "House Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-10/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-10/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-10/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "late_stage"
+    ],
+    "score": 3,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13702272,
+    "session": "45-1",
+    "number": "S-238",
+    "title": "Enacting Climate Commitments Act",
+    "longTitle": "An Act to enact the Climate-Aligned Finance Act and to make related amendments to other Acts",
+    "status": "At second reading in the Senate",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on April 21, 2026 (Senate)",
+    "latestActivityDate": "2026-04-21T06:50:00-04:00",
+    "sponsor": "Sen. Rosa Galvez",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-238/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-238/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-238/first-reading"
+    },
+    "categories": [
+      "creates_new_act"
+    ],
+    "score": 0,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13542654,
+    "session": "45-1",
+    "number": "S-222",
+    "title": "Vote 16 Act",
+    "longTitle": "An Act to amend the Canada Elections Act and the Regulation Adapting the Canada Elections Act for the Purposes of a Referendum",
+    "status": "Bill defeated",
+    "stage": "First reading",
+    "latestActivity": "Bill defeated at second reading on April 21, 2026 (Senate)",
+    "latestActivityDate": "2026-04-21T06:45:00-04:00",
+    "sponsor": "Sen. Marilou McPhedran",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-222/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-222/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-222/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "defeated_or_inactive",
+      "high_demo_value"
+    ],
+    "score": -3,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13545907,
+    "session": "45-1",
+    "number": "S-225",
+    "title": "National Thanadelthur Day Act",
+    "longTitle": "An Act to establish National Thanadelthur Day",
+    "status": "Senate bill awaiting first reading in the House of Commons",
+    "stage": "Third reading",
+    "latestActivity": "Third reading on April 21, 2026 (Senate)",
+    "latestActivityDate": "2026-04-21T06:20:00-04:00",
+    "sponsor": "Sen. Mary Jane McCallum",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-225/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-225/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-225/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "late_stage",
+      "symbolic_bill"
+    ],
+    "score": -3,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13957880,
+    "session": "45-1",
+    "number": "C-22",
+    "title": "Lawful Access Act, 2026",
+    "longTitle": "An Act respecting lawful access",
+    "status": "At consideration in committee in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Second reading and referral to committee on April 20, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-20T14:15:55-04:00",
+    "sponsor": "Hon. Gary Anandasangaree",
+    "type": "House Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-22/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-22/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-22/first-reading"
+    },
+    "categories": [
+      "committee_stage",
+      "creates_new_act",
+      "tech_relevant"
+    ],
+    "score": 11,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13865920,
+    "session": "45-1",
+    "number": "C-274",
+    "title": "An Act to amend the Citizenship Act and the Immigration and Refugee Protection Act",
+    "longTitle": "An Act to amend the Citizenship Act and the Immigration and Refugee Protection Act",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on April 20, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-20T11:13:09.64-04:00",
+    "sponsor": "Jenny Kwan",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-274/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-274/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-274/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "defeated_or_inactive",
+      "high_demo_value"
+    ],
+    "score": -3,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13540346,
+    "session": "45-1",
+    "number": "S-201",
+    "title": "National Framework on Sickle Cell Disease Act",
+    "longTitle": "An Act respecting a national framework on sickle cell disease",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on April 17, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-17T09:35:39.24-04:00",
+    "sponsor": "Sen. Marie-Françoise Mégie",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-201/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-201/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-201/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "framework_bill"
+    ],
+    "score": -1,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13827943,
+    "session": "45-1",
+    "number": "S-244",
+    "title": "National Diffuse Intrinsic Pontine Glioma Awareness Day Act",
+    "longTitle": "An Act respecting National Diffuse Intrinsic Pontine Glioma Awareness Day",
+    "status": "At second reading in the Senate",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on April 16, 2026 (Senate)",
+    "latestActivityDate": "2026-04-16T06:45:00-04:00",
+    "sponsor": "Sen. Yonah Martin",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-244/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-244/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-244/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "symbolic_bill"
+    ],
+    "score": -6,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13933855,
+    "session": "45-1",
+    "number": "S-6",
+    "title": "Federal Law–Civil Law Harmonization Act, No. 4",
+    "longTitle": "A fourth Act to harmonize federal law with the civil law of Quebec and to amend certain Acts in order to ensure that each language version takes into account the common law and the civil law",
+    "status": "At consideration in committee in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Referral to committee on April 16, 2026 (Senate)",
+    "latestActivityDate": "2026-04-16T06:20:00-04:00",
+    "sponsor": "Sen. Pierre Moreau",
+    "type": "Senate Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-6/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-6/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-6/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "committee_stage"
+    ],
+    "score": 6,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13589531,
+    "session": "45-1",
+    "number": "C-231",
+    "title": "An Act to amend the Youth Criminal Justice Act",
+    "longTitle": "An Act to amend the Youth Criminal Justice Act",
+    "status": "At consideration in committee in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Second reading and referral to committee on April 15, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-15T11:25:00-04:00",
+    "sponsor": "Luc Berthold",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-231/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-231/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-231/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "committee_stage",
+      "high_demo_value"
+    ],
+    "score": 9,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13559594,
+    "session": "45-1",
+    "number": "S-232",
+    "title": "Can’t Buy Silence Act",
+    "longTitle": "An Act respecting non-disclosure agreements",
+    "status": "At second reading in the Senate",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on April 15, 2026 (Senate)",
+    "latestActivityDate": "2026-04-15T06:45:00-04:00",
+    "sponsor": "Sen. Marilou McPhedran",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-232/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-232/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-232/first-reading"
+    },
+    "categories": [
+      "creates_new_act"
+    ],
+    "score": 0,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13554320,
+    "session": "45-1",
+    "number": "S-229",
+    "title": "Gatineau Park Act",
+    "longTitle": "An Act to amend the National Capital Act (Gatineau Park)",
+    "status": "At consideration in committee in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Referral to committee on April 15, 2026 (Senate)",
+    "latestActivityDate": "2026-04-15T06:40:00-04:00",
+    "sponsor": "Sen. Rosa Galvez",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-229/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-229/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-229/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "committee_stage",
+      "high_demo_value"
+    ],
+    "score": 9,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 14006658,
+    "session": "45-1",
+    "number": "C-273",
+    "title": "Facilitating Agricultural Regulatory Modernization Act",
+    "longTitle": "An Act to amend the Feeds Act, the Fertilizers Act, the Seeds Act, the Pest Control Products Act and the Food and Drugs Act",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on April 14, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-14T06:07:01.79-04:00",
+    "sponsor": "David Bexte",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-273/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-273/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-273/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "commercial_relevant",
+      "defeated_or_inactive",
+      "health_relevant",
+      "high_demo_value"
+    ],
+    "score": 6,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13541964,
+    "session": "45-1",
+    "number": "S-210",
+    "title": "Ukrainian Heritage Month Act",
+    "longTitle": "An Act respecting Ukrainian Heritage Month",
+    "status": "At report stage in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Committee report presented without an amendment on April 14, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-14T05:49:31.117-04:00",
+    "sponsor": "Sen. Stanley Kutcher",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-210/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-210/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-210/first-reading"
+    },
+    "categories": [
+      "committee_stage",
+      "creates_new_act",
+      "symbolic_bill"
+    ],
+    "score": -4,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13548201,
+    "session": "45-1",
+    "number": "S-227",
+    "title": "Arab Heritage Month Act",
+    "longTitle": "An Act respecting Arab Heritage Month",
+    "status": "At report stage in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Committee report presented without an amendment on April 14, 2026 (House of Commons)",
+    "latestActivityDate": "2026-04-14T05:43:24.79-04:00",
+    "sponsor": "Sen. Mohammad Khair Al Zaibak",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-227/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-227/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-227/first-reading"
+    },
+    "categories": [
+      "committee_stage",
+      "creates_new_act",
+      "symbolic_bill"
+    ],
+    "score": -4,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13632609,
+    "session": "45-1",
+    "number": "C-12",
+    "title": "Strengthening Canada's Immigration System and Borders Act",
+    "longTitle": "An Act respecting certain measures relating to the security of Canada's borders and the integrity of the Canadian immigration system and respecting other related security measures",
+    "status": "Royal assent received",
+    "stage": "Royal assent",
+    "latestActivity": "Royal assent on March 26, 2026 (Senate)",
+    "latestActivityDate": "2026-03-26T16:00:00-04:00",
+    "sponsor": "Hon. Gary Anandasangaree",
+    "type": "House Government Bill",
+    "royalAssentDate": "2026-03-26T16:00:00-04:00",
+    "latestBillTextTypeId": 80704,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-12/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-12/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-12/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "royal_assent"
+    ],
+    "score": 3,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13587241,
+    "session": "45-1",
+    "number": "C-236",
+    "title": "Addressing the Continuing Victimization of Homicide Victims' Families Act",
+    "longTitle": "An Act to amend the Criminal Code, the Corrections and Conditional Release Act and the Prisons and Reformatories Act",
+    "status": "At consideration in committee in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Second reading and referral to committee on March 26, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-26T12:56:02.657-04:00",
+    "sponsor": "Dane Lloyd",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-236/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-236/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-236/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "committee_stage",
+      "high_demo_value"
+    ],
+    "score": 9,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13822755,
+    "session": "45-1",
+    "number": "S-243",
+    "title": "National Framework for Women’s Health in Canada Act",
+    "longTitle": "An Act to establish a national framework for women’s health in Canada",
+    "status": "At consideration in committee in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Referral to committee on March 26, 2026 (Senate)",
+    "latestActivityDate": "2026-03-26T08:35:00-04:00",
+    "sponsor": "Sen. Danièle Henkel",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-243/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-243/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-243/first-reading"
+    },
+    "categories": [
+      "committee_stage",
+      "creates_new_act",
+      "framework_bill",
+      "health_relevant"
+    ],
+    "score": 5,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13541945,
+    "session": "45-1",
+    "number": "S-217",
+    "title": "Fairness for All Canadian Taxpayers Act (measuring the tax gap to fight international tax evasion)",
+    "longTitle": "An Act to amend the Canada Revenue Agency Act (reporting on unpaid income tax)",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Placed in the Order of Precedence on March 26, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-26T08:21:47.707-04:00",
+    "sponsor": "Sen. Percy E. Downe",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-217/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-217/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-217/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "commercial_relevant",
+      "high_demo_value"
+    ],
+    "score": 10,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13932352,
+    "session": "45-1",
+    "number": "C-27",
+    "title": "Final Self-Government Agreement for the Tlegohli Got’ine Act",
+    "longTitle": "An Act to give effect to the Final Self-Government Agreement for the Tlegohli Got’ine and to make consequential amendments to other Acts",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on March 26, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-26T07:51:12.113-04:00",
+    "sponsor": "Hon. Rebecca Alty",
+    "type": "House Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-27/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-27/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-27/first-reading"
+    },
+    "categories": [],
+    "score": 0,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13740928,
+    "session": "45-1",
+    "number": "C-15",
+    "title": "Budget 2025 Implementation Act, No. 1",
+    "longTitle": "An Act to implement certain provisions of the budget tabled in Parliament on November 4, 2025",
+    "status": "Royal assent received",
+    "stage": "Royal assent",
+    "latestActivity": "Royal assent on March 26, 2026 (Senate)",
+    "latestActivityDate": "2026-03-26T06:50:00-04:00",
+    "sponsor": "Hon. François-Philippe Champagne",
+    "type": "House Government Bill",
+    "royalAssentDate": "2026-03-26T06:50:00-04:00",
+    "latestBillTextTypeId": 80704,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-15/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-15/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-15/first-reading"
+    },
+    "categories": [
+      "royal_assent"
+    ],
+    "score": 3,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13978480,
+    "session": "45-1",
+    "number": "C-23",
+    "title": "Appropriation Act No. 4, 2025-26",
+    "longTitle": "An Act for granting to His Majesty certain sums of money for the federal public administration for the fiscal year ending March 31, 2026",
+    "status": "Royal assent received",
+    "stage": "Royal assent",
+    "latestActivity": "Royal assent on March 26, 2026 (Senate)",
+    "latestActivityDate": "2026-03-26T06:50:00-04:00",
+    "sponsor": "Hon. Shafqat Ali",
+    "type": "House Government Bill",
+    "royalAssentDate": "2026-03-26T06:50:00-04:00",
+    "latestBillTextTypeId": 80704,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-23/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-23/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-23/first-reading"
+    },
+    "categories": [
+      "appropriation_bill",
+      "royal_assent"
+    ],
+    "score": -3,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13978563,
+    "session": "45-1",
+    "number": "C-24",
+    "title": "Appropriation Act No. 1, 2026-27",
+    "longTitle": "An Act for granting to His Majesty certain sums of money for the federal public administration for the fiscal year ending March 31, 2027",
+    "status": "Royal assent received",
+    "stage": "Royal assent",
+    "latestActivity": "Royal assent on March 26, 2026 (Senate)",
+    "latestActivityDate": "2026-03-26T06:50:00-04:00",
+    "sponsor": "Hon. Shafqat Ali",
+    "type": "House Government Bill",
+    "royalAssentDate": "2026-03-26T06:50:00-04:00",
+    "latestBillTextTypeId": 80704,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-24/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-24/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-24/first-reading"
+    },
+    "categories": [
+      "appropriation_bill",
+      "royal_assent"
+    ],
+    "score": -3,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13983245,
+    "session": "45-1",
+    "number": "C-272",
+    "title": "An Act to amend the Controlled Drugs and Substances Act (supervised drug consumption sites)",
+    "longTitle": "An Act to amend the Controlled Drugs and Substances Act (supervised drug consumption sites)",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on March 26, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-26T06:07:34.04-04:00",
+    "sponsor": "Dan Mazier",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-272/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-272/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-272/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "defeated_or_inactive",
+      "high_demo_value"
+    ],
+    "score": -3,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13986875,
+    "session": "45-1",
+    "number": "C-26",
+    "title": "An Act to authorize certain payments to be made out of the Consolidated Revenue Fund for the purpose of improving housing supply",
+    "longTitle": "An Act to authorize certain payments to be made out of the Consolidated Revenue Fund for the purpose of improving housing supply",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on March 26, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-26T06:05:50.607-04:00",
+    "sponsor": "Hon. François-Philippe Champagne",
+    "type": "House Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-26/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-26/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-26/first-reading"
+    },
+    "categories": [],
+    "score": 0,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13591943,
+    "session": "45-1",
+    "number": "C-242",
+    "title": "Jail Not Bail Act",
+    "longTitle": "An Act to amend the Criminal Code and the Department of Justice Act",
+    "status": "Bill defeated",
+    "stage": "First reading",
+    "latestActivity": "Bill defeated at second reading on March 25, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-25T11:45:00-04:00",
+    "sponsor": "Arpan Khanna",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-242/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-242/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-242/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "defeated_or_inactive",
+      "high_demo_value"
+    ],
+    "score": -3,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13595422,
+    "session": "45-1",
+    "number": "C-243",
+    "title": "An Act to amend the Corrections and Conditional Release Act (parole review)",
+    "longTitle": "An Act to amend the Corrections and Conditional Release Act (parole review)",
+    "status": "Bill defeated",
+    "stage": "First reading",
+    "latestActivity": "Bill defeated at second reading on March 25, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-25T11:35:00-04:00",
+    "sponsor": "Kerry Diotte",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-243/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-243/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-243/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "defeated_or_inactive",
+      "high_demo_value"
+    ],
+    "score": -3,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13583780,
+    "session": "45-1",
+    "number": "C-220",
+    "title": "An Act to amend the Criminal Code (immigration status in sentencing)",
+    "longTitle": "An Act to amend the Criminal Code (immigration status in sentencing)",
+    "status": "Bill defeated",
+    "stage": "First reading",
+    "latestActivity": "Bill defeated at second reading on March 25, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-25T11:25:00-04:00",
+    "sponsor": "Hon. Michelle Rempel Garner",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-220/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-220/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-220/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "defeated_or_inactive"
+    ],
+    "score": -6,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13588503,
+    "session": "45-1",
+    "number": "C-246",
+    "title": "An Act to amend the Criminal Code (consecutive sentences for sexual offences)",
+    "longTitle": "An Act to amend the Criminal Code (consecutive sentences for sexual offences)",
+    "status": "Bill defeated",
+    "stage": "First reading",
+    "latestActivity": "Bill defeated at second reading on March 25, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-25T11:15:00-04:00",
+    "sponsor": "Rachael Thomas",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-246/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-246/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-246/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "defeated_or_inactive"
+    ],
+    "score": -6,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13588449,
+    "session": "45-1",
+    "number": "C-235",
+    "title": "Respecting Families of Murdered and Brutalized Persons Act",
+    "longTitle": "An Act to amend the Criminal Code (increasing parole ineligibility)",
+    "status": "At consideration in committee in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Second reading and referral to committee on March 24, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-24T14:31:35.287-04:00",
+    "sponsor": "Jeff Kibble",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-235/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-235/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-235/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "committee_stage"
+    ],
+    "score": 6,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13985244,
+    "session": "45-1",
+    "number": "S-245",
+    "title": "National Blanket Ceremony Day Act",
+    "longTitle": "An Act respecting a National Blanket Ceremony Day",
+    "status": "At second reading in the Senate",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on March 24, 2026 (Senate)",
+    "latestActivityDate": "2026-03-23T20:00:00-04:00",
+    "sponsor": "Sen. Mary Jane McCallum",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-245/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-245/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-245/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "symbolic_bill"
+    ],
+    "score": -6,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13854949,
+    "session": "45-1",
+    "number": "C-259",
+    "title": "Fair Representation Act",
+    "longTitle": "An Act to amend the Canada Labour Code (fair representation)",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Placed in the Order of Precedence on March 19, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-19T10:33:34.233-04:00",
+    "sponsor": "Heather McPherson",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-259/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-259/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-259/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "commercial_relevant"
+    ],
+    "score": 7,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13888588,
+    "session": "45-1",
+    "number": "C-261",
+    "title": "An Act to amend the Old Age Security Act (amount of full pension)",
+    "longTitle": "An Act to amend the Old Age Security Act (amount of full pension)",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Placed in the Order of Precedence on March 19, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-19T10:32:16.91-04:00",
+    "sponsor": "Claude DeBellefeuille",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-261/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-261/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-261/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "high_demo_value"
+    ],
+    "score": 7,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13954296,
+    "session": "45-1",
+    "number": "C-270",
+    "title": "Stand on Guard Act",
+    "longTitle": "An Act to amend the Criminal Code (defence of person)",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Placed in the Order of Precedence on March 19, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-19T10:29:30.27-04:00",
+    "sponsor": "Sandra Cobena",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-270/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-270/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-270/first-reading"
+    },
+    "categories": [
+      "amends_existing_act"
+    ],
+    "score": 4,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13956772,
+    "session": "45-1",
+    "number": "C-269",
+    "title": "An Act to amend the Income Tax Act (heat recovery tax credit)",
+    "longTitle": "An Act to amend the Income Tax Act (heat recovery tax credit)",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Placed in the Order of Precedence on March 19, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-19T10:27:43.33-04:00",
+    "sponsor": "Greg McLean",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-269/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-269/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-269/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "commercial_relevant",
+      "high_demo_value"
+    ],
+    "score": 10,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13621852,
+    "session": "45-1",
+    "number": "C-247",
+    "title": "An Act to amend the Canada Labour Code",
+    "longTitle": "An Act to amend the Canada Labour Code",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Placed in the Order of Precedence on March 19, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-19T10:22:35.987-04:00",
+    "sponsor": "Leah Gazan",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-247/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-247/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-247/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "commercial_relevant",
+      "high_demo_value"
+    ],
+    "score": 10,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13933510,
+    "session": "45-1",
+    "number": "C-264",
+    "title": "An Act to repeal certain restrictions on shipping",
+    "longTitle": "An Act to repeal certain restrictions on shipping",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Placed in the Order of Precedence on March 19, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-19T10:20:53.267-04:00",
+    "sponsor": "David McKenzie",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-264/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-264/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-264/first-reading"
+    },
+    "categories": [
+      "commercial_relevant"
+    ],
+    "score": 3,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13701896,
+    "session": "45-1",
+    "number": "C-255",
+    "title": "An Act to amend the Criminal Code (mischief — religious property)",
+    "longTitle": "An Act to amend the Criminal Code (mischief — religious property)",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Placed in the Order of Precedence on March 19, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-19T10:16:24.467-04:00",
+    "sponsor": "Kelly Block",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-255/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-255/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-255/first-reading"
+    },
+    "categories": [
+      "amends_existing_act"
+    ],
+    "score": 4,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13960784,
+    "session": "45-1",
+    "number": "C-271",
+    "title": "Protecting Canada's Essential Infrastructure Metals Act",
+    "longTitle": "An Act to amend the Criminal Code (scrap metal trafficking and essential infrastructure protection)",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on March 13, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-13T08:14:45.013-04:00",
+    "sponsor": "Connie Cody",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-271/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-271/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-271/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "defeated_or_inactive"
+    ],
+    "score": -6,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13539746,
+    "session": "45-1",
+    "number": "C-4",
+    "title": "Making Life More Affordable for Canadians Act",
+    "longTitle": "An Act respecting certain affordability measures for Canadians and another measure",
+    "status": "Royal assent received",
+    "stage": "Royal assent",
+    "latestActivity": "Royal assent on March 12, 2026 (Senate)",
+    "latestActivityDate": "2026-03-12T13:25:00-04:00",
+    "sponsor": "Hon. François-Philippe Champagne",
+    "type": "House Government Bill",
+    "royalAssentDate": "2026-03-12T13:25:00-04:00",
+    "latestBillTextTypeId": 80704,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-4/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-4/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-4/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "royal_assent"
+    ],
+    "score": 3,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13540330,
+    "session": "45-1",
+    "number": "S-212",
+    "title": "National Strategy for Children and Youth Act",
+    "longTitle": "An Act respecting a national strategy for children and youth in Canada",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Placed in the Order of Precedence on March 12, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-12T08:49:25.573-04:00",
+    "sponsor": "Sen. Rosemary Moodie",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-212/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-212/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-212/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "framework_bill"
+    ],
+    "score": -1,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13760362,
+    "session": "45-1",
+    "number": "S-241",
+    "title": "An Act to amend the Criminal Code and the Indian Act",
+    "longTitle": "An Act to amend the Criminal Code and the Indian Act",
+    "status": "At consideration in committee in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Referral to committee on March 12, 2026 (Senate)",
+    "latestActivityDate": "2026-03-12T07:40:00-04:00",
+    "sponsor": "Sen. Scott Tannas",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-241/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-241/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-241/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "committee_stage",
+      "high_demo_value"
+    ],
+    "score": 9,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13679516,
+    "session": "45-1",
+    "number": "C-14",
+    "title": "Bail and Sentencing Reform Act",
+    "longTitle": "An Act to amend the Criminal Code, the Youth Criminal Justice Act and the National Defence Act (bail and sentencing)",
+    "status": "At consideration in committee in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Referral to committee on March 12, 2026 (Senate)",
+    "latestActivityDate": "2026-03-12T07:10:00-04:00",
+    "sponsor": "Hon. Sean Fraser",
+    "type": "House Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-14/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-14/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-14/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "committee_stage",
+      "high_demo_value"
+    ],
+    "score": 9,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13589584,
+    "session": "45-1",
+    "number": "C-233",
+    "title": "An Act to amend the Export and Import Permits Act",
+    "longTitle": "An Act to amend the Export and Import Permits Act",
+    "status": "Bill defeated",
+    "stage": "First reading",
+    "latestActivity": "Bill defeated at second reading on March 11, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-11T11:30:00-04:00",
+    "sponsor": "Jenny Kwan",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-233/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-233/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-233/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "defeated_or_inactive",
+      "high_demo_value"
+    ],
+    "score": -3,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13779589,
+    "session": "45-1",
+    "number": "S-4",
+    "title": "An Act to amend the Energy Efficiency Act",
+    "longTitle": "An Act to amend the Energy Efficiency Act",
+    "status": "At consideration in committee in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Referral to committee on March 11, 2026 (Senate)",
+    "latestActivityDate": "2026-03-11T06:20:00-04:00",
+    "sponsor": "Sen. Pierre Moreau",
+    "type": "Senate Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-4/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-4/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-4/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "committee_stage",
+      "high_demo_value"
+    ],
+    "score": 9,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13585232,
+    "session": "45-1",
+    "number": "C-224",
+    "title": "An Act to amend the Food and Drugs Act (natural health products)",
+    "longTitle": "An Act to amend the Food and Drugs Act (natural health products)",
+    "status": "At consideration in committee in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Second reading and referral to committee on March 10, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-10T15:35:33.713-04:00",
+    "sponsor": "Blaine Calkins",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-224/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-224/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-224/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "committee_stage",
+      "health_relevant",
+      "high_demo_value"
+    ],
+    "score": 15,
+    "recommendation": "analyze_now"
+  },
+  {
+    "billId": 13585516,
+    "session": "45-1",
+    "number": "C-232",
+    "title": "An Act to amend the Corrections and Conditional Release Act (maximum security offenders)",
+    "longTitle": "An Act to amend the Corrections and Conditional Release Act (maximum security offenders)",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on March 10, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-10T13:30:56.07-04:00",
+    "sponsor": "Tony Baldinelli",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-232/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-232/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-232/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "high_demo_value"
+    ],
+    "score": 7,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13540359,
+    "session": "45-1",
+    "number": "S-202",
+    "title": "An Act to amend the Food and Drugs Act (warning label on alcoholic beverages)",
+    "longTitle": "An Act to amend the Food and Drugs Act (warning label on alcoholic beverages)",
+    "status": "At third reading in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Debate at third reading on March 10, 2026 (Senate)",
+    "latestActivityDate": "2026-03-10T06:45:00-04:00",
+    "sponsor": "Sen. Patrick Brazeau",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-202/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-202/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-202/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "health_relevant",
+      "high_demo_value",
+      "late_stage"
+    ],
+    "score": 16,
+    "recommendation": "analyze_now"
+  },
+  {
+    "billId": 13922919,
+    "session": "45-1",
+    "number": "C-262",
+    "title": "An Act to amend the Canada Post Corporation Act",
+    "longTitle": "An Act to amend the Canada Post Corporation Act",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on March 9, 2026 (House of Commons)",
+    "latestActivityDate": "2026-03-09T11:11:55.767-04:00",
+    "sponsor": "Dan Albas",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-262/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-262/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-262/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "defeated_or_inactive",
+      "high_demo_value"
+    ],
+    "score": -3,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13542628,
+    "session": "45-1",
+    "number": "S-2",
+    "title": "An Act to amend the Indian Act (new registration entitlements)",
+    "longTitle": "An Act to amend the Indian Act (new registration entitlements)",
+    "status": "At consideration in committee in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Second reading and referral to committee on February 27, 2026 (House of Commons)",
+    "latestActivityDate": "2026-02-27T10:00:00.31-05:00",
+    "sponsor": "Sen. Marc Gold",
+    "type": "Senate Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-2/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-2/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-2/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "committee_stage",
+      "high_demo_value"
+    ],
+    "score": 9,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13585237,
+    "session": "45-1",
+    "number": "C-221",
+    "title": "An Act to amend the Corrections and Conditional Release Act (disclosure of information to victims)",
+    "longTitle": "An Act to amend the Corrections and Conditional Release Act (disclosure of information to victims)",
+    "status": "At consideration in committee in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Second reading and referral to committee on February 27, 2026 (House of Commons)",
+    "latestActivityDate": "2026-02-27T09:00:00.36-05:00",
+    "sponsor": "Mel Arnold",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-221/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-221/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-221/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "committee_stage",
+      "high_demo_value"
+    ],
+    "score": 9,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13591570,
+    "session": "45-1",
+    "number": "C-237",
+    "title": "An Act to amend the Fisheries Act (Atlantic groundfish fisheries)",
+    "longTitle": "An Act to amend the Fisheries Act (Atlantic groundfish fisheries)",
+    "status": "Bill defeated",
+    "stage": "First reading",
+    "latestActivity": "Bill defeated at second reading on February 25, 2026 (House of Commons)",
+    "latestActivityDate": "2026-02-25T10:35:00-05:00",
+    "sponsor": "Jonathan Rowe",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-237/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-237/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-237/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "defeated_or_inactive",
+      "high_demo_value"
+    ],
+    "score": -3,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13596532,
+    "session": "45-1",
+    "number": "C-244",
+    "title": "Clean Coasts Act",
+    "longTitle": "An Act to amend the Canadian Environmental Protection Act, 1999 and the Wrecked, Abandoned or Hazardous Vessels Act",
+    "status": "At consideration in committee in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Second reading and referral to committee on February 25, 2026 (House of Commons)",
+    "latestActivityDate": "2026-02-25T10:25:00-05:00",
+    "sponsor": "Patrick Weiler",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-244/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-244/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-244/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "committee_stage",
+      "high_demo_value"
+    ],
+    "score": 9,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13583642,
+    "session": "45-1",
+    "number": "C-219",
+    "title": "Sergei Magnitsky International Anti-Corruption and Human Rights Act",
+    "longTitle": "An Act to amend the Department of Foreign Affairs, Trade and Development Act, the Justice for Victims of Corrupt Foreign Officials Act (Sergei Magnitsky Law), the Special Economic Measures Act and the Broadcasting Act",
+    "status": "At consideration in committee in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Second reading and referral to committee on February 24, 2026 (House of Commons)",
+    "latestActivityDate": "2026-02-24T14:16:42.247-05:00",
+    "sponsor": "James Bezan",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-219/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-219/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-219/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "commercial_relevant",
+      "committee_stage",
+      "high_demo_value"
+    ],
+    "score": 12,
+    "recommendation": "analyze_now"
+  },
+  {
+    "billId": 13797949,
+    "session": "45-1",
+    "number": "S-242",
+    "title": "Georgina’s Law",
+    "longTitle": "An Act respecting national action for the prevention of intimate partner violence",
+    "status": "Senate bill awaiting first reading in the House of Commons",
+    "stage": "Third reading",
+    "latestActivity": "Third reading on February 24, 2026 (Senate)",
+    "latestActivityDate": "2026-02-24T10:05:00-05:00",
+    "sponsor": "Sen. Fabian Manning",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-242/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-242/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-242/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "late_stage"
+    ],
+    "score": 3,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13587256,
+    "session": "45-1",
+    "number": "C-227",
+    "title": "National Strategy on Housing for Young Canadians Act",
+    "longTitle": "An Act to establish a national strategy on housing for young Canadians",
+    "status": "At consideration in committee in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Second reading and referral to committee on February 12, 2026 (House of Commons)",
+    "latestActivityDate": "2026-02-12T10:30:00-05:00",
+    "sponsor": "Braedon Clark",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-227/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-227/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-227/first-reading"
+    },
+    "categories": [
+      "committee_stage",
+      "creates_new_act",
+      "framework_bill"
+    ],
+    "score": 1,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13859405,
+    "session": "45-1",
+    "number": "C-19",
+    "title": "Canada Groceries and Essentials Benefit Act",
+    "longTitle": "An Act to amend the Income Tax Act",
+    "status": "Royal assent received",
+    "stage": "Royal assent",
+    "latestActivity": "Royal assent on February 12, 2026 (Senate)",
+    "latestActivityDate": "2026-02-12T06:05:00-05:00",
+    "sponsor": "Hon. François-Philippe Champagne",
+    "type": "House Government Bill",
+    "royalAssentDate": "2026-02-12T06:05:00-05:00",
+    "latestBillTextTypeId": 80704,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-19/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-19/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-19/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "commercial_relevant",
+      "high_demo_value",
+      "royal_assent"
+    ],
+    "score": 13,
+    "recommendation": "analyze_now"
+  },
+  {
+    "billId": 13623903,
+    "session": "45-1",
+    "number": "S-237",
+    "title": "Cities and Municipalities Day Act",
+    "longTitle": "An Act respecting a Cities and Municipalities Day",
+    "status": "At consideration in committee in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Referral to committee on February 12, 2026 (Senate)",
+    "latestActivityDate": "2026-02-12T06:00:00-05:00",
+    "sponsor": "Sen. Éric Forest",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-237/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-237/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-237/first-reading"
+    },
+    "categories": [
+      "committee_stage",
+      "creates_new_act"
+    ],
+    "score": 2,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13541955,
+    "session": "45-1",
+    "number": "S-218",
+    "title": "An Act to amend the Constitution Act, 1982 (notwithstanding clause)",
+    "longTitle": "An Act to amend the Constitution Act, 1982 (notwithstanding clause)",
+    "status": "At second reading in the Senate",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on February 10, 2026 (Senate)",
+    "latestActivityDate": "2026-02-10T05:40:00-05:00",
+    "sponsor": "Sen. Peter Harder",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-218/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-218/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-218/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "high_demo_value"
+    ],
+    "score": 7,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13541901,
+    "session": "45-1",
+    "number": "S-216",
+    "title": "Chignecto Isthmus Dykeland System Act",
+    "longTitle": "An Act to declare the Chignecto Isthmus Dykeland System and related works to be for the general advantage of Canada",
+    "status": "At consideration in committee in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Referral to committee on February 10, 2026 (Senate)",
+    "latestActivityDate": "2026-02-10T05:35:00-05:00",
+    "sponsor": "Sen. Jim Quinn",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-216/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-216/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-216/first-reading"
+    },
+    "categories": [
+      "committee_stage"
+    ],
+    "score": 2,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13541944,
+    "session": "45-1",
+    "number": "S-208",
+    "title": "An Act to amend the Criminal Code (independence of the judiciary)",
+    "longTitle": "An Act to amend the Criminal Code (independence of the judiciary)",
+    "status": "At second reading in the Senate",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on February 5, 2026 (Senate)",
+    "latestActivityDate": "2026-02-05T06:05:00-05:00",
+    "sponsor": "Sen. Kim Pate",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-208/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-208/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-208/first-reading"
+    },
+    "categories": [
+      "amends_existing_act"
+    ],
+    "score": 4,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13541848,
+    "session": "45-1",
+    "number": "S-203",
+    "title": "Alcoholic Beverage Promotion Prohibition Act",
+    "longTitle": "An Act to prohibit the promotion of alcoholic beverages",
+    "status": "At second reading in the Senate",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on February 5, 2026 (Senate)",
+    "latestActivityDate": "2026-02-05T06:00:00-05:00",
+    "sponsor": "Sen. Patrick Brazeau",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-203/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-203/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-203/first-reading"
+    },
+    "categories": [],
+    "score": 0,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13602805,
+    "session": "45-1",
+    "number": "S-233",
+    "title": "An Act to amend the Criminal Code (assault against persons who provide health services and first responders)",
+    "longTitle": "An Act to amend the Criminal Code (assault against persons who provide health services and first responders)",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on February 4, 2026 (House of Commons)",
+    "latestActivityDate": "2026-02-04T13:01:00-05:00",
+    "sponsor": "Sen. Leo Housakos",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80703,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-233/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-233/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-233/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "health_relevant"
+    ],
+    "score": 8,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13589580,
+    "session": "45-1",
+    "number": "C-245",
+    "title": "An Act to amend the Canadian Multiculturalism Act (non-application in Quebec)",
+    "longTitle": "An Act to amend the Canadian Multiculturalism Act (non-application in Quebec)",
+    "status": "Bill defeated",
+    "stage": "First reading",
+    "latestActivity": "Bill defeated at second reading on February 4, 2026 (House of Commons)",
+    "latestActivityDate": "2026-02-04T11:00:00-05:00",
+    "sponsor": "Xavier Barsalou-Duval",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-245/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-245/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-245/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "defeated_or_inactive",
+      "high_demo_value"
+    ],
+    "score": -3,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13586181,
+    "session": "45-1",
+    "number": "C-223",
+    "title": "Keeping Children Safe Act",
+    "longTitle": "An Act to amend the Divorce Act",
+    "status": "At consideration in committee in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Second reading and referral to committee on February 4, 2026 (House of Commons)",
+    "latestActivityDate": "2026-02-04T09:25:49.443-05:00",
+    "sponsor": "Lisa Hepfner",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-223/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-223/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-223/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "committee_stage",
+      "high_demo_value"
+    ],
+    "score": 9,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13813664,
+    "session": "45-1",
+    "number": "C-16",
+    "title": "Protecting Victims Act",
+    "longTitle": "An Act to amend certain Acts in relation to criminal and correctional matters (child protection, gender-based violence, delays and other measures)",
+    "status": "At consideration in committee in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Second reading and referral to committee on February 2, 2026 (House of Commons)",
+    "latestActivityDate": "2026-02-02T07:15:15-05:00",
+    "sponsor": "Hon. Sean Fraser",
+    "type": "House Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-16/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-16/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-16/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "committee_stage"
+    ],
+    "score": 6,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13588678,
+    "session": "45-1",
+    "number": "C-228",
+    "title": "An Act to amend the Department of Foreign Affairs, Trade and Development Act (prior review of treaties by Parliament)",
+    "longTitle": "An Act to amend the Department of Foreign Affairs, Trade and Development Act (prior review of treaties by Parliament)",
+    "status": "Bill defeated",
+    "stage": "First reading",
+    "latestActivity": "Bill defeated at second reading on January 28, 2026 (House of Commons)",
+    "latestActivityDate": "2026-01-28T10:30:00-05:00",
+    "sponsor": "Mario Simard",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-228/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-228/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-228/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "commercial_relevant",
+      "defeated_or_inactive",
+      "high_demo_value"
+    ],
+    "score": 0,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13813004,
+    "session": "45-1",
+    "number": "C-17",
+    "title": "Appropriation Act No. 3, 2025-26",
+    "longTitle": "An Act for granting to His Majesty certain sums of money for the federal public administration for the fiscal year ending March 31, 2026",
+    "status": "Royal assent received",
+    "stage": "Royal assent",
+    "latestActivity": "Royal assent on December 11, 2025 (Senate)",
+    "latestActivityDate": "2025-12-11T05:00:00-05:00",
+    "sponsor": "Hon. Shafqat Ali",
+    "type": "House Government Bill",
+    "royalAssentDate": "2025-12-11T05:00:00-05:00",
+    "latestBillTextTypeId": 80704,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-17/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-17/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-17/first-reading"
+    },
+    "categories": [
+      "appropriation_bill",
+      "royal_assent"
+    ],
+    "score": -3,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13541857,
+    "session": "45-1",
+    "number": "S-204",
+    "title": "National Framework on Heart Failure Act",
+    "longTitle": "An Act to establish a national framework on heart failure",
+    "status": "At consideration in committee in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Referral to committee on December 9, 2025 (Senate)",
+    "latestActivityDate": "2025-12-09T05:25:00-05:00",
+    "sponsor": "Sen. Yonah Martin",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-204/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-204/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-204/first-reading"
+    },
+    "categories": [
+      "committee_stage",
+      "creates_new_act",
+      "framework_bill"
+    ],
+    "score": 1,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13568723,
+    "session": "45-1",
+    "number": "C-218",
+    "title": "An Act to amend the Criminal Code (medical assistance in dying)",
+    "longTitle": "An Act to amend the Criminal Code (medical assistance in dying)",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on December 5, 2025 (House of Commons)",
+    "latestActivityDate": "2025-12-05T08:31:12-05:00",
+    "sponsor": "Tamara Jansen",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-218/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-218/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-218/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "health_relevant"
+    ],
+    "score": 8,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13794076,
+    "session": "45-1",
+    "number": "C-258",
+    "title": "An Act to amend the Criminal Code to address the Supreme Court of Canada decision in R. v. Jordan",
+    "longTitle": "An Act to amend the Criminal Code to address the Supreme Court of Canada decision in R. v. Jordan",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on December 3, 2025 (House of Commons)",
+    "latestActivityDate": "2025-12-03T10:52:47.35-05:00",
+    "sponsor": "Rhéal Éloi Fortin",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-258/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-258/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-258/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "defeated_or_inactive",
+      "high_demo_value"
+    ],
+    "score": -3,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13592619,
+    "session": "45-1",
+    "number": "C-241",
+    "title": "National Strategy on Flood and Drought Forecasting Act",
+    "longTitle": "An Act to establish a national strategy respecting flood and drought forecasting",
+    "status": "At consideration in committee in the House of Commons",
+    "stage": "Second reading",
+    "latestActivity": "Second reading and referral to committee on December 3, 2025 (House of Commons)",
+    "latestActivityDate": "2025-12-03T10:30:00-05:00",
+    "sponsor": "Tatiana Auguste",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-241/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-241/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-241/first-reading"
+    },
+    "categories": [
+      "committee_stage",
+      "creates_new_act",
+      "framework_bill"
+    ],
+    "score": 1,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13541987,
+    "session": "45-1",
+    "number": "S-220",
+    "title": "Hellenic Heritage Month Act",
+    "longTitle": "An Act to designate the month of March as Hellenic Heritage Month",
+    "status": "At consideration in committee in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Referral to committee on November 26, 2025 (Senate)",
+    "latestActivityDate": "2025-11-26T05:25:00-05:00",
+    "sponsor": "Sen. Tony Loffreda",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-220/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-220/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-220/first-reading"
+    },
+    "categories": [
+      "committee_stage",
+      "symbolic_bill"
+    ],
+    "score": -4,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13602863,
+    "session": "45-1",
+    "number": "S-234",
+    "title": "National Framework on Fetal Alcohol Spectrum Disorder Act",
+    "longTitle": "An Act respecting a national framework for fetal alcohol spectrum disorder",
+    "status": "At consideration in committee in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Referral to committee on November 25, 2025 (Senate)",
+    "latestActivityDate": "2025-11-25T05:30:00-05:00",
+    "sponsor": "Sen. Mohamed-Iqbal Ravalia",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-234/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-234/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-234/first-reading"
+    },
+    "categories": [
+      "committee_stage",
+      "creates_new_act",
+      "framework_bill",
+      "health_relevant",
+      "tech_relevant"
+    ],
+    "score": 10,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13545922,
+    "session": "45-1",
+    "number": "S-1001",
+    "title": "An Act to authorize Gore Mutual Insurance Company to apply to be continued as a body corporate under the laws of the Province of Quebec",
+    "longTitle": "An Act to authorize Gore Mutual Insurance Company to apply to be continued as a body corporate under the laws of the Province of Quebec",
+    "status": "Royal assent received",
+    "stage": "Royal assent",
+    "latestActivity": "Royal assent on November 20, 2025 (Senate)",
+    "latestActivityDate": "2025-11-20T05:29:00-05:00",
+    "sponsor": "Sen. Tony Loffreda",
+    "type": "Senate Private Bill",
+    "royalAssentDate": "2025-11-20T05:29:00-05:00",
+    "latestBillTextTypeId": 80704,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-1001/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-1001/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-1001/first-reading"
+    },
+    "categories": [
+      "royal_assent"
+    ],
+    "score": 3,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13546143,
+    "session": "45-1",
+    "number": "C-3",
+    "title": "An Act to amend the Citizenship Act (2025)",
+    "longTitle": "An Act to amend the Citizenship Act (2025)",
+    "status": "Royal assent received",
+    "stage": "Royal assent",
+    "latestActivity": "Royal assent on November 20, 2025 (Senate)",
+    "latestActivityDate": "2025-11-20T05:00:00-05:00",
+    "sponsor": "Hon. Lena Metlege Diab",
+    "type": "House Government Bill",
+    "royalAssentDate": "2025-11-20T05:00:00-05:00",
+    "latestBillTextTypeId": 80704,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-3/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-3/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-3/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "high_demo_value",
+      "royal_assent"
+    ],
+    "score": 10,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13731554,
+    "session": "45-1",
+    "number": "C-257",
+    "title": "An Act to amend the Criminal Code (promotion of terrorist activity or group)",
+    "longTitle": "An Act to amend the Criminal Code (promotion of terrorist activity or group)",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on November 17, 2025 (House of Commons)",
+    "latestActivityDate": "2025-11-17T10:15:34.463-05:00",
+    "sponsor": "Roman Baber",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-257/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-257/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-257/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "defeated_or_inactive"
+    ],
+    "score": -6,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13727227,
+    "session": "45-1",
+    "number": "C-256",
+    "title": "An Act to amend certain Acts in relation to survivor pension benefits",
+    "longTitle": "An Act to amend certain Acts in relation to survivor pension benefits",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on November 7, 2025 (House of Commons)",
+    "latestActivityDate": "2025-11-07T07:17:14.487-05:00",
+    "sponsor": "Gord Johns",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-256/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-256/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-256/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "defeated_or_inactive"
+    ],
+    "score": -6,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13541900,
+    "session": "45-1",
+    "number": "S-206",
+    "title": "National Framework for a Guaranteed Livable Basic Income Act",
+    "longTitle": "An Act to develop a national framework for a guaranteed livable basic income",
+    "status": "At consideration in committee in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Referral to committee on November 6, 2025 (Senate)",
+    "latestActivityDate": "2025-11-06T05:45:00-05:00",
+    "sponsor": "Sen. Kim Pate",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-206/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-206/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-206/first-reading"
+    },
+    "categories": [
+      "committee_stage",
+      "framework_bill"
+    ],
+    "score": 1,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13726738,
+    "session": "45-1",
+    "number": "S-240",
+    "title": "An Act to amend the Criminal Code (declaration of exception pursuant to subsection 33(1) of the Charter for mandatory minimum sentences for child sexual abuse and exploitation material offences)",
+    "longTitle": "An Act to amend the Criminal Code (declaration of exception pursuant to subsection 33(1) of the Charter for mandatory minimum sentences for child sexual abuse and exploitation material offences)",
+    "status": "At second reading in the Senate",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on November 5, 2025 (Senate)",
+    "latestActivityDate": "2025-11-04T19:00:00-05:00",
+    "sponsor": "Sen. Leo Housakos",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-240/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-240/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-240/first-reading"
+    },
+    "categories": [
+      "amends_existing_act"
+    ],
+    "score": 4,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13703329,
+    "session": "45-1",
+    "number": "C-254",
+    "title": "An Act to amend the Criminal Code (promotion of hatred against Indigenous peoples)",
+    "longTitle": "An Act to amend the Criminal Code (promotion of hatred against Indigenous peoples)",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on October 31, 2025 (House of Commons)",
+    "latestActivityDate": "2025-10-31T08:12:01.343-04:00",
+    "sponsor": "Leah Gazan",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-254/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-254/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-254/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "defeated_or_inactive"
+    ],
+    "score": -6,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13583805,
+    "session": "45-1",
+    "number": "C-239",
+    "title": "An Act to amend the Canada Health Act (accountability)",
+    "longTitle": "An Act to amend the Canada Health Act (accountability)",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on October 30, 2025 (House of Commons)",
+    "latestActivityDate": "2025-10-30T13:30:49-04:00",
+    "sponsor": "Sukh Dhaliwal",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-239/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-239/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-239/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "health_relevant",
+      "high_demo_value"
+    ],
+    "score": 11,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13603482,
+    "session": "45-1",
+    "number": "C-253",
+    "title": "National Framework for a Guaranteed Livable Basic Income Act",
+    "longTitle": "An Act to develop a national framework for a guaranteed livable basic income",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on October 29, 2025 (House of Commons)",
+    "latestActivityDate": "2025-10-29T11:20:51.793-04:00",
+    "sponsor": "Lori Idlout",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-253/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-253/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-253/first-reading"
+    },
+    "categories": [
+      "defeated_or_inactive",
+      "framework_bill"
+    ],
+    "score": -11,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13559562,
+    "session": "45-1",
+    "number": "S-231",
+    "title": "An Act to amend the Criminal Code (medical assistance in dying)",
+    "longTitle": "An Act to amend the Criminal Code (medical assistance in dying)",
+    "status": "At second reading in the Senate",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on October 29, 2025 (Senate)",
+    "latestActivityDate": "2025-10-29T06:05:00-04:00",
+    "sponsor": "Sen. Pamela Wallin",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-231/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-231/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-231/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "health_relevant"
+    ],
+    "score": 8,
+    "recommendation": "monitor_closely"
+  },
+  {
+    "billId": 13668620,
+    "session": "45-1",
+    "number": "C-252",
+    "title": "Peacetime Service and Sacrifice Memorial Day Act",
+    "longTitle": "An Act respecting a national day of remembrance to honour Canadian Armed Forces members who have lost their lives in peacetime in Canada",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on October 22, 2025 (House of Commons)",
+    "latestActivityDate": "2025-10-22T11:28:26.467-04:00",
+    "sponsor": "Gord Johns",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-252/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-252/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-252/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "defeated_or_inactive"
+    ],
+    "score": -10,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13569694,
+    "session": "45-1",
+    "number": "C-251",
+    "title": "An Act to amend the Customs Act and the Customs Tariff (forced labour and child labour)",
+    "longTitle": "An Act to amend the Customs Act and the Customs Tariff (forced labour and child labour)",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on October 21, 2025 (House of Commons)",
+    "latestActivityDate": "2025-10-21T06:28:49.153-04:00",
+    "sponsor": "Simon-Pierre Savard-Tremblay",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-251/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-251/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-251/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "commercial_relevant",
+      "defeated_or_inactive",
+      "high_demo_value"
+    ],
+    "score": 0,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13632066,
+    "session": "45-1",
+    "number": "C-250",
+    "title": "Flight Attendants’ Remuneration Act",
+    "longTitle": "An Act to amend the Canada Labour Code (flight attendants)",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on October 21, 2025 (House of Commons)",
+    "latestActivityDate": "2025-10-21T06:22:31.79-04:00",
+    "sponsor": "Don Davies",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-250/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-250/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-250/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "commercial_relevant",
+      "defeated_or_inactive"
+    ],
+    "score": -3,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13597539,
+    "session": "45-1",
+    "number": "C-249",
+    "title": "An Act to amend the Employment Insurance Act (combined weeks of benefits rule and certain benefits)",
+    "longTitle": "An Act to amend the Employment Insurance Act (combined weeks of benefits rule and certain benefits)",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on October 21, 2025 (House of Commons)",
+    "latestActivityDate": "2025-10-21T06:14:18.143-04:00",
+    "sponsor": "Alexandre Boulerice",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-249/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-249/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-249/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "defeated_or_inactive",
+      "high_demo_value"
+    ],
+    "score": -3,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13628491,
+    "session": "45-1",
+    "number": "C-248",
+    "title": "Time Change Act",
+    "longTitle": "An Act respecting the holding of a pan-Canadian conference on time change",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on October 6, 2025 (House of Commons)",
+    "latestActivityDate": "2025-10-06T11:32:14.613-04:00",
+    "sponsor": "Marie-France Lalonde",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-248/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-248/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-248/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "defeated_or_inactive"
+    ],
+    "score": -10,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13541931,
+    "session": "45-1",
+    "number": "S-207",
+    "title": "An Act to amend the Criminal Records Act, to make consequential amendments to other Acts and to repeal a regulation",
+    "longTitle": "An Act to amend the Criminal Records Act, to make consequential amendments to other Acts and to repeal a regulation",
+    "status": "At second reading in the Senate",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on October 2, 2025 (Senate)",
+    "latestActivityDate": "2025-10-02T06:30:00-04:00",
+    "sponsor": "Sen. Kim Pate",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-207/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-207/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-207/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "high_demo_value"
+    ],
+    "score": 7,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13619775,
+    "session": "45-1",
+    "number": "S-236",
+    "title": "An Act to amend the Canadian Victims Bill of Rights and to establish a framework for implementing the rights of victims of crime",
+    "longTitle": "An Act to amend the Canadian Victims Bill of Rights and to establish a framework for implementing the rights of victims of crime",
+    "status": "At second reading in the Senate",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on October 1, 2025 (Senate)",
+    "latestActivityDate": "2025-09-30T20:00:00-04:00",
+    "sponsor": "Sen. Leo Housakos",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-236/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-236/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-236/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "framework_bill"
+    ],
+    "score": 6,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13611963,
+    "session": "45-1",
+    "number": "S-235",
+    "title": "National Strategy to Combat Human Trafficking Act",
+    "longTitle": "An Act respecting the National Strategy to Combat Human Trafficking",
+    "status": "At second reading in the Senate",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on September 25, 2025 (Senate)",
+    "latestActivityDate": "2025-09-24T20:00:00-04:00",
+    "sponsor": "Sen. Salma Ataullahjan",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-235/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-235/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-235/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "framework_bill"
+    ],
+    "score": -1,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13545225,
+    "session": "45-1",
+    "number": "C-229",
+    "title": "National Framework on Attention Deficit Hyperactivity Disorder Act",
+    "longTitle": "An Act to establish a national framework respecting attention deficit hyperactivity disorder",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on September 18, 2025 (House of Commons)",
+    "latestActivityDate": "2025-09-18T06:20:43.85-04:00",
+    "sponsor": "Heather McPherson",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-229/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-229/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-229/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "defeated_or_inactive",
+      "framework_bill"
+    ],
+    "score": -11,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13543613,
+    "session": "45-1",
+    "number": "C-2",
+    "title": "Strong Borders Act",
+    "longTitle": "An Act respecting certain measures relating to the security of the border between Canada and the United States and respecting other related security measures",
+    "status": "At second reading in the House of Commons",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on September 17, 2025 (House of Commons)",
+    "latestActivityDate": "2025-09-17T13:30:11-04:00",
+    "sponsor": "Hon. Gary Anandasangaree",
+    "type": "House Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-2/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-2/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-2/first-reading"
+    },
+    "categories": [
+      "creates_new_act"
+    ],
+    "score": 0,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13547622,
+    "session": "45-1",
+    "number": "C-5",
+    "title": "One Canadian Economy Act",
+    "longTitle": "An Act to enact the Free Trade and Labour Mobility in Canada Act and the Building Canada Act",
+    "status": "Royal assent received",
+    "stage": "Royal assent",
+    "latestActivity": "Royal assent on June 26, 2025 (Senate)",
+    "latestActivityDate": "2025-06-26T06:55:00-04:00",
+    "sponsor": "Hon. Dominic LeBlanc",
+    "type": "House Government Bill",
+    "royalAssentDate": "2025-06-26T06:55:00-04:00",
+    "latestBillTextTypeId": 80704,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-5/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-5/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-5/first-reading"
+    },
+    "categories": [
+      "commercial_relevant",
+      "creates_new_act",
+      "royal_assent"
+    ],
+    "score": 6,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13561553,
+    "session": "45-1",
+    "number": "C-6",
+    "title": "Appropriation Act No. 1, 2025-26",
+    "longTitle": "An Act for granting to His Majesty certain sums of money for the federal public administration for the fiscal year ending March 31, 2026",
+    "status": "Royal assent received",
+    "stage": "Royal assent",
+    "latestActivity": "Royal assent on June 26, 2025 (Senate)",
+    "latestActivityDate": "2025-06-26T06:55:00-04:00",
+    "sponsor": "Hon. Shafqat Ali",
+    "type": "House Government Bill",
+    "royalAssentDate": "2025-06-26T06:55:00-04:00",
+    "latestBillTextTypeId": 80704,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-6/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-6/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-6/first-reading"
+    },
+    "categories": [
+      "appropriation_bill",
+      "royal_assent"
+    ],
+    "score": -3,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13561557,
+    "session": "45-1",
+    "number": "C-7",
+    "title": "Appropriation Act No. 2, 2025-26",
+    "longTitle": "An Act for granting to His Majesty certain sums of money for the federal public administration for the fiscal year ending March 31, 2026",
+    "status": "Royal assent received",
+    "stage": "Royal assent",
+    "latestActivity": "Royal assent on June 26, 2025 (Senate)",
+    "latestActivityDate": "2025-06-26T06:55:00-04:00",
+    "sponsor": "Hon. Shafqat Ali",
+    "type": "House Government Bill",
+    "royalAssentDate": "2025-06-26T06:55:00-04:00",
+    "latestBillTextTypeId": 80704,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-7/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-7/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-7/first-reading"
+    },
+    "categories": [
+      "appropriation_bill",
+      "royal_assent"
+    ],
+    "score": -3,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13539592,
+    "session": "45-1",
+    "number": "C-202",
+    "title": "An Act to amend the Department of Foreign Affairs, Trade and Development Act (supply management)",
+    "longTitle": "An Act to amend the Department of Foreign Affairs, Trade and Development Act (supply management)",
+    "status": "Royal assent received",
+    "stage": "Royal assent",
+    "latestActivity": "Royal assent on June 26, 2025 (Senate)",
+    "latestActivityDate": "2025-06-26T06:55:00-04:00",
+    "sponsor": "Yves-François Blanchet",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": "2025-06-26T06:55:00-04:00",
+    "latestBillTextTypeId": 80704,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-202/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-202/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-202/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "commercial_relevant",
+      "high_demo_value",
+      "royal_assent"
+    ],
+    "score": 13,
+    "recommendation": "analyze_now"
+  },
+  {
+    "billId": 13545940,
+    "session": "45-1",
+    "number": "S-224",
+    "title": "An Act to amend the Director of Public Prosecutions Act",
+    "longTitle": "An Act to amend the Director of Public Prosecutions Act",
+    "status": "At second reading in the Senate",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on June 19, 2025 (Senate)",
+    "latestActivityDate": "2025-06-19T06:30:00-04:00",
+    "sponsor": "Sen. Mary Jane McCallum",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-224/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-224/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-224/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "high_demo_value"
+    ],
+    "score": 7,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13541991,
+    "session": "45-1",
+    "number": "S-221",
+    "title": "National Bird of Canada Act",
+    "longTitle": "An Act to provide for the recognition of the Canada jay as the national bird of Canada",
+    "status": "At consideration in committee in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Referral to committee on June 19, 2025 (Senate)",
+    "latestActivityDate": "2025-06-19T06:25:00-04:00",
+    "sponsor": "Sen. Salma Ataullahjan",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-221/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-221/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-221/first-reading"
+    },
+    "categories": [
+      "committee_stage",
+      "symbolic_bill"
+    ],
+    "score": -4,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13564930,
+    "session": "45-1",
+    "number": "C-217",
+    "title": "Post-Secondary Education Financial Assistance for Persons with Disabilities Act",
+    "longTitle": "An Act to amend the Canada Student Financial Assistance Act and the Income Tax Act",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on June 19, 2025 (House of Commons)",
+    "latestActivityDate": "2025-06-19T06:08:17.28-04:00",
+    "sponsor": "Don Davies",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-217/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-217/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-217/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "commercial_relevant",
+      "defeated_or_inactive",
+      "high_demo_value"
+    ],
+    "score": 0,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13565288,
+    "session": "45-1",
+    "number": "C-216",
+    "title": "Promotion of Safety in the Digital Age Act",
+    "longTitle": "An Act to enact the Protection of Minors in the Digital Age Act and to amend two Acts",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on June 19, 2025 (House of Commons)",
+    "latestActivityDate": "2025-06-19T06:05:45.577-04:00",
+    "sponsor": "Hon. Michelle Rempel Garner",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-216/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-216/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-216/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "creates_new_act",
+      "defeated_or_inactive",
+      "tech_relevant"
+    ],
+    "score": -1,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13562824,
+    "session": "45-1",
+    "number": "C-215",
+    "title": "An Act to amend the Marine Liability Act (national strategy respecting pollution caused by shipping container spills)",
+    "longTitle": "An Act to amend the Marine Liability Act (national strategy respecting pollution caused by shipping container spills)",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on June 18, 2025 (House of Commons)",
+    "latestActivityDate": "2025-06-18T11:23:18.317-04:00",
+    "sponsor": "Gord Johns",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-215/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-215/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-215/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "commercial_relevant",
+      "defeated_or_inactive",
+      "framework_bill"
+    ],
+    "score": -1,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13561665,
+    "session": "45-1",
+    "number": "C-214",
+    "title": "National Renewable Energy Stategy Act",
+    "longTitle": "An Act respecting the development of a national renewable energy strategy",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on June 18, 2025 (House of Commons)",
+    "latestActivityDate": "2025-06-18T11:20:34.597-04:00",
+    "sponsor": "Don Davies",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-214/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-214/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-214/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "defeated_or_inactive"
+    ],
+    "score": -10,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13551324,
+    "session": "45-1",
+    "number": "C-213",
+    "title": "An Act to amend the Immigration and Refugee Protection Act (cessation of refugee protection)",
+    "longTitle": "An Act to amend the Immigration and Refugee Protection Act (cessation of refugee protection)",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on June 18, 2025 (House of Commons)",
+    "latestActivityDate": "2025-06-18T11:18:07.21-04:00",
+    "sponsor": "Jenny Kwan",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-213/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-213/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-213/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "defeated_or_inactive",
+      "high_demo_value"
+    ],
+    "score": -3,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13551707,
+    "session": "45-1",
+    "number": "C-212",
+    "title": "Department of Citizenship and Immigration Ombud Act",
+    "longTitle": "An Act to establish the Office of the Ombud for the Department of Citizenship and Immigration and to make related and consequential amendments to other Acts",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on June 18, 2025 (House of Commons)",
+    "latestActivityDate": "2025-06-18T11:16:09.26-04:00",
+    "sponsor": "Jenny Kwan",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-212/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-212/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-212/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "defeated_or_inactive"
+    ],
+    "score": -10,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13545905,
+    "session": "45-1",
+    "number": "S-223",
+    "title": "An Act to amend the Royal Canadian Mounted Police Act",
+    "longTitle": "An Act to amend the Royal Canadian Mounted Police Act",
+    "status": "At second reading in the Senate",
+    "stage": "First reading",
+    "latestActivity": "Debate at second reading on June 18, 2025 (Senate)",
+    "latestActivityDate": "2025-06-18T06:50:00-04:00",
+    "sponsor": "Sen. Mary Jane McCallum",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-223/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-223/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-223/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "high_demo_value"
+    ],
+    "score": 7,
+    "recommendation": "low_priority_watch"
+  },
+  {
+    "billId": 13541873,
+    "session": "45-1",
+    "number": "S-215",
+    "title": "National Immigration Month Act",
+    "longTitle": "An Act respecting National Immigration Month",
+    "status": "At consideration in committee in the Senate",
+    "stage": "Second reading",
+    "latestActivity": "Referral to committee on June 18, 2025 (Senate)",
+    "latestActivityDate": "2025-06-18T06:35:00-04:00",
+    "sponsor": "Sen. Amina Gerba",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-215/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-215/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-215/first-reading"
+    },
+    "categories": [
+      "committee_stage",
+      "creates_new_act"
+    ],
+    "score": 2,
+    "recommendation": "ignore_for_demo"
+  },
+  {
+    "billId": 13551940,
+    "session": "45-1",
+    "number": "C-211",
+    "title": "An Act to amend the Income Tax Act and the Canada Pension Plan (deeming provision)",
+    "longTitle": "An Act to amend the Income Tax Act and the Canada Pension Plan (deeming provision)",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on June 17, 2025 (House of Commons)",
+    "latestActivityDate": "2025-06-17T06:06:25.297-04:00",
+    "sponsor": "Gord Johns",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-211/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-211/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-211/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "commercial_relevant",
+      "defeated_or_inactive",
+      "high_demo_value"
+    ],
+    "score": 0,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13544328,
+    "session": "45-1",
+    "number": "C-210",
+    "title": "An Act to amend the Constitution Act, 1867 (oath of office)",
+    "longTitle": "An Act to amend the Constitution Act, 1867 (oath of office)",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on June 16, 2025 (House of Commons)",
+    "latestActivityDate": "2025-06-16T11:29:28.537-04:00",
+    "sponsor": "Xavier Barsalou-Duval",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-210/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-210/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-210/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "defeated_or_inactive",
+      "high_demo_value"
+    ],
+    "score": -3,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13554119,
+    "session": "45-1",
+    "number": "C-209",
+    "title": "Albanian Heritage Month Act",
+    "longTitle": "An Act to establish Albanian Heritage Month",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on June 12, 2025 (House of Commons)",
+    "latestActivityDate": "2025-06-12T06:04:52.643-04:00",
+    "sponsor": "Yvan Baker",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-209/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-209/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-209/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "defeated_or_inactive",
+      "symbolic_bill"
+    ],
+    "score": -16,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13551147,
+    "session": "45-1",
+    "number": "C-208",
+    "title": "National Livestock Brand of Canada Act",
+    "longTitle": "An Act to recognize a national livestock brand as a symbol of Canada and of western and frontier heritage",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on June 11, 2025 (House of Commons)",
+    "latestActivityDate": "2025-06-11T11:47:03.703-04:00",
+    "sponsor": "Steven Bonk",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-208/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-208/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-208/first-reading"
+    },
+    "categories": [
+      "defeated_or_inactive"
+    ],
+    "score": -10,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13540152,
+    "session": "45-1",
+    "number": "C-207",
+    "title": "An Act to amend the Canada Pension Plan",
+    "longTitle": "An Act to amend the Canada Pension Plan",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on June 10, 2025 (House of Commons)",
+    "latestActivityDate": "2025-06-10T06:07:30.653-04:00",
+    "sponsor": "Heather McPherson",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-207/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-207/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-207/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "defeated_or_inactive",
+      "high_demo_value"
+    ],
+    "score": -3,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13546896,
+    "session": "45-1",
+    "number": "C-206",
+    "title": "National Strategy on Brain Injuries Act",
+    "longTitle": "An Act to establish a national strategy on brain injuries",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on June 10, 2025 (House of Commons)",
+    "latestActivityDate": "2025-06-10T06:05:33.303-04:00",
+    "sponsor": "Gord Johns",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-206/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-206/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-206/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "defeated_or_inactive",
+      "framework_bill"
+    ],
+    "score": -11,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13550483,
+    "session": "45-1",
+    "number": "C-205",
+    "title": "An Act to amend the National Housing Strategy Act",
+    "longTitle": "An Act to amend the National Housing Strategy Act",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on June 10, 2025 (House of Commons)",
+    "latestActivityDate": "2025-06-10T06:03:27.12-04:00",
+    "sponsor": "Jenny Kwan",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-205/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-205/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-205/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "defeated_or_inactive",
+      "high_demo_value"
+    ],
+    "score": -3,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13538631,
+    "session": "45-1",
+    "number": "C-204",
+    "title": "An Act to amend the Income Tax Act (volunteer firefighting and search and rescue volunteer tax credit)",
+    "longTitle": "An Act to amend the Income Tax Act (volunteer firefighting and search and rescue volunteer tax credit)",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on June 4, 2025 (House of Commons)",
+    "latestActivityDate": "2025-06-04T11:16:38.41-04:00",
+    "sponsor": "Gord Johns",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-204/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-204/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-204/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "commercial_relevant",
+      "defeated_or_inactive",
+      "high_demo_value"
+    ],
+    "score": 0,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13543368,
+    "session": "45-1",
+    "number": "C-203",
+    "title": "Ukrainian Heritage Month Act",
+    "longTitle": "An Act respecting Ukrainian Heritage Month",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on June 4, 2025 (House of Commons)",
+    "latestActivityDate": "2025-06-04T11:13:05.447-04:00",
+    "sponsor": "Yvan Baker",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-203/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-203/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-203/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "defeated_or_inactive",
+      "symbolic_bill"
+    ],
+    "score": -16,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13538627,
+    "session": "45-1",
+    "number": "C-201",
+    "title": "An Act to amend the Canada Health Act (mental, addictions and substance use health services)",
+    "longTitle": "An Act to amend the Canada Health Act (mental, addictions and substance use health services)",
+    "status": "Outside the Order of Precedence",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on May 29, 2025 (House of Commons)",
+    "latestActivityDate": "2025-05-29T06:03:09.187-04:00",
+    "sponsor": "Gord Johns",
+    "type": "Private Member’s Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 80701,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-201/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-201/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-201/first-reading"
+    },
+    "categories": [
+      "amends_existing_act",
+      "clean_patch_candidate",
+      "defeated_or_inactive",
+      "health_relevant",
+      "high_demo_value"
+    ],
+    "score": 1,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13539341,
+    "session": "45-1",
+    "number": "C-1",
+    "title": "An Act respecting the administration of oaths of office",
+    "longTitle": "An Act respecting the administration of oaths of office",
+    "status": "Introduced as pro forma bill",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on May 27, 2025 (House of Commons)",
+    "latestActivityDate": "2025-05-27T08:44:38.9-04:00",
+    "sponsor": "Right Hon. Mark Carney",
+    "type": "House Government Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 0,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-1/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-1/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-1/first-reading"
+    },
+    "categories": [
+      "creates_new_act",
+      "defeated_or_inactive"
+    ],
+    "score": -10,
+    "recommendation": "archive"
+  },
+  {
+    "billId": 13539458,
+    "session": "45-1",
+    "number": "S-1",
+    "title": "An Act relating to railways",
+    "longTitle": "An Act relating to railways",
+    "status": "Introduced as pro forma bill",
+    "stage": "First reading",
+    "latestActivity": "Introduction and first reading on May 27, 2025 (Senate)",
+    "latestActivityDate": "2025-05-26T20:00:00-04:00",
+    "sponsor": "Sen. Judith Seidman",
+    "type": "Senate Public Bill",
+    "royalAssentDate": null,
+    "latestBillTextTypeId": 0,
+    "source": {
+      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/s-1/json",
+      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/s-1/xml",
+      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-1/first-reading"
+    },
+    "categories": [
+      "defeated_or_inactive"
+    ],
+    "score": -10,
+    "recommendation": "archive"
+  }
+]
