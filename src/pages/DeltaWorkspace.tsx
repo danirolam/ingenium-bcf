@@ -51,7 +51,16 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
     const lawVersionId = nav.params.lawVersionId;
 
     if (billId) {
-      Promise.all([api.bills.get(billId), api.bills.lawVersions(billId)])
+      // Fall back to client-side filter if /api/bills/:id/law-versions
+      // isn't on the running server (older builds, restart pending).
+      const lvForBill = api.bills
+        .lawVersions(billId)
+        .catch(() =>
+          api.lawVersions
+            .list()
+            .then((all) => all.filter((lv) => lv.sourceBillId === billId)),
+        );
+      Promise.all([api.bills.get(billId), lvForBill])
         .then(([b, ls]) => {
           setBill(b);
           const list = Array.isArray(ls) ? ls : [];
