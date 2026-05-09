@@ -31,10 +31,19 @@ data/bills/45-1/
 Official Parliament bill text for the recommended bills. Each bill folder contains source metadata, official XML, and normalized JSON for app/search/AI use.
 
 ```text
-data/laws/food-and-drugs-act/
+data/laws/
 ```
 
-Current consolidated Food and Drugs Act from Justice Laws, stored as official XML and normalized JSON. This is the first current-law baseline for bill-to-law comparison.
+Current law baselines from Justice Laws. The important files are:
+
+```text
+data/laws/registry.json
+data/laws/bill-law-links.45-1.json
+data/laws/current/federal/food-and-drugs-act/current.xml
+data/laws/current/federal/food-and-drugs-act/current.normalized.json
+```
+
+`registry.json` explains how a law is retrieved. `bill-law-links.45-1.json` explains which bills currently point to which laws.
 
 ```text
 data/clients/demo/
@@ -71,5 +80,7 @@ node --use-system-ca scripts/retrieve-bill-texts.mjs
 ```text
 node --use-system-ca scripts/retrieve-law.mjs food-and-drugs-act
 ```
+
+That command reads `data/laws/registry.json`, downloads the official Justice Laws XML URL, and writes the current law under `data/laws/current/federal/{law-slug}/`.
 
 The app should use JSON for bill metadata. For actual bill text and current laws, retrieve official XML, then convert it into normalized JSON.

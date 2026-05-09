@@ -1,0 +1,24 @@
+{
+  "session": "45-1",
+  "description": "Manual bill-to-current-law links for the first comparison demo. A production version should infer candidates from bill XML targetActs, then confirm them against data/laws/registry.json.",
+  "links": [
+    {
+      "bill": "S-202",
+      "lawSlug": "food-and-drugs-act",
+      "lawTitle": "Food and Drugs Act",
+      "reason": "Bill title and clauses amend the Food and Drugs Act to add alcohol warning-label requirements."
+    },
+    {
+      "bill": "C-224",
+      "lawSlug": "food-and-drugs-act",
+      "lawTitle": "Food and Drugs Act",
+      "reason": "Bill title and clauses amend Food and Drugs Act rules for natural health products."
+    },
+    {
+      "bill": "C-265",
+      "lawSlug": "food-and-drugs-act",
+      "lawTitle": "Food and Drugs Act",
+      "reason": "Bill title and clauses amend the Food and Drugs Act for pre-approved special access therapeutic products."
+    }
+  ]
+}

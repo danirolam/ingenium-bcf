@@ -1,21 +1,15 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 
-const laws = {
-  "food-and-drugs-act": {
-    title: "Food and Drugs Act",
-    citation: "R.S.C., 1985, c. F-27",
-    url: "https://lois.justice.gc.ca/eng/XML/F-27.xml",
-    htmlUrl: "https://lois.justice.gc.ca/eng/acts/F-27/FullText.html"
-  }
-};
+const registry = JSON.parse(await readFile("data/laws/registry.json", "utf8"));
+const laws = registry.laws;
 
 const slug = process.argv[2] || "food-and-drugs-act";
 const law = laws[slug];
 if (!law) throw new Error(`Unknown law slug: ${slug}`);
 
-const xml = await fetchText(law.url);
+const xml = await fetchText(law.source.xmlUrl);
 const normalized = normalizeLawXml(xml, law);
-const dir = `data/laws/${slug}`;
+const dir = law.currentPath;
 await mkdir(dir, { recursive: true });
 await writeFile(`${dir}/current.xml`, xml);
 await writeFile(`${dir}/current.normalized.json`, `${JSON.stringify(normalized, null, 2)}\n`);

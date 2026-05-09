@@ -56,7 +56,19 @@ bills/45-1/manifest.json
 Retrieval manifest for the recommended bill text set.
 
 ```text
-laws/food-and-drugs-act/
+laws/registry.json
+```
+
+Known laws and their official Justice Laws source URLs.
+
+```text
+laws/bill-law-links.45-1.json
+```
+
+The first explicit links from retrieved bills to current laws.
+
+```text
+laws/current/federal/food-and-drugs-act/
 ```
 
 Current consolidated law baseline from Justice Laws.
@@ -64,7 +76,7 @@ Current consolidated law baseline from Justice Laws.
 ```text
 current.xml             official Justice Laws XML
 current.normalized.json normalized full text and sections
-source.json             source URLs and retrieval timestamp
+source.json             registry data, source URLs, and retrieval timestamp
 ```
 
 ## Recommended Data Pipeline
@@ -76,11 +88,34 @@ LEGISinfo bills JSON
   -> selected bill detail JSON
   -> selected bill text XML
   -> normalized bill clauses JSON
-  -> amendment operations JSON
+  -> identify target Act from title/targetActs
+  -> data/laws/registry.json
   -> Justice Laws current Act XML
   -> normalized law JSON
+  -> amendment operations JSON
   -> proposed law JSON and diff JSON
   -> client impact JSON
+```
+
+## Bill To Law Retrieval
+
+Bills and laws come from different government systems:
+
+```text
+Parliament / LEGISinfo
+  -> bill metadata JSON
+  -> bill text XML
+
+Justice Laws
+  -> current consolidated Act XML
+```
+
+The connection between them is the Act name. For example:
+
+```text
+S-202 bill text says it amends the Food and Drugs Act
+  -> data/laws/registry.json maps food-and-drugs-act to Justice Laws XML
+  -> scripts/retrieve-law.mjs downloads the current Food and Drugs Act
 ```
 
 ## Bill Categories
@@ -171,7 +206,7 @@ node --use-system-ca scripts/retrieve-law.mjs food-and-drugs-act
 For comparison output, add generated files beside the current law baseline:
 
 ```text
-data/laws/food-and-drugs-act/versions/S-202-proposed.normalized.json
-data/laws/food-and-drugs-act/versions/S-202-diff.json
+data/laws/current/federal/food-and-drugs-act/versions/S-202-proposed.normalized.json
+data/laws/current/federal/food-and-drugs-act/versions/S-202-diff.json
 data/bills/45-1/S-202/amendments.json
 ```
