@@ -19,7 +19,7 @@ export default {
       },
       fontFamily: {
         sans: [
-          "Geist",
+          "Inter",
           "ui-sans-serif",
           "system-ui",
           "-apple-system",
@@ -28,16 +28,17 @@ export default {
           "sans-serif",
         ],
         serif: [
-          "Geist",
-          "ui-sans-serif",
-          "system-ui",
-          "sans-serif",
+          "Instrument Serif",
+          "Lora",
+          "ui-serif",
+          "Georgia",
+          "Times New Roman",
+          "serif",
         ],
         mono: [
-          "Geist Mono",
           "JetBrains Mono",
-          "ui-monospace",
           "SF Mono",
+          "ui-monospace",
           "Menlo",
           "Consolas",
           "monospace",

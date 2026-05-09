@@ -3,75 +3,75 @@
    restrained motion, semantic-only color. No "AI gradient" anything. */
 
 :root {
-  /* Core surfaces (dark, monochrome, slight warmth) */
-  --bg: #0a0a0a;
-  --panel: #0f0f0f;
-  --panel-2: #141414;
-  --panel-3: #1a1a1a;
+  /* Core surfaces — warm near-black, never pure #000.
+     Slight brown undertone gives "leather portfolio" depth. */
+  --bg: #0e0c0a;
+  --panel: #161311;
+  --panel-2: #1d1916;
+  --panel-3: #25201c;
 
-  /* Sidebar — slightly distinct from main bg, but still deeply dark */
-  --sidebar: #070707;
-  --sidebar-2: #121212;
-  --sidebar-ink: #f4f4f5;
-  --sidebar-ink-2: #71717a;
+  /* Sidebar — even darker than the main canvas */
+  --sidebar: #0a0807;
+  --sidebar-2: #161311;
+  --sidebar-ink: #f5f1ec;
+  --sidebar-ink-2: #8a8278;
 
-  /* Text */
-  --ink: #fafafa;
-  --ink-2: #d4d4d8;
-  --ink-3: #a1a1aa;
-  --ink-4: #71717a;
+  /* Text — warm whites, not pure white */
+  --ink: #f5f1ec;
+  --ink-2: #d6cfc4;
+  --ink-3: #a39b8e;
+  --ink-4: #6f6859;
 
   /* Borders / rules */
-  --border: #1f1f22;
-  --border-2: #2a2a2e;
-  --border-3: #18181b;
-  --rule: #1f1f22;
+  --border: #2a241e;
+  --border-2: #3a322a;
+  --border-3: #1f1b17;
+  --rule: #2a241e;
 
-  /* The single chromatic accent: warm brass — not blue, not "AI" */
-  --accent: #d4a017;
-  --accent-2: #b8861a;
-  --accent-soft: rgba(212, 160, 23, 0.12);
+  /* Accent: deep emerald — institutional, not neon, not amber-cliche */
+  --accent: #5a8a6b;
+  --accent-2: #4a7a5b;
+  --accent-soft: rgba(90, 138, 107, 0.14);
 
-  /* Semantic status (only used where status actually matters) */
-  --crit: #f87171;
-  --crit-bg: rgba(248, 113, 113, 0.12);
-  --high: #fbbf24;
-  --high-bg: rgba(251, 191, 36, 0.12);
-  --med: #818cf8;
-  --med-bg: rgba(129, 140, 248, 0.12);
-  --low: #a1a1aa;
-  --low-bg: rgba(161, 161, 170, 0.10);
-  --ok: #34d399;
-  --ok-bg: rgba(52, 211, 153, 0.12);
+  /* Semantic status */
+  --crit: #d97757;
+  --crit-bg: rgba(217, 119, 87, 0.14);
+  --high: #d4a55a;
+  --high-bg: rgba(212, 165, 90, 0.14);
+  --med: #8b9bd0;
+  --med-bg: rgba(139, 155, 208, 0.12);
+  --low: #8a8278;
+  --low-bg: rgba(138, 130, 120, 0.10);
+  --ok: #5a8a6b;
+  --ok-bg: rgba(90, 138, 107, 0.14);
 
   /* Diff */
-  --diff-del-bg: rgba(248, 113, 113, 0.18);
-  --diff-del-ink: #fca5a5;
-  --diff-add-bg: rgba(52, 211, 153, 0.16);
-  --diff-add-ink: #6ee7b7;
-  --diff-context-bg: #141414;
+  --diff-del-bg: rgba(217, 119, 87, 0.18);
+  --diff-del-ink: #f0a888;
+  --diff-add-bg: rgba(90, 138, 107, 0.20);
+  --diff-add-ink: #95c4a3;
+  --diff-context-bg: #1d1916;
 
   --shadow-sm: 0 1px 0 rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.6);
-  --shadow-md: 0 1px 0 rgba(0, 0, 0, 0.4), 0 8px 24px -8px rgba(0, 0, 0, 0.7);
+  --shadow-md: 0 1px 0 rgba(0, 0, 0, 0.4), 0 12px 32px -8px rgba(0, 0, 0, 0.7);
 
+  /* Editorial serif for titles, neo-grotesque body, ibm plex mono fallback */
   --serif:
-    "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    "Helvetica Neue", sans-serif;
+    "Instrument Serif", "Lora", ui-serif, Georgia, "Times New Roman", serif;
   --sans:
-    "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    "Helvetica Neue", sans-serif;
+    "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    "Helvetica Neue", "Arial", sans-serif;
   --mono:
-    "Geist Mono", "JetBrains Mono", ui-monospace, "SF Mono", Menlo,
-    Consolas, monospace;
+    "JetBrains Mono", "SF Mono", ui-monospace, Menlo, Consolas, monospace;
 
-  /* shadcn-style HSL tokens for the new ui/* components that read them */
-  --background: 0 0% 4%;
-  --foreground: 0 0% 98%;
-  --card: 0 0% 6%;
-  --card-foreground: 0 0% 98%;
-  --muted: 0 0% 9%;
-  --muted-foreground: 0 0% 63%;
-  --border-hsl: 0 0% 13%;
+  /* shadcn HSL tokens for new ui/* components */
+  --background: 24 14% 5%;
+  --foreground: 36 27% 94%;
+  --card: 24 12% 8%;
+  --card-foreground: 36 27% 94%;
+  --muted: 26 12% 11%;
+  --muted-foreground: 30 10% 60%;
+  --border-hsl: 28 12% 16%;
 }
 
 * {
@@ -127,24 +127,28 @@ a {
   border-bottom: 1px solid var(--border);
 }
 .sb-mark {
-  width: 30px;
-  height: 30px;
-  background: var(--ink);
-  color: var(--bg);
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  color: var(--ink);
   display: grid;
   place-items: center;
-  font-family: var(--sans);
-  font-weight: 700;
-  font-size: 13px;
-  letter-spacing: -0.02em;
-  border-radius: 7px;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 22px;
+  font-style: italic;
+  letter-spacing: -0.04em;
+  border: 1px solid var(--border-2);
+  border-radius: 8px;
+  line-height: 1;
 }
 .sb-name {
-  font-family: var(--sans);
-  font-size: 15px;
-  letter-spacing: -0.01em;
-  font-weight: 600;
+  font-family: var(--serif);
+  font-size: 19px;
+  letter-spacing: -0.015em;
+  font-weight: 400;
   color: var(--ink);
+  line-height: 1;
 }
 .sb-name b {
   font-weight: 600;
@@ -283,13 +287,13 @@ a {
   gap: 24px;
 }
 .ph-title {
-  font-family: var(--sans);
-  font-size: 28px;
-  letter-spacing: -0.025em;
-  font-weight: 600;
-  margin: 0 0 6px;
+  font-family: var(--serif);
+  font-size: 38px;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  margin: 0 0 8px;
   color: var(--ink);
-  line-height: 1.15;
+  line-height: 1.05;
 }
 .ph-sub {
   color: var(--ink-3);
@@ -818,18 +822,30 @@ table.tbl tbody td:last-child {
 
 .diff-body {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   font-family: var(--sans);
   font-size: 13.5px;
   line-height: 1.7;
   color: var(--ink-2);
+  overflow: hidden;
+}
+.diff-body > div {
+  min-width: 0;
+  overflow: hidden;
 }
 .diff-col {
   padding: 8px 0;
   min-width: 0;
+  overflow: hidden;
 }
 .diff-col + .diff-col {
   border-left: 1px solid var(--border);
+}
+.diff-body > div:nth-child(2n + 1) {
+  border-right: 1px solid var(--border);
+}
+.diff-body > div:nth-child(2n) {
+  /* right column already separated by the left column's right border */
 }
 
 .diff-act-head {
@@ -857,6 +873,8 @@ table.tbl tbody td:last-child {
   padding: 6px 24px;
   display: flex;
   gap: 14px;
+  min-width: 0;
+  overflow: hidden;
 }
 .diff-block .lbl {
   font-family: var(--mono);
@@ -866,11 +884,15 @@ table.tbl tbody td:last-child {
   white-space: nowrap;
   padding-top: 2px;
   min-width: 56px;
+  flex-shrink: 0;
   font-variant-numeric: tabular-nums;
 }
 .diff-block .txt {
-  flex: 1;
+  flex: 1 1 auto;
   min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
 }
 .diff-block.removed {
   background: rgba(248, 113, 113, 0.06);

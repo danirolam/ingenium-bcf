@@ -1,12 +1,14 @@
 import { useCallback, useState } from "react";
 import { Layout } from "./components/Layout";
 import { Toast } from "./components/Toast";
+import { Landing } from "./pages/Landing";
 import { BillMonitor } from "./pages/BillMonitor";
 import { ClientImpactAnalysisPage } from "./pages/ClientImpactAnalysis";
 import { ClientLawScanner } from "./pages/ClientLawScanner";
 import { DeltaWorkspace } from "./pages/DeltaWorkspace";
 
 export type PageId = "monitor" | "delta" | "scanner" | "impact";
+type Surface = "landing" | "app";
 
 export type Nav = {
   go: (page: PageId, params?: Record<string, string>) => void;
@@ -16,9 +18,20 @@ export type Nav = {
 };
 
 export default function App() {
+  // Read initial surface from URL hash so deep links work (#/app etc.)
+  const [surface, setSurface] = useState<Surface>(() =>
+    typeof window !== "undefined" && window.location.hash.startsWith("#/app")
+      ? "app"
+      : "landing",
+  );
   const [page, setPage] = useState<PageId>("monitor");
   const [params, setParams] = useState<Record<string, string>>({});
   const [toastMsg, setToastMsg] = useState<string | null>(null);
+
+  const enterApp = useCallback(() => {
+    setSurface("app");
+    if (typeof window !== "undefined") window.location.hash = "#/app";
+  }, []);
 
   const go = useCallback((p: PageId, ps: Record<string, string> = {}) => {
     setPage(p);
@@ -29,6 +42,10 @@ export default function App() {
     setPage(p);
     setParams({});
   }, []);
+
+  if (surface === "landing") {
+    return <Landing onLaunch={enterApp} />;
+  }
 
   const nav: Nav = { go, page, params, toast: setToastMsg };
 
