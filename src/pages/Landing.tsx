@@ -1,12 +1,28 @@
 import { useState } from "react";
-import { Search, Menu, X, Pause, ArrowUpRight } from "lucide-react";
+import { Search, Menu, X, Pause, ArrowUpRight, ArrowRight } from "lucide-react";
+
+const PRACTICES = [
+  { num: "01", name: "Privacy & Data", note: "CPPA · AIDA · PIPEDA" },
+  { num: "02", name: "Health & Life Sciences", note: "Food & Drugs Act · FCA" },
+  { num: "03", name: "Financial Services", note: "Bank Act · PCMLTFA" },
+  { num: "04", name: "Energy & Resources", note: "CEAA · IAA" },
+  { num: "05", name: "Telecom & Tech", note: "Telecommunications Act" },
+  { num: "06", name: "Tax & Customs", note: "ITA · Excise Tax Act" },
+];
+
+const STATS = [
+  { v: "847", l: "Bills monitored", note: "45-1 session, live" },
+  { v: "12", l: "Acts tracked", note: "Hand-curated by counsel" },
+  { v: "3.4×", l: "Faster triage", note: "Vs. paralegal baseline" },
+  { v: "< 60s", l: "Bill → memo", note: "End-to-end median" },
+];
 
 export function Landing({ onLaunch }: { onLaunch: () => void }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div className="lp">
-      {/* ───────── Navbar (BCF-minimal: logo + 2 circle buttons) ───────── */}
+      {/* ───────── Navbar ───────── */}
       <header className="lp-nav">
         <div className="lp-nav-inner">
           <a className="lp-brand" href="#" onClick={(e) => e.preventDefault()}>
@@ -34,16 +50,18 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
         </div>
       </header>
 
-      {/* ───────── Slide-down menu drawer ───────── */}
       {menuOpen && (
         <div className="lp-drawer" role="dialog" aria-label="Navigation">
           <div className="lp-drawer-inner">
             <nav>
-              <a href="#expertise" onClick={() => setMenuOpen(false)}>
-                Expertise
+              <a href="#practices" onClick={() => setMenuOpen(false)}>
+                Practice areas
               </a>
               <a href="#workflow" onClick={() => setMenuOpen(false)}>
                 Workflow
+              </a>
+              <a href="#principle" onClick={() => setMenuOpen(false)}>
+                Principle
               </a>
               <a
                 href="#"
@@ -54,9 +72,6 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
                 }}
               >
                 Workspace
-              </a>
-              <a href="#about" onClick={() => setMenuOpen(false)}>
-                About
               </a>
             </nav>
             <div className="lp-drawer-foot">
@@ -76,8 +91,6 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
         />
         <div className="lp-hero-shade" aria-hidden="true" />
 
-        {/* Floating circular video. Falls back to /hero.avif as the
-            poster image if /hero-circle.mp4 isn't present yet. */}
         <div className="lp-hero-orb" aria-hidden="true">
           <video
             className="lp-hero-orb-media"
@@ -99,19 +112,30 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
           </h1>
         </div>
 
-        {/* Bottom-left cookie icon (decorative, BCF cue) */}
         <button className="lp-hero-cookie" aria-label="Privacy preferences">
           <span aria-hidden="true">◔</span>
         </button>
 
-        {/* Bottom-right pause-video chrome (decorative, BCF cue) */}
         <button className="lp-hero-pause" aria-label="Pause the video">
           <Pause size={12} strokeWidth={2} fill="currentColor" />
           <span>Pause the video</span>
         </button>
       </section>
 
-      {/* ───────── Story (Apple-clean single block) ───────── */}
+      {/* ───────── Stats strip — anchors the hero, signals scale ───────── */}
+      <section className="lp-stats">
+        <div className="lp-stats-inner">
+          {STATS.map((s) => (
+            <div className="lp-stat" key={s.l}>
+              <div className="lp-stat-v">{s.v}</div>
+              <div className="lp-stat-l">{s.l}</div>
+              <div className="lp-stat-note">{s.note}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ───────── Story ───────── */}
       <section id="about" className="lp-story">
         <div className="lp-story-inner">
           <div className="lp-story-eyebrow">Built by Injenium for BCF</div>
@@ -121,10 +145,64 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
             built for Canadian counsel.
           </h2>
           <p className="lp-story-p">
-            Injenium ingests every federal bill, extracts the statutory delta
-            against the current Act, and matches it to your client portfolio —
-            turning a week of triage into a memo before the committee rises.
+            Bills don't wait for anyone — and reading them line by line is
+            how a quiet committee amendment ends up sitting in your client's
+            inbox six months from now. Injenium reads every bill the moment
+            it's tabled, extracts the delta against the current Act, and
+            matches it to the client portfolios you actually care about.
           </p>
+          <button className="lp-story-cta" onClick={onLaunch}>
+            <span>Open the workspace</span>
+            <ArrowUpRight size={18} strokeWidth={1.75} />
+          </button>
+        </div>
+      </section>
+
+      {/* ───────── Practice areas — BCF-style numbered list ───────── */}
+      <section id="practices" className="lp-practices">
+        <div className="lp-practices-inner">
+          <div className="lp-section-eyebrow">Practice areas</div>
+          <h2 className="lp-h2">
+            Tuned for the regulated practices that move first.
+          </h2>
+          <ul className="lp-practice-list">
+            {PRACTICES.map((p) => (
+              <li key={p.num}>
+                <span className="lp-practice-num">{p.num}</span>
+                <span className="lp-practice-name">{p.name}</span>
+                <span className="lp-practice-note">{p.note}</span>
+                <ArrowRight
+                  className="lp-practice-arr"
+                  size={18}
+                  strokeWidth={1.5}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* ───────── Editorial principle / quote ───────── */}
+      <section id="principle" className="lp-principle">
+        <div className="lp-principle-inner">
+          <div className="lp-section-eyebrow">A working principle</div>
+          <blockquote className="lp-quote">
+            The job of counsel is not to read every bill. It's to act on the
+            three that move every client.
+          </blockquote>
+          <div className="lp-quote-attr">
+            <span className="lp-brand-dot lp-brand-dot-sm" aria-hidden="true" />
+            <span>BCF · Privacy &amp; Data practice</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ───────── Foot CTA ───────── */}
+      <section className="lp-foot-cta">
+        <div className="lp-foot-cta-inner">
+          <h2 className="lp-h2">
+            Ready when the next bill is tabled.
+          </h2>
           <button className="lp-story-cta" onClick={onLaunch}>
             <span>Open the workspace</span>
             <ArrowUpRight size={18} strokeWidth={1.75} />
