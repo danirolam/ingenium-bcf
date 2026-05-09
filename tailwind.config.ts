@@ -19,7 +19,7 @@ export default {
       },
       fontFamily: {
         sans: [
-          "Inter",
+          "Manrope",
           "ui-sans-serif",
           "system-ui",
           "-apple-system",
@@ -28,18 +28,16 @@ export default {
           "sans-serif",
         ],
         serif: [
-          "Inter",
+          "Manrope",
           "ui-sans-serif",
           "system-ui",
           "sans-serif",
         ],
         mono: [
-          "JetBrains Mono",
-          "SF Mono",
-          "ui-monospace",
-          "Menlo",
-          "Consolas",
-          "monospace",
+          "Manrope",
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif",
         ],
       },
     },
