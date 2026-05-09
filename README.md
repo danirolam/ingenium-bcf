@@ -4,6 +4,18 @@ Project Injenium is a federal bill monitoring and client impact prototype.
 
 The project starts with LEGISinfo bill metadata in JSON, ranks bills by likely client relevance, retrieves official bill text XML, and keeps the data easy to refresh when new bills appear.
 
+## App
+
+The web app lives at the repo root: React + Vite + TypeScript frontend, Express + Gemini backend, four pages (Bill Monitor → Delta Workspace → Client-Law Scanner → Client Impact Analysis).
+
+```bash
+npm install
+cp .env.example .env       # add GEMINI_API_KEY for live AI; without it, the S-202 demo path still works
+npm run dev                # web on :5173, api on :8787
+```
+
+See **[SETUP.md](./SETUP.md)** for API-key instructions, what works without keys, and how to refresh seed data.
+
 ## Current Data Files
 
 ```text

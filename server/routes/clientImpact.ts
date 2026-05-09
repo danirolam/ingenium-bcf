@@ -8,7 +8,7 @@ import { sendClientImpactCompleteEmail } from "../services/email.js";
 import { analyzeClientImpact } from "../services/gemini.js";
 import { flagImpactReview } from "../services/humanReview.js";
 import { FILES, findById, readAll, upsert } from "../services/jsonStore.js";
-import { DEMO } from "../seed/seedDemo.js";
+import { findCannedImpact } from "../seed/seedDemo.js";
 
 export const clientImpactRouter = Router();
 
@@ -31,15 +31,23 @@ clientImpactRouter.post("/analyze", async (req, res) => {
 
   let result = await analyzeClientImpact({ lawVersion: lv, client });
   if (!result) {
-    console.log("[gemini] using fallback for analyzeClientImpact");
-    result = {
-      ...DEMO.cannedImpact,
-      id: "",
-      clientId: client.id,
-      lawVersionId: lv.id,
-      saved: false,
-      createdAt: new Date().toISOString(),
-    };
+    const canned = findCannedImpact({ clientId: client.id, lawVersion: lv });
+    if (canned) {
+      console.log("[gemini] using canned impact for cold demo path");
+      result = {
+        ...canned,
+        id: "",
+        clientId: client.id,
+        lawVersionId: lv.id,
+        saved: false,
+        createdAt: new Date().toISOString(),
+      };
+    } else {
+      return res.status(503).json({
+        error:
+          "Live client-impact analysis is unavailable: no canned demo for this (client, law) pair and GEMINI_API_KEY is missing or the call failed. Set GEMINI_API_KEY in .env to enable live analysis.",
+      });
+    }
   }
 
   const review = flagImpactReview(result as ClientImpactAnalysis);
