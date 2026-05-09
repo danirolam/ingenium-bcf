@@ -17,22 +17,20 @@ export function Sidebar({
   return (
     <aside className="sb">
       <div className="sb-brand">
-        <div className="sb-mark">In</div>
+        <div className="sb-mark" aria-hidden="true" />
         <div>
-          <div className="sb-name">
-            <b>Injenium</b>
-          </div>
+          <div className="sb-name">BCF</div>
           <div
             style={{
-              fontFamily: "var(--mono)",
-              fontSize: 10,
+              fontFamily: "var(--sans)",
+              fontSize: 11,
               color: "var(--ink-4)",
-              letterSpacing: "0.06em",
-              marginTop: 2,
-              fontVariantNumeric: "tabular-nums",
+              letterSpacing: "-0.005em",
+              marginTop: 4,
+              fontWeight: 500,
             }}
           >
-            45-1 · v0.1
+            by <span style={{ color: "var(--ink-2)" }}>Injenium</span>
           </div>
         </div>
       </div>

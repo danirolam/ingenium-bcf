@@ -94,12 +94,12 @@ export function StatsRibbon({ bills }: { bills: Bill[] }) {
                   >
                     <stop
                       offset="0%"
-                      stopColor="#d4a017"
-                      stopOpacity={0.45}
+                      stopColor="#0a0a0a"
+                      stopOpacity={0.18}
                     />
                     <stop
                       offset="100%"
-                      stopColor="#d4a017"
+                      stopColor="#0a0a0a"
                       stopOpacity={0}
                     />
                   </linearGradient>
@@ -107,7 +107,7 @@ export function StatsRibbon({ bills }: { bills: Bill[] }) {
                 <Area
                   type="monotone"
                   dataKey="v"
-                  stroke="#d4a017"
+                  stroke="#0a0a0a"
                   strokeWidth={1.25}
                   fill="url(#bm-ribbon-grad)"
                   isAnimationActive={false}

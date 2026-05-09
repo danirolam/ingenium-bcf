@@ -28,12 +28,10 @@ export default {
           "sans-serif",
         ],
         serif: [
-          "Instrument Serif",
-          "Lora",
-          "ui-serif",
-          "Georgia",
-          "Times New Roman",
-          "serif",
+          "Inter",
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif",
         ],
         mono: [
           "JetBrains Mono",

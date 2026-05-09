@@ -76,10 +76,20 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
         />
         <div className="lp-hero-shade" aria-hidden="true" />
 
-        {/* Floating glowing circle — placeholder for the BCF circular video.
-            Drop /public/hero-circle.mp4 to swap this for a real video. */}
+        {/* Floating circular video. Falls back to /hero.avif as the
+            poster image if /hero-circle.mp4 isn't present yet. */}
         <div className="lp-hero-orb" aria-hidden="true">
-          <div className="lp-hero-orb-inner" />
+          <video
+            className="lp-hero-orb-media"
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster="/hero.avif"
+          >
+            <source src="/hero-circle.mp4" type="video/mp4" />
+            <source src="/hero-circle.webm" type="video/webm" />
+          </video>
         </div>
 
         <div className="lp-hero-inner">
