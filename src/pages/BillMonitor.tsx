@@ -80,8 +80,8 @@ export function BillMonitor({ nav }: { nav: Nav }) {
   async function openDelta(bill: Bill) {
     setBusy(true);
     try {
-      const { errors } = await api.bills.extractDelta(bill.id);
-      if (errors.length > 0) nav.toast(errors[0]);
+      const result = await api.bills.extractDelta(bill.id).catch(() => null);
+      if (result?.errors?.length) nav.toast(result.errors[0]);
       nav.go("delta", { billId: bill.id });
     } catch (err: any) {
       nav.toast(`Could not open delta: ${err.message ?? err}`);
