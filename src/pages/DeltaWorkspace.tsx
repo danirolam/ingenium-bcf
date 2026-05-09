@@ -3,6 +3,7 @@ import type { Nav } from "../App";
 import { MomentumBadge, ReviewBadge } from "../components/badges";
 import { ConfidenceMeter } from "../components/ConfidenceMeter";
 import { DiffViewer } from "../components/DiffViewer";
+import { LegislativeJourney } from "../components/LegislativeJourney";
 import { PageHeader } from "../components/PageHeader";
 import { api } from "../lib/api";
 import type { LawVersion } from "../types";
@@ -10,6 +11,7 @@ import type { LawVersion } from "../types";
 export function DeltaWorkspace({ nav }: { nav: Nav }) {
   const [lv, setLv] = useState<LawVersion | null>(null);
   const [busy, setBusy] = useState(false);
+  const [techOpen, setTechOpen] = useState(false);
 
   useEffect(() => {
     const id = nav.params.lawVersionId;
@@ -65,6 +67,8 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
     }
   }
 
+  const confidencePct = Math.round(lv.confidence * 100);
+
   return (
     <>
       <PageHeader
@@ -113,15 +117,28 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
                 <div className="k">Version</div>
                 <div className="v">{lv.versionStatus.replace(/_/g, " ")}</div>
                 <div className="k">Effective</div>
-                <div className="v">{lv.effectiveDate ?? "—"}</div>
+                <div className="v tnum">{lv.effectiveDate ?? "—"}</div>
                 <div className="k">In force</div>
                 <div className="v">{lv.comingIntoForceText ?? "—"}</div>
+              </div>
+
+              <div className="hr" style={{ margin: "0 16px" }} />
+              <div className="dw-journey-h" style={{ paddingTop: 12 }}>
+                Legislative journey
+              </div>
+              <div className="dw-journey-wrap" style={{ paddingTop: 0 }}>
+                <LegislativeJourney
+                  momentum={lv.legislativeMomentum}
+                  status={lv.sourceBillStatus}
+                  effectiveDate={lv.effectiveDate}
+                  comingIntoForceText={lv.comingIntoForceText}
+                />
               </div>
             </div>
 
             <div className="card">
-              <div className="card-h"><div className="card-title">Extracted legal changes</div></div>
-              <div style={{ padding: "12px 16px 16px", fontSize: 13, lineHeight: 1.55, color: "var(--ink-2)" }}>
+              <div className="card-h"><div className="card-title">Legal delta</div></div>
+              <div style={{ padding: "12px 16px 12px", fontSize: 13, lineHeight: 1.55, color: "var(--ink-2)" }}>
                 <div style={{ marginBottom: 10 }}>{lv.deltaSummary}</div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
                   {lv.affectedSections.map((s) => (
@@ -133,6 +150,9 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
                     <span key={t} className="badge outline dim">{t}</span>
                   ))}
                 </div>
+              </div>
+              <div className="dw-stable">
+                Stable extraction · <span className="tnum">{confidencePct}%</span>
               </div>
             </div>
 
@@ -147,30 +167,28 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
               </div>
             )}
 
-            <details className="card" style={{ padding: 0 }}>
-              <summary
-                style={{
-                  cursor: "pointer",
-                  padding: "14px 18px",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  fontSize: 14,
-                  fontWeight: 600,
-                  color: "var(--ink)",
-                }}
+            <div className="card" style={{ padding: 0 }}>
+              <button
+                type="button"
+                className="dw-tech-toggle"
+                onClick={() => setTechOpen((v) => !v)}
+                aria-expanded={techOpen}
               >
                 <span>Technical details</span>
-                <span className="muted" style={{ fontSize: 12 }}>expand</span>
-              </summary>
-              <div style={{ padding: "10px 16px 16px", borderTop: "1px solid var(--border)", display: "flex", flexDirection: "column", gap: 12 }}>
-                <ConfidenceMeter value={lv.confidence} label="Gemini extraction confidence" />
-                <div>
-                  <div className="k" style={{ fontSize: 11, color: "var(--ink-3)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 }}>Detailed delta</div>
-                  <div style={{ fontSize: 12.5, color: "var(--ink-2)", lineHeight: 1.5 }}>{lv.detailedDelta}</div>
+                <span className="dw-tech-caret">
+                  {techOpen ? "Collapse" : "Expand"}
+                </span>
+              </button>
+              {techOpen && (
+                <div className="dw-tech-body">
+                  <ConfidenceMeter value={lv.confidence} label="Gemini extraction confidence" />
+                  <div>
+                    <div className="k" style={{ fontSize: 11, color: "var(--ink-3)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 }}>Detailed delta</div>
+                    <div style={{ fontSize: 12.5, color: "var(--ink-2)", lineHeight: 1.5 }}>{lv.detailedDelta}</div>
+                  </div>
                 </div>
-              </div>
-            </details>
+              )}
+            </div>
           </div>
         </div>
       </div>

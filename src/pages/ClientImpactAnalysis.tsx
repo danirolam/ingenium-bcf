@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import type { Nav } from "../App";
 import {
   AffectedBadge,
-  ImpactBadge,
   ReviewBadge,
-  UrgencyBadge,
 } from "../components/badges";
+import { ImpactScale } from "../components/ImpactScale";
 import { PageHeader } from "../components/PageHeader";
 import { api } from "../lib/api";
 import type { Client, ClientImpactAnalysis, LawVersion } from "../types";
@@ -71,6 +70,9 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     }
   }
 
+  const totalRecs = analysis.requiredAdaptations.length;
+  const totalRecsPad = String(totalRecs).padStart(2, "0");
+
   return (
     <>
       <PageHeader
@@ -104,32 +106,37 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
         <div className="card" style={{ marginBottom: 18 }}>
           <div className="card-h">
             <div>
-              <div className="card-title">Summary</div>
+              <div className="card-title" data-toc data-toc-depth="1" data-toc-title="Summary">
+                Summary
+              </div>
               <div className="card-sub">
                 {client?.name ?? "—"} · {lv?.sourceBillNumber ?? "—"}
               </div>
             </div>
             <ReviewBadge required={analysis.humanReviewRequired} />
           </div>
-          <div
-            style={{
-              padding: 18,
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: 18,
-            }}
-          >
-            <SummaryCell label="Affected" value={<AffectedBadge value={analysis.affected} />} />
-            <SummaryCell label="Impact" value={<ImpactBadge level={analysis.impactLevel} />} />
-            <SummaryCell label="Urgency" value={<UrgencyBadge value={analysis.urgency} />} />
-            <SummaryCell label="Timing" value={<span style={{ fontSize: 13, color: "var(--ink-2)" }}>{analysis.timing}</span>} />
+          <div className="cia-summary-top">
+            <SummaryCell
+              label="Affected"
+              value={<AffectedBadge value={analysis.affected} />}
+            />
+            <SummaryCell
+              label="Timing"
+              value={<div className="cia-timing">{analysis.timing}</div>}
+            />
+          </div>
+          <div className="cia-summary-scale">
+            <ImpactScale
+              level={analysis.impactLevel}
+              urgency={analysis.urgency}
+            />
           </div>
         </div>
 
         <div className="two-pane">
           <div className="right-panel" style={{ gap: 18 }}>
             <div className="card">
-              <div className="card-h"><div className="card-title">Why it matters</div></div>
+              <div className="card-h"><div className="card-title" data-toc data-toc-depth="2">Why it matters</div></div>
               <div style={{ padding: "14px 18px 18px", fontSize: 13.5, lineHeight: 1.6, color: "var(--ink-2)" }}>
                 <div>{analysis.whyItAffectsClient}</div>
                 {analysis.affectedClientAreas.length > 0 && (
@@ -143,24 +150,30 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
             </div>
 
             <div className="card">
-              <div className="card-h"><div className="card-title">Recommended adaptations</div></div>
-              {analysis.requiredAdaptations.map((r, i) => (
-                <div className="rec" key={i}>
-                  <div className="rec-h">
-                    <div className="rec-title">{r.area}</div>
+              <div className="card-h"><div className="card-title" data-toc data-toc-depth="2">Recommended adaptations</div></div>
+              {analysis.requiredAdaptations.map((r, i) => {
+                const num = String(i + 1).padStart(2, "0");
+                return (
+                  <div className="rec" key={i}>
+                    <div className="cia-rec-num">
+                      {num} / {totalRecsPad}
+                    </div>
+                    <div className="rec-h">
+                      <div className="rec-title">{r.area}</div>
+                    </div>
+                    <div className="rec-detail"><b>Current issue:</b> {r.currentIssue}</div>
+                    <div className="rec-detail"><b>Recommended action:</b> {r.recommendation}</div>
+                    <div className="match-rationale" style={{ marginTop: 8 }}>
+                      <b style={{ color: "var(--ink-2)" }}>Reason:</b> {r.reason}
+                    </div>
                   </div>
-                  <div className="rec-detail"><b>Current issue:</b> {r.currentIssue}</div>
-                  <div className="rec-detail"><b>Recommended action:</b> {r.recommendation}</div>
-                  <div className="match-rationale" style={{ marginTop: 8 }}>
-                    <b style={{ color: "var(--ink-2)" }}>Reason:</b> {r.reason}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {analysis.relevantClientText.length > 0 && (
               <div className="card">
-                <div className="card-h"><div className="card-title">Relevant client text</div></div>
+                <div className="card-h"><div className="card-title" data-toc data-toc-depth="2">Relevant client text</div></div>
                 {analysis.relevantClientText.map((r, i) => (
                   <div className="rec" key={i}>
                     <div className="rec-h">
@@ -185,7 +198,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
             {analysis.humanReviewRequired && (
               <div className="card" style={{ borderColor: "#e3c884" }}>
                 <div className="card-h" style={{ background: "var(--high-bg)" }}>
-                  <div className="card-title" style={{ color: "var(--high)" }}>Lawyer review</div>
+                  <div className="card-title" data-toc data-toc-depth="2" style={{ color: "var(--high)" }}>Lawyer review</div>
                 </div>
                 <div style={{ padding: "12px 16px 16px" }}>
                   <div style={{ fontSize: 12.5, color: "var(--ink-2)", marginBottom: 10, lineHeight: 1.5 }}>
@@ -201,7 +214,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
             )}
 
             <div className="card">
-              <div className="card-h"><div className="card-title">Email draft</div></div>
+              <div className="card-h"><div className="card-title" data-toc data-toc-depth="2">Email draft</div></div>
               <div style={{ padding: "12px 16px 16px" }}>
                 <div className="kv" style={{ padding: 0, marginBottom: 10 }}>
                   <div className="k">Subject</div>
@@ -214,7 +227,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
             </div>
 
             <div className="card">
-              <div className="card-h"><div className="card-title">Source law version</div></div>
+              <div className="card-h"><div className="card-title" data-toc data-toc-depth="2">Source law version</div></div>
               <div className="kv" style={{ padding: "14px 16px" }}>
                 <div className="k">Bill</div>
                 <div className="v">{lv?.sourceBillNumber} — {lv?.sourceBillTitle}</div>

@@ -1,21 +1,23 @@
 @import "./injenium.css";
+@import "./billmonitor.css";
+@import "./pages-extra.css";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* RegDelta-specific additions on top of the Injenium aesthetic */
+/* App-level additions on top of the Injenium dark aesthetic */
 .rd-amber {
   background: var(--high-bg);
   color: var(--high);
-  border-color: #e3c884;
+  border-color: rgba(251, 191, 36, 0.3);
 }
 .rd-empty {
   border: 1px dashed var(--border-2);
-  background: var(--panel-2);
+  background: var(--panel);
   color: var(--ink-3);
-  padding: 28px;
-  border-radius: 4px;
+  padding: 36px;
+  border-radius: 10px;
   text-align: center;
   font-size: 13px;
 }
@@ -23,19 +25,24 @@
   position: fixed;
   bottom: 24px;
   right: 24px;
-  background: var(--ink);
-  color: #fff;
-  padding: 10px 16px;
-  border-radius: 3px;
+  background: var(--panel-2);
+  color: var(--ink);
+  border: 1px solid var(--border-2);
+  padding: 11px 16px;
+  border-radius: 8px;
   font-size: 13px;
   box-shadow: var(--shadow-md);
   z-index: 1000;
   font-family: var(--sans);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 .rd-modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(20, 33, 61, 0.35);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
   display: grid;
   place-items: center;
   z-index: 999;
@@ -43,61 +50,120 @@
 .rd-modal {
   background: var(--panel);
   border: 1px solid var(--border);
-  border-radius: 4px;
-  width: 540px;
+  border-radius: 12px;
+  width: 560px;
   max-width: calc(100vw - 32px);
   box-shadow: var(--shadow-md);
 }
 .rd-modal-h {
-  padding: 14px 18px;
+  padding: 16px 20px;
   border-bottom: 1px solid var(--border);
-  font-family: var(--serif);
-  font-size: 16px;
-  font-weight: 500;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
 }
-.rd-modal-b { padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; }
+.rd-modal-b {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
 .rd-modal-f {
-  padding: 12px 18px;
+  padding: 14px 20px;
   border-top: 1px solid var(--border);
   display: flex;
   justify-content: flex-end;
   gap: 8px;
 }
-.rd-field { display: flex; flex-direction: column; gap: 4px; }
+.rd-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 .rd-field label {
-  font-size: 11px;
-  letter-spacing: 0.06em;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink-3);
+  color: var(--ink-4);
+  font-family: var(--mono);
 }
 .rd-field input,
 .rd-field textarea,
 .rd-field select {
   border: 1px solid var(--border-2);
-  background: var(--panel);
-  border-radius: 3px;
+  background: var(--panel-2);
+  border-radius: 7px;
   font-family: var(--sans);
   font-size: 13px;
-  padding: 7px 10px;
+  padding: 8px 12px;
   color: var(--ink);
   outline: none;
+  transition: border-color 0.15s ease;
 }
-.rd-field textarea { font-family: var(--serif); min-height: 70px; resize: vertical; }
+.rd-field textarea {
+  min-height: 80px;
+  resize: vertical;
+  line-height: 1.5;
+}
 .rd-field input:focus,
 .rd-field textarea:focus,
-.rd-field select:focus { border-color: var(--accent); }
+.rd-field select:focus {
+  border-color: var(--accent);
+}
+.rd-field input::placeholder,
+.rd-field textarea::placeholder {
+  color: var(--ink-4);
+}
 
-.urgency-immediate { background: var(--crit-bg); color: var(--crit); }
-.urgency-high { background: var(--high-bg); color: var(--high); }
-.urgency-medium { background: var(--med-bg); color: var(--med); }
-.urgency-low { background: var(--low-bg); color: var(--low); }
+.urgency-immediate {
+  background: var(--crit-bg);
+  color: var(--crit);
+}
+.urgency-high {
+  background: var(--high-bg);
+  color: var(--high);
+}
+.urgency-medium {
+  background: var(--med-bg);
+  color: var(--med);
+}
+.urgency-low {
+  background: var(--low-bg);
+  color: var(--low);
+}
 
-.affected-yes { background: var(--ok-bg); color: var(--ok); }
-.affected-no { background: var(--low-bg); color: var(--low); }
-.affected-unclear { background: var(--high-bg); color: var(--high); }
+.affected-yes {
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+.affected-no {
+  background: var(--low-bg);
+  color: var(--low);
+}
+.affected-unclear {
+  background: var(--high-bg);
+  color: var(--high);
+}
 
-.momentum-early { background: var(--low-bg); color: var(--low); }
-.momentum-active { background: var(--med-bg); color: var(--med); }
-.momentum-advanced { background: var(--med-bg); color: var(--med); }
-.momentum-passed { background: var(--ok-bg); color: var(--ok); }
-.momentum-in_force { background: var(--ok-bg); color: var(--ok); }
+.momentum-early {
+  background: var(--low-bg);
+  color: var(--low);
+}
+.momentum-active {
+  background: var(--med-bg);
+  color: var(--med);
+}
+.momentum-advanced {
+  background: var(--med-bg);
+  color: var(--med);
+}
+.momentum-passed {
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+.momentum-in_force {
+  background: var(--ok-bg);
+  color: var(--ok);
+}

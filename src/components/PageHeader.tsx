@@ -21,7 +21,7 @@ export function PageHeader({
         </div>
       )}
       <div className="ph-row">
-        <div>
+        <div style={{ minWidth: 0, flex: 1 }}>
           <h1 className="ph-title">{title}</h1>
           {sub && <div className="ph-sub">{sub}</div>}
         </div>

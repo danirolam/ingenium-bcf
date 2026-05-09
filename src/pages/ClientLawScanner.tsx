@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import type { Nav } from "../App";
 import { ClientSelector } from "../components/ClientSelector";
-import { MomentumBadge } from "../components/badges";
+import { LawPickerGrid } from "../components/LawPickerGrid";
 import { PageHeader } from "../components/PageHeader";
 import { api } from "../lib/api";
 import type { Client, LawVersion } from "../types";
@@ -80,98 +80,72 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
             onSelect={setActiveClient}
           />
 
-          <div className="card">
-            <div className="card-h">
-              <div className="card-title">Run client impact analysis</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+            <div className="card">
+              <div className="card-h">
+                <div className="card-title">Approved laws ready for matching</div>
+                <span className="cs-count">({approvedLvs.length})</span>
+              </div>
+              <div style={{ padding: 16 }}>
+                <LawPickerGrid
+                  lawVersions={approvedLvs}
+                  activeId={activeLvId}
+                  onSelect={setActiveLvId}
+                />
+              </div>
             </div>
-            <div style={{ padding: 18, display: "flex", flexDirection: "column", gap: 18 }}>
-              <div className="rd-field">
-                <label>Approved updated law</label>
-                {approvedLvs.length === 0 ? (
-                  <div className="note rd-amber" style={{ margin: 0 }}>
-                    No approved law versions yet. Open a bill in the Delta Workspace
-                    and click <b>Approve updated law</b> to make it selectable here.
-                  </div>
-                ) : (
-                  <select
-                    value={activeLvId}
-                    onChange={(e) => setActiveLvId(e.target.value)}
+
+            <div className="card">
+              <div className="card-h">
+                <div className="card-title">Generate client impact</div>
+              </div>
+              <div style={{ padding: 18, display: "flex", flexDirection: "column", gap: 14 }}>
+                <div>
+                  <div
+                    className="k"
+                    style={{
+                      fontSize: 11,
+                      color: "var(--ink-3)",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.06em",
+                      marginBottom: 8,
+                    }}
                   >
-                    {approvedLvs.map((lv) => (
-                      <option key={lv.id} value={lv.id}>
-                        {lv.sourceBillNumber} — {lv.baseLawTitle}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              </div>
-
-              {activeLv && (
-                <div className="kv" style={{ padding: 0 }}>
-                  <div className="k">Bill</div>
-                  <div className="v">
-                    {activeLv.sourceBillNumber} — {activeLv.sourceBillTitle}
+                    Client materials included in analysis
                   </div>
-                  <div className="k">Momentum</div>
-                  <div className="v">
-                    <MomentumBadge value={activeLv.legislativeMomentum} />
-                  </div>
-                  <div className="k">Effective</div>
-                  <div className="v">
-                    {activeLv.effectiveDate ?? activeLv.comingIntoForceText ?? "—"}
-                  </div>
-                  <div className="k">Affected sections</div>
-                  <div className="v">{activeLv.affectedSections.join(", ")}</div>
+                  {activeClient ? (
+                    <div className="kv" style={{ padding: 0 }}>
+                      <div className="k">Client</div>
+                      <div className="v">{activeClient.name}</div>
+                      <div className="k">Industry</div>
+                      <div className="v">{activeClient.industry}</div>
+                      <div className="k">Jurisdictions</div>
+                      <div className="v">{activeClient.jurisdictions.join(", ")}</div>
+                      <div className="k">T&amp;C</div>
+                      <div className="v">{activeClient.termsAndConditions ? "Included" : "Not provided"}</div>
+                      <div className="k">Policies</div>
+                      <div className="v">{activeClient.policies ? "Included" : "Not provided"}</div>
+                      <div className="k">Operations</div>
+                      <div className="v">{activeClient.operations ? "Included" : "Not provided"}</div>
+                    </div>
+                  ) : (
+                    <div className="muted" style={{ fontSize: 13 }}>
+                      Select a client from the list.
+                    </div>
+                  )}
                 </div>
-              )}
 
-              <div className="hr" />
+                <div className="hr" />
 
-              <div>
-                <div
-                  className="k"
-                  style={{
-                    fontSize: 11,
-                    color: "var(--ink-3)",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.06em",
-                    marginBottom: 8,
-                  }}
-                >
-                  Client materials included in analysis
+                <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
+                  <button
+                    className="btn primary"
+                    disabled={busy || !activeClient || !activeLv}
+                    onClick={analyze}
+                  >
+                    {busy ? "Analyzing…" : "Analyze client impact →"}
+                  </button>
                 </div>
-                {activeClient ? (
-                  <div className="kv" style={{ padding: 0 }}>
-                    <div className="k">Client</div>
-                    <div className="v">{activeClient.name}</div>
-                    <div className="k">Industry</div>
-                    <div className="v">{activeClient.industry}</div>
-                    <div className="k">Jurisdictions</div>
-                    <div className="v">{activeClient.jurisdictions.join(", ")}</div>
-                    <div className="k">T&amp;C</div>
-                    <div className="v">{activeClient.termsAndConditions ? "Included" : "Not provided"}</div>
-                    <div className="k">Policies</div>
-                    <div className="v">{activeClient.policies ? "Included" : "Not provided"}</div>
-                    <div className="k">Operations</div>
-                    <div className="v">{activeClient.operations ? "Included" : "Not provided"}</div>
-                  </div>
-                ) : (
-                  <div className="muted" style={{ fontSize: 13 }}>
-                    Select a client from the list.
-                  </div>
-                )}
-              </div>
-
-              <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
-                <button
-                  className="btn primary"
-                  disabled={
-                    busy || !activeClient || !activeLv || approvedLvs.length === 0
-                  }
-                  onClick={analyze}
-                >
-                  {busy ? "Analyzing…" : "Analyze client impact →"}
-                </button>
               </div>
             </div>
           </div>
