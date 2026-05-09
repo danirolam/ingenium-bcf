@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { ArrowRight, FileCheck2, Plus, Sparkles } from "lucide-react";
 import type { Nav } from "../App";
 import { ClientSelector } from "../components/ClientSelector";
 import { LawPickerGrid } from "../components/LawPickerGrid";
@@ -61,32 +62,29 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
         sub="Pair an approved updated law with a client to generate a client-specific impact analysis."
         actions={
           <button className="btn primary" onClick={() => setShowNew(true)}>
-            + New client
+            <Plus size={16} strokeWidth={1.9} aria-hidden="true" />
+            New client
           </button>
         }
       />
       <div className="body">
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "280px minmax(0, 1fr)",
-            gap: 18,
-            alignItems: "start",
-          }}
-        >
+        <div className="scanner-grid">
           <ClientSelector
             clients={clients}
             activeId={activeClient?.id}
             onSelect={setActiveClient}
           />
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+          <div className="scanner-stack">
             <div className="card">
               <div className="card-h">
-                <div className="card-title">Approved laws ready for matching</div>
+                <div className="card-title-row">
+                  <FileCheck2 size={16} strokeWidth={1.8} aria-hidden="true" />
+                  <div className="card-title">Approved laws ready for matching</div>
+                </div>
                 <span className="cs-count">({approvedLvs.length})</span>
               </div>
-              <div style={{ padding: 16 }}>
+              <div className="card-pad">
                 <LawPickerGrid
                   lawVersions={approvedLvs}
                   activeId={activeLvId}
@@ -97,24 +95,18 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
 
             <div className="card">
               <div className="card-h">
-                <div className="card-title">Generate client impact</div>
+                <div className="card-title-row">
+                  <Sparkles size={16} strokeWidth={1.8} aria-hidden="true" />
+                  <div className="card-title">Generate client impact</div>
+                </div>
               </div>
-              <div style={{ padding: 18, display: "flex", flexDirection: "column", gap: 14 }}>
+              <div className="scanner-card-body">
                 <div>
-                  <div
-                    className="k"
-                    style={{
-                      fontSize: 11,
-                      color: "var(--ink-3)",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.06em",
-                      marginBottom: 8,
-                    }}
-                  >
+                  <div className="section-label">
                     Client materials included in analysis
                   </div>
                   {activeClient ? (
-                    <div className="kv" style={{ padding: 0 }}>
+                    <div className="kv kv-compact">
                       <div className="k">Client</div>
                       <div className="v">{activeClient.name}</div>
                       <div className="k">Industry</div>
@@ -129,7 +121,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                       <div className="v">{activeClient.operations ? "Included" : "Not provided"}</div>
                     </div>
                   ) : (
-                    <div className="muted" style={{ fontSize: 13 }}>
+                    <div className="empty-small">
                       Select a client from the list.
                     </div>
                   )}
@@ -137,13 +129,14 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
 
                 <div className="hr" />
 
-                <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
+                <div className="actions-row">
                   <button
                     className="btn primary"
                     disabled={busy || !activeClient || !activeLv}
                     onClick={analyze}
                   >
-                    {busy ? "Analyzing…" : "Analyze client impact →"}
+                    {busy ? "Analyzing..." : "Analyze client impact"}
+                    <ArrowRight size={15} strokeWidth={1.9} aria-hidden="true" />
                   </button>
                 </div>
               </div>
@@ -209,7 +202,7 @@ function NewClientModal({
               placeholder="Corebloom Health AI Inc."
             />
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <div className="modal-grid-2">
             <div className="rd-field">
               <label>Industry</label>
               <input

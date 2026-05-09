@@ -18,7 +18,7 @@
   background: var(--panel);
   color: var(--ink-3);
   padding: 36px;
-  border-radius: 10px;
+  border-radius: 8px;
   text-align: center;
   font-size: 13px;
 }
@@ -39,6 +39,27 @@
   align-items: center;
   gap: 10px;
 }
+.rd-toast-pip {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ok);
+  box-shadow: 0 0 0 3px rgba(42, 112, 68, 0.18);
+  flex-shrink: 0;
+}
+.rd-toast-message {
+  flex: 1;
+}
+.rd-toast-kbd {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0;
+  color: var(--ink-4);
+  border: 1px solid var(--border-2);
+  border-radius: 4px;
+  padding: 1px 5px;
+  background: transparent;
+}
 .rd-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -51,7 +72,7 @@
 .rd-modal {
   background: var(--panel);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 8px;
   width: 560px;
   max-width: calc(100vw - 32px);
   box-shadow: var(--shadow-md);
@@ -62,7 +83,7 @@
   font-family: var(--sans);
   font-size: 15px;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
   color: var(--ink);
 }
 .rd-modal-b {
@@ -85,7 +106,7 @@
 }
 .rd-field label {
   font-size: 10.5px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
   text-transform: uppercase;
   color: var(--ink-4);
   font-family: var(--mono);

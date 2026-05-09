@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { ArrowRight, Search, Upload } from "lucide-react";
 import type { Nav } from "../App";
 import { MomentumBadge } from "../components/badges";
 import { PageHeader } from "../components/PageHeader";
@@ -132,14 +133,15 @@ export function BillMonitor({ nav }: { nav: Nav }) {
               type="file"
               accept="application/json,.json"
               onChange={onUpload}
-              style={{ display: "none" }}
+              hidden
             />
             <button
               className="btn primary"
               disabled={busy}
               onClick={() => fileInputRef.current?.click()}
             >
-              {busy ? "Working…" : "+ Upload bill JSON"}
+              <Upload size={16} strokeWidth={1.9} aria-hidden="true" />
+              {busy ? "Working..." : "Upload bill JSON"}
             </button>
           </>
         }
@@ -157,9 +159,10 @@ export function BillMonitor({ nav }: { nav: Nav }) {
           </div>
           <div className="bm-toolbar-right">
             <div className="search">
+              <Search className="search-icon" size={16} strokeWidth={1.8} aria-hidden="true" />
               <input
                 type="text"
-                placeholder="Search bills by number or title…"
+                placeholder="Search bills by number or title"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
@@ -171,19 +174,7 @@ export function BillMonitor({ nav }: { nav: Nav }) {
         {bills.length === 0 ? (
           <div className="rd-empty">
             Inbox empty. Upload a LEGISinfo bill JSON, or seed the demo via{" "}
-            <code
-              style={{
-                fontFamily: "var(--mono)",
-                fontSize: 12.5,
-                background: "var(--panel-2)",
-                border: "1px solid var(--border)",
-                borderRadius: 2,
-                padding: "1px 6px",
-                color: "var(--ink-2)",
-              }}
-            >
-              npm run seed
-            </code>
+            <code className="inline-code">npm run seed</code>
             .
           </div>
         ) : filter === "defeated" || visibleBills.length === 0 ? (
@@ -200,13 +191,13 @@ export function BillMonitor({ nav }: { nav: Nav }) {
               <table className="tbl">
                 <thead>
                   <tr>
-                    <th style={{ width: 110 }}>Bill</th>
+                    <th className="col-bill">Bill</th>
                     <th>Title</th>
-                    <th style={{ width: 160 }}>Status</th>
-                    <th style={{ width: 140 }}>Momentum</th>
-                    <th style={{ width: 80 }}>Activity</th>
-                    <th style={{ width: 220 }}>Latest movement</th>
-                    <th style={{ width: 130 }}></th>
+                    <th className="col-status">Status</th>
+                    <th className="col-momentum">Momentum</th>
+                    <th className="col-activity">Activity</th>
+                    <th className="col-movement">Latest movement</th>
+                    <th className="col-action"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -222,7 +213,7 @@ export function BillMonitor({ nav }: { nav: Nav }) {
                         )}
                       </td>
                       <td>
-                        <div style={{ fontSize: 13 }}>{b.status}</div>
+                        <div className="table-status">{b.status}</div>
                       </td>
                       <td>
                         <MomentumBadge value={b.legislativeMomentum} />
@@ -232,19 +223,20 @@ export function BillMonitor({ nav }: { nav: Nav }) {
                       </td>
                       <td>
                         <div className="meta">
-                          {b.latestActivity ?? "—"}
+                          {b.latestActivity ?? "-"}
                         </div>
-                        <div className="meta tnum" style={{ marginTop: 2 }}>
+                        <div className="meta tnum meta-spaced">
                           {new Date(b.uploadedAt).toLocaleString()}
                         </div>
                       </td>
-                      <td style={{ textAlign: "right" }}>
+                      <td className="table-action-cell">
                         <button
                           className="btn sm"
                           disabled={busy}
                           onClick={() => openDelta(b)}
                         >
-                          Open Delta →
+                          Open Delta
+                          <ArrowRight size={14} strokeWidth={1.9} aria-hidden="true" />
                         </button>
                       </td>
                     </tr>
