@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
 
 export function PageHeader({
-  crumbs = [],
   title,
   sub,
   actions,
 }: {
+  /** kept for backward compat; intentionally unused */
   crumbs?: string[];
   title: ReactNode;
   sub?: ReactNode;
@@ -13,13 +13,6 @@ export function PageHeader({
 }) {
   return (
     <header className="ph">
-      {crumbs.length > 0 && (
-        <div className="ph-crumbs">
-          {crumbs.map((c, i) => (
-            <span key={i}>{c}</span>
-          ))}
-        </div>
-      )}
       <div className="ph-row">
         <div style={{ minWidth: 0, flex: 1 }}>
           <h1 className="ph-title">{title}</h1>

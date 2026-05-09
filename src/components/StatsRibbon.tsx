@@ -11,12 +11,11 @@ function daysSince(iso: string | undefined): number | null {
 }
 
 function syntheticSeries(seed: number, n = 12): { i: number; v: number }[] {
-  // Deterministic pseudo-random, bounded
   const data: { i: number; v: number }[] = [];
   let x = (seed % 97) + 13;
   for (let i = 0; i < n; i++) {
     x = (x * 1103515245 + 12345) & 0x7fffffff;
-    const v = 6 + ((x >> 8) % 18) + (i * 0.6);
+    const v = 6 + ((x >> 8) % 18) + i * 0.6;
     data.push({ i, v });
   }
   return data;
@@ -57,34 +56,27 @@ export function StatsRibbon({ bills }: { bills: Bill[] }) {
   return (
     <div className="bm-ribbon">
       <div className="bm-cell">
-        <div className="stat-l">Bills tracked</div>
+        <div className="stat-l">Tracked</div>
         <div className="stat-v tnum">{stats.total}</div>
-        <div className="bm-delta">vs. 12 last week</div>
-        <div className="accent-bar" />
       </div>
 
       <div className="bm-cell">
-        <div className="stat-l">Active · late stage</div>
+        <div className="stat-l">Active</div>
         <div className="stat-v tnum">{stats.activeLate}</div>
-        <div className="bm-delta">in committee or report stage</div>
-        <div className="accent-bar" />
       </div>
 
       <div className="bm-cell">
         <div className="stat-l">Royal assent</div>
         <div className="stat-v tnum">{stats.highImpact}</div>
-        <div className="bm-delta">passed or in force</div>
-        <div className="accent-bar" />
       </div>
 
       <div className="bm-cell bm-cell-spark">
         <div className="bm-cell-head">
           <div>
-            <div className="stat-l">Recency</div>
+            <div className="stat-l">Last ingest</div>
             <div className="stat-v tnum">
               {stats.recencyDays === null ? "—" : `${stats.recencyDays}d`}
             </div>
-            <div className="bm-delta">since last ingest · 12-wk activity</div>
           </div>
           <div className="bm-spark" aria-hidden="true">
             <ResponsiveContainer width="100%" height={40}>
@@ -102,17 +94,21 @@ export function StatsRibbon({ bills }: { bills: Bill[] }) {
                   >
                     <stop
                       offset="0%"
-                      stopColor="#1e3a8a"
-                      stopOpacity={0.35}
+                      stopColor="#d4a017"
+                      stopOpacity={0.45}
                     />
-                    <stop offset="100%" stopColor="#1e3a8a" stopOpacity={0} />
+                    <stop
+                      offset="100%"
+                      stopColor="#d4a017"
+                      stopOpacity={0}
+                    />
                   </linearGradient>
                 </defs>
                 <Area
                   type="monotone"
                   dataKey="v"
-                  stroke="#1e3a8a"
-                  strokeWidth={1}
+                  stroke="#d4a017"
+                  strokeWidth={1.25}
                   fill="url(#bm-ribbon-grad)"
                   isAnimationActive={false}
                 />
@@ -120,7 +116,6 @@ export function StatsRibbon({ bills }: { bills: Bill[] }) {
             </ResponsiveContainer>
           </div>
         </div>
-        <div className="accent-bar" />
       </div>
     </div>
   );

@@ -3,17 +3,17 @@ import { Area, AreaChart, ResponsiveContainer } from "recharts";
 type Tone = "accent" | "ok" | "high" | "crit";
 
 const TONE_STROKE: Record<Tone, string> = {
-  accent: "#1e3a8a",
-  ok: "#1f6b3a",
-  high: "#8a4a09",
-  crit: "#8a1a1a",
+  accent: "#d4a017",
+  ok: "#34d399",
+  high: "#fbbf24",
+  crit: "#f87171",
 };
 
 const TONE_FILL: Record<Tone, string> = {
-  accent: "#1e3a8a",
-  ok: "#1f6b3a",
-  high: "#8a4a09",
-  crit: "#8a1a1a",
+  accent: "#d4a017",
+  ok: "#34d399",
+  high: "#fbbf24",
+  crit: "#f87171",
 };
 
 export function Sparkline({
