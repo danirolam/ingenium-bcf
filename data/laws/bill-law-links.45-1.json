@@ -3,6 +3,36 @@
   "description": "Manual bill-to-current-law links for the first comparison demo. A production version should infer candidates from bill XML targetActs, then confirm them against data/laws/registry.json.",
   "links": [
     {
+      "bill": "C-273",
+      "lawSlug": "feeds-act",
+      "lawTitle": "Feeds Act",
+      "reason": "C-273 clauses 2 to 5 amend the Feeds Act to add trusted-jurisdiction rules and provisional/final feed approval or registration."
+    },
+    {
+      "bill": "C-273",
+      "lawSlug": "fertilizers-act",
+      "lawTitle": "Fertilizers Act",
+      "reason": "C-273 clauses 6 to 9 amend the Fertilizers Act to add trusted-jurisdiction rules and provisional/final fertilizer or supplement approval or registration."
+    },
+    {
+      "bill": "C-273",
+      "lawSlug": "seeds-act",
+      "lawTitle": "Seeds Act",
+      "reason": "C-273 clauses 10 to 13 amend the Seeds Act to add provisional/final variety registration and trusted-jurisdiction reliance."
+    },
+    {
+      "bill": "C-273",
+      "lawSlug": "pest-control-products-act",
+      "lawTitle": "Pest Control Products Act",
+      "reason": "C-273 clauses 14 to 18 amend the Pest Control Products Act to add trusted-jurisdiction reliance and provisional pest control product registration."
+    },
+    {
+      "bill": "C-273",
+      "lawSlug": "food-and-drugs-act",
+      "lawTitle": "Food and Drugs Act",
+      "reason": "C-273 clause 19 amends subsection 30.06(1) of the Food and Drugs Act to include veterinary drugs in foreign-regulatory-authority deeming orders."
+    },
+    {
       "bill": "S-202",
       "lawSlug": "food-and-drugs-act",
       "lawTitle": "Food and Drugs Act",

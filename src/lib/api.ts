@@ -29,7 +29,12 @@ export const api = {
         body: JSON.stringify(raw),
       }),
     extractDelta: (id: string) =>
-      j<LawVersion>(`/api/bills/${id}/extract-delta`, { method: "POST" }),
+      j<{ lawVersions: LawVersion[]; errors: string[] }>(
+        `/api/bills/${id}/extract-delta`,
+        { method: "POST" },
+      ),
+    lawVersions: (id: string) =>
+      j<LawVersion[]>(`/api/bills/${id}/law-versions`),
   },
   lawVersions: {
     list: () => j<LawVersion[]>("/api/law-versions"),

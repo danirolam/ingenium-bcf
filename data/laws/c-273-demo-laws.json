@@ -1,0 +1,45 @@
+{
+  "bill": "C-273",
+  "session": "45-1",
+  "title": "Facilitating Agricultural Regulatory Modernization Act",
+  "sourceBillPath": "data/bills/45-1/C-273/bill.normalized.json",
+  "purpose": "Demo pack for comparing C-273 against the current federal laws it amends.",
+  "theme": "Agricultural regulatory modernization through trusted-jurisdiction reliance, provisional registration, and foreign regulatory authority deeming orders.",
+  "amendedLaws": [
+    {
+      "lawSlug": "feeds-act",
+      "lawTitle": "Feeds Act",
+      "currentLawPath": "data/laws/current/federal/feeds-act/current.normalized.json",
+      "billClauses": ["2", "3", "4", "5"],
+      "demoFocus": "Adds a trusted jurisdiction definition and creates provisional/final approval or registration for feeds."
+    },
+    {
+      "lawSlug": "fertilizers-act",
+      "lawTitle": "Fertilizers Act",
+      "currentLawPath": "data/laws/current/federal/fertilizers-act/current.normalized.json",
+      "billClauses": ["6", "7", "8", "9"],
+      "demoFocus": "Adds a trusted jurisdiction definition and creates provisional/final approval or registration for fertilizers and supplements."
+    },
+    {
+      "lawSlug": "seeds-act",
+      "lawTitle": "Seeds Act",
+      "currentLawPath": "data/laws/current/federal/seeds-act/current.normalized.json",
+      "billClauses": ["10", "11", "12", "13"],
+      "demoFocus": "Adds provisional/final seed variety registration and reliance on trusted-jurisdiction evidence."
+    },
+    {
+      "lawSlug": "pest-control-products-act",
+      "lawTitle": "Pest Control Products Act",
+      "currentLawPath": "data/laws/current/federal/pest-control-products-act/current.normalized.json",
+      "billClauses": ["14", "15", "16", "17", "18"],
+      "demoFocus": "Adds trusted-jurisdiction reliance and provisional registration for pest control products."
+    },
+    {
+      "lawSlug": "food-and-drugs-act",
+      "lawTitle": "Food and Drugs Act",
+      "currentLawPath": "data/laws/current/federal/food-and-drugs-act/current.normalized.json",
+      "billClauses": ["19"],
+      "demoFocus": "Expands section 30.06 foreign-regulatory-authority deeming orders to include veterinary drugs."
+    }
+  ]
+}

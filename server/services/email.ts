@@ -24,7 +24,7 @@ async function send(opts: {
 }): Promise<EmailResult> {
   const client = getClient();
   const to = process.env.NOTIFY_EMAIL || "lawyer@example.com";
-  const from = process.env.RESEND_FROM || "Injenium <onboarding@resend.dev>";
+  const from = process.env.RESEND_FROM || "Ingenium <onboarding@resend.dev>";
 
   if (!client) {
     console.log(`[email] simulated → ${to} :: ${opts.subject}`);
@@ -48,7 +48,7 @@ async function send(opts: {
 export async function sendBillUploadedEmail(bill: Bill): Promise<EmailResult> {
   return send({
     subject: `[New Bill Uploaded] ${bill.billNumber} is ready for legal delta review`,
-    html: `<p>A new bill has been uploaded to Injenium.</p>
+    html: `<p>A new bill has been uploaded to Ingenium.</p>
       <p><b>${bill.billNumber}</b> — ${bill.title}<br/>
       Status: ${bill.status}<br/>
       Legislative momentum: ${bill.legislativeMomentum}</p>
@@ -79,7 +79,7 @@ export async function sendClientImpactCompleteEmail(args: {
         <li>Timing: ${a.timing}</li>
       </ul>
       <p><b>Why it matters:</b> ${a.whyItAffectsClient}</p>
-      <p>Open the Client Impact Analysis page in Injenium to review and act.</p>`,
+      <p>Open the Client Impact Analysis page in Ingenium to review and act.</p>`,
   });
 }
 

@@ -9,23 +9,14 @@ const source = process.argv.includes("--all")
 const limitArg = process.argv.includes("--limit")
   ? Number(process.argv[process.argv.indexOf("--limit") + 1])
   : null;
-const billArg = process.argv.includes("--bill")
-  ? process.argv[process.argv.indexOf("--bill") + 1]?.toUpperCase()
-  : null;
 
-const inputSource = billArg ? `data/normalized/bills.${session}.json` : source;
-const bills = JSON.parse(await readFile(inputSource, "utf8"))
-  .filter((bill) => bill.latestBillTextTypeId)
-  .filter((bill) => billArg ? bill.number === billArg : bill.recommendation !== "archive")
+const bills = JSON.parse(await readFile(source, "utf8"))
+  .filter((bill) => bill.latestBillTextTypeId && bill.recommendation !== "archive")
   .slice(0, limitArg || undefined);
-
-if (billArg && bills.length === 0) {
-  throw new Error(`No bill found for ${billArg} in ${inputSource}`);
-}
 
 const manifest = {
   session,
-  source: inputSource,
+  source,
   fetchedAt: new Date().toISOString(),
   count: 0,
   failures: [],
@@ -45,14 +36,8 @@ for (const bill of bills) {
 }
 
 await mkdir(`data/bills/${session}`, { recursive: true });
-if (billArg) {
-  const singleManifestPath = `data/bills/${session}/${billArg}/retrieval.json`;
-  await writeFile(singleManifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
-  console.log(`wrote ${singleManifestPath}`);
-} else {
-  await writeFile(`data/bills/${session}/manifest.json`, `${JSON.stringify(manifest, null, 2)}\n`);
-  console.log(`wrote data/bills/${session}/manifest.json`);
-}
+await writeFile(`data/bills/${session}/manifest.json`, `${JSON.stringify(manifest, null, 2)}\n`);
+console.log(`wrote data/bills/${session}/manifest.json`);
 
 async function retrieveBill(bill) {
   const number = bill.number;

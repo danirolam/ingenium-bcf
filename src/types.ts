@@ -16,6 +16,7 @@ export interface BillClause {
   number?: string;
   heading?: string;
   text: string;
+  targetActs?: string[];
 }
 
 export interface Bill {

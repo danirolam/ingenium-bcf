@@ -1,0 +1,16 @@
+{
+  "title": "Pest Control Products Act",
+  "citation": "S.C. 2002, c. 28",
+  "jurisdiction": "Canada",
+  "level": "federal",
+  "currentPath": "data/laws/current/federal/pest-control-products-act",
+  "source": {
+    "publisher": "Justice Laws Website",
+    "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/P-9.01/FullText.html",
+    "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/P-9.01.xml"
+  },
+  "relatedBills": [
+    "C-273"
+  ],
+  "fetchedAt": "2026-05-09T21:13:28.050Z"
+}

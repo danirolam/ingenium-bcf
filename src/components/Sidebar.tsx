@@ -12,15 +12,42 @@ type SidebarItem = {
   id: PageId;
   num: string;
   label: string;
+  description: string;
   tally?: string;
   icon: LucideIcon;
 };
 
 const ITEMS: SidebarItem[] = [
-  { id: "monitor", num: "01", label: "Bill Monitor", tally: "12", icon: FileText },
-  { id: "delta", num: "02", label: "Delta Workspace", tally: "3", icon: GitCompareArrows },
-  { id: "scanner", num: "03", label: "Client-Law Scanner", icon: ScanSearch },
-  { id: "impact", num: "04", label: "Client Impact Analysis", icon: BriefcaseBusiness },
+  {
+    id: "monitor",
+    num: "01",
+    label: "Bill Monitor",
+    tally: "12",
+    icon: FileText,
+    description: "Retrieve and normalize bill records before they enter legal review.",
+  },
+  {
+    id: "delta",
+    num: "02",
+    label: "Delta Workspace",
+    tally: "3",
+    icon: GitCompareArrows,
+    description: "Compare proposed amendments against current law, Act by Act.",
+  },
+  {
+    id: "scanner",
+    num: "03",
+    label: "Client-Law Scanner",
+    icon: ScanSearch,
+    description: "Pair approved law versions with client materials for impact screening.",
+  },
+  {
+    id: "impact",
+    num: "04",
+    label: "Client Impact Analysis",
+    icon: BriefcaseBusiness,
+    description: "Review client-specific exposure, actions, timelines, and recommendations.",
+  },
 ];
 
 export function Sidebar({
@@ -43,7 +70,7 @@ export function Sidebar({
         <div className="sb-mark" aria-hidden="true" />
         <div>
           <div className="sb-name">BCF</div>
-          <div className="sb-subname">by <span>Injenium</span></div>
+          <div className="sb-subname">by <span>Ingenium</span></div>
         </div>
         <ArrowLeft
           className="sb-back-arrow"
@@ -65,6 +92,7 @@ export function Sidebar({
             <span className="sb-num">{it.num}</span>
             <span className="sb-label">{it.label}</span>
             {it.tally && <span className="sb-tag">{it.tally}</span>}
+            <span className="sb-help" role="tooltip">{it.description}</span>
           </button>
         ))}
       </nav>
@@ -77,7 +105,7 @@ export function Sidebar({
             <div className="sb-user-role">Senior Counsel · Privacy</div>
           </div>
         </div>
-        <div className="sb-build">BCF · Injenium build</div>
+        <div className="sb-build">BCF · Ingenium build</div>
       </div>
     </aside>
   );

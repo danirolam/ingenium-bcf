@@ -21,14 +21,16 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
         setClients(cs);
         setLvs(ls);
         if (!activeClient && cs.length > 0) setActiveClient(cs[0]);
-        const approved = ls.filter((lv) => lv.humanApproved);
+        const approved = ls.filter(
+          (lv) => lv.humanApproved && !lv.baseLawId.startsWith("unregistered:"),
+        );
         if (!activeLvId && approved.length > 0) setActiveLvId(approved[0].id);
       },
     );
   }, []);
 
   const approvedLvs = useMemo(
-    () => lvs.filter((lv) => lv.humanApproved),
+    () => lvs.filter((lv) => lv.humanApproved && !lv.baseLawId.startsWith("unregistered:")),
     [lvs],
   );
   const activeLv = approvedLvs.find((lv) => lv.id === activeLvId) ?? null;
