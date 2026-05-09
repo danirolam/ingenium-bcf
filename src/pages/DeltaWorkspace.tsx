@@ -299,8 +299,8 @@ function DeltaSection({
         <div className="sec-title-wrap">
           <div className="sec-title">{actDisplayName(lv.baseLawTitle)}</div>
           <div className="sec-sub">
-            {lv.affectedSections.length > 0
-              ? lv.affectedSections.join(", ")
+            {(lv.affectedSections?.length ?? 0) > 0
+              ? (lv.affectedSections ?? []).join(", ")
               : `sourced from ${lv.sourceBillNumber}`}
           </div>
         </div>
@@ -458,14 +458,14 @@ function DeltaRightRail({
           <div className="delta-card-body">
             <div className="delta-summary-text">{activeLv.deltaSummary}</div>
             <div className="delta-chip-row">
-              {activeLv.affectedSections.map((s) => (
+              {(activeLv.affectedSections ?? []).map((s) => (
                 <span key={s} className="badge outline">
                   {s}
                 </span>
               ))}
             </div>
             <div className="delta-chip-row">
-              {activeLv.changeTypes.map((t) => (
+              {(activeLv.changeTypes ?? []).map((t) => (
                 <span key={t} className="badge outline dim">
                   {t}
                 </span>
