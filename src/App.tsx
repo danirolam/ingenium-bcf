@@ -33,6 +33,14 @@ export default function App() {
     if (typeof window !== "undefined") window.location.hash = "#/app";
   }, []);
 
+  const exitToLanding = useCallback(() => {
+    setSurface("landing");
+    if (typeof window !== "undefined") {
+      // Clear the hash so the landing matches a fresh visit
+      history.replaceState(null, "", window.location.pathname);
+    }
+  }, []);
+
   const go = useCallback((p: PageId, ps: Record<string, string> = {}) => {
     setPage(p);
     setParams(ps);
@@ -56,7 +64,7 @@ export default function App() {
   else view = <ClientImpactAnalysisPage nav={nav} />;
 
   return (
-    <Layout page={page} setPage={setPageOnly}>
+    <Layout page={page} setPage={setPageOnly} onExit={exitToLanding}>
       {view}
       <Toast message={toastMsg} onDismiss={() => setToastMsg(null)} />
     </Layout>

@@ -4,39 +4,45 @@
              .lpg- (LawPickerGrid), .dw-, .cs-, .cia- (page tweaks).
    No global selectors — uses tokens via var(--…). */
 
-/* ───────── LegislativeJourney ───────── */
+/* ───────── LegislativeJourney ─────────
+   Geometry: pip cell is 28px wide. The vertical line sits at the
+   exact horizontal center of that cell (wrap padding + 14px), and
+   each pip uses justify-self: center so pips of different sizes
+   share the same center line. */
 .lj-wrap {
   position: relative;
-  padding: 16px 16px 16px 28px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
 }
 .lj-wrap::before {
   content: "";
   position: absolute;
-  left: 33px;
-  top: 22px;
-  bottom: 22px;
+  /* wrap padding-left (16) + half of 28px pip cell (14) - 0.5 to center the 1px line */
+  left: 29.5px;
+  top: 32px;
+  bottom: 32px;
   width: 1px;
   background: var(--border-2);
 }
 .lj-row {
   position: relative;
   display: grid;
-  grid-template-columns: 18px 1fr auto;
-  gap: 12px;
+  grid-template-columns: 28px 1fr auto;
+  gap: 14px;
   align-items: center;
-  min-height: 28px;
+  min-height: 38px;
 }
 .lj-pip {
   width: 10px;
   height: 10px;
   border-radius: 50%;
   background: var(--panel);
-  border: 1px solid var(--border-2);
-  margin-left: 4px;
+  border: 1.5px solid var(--border-2);
+  justify-self: center;
   z-index: 1;
+  box-sizing: border-box;
 }
 .lj-pip.done {
   background: var(--accent);
@@ -45,10 +51,9 @@
 .lj-pip.current {
   width: 14px;
   height: 14px;
-  margin-left: 2px;
   background: var(--ok);
-  border: 2px solid var(--ok-bg);
-  box-shadow: 0 0 0 1px var(--ok);
+  border: 2px solid var(--panel);
+  box-shadow: 0 0 0 1.5px var(--ok);
 }
 .lj-name {
   font-family: var(--sans);

@@ -1,5 +1,6 @@
 import type { PageId } from "../App";
 import {
+  ArrowLeft,
   BriefcaseBusiness,
   FileText,
   GitCompareArrows,
@@ -25,19 +26,32 @@ const ITEMS: SidebarItem[] = [
 export function Sidebar({
   page,
   setPage,
+  onExit,
 }: {
   page: PageId;
   setPage: (p: PageId) => void;
+  onExit?: () => void;
 }) {
   return (
     <aside className="sb">
-      <div className="sb-brand">
+      <button
+        type="button"
+        className="sb-brand sb-brand-button"
+        onClick={onExit}
+        aria-label="Back to landing page"
+      >
         <div className="sb-mark" aria-hidden="true" />
         <div>
           <div className="sb-name">BCF</div>
           <div className="sb-subname">by <span>Injenium</span></div>
         </div>
-      </div>
+        <ArrowLeft
+          className="sb-back-arrow"
+          size={14}
+          strokeWidth={1.75}
+          aria-hidden="true"
+        />
+      </button>
 
       <div className="sb-section">Workspaces</div>
       <nav className="sb-nav">
