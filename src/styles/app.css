@@ -1,6 +1,7 @@
 @import "./injenium.css";
 @import "./billmonitor.css";
 @import "./pages-extra.css";
+@import "./landing.css";
 
 @tailwind base;
 @tailwind components;
