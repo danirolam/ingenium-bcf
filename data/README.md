@@ -195,6 +195,12 @@ Retrieve a small smoke-test sample:
 node --use-system-ca scripts/retrieve-bill-texts.mjs --limit 3
 ```
 
+Retrieve or refresh one specific bill:
+
+```text
+node --use-system-ca scripts/retrieve-bill-texts.mjs --bill C-273
+```
+
 Refresh the current Food and Drugs Act:
 
 ```text
