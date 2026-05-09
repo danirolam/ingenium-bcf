@@ -19,7 +19,12 @@ import {
   readAll,
   upsert,
 } from "../services/jsonStore.js";
-import { findBaseLawForBill, loadSeedSnapshot } from "../seed/seedDemo.js";
+import {
+  actsAffectedByBill,
+  loadActRegistry,
+  type AffectedAct,
+} from "../services/seedSource.js";
+import { loadSeedSnapshot } from "../seed/seedDemo.js";
 
 export const billsRouter = Router();
 
@@ -32,6 +37,11 @@ billsRouter.get("/:id", async (req, res) => {
   const bill = await findById<Bill>(FILES.bills, req.params.id);
   if (!bill) return res.status(404).json({ error: "not_found" });
   res.json(bill);
+});
+
+billsRouter.get("/:id/law-versions", async (req, res) => {
+  const all = await readAll<LawVersion>(FILES.lawVersions);
+  res.json(all.filter((lv) => lv.sourceBillId === req.params.id));
 });
 
 billsRouter.post("/upload", async (req, res) => {
@@ -51,59 +61,75 @@ function versionStatusFromBill(bill: Bill): VersionStatus {
   return "proposed_future";
 }
 
-billsRouter.post("/:id/extract-delta", async (req, res) => {
-  const bill = await findById<Bill>(FILES.bills, req.params.id);
-  if (!bill) return res.status(404).json({ error: "bill not_found" });
+function clausesForAct(bill: Bill, act: AffectedAct): Bill["clauses"] {
+  const ids = new Set(act.clauseIds);
+  return bill.clauses.filter((c) => ids.has(c.id));
+}
 
-  // Reuse existing LawVersion if one already exists for this bill.
-  const all = await readAll<LawVersion>(FILES.lawVersions);
-  const existing = all.find((lv) => lv.sourceBillId === bill.id);
-  if (existing) return res.json(existing);
+function buildStubLawVersion(args: {
+  bill: Bill;
+  act: AffectedAct;
+}): LawVersion {
+  const { bill, act } = args;
+  const stubSlug = act.slug ?? `unregistered:${act.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+  const clauses = clausesForAct(bill, act);
+  const updatedText = clauses
+    .map((c) => {
+      const head = [c.number, c.heading].filter(Boolean).join(" — ");
+      return head ? `${head}\n${c.text}` : c.text;
+    })
+    .join("\n\n");
+  const summary = `Bill ${bill.billNumber} introduces ${clauses.length} clause${clauses.length === 1 ? "" : "s"} that target the ${act.title}. The current consolidated text of this Act is not yet ingested into Injenium, so the diff below is one-sided — it shows only the proposed amending text.`;
+  return {
+    id: `lv-${bill.id}-${stubSlug}`,
+    baseLawId: stubSlug,
+    baseLawTitle: act.title,
+    sourceBillId: bill.id,
+    sourceBillNumber: bill.billNumber,
+    sourceBillTitle: bill.title,
+    sourceBillStatus: bill.status,
+    legislativeMomentum: bill.legislativeMomentum,
+    versionStatus: versionStatusFromBill(bill),
+    humanApproved: false,
+    oldText: "",
+    updatedText,
+    affectedSections: clauses
+      .map((c) => c.number)
+      .filter((n): n is string => typeof n === "string"),
+    changeTypes: ["add"],
+    deltaSummary: summary,
+    detailedDelta: summary,
+    effectiveDate: null,
+    comingIntoForceText: null,
+    confidence: 0.4,
+    humanReviewRequired: true,
+    humanReviewReason:
+      "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    createdAt: new Date().toISOString(),
+  };
+}
 
-  // Resolve the base law: prefer the curated bill→law link from the seed,
-  // fall back to the first registered base law.
-  const linked = await findBaseLawForBill(bill.id);
-  const baseLaws = await readAll<BaseLaw>(FILES.baseLaws);
-  const baseLaw = linked ?? baseLaws[0];
-  if (!baseLaw) {
-    return res.status(409).json({
-      error:
-        "No base law registered. Add a current law under data/laws/ and a bill→law link in data/laws/bill-law-links.45-1.json.",
-    });
-  }
+async function buildLawVersionForRegisteredAct(args: {
+  bill: Bill;
+  act: AffectedAct;
+  baseLaw: BaseLaw;
+}): Promise<LawVersion | null> {
+  const { bill, act, baseLaw } = args;
+  // Constrain the prompt to clauses targeting this Act so multi-Act bills
+  // produce one focused extraction per Act rather than one mega-prompt.
+  const billForAct: Bill = { ...bill, clauses: clausesForAct(bill, act) };
 
-  let amendments = await extractAmendmentsFromBill(bill, baseLaw);
-  let updatedText: string | null = null;
-  if (amendments) updatedText = await generateUpdatedLawText(baseLaw, amendments);
+  const amendments = await extractAmendmentsFromBill(billForAct, baseLaw);
+  const updatedText = amendments
+    ? await generateUpdatedLawText(baseLaw, amendments)
+    : null;
 
-  if (!amendments || !updatedText) {
-    // No live Gemini result. If the seed includes a canned LawVersion for
-    // this bill we'll have already returned it via `existing` above. Surface
-    // a clear error pointing the user to GEMINI_API_KEY for everything else.
-    const snapshot = await loadSeedSnapshot();
-    const cannedForBill = snapshot.lawVersions.find(
-      (lv) => lv.sourceBillId === bill.id,
-    );
-    if (cannedForBill) {
-      const cloned: LawVersion = {
-        ...cannedForBill,
-        id: `lv-${bill.id}-${Date.now()}`,
-        createdAt: new Date().toISOString(),
-      };
-      await upsert(FILES.lawVersions, cloned);
-      return res.json(cloned);
-    }
-    return res.status(503).json({
-      error:
-        "Live extraction is unavailable: no canned demo for this bill and GEMINI_API_KEY is missing or the call failed. Set GEMINI_API_KEY in .env to enable live legal-delta extraction.",
-    });
-  }
+  if (!amendments || !updatedText) return null;
 
   const a: AmendmentExtraction = amendments;
   const review = flagAmendmentReview(a);
-
-  const lv: LawVersion = {
-    id: `lv-${bill.id}-${Date.now()}`,
+  return {
+    id: `lv-${bill.id}-${baseLaw.id}`,
     baseLawId: baseLaw.id,
     baseLawTitle: baseLaw.title,
     sourceBillId: bill.id,
@@ -126,6 +152,84 @@ billsRouter.post("/:id/extract-delta", async (req, res) => {
     humanReviewReason: a.humanReviewReason ?? review.reason,
     createdAt: new Date().toISOString(),
   };
-  await upsert(FILES.lawVersions, lv);
-  res.json(lv);
+}
+
+billsRouter.post("/:id/extract-delta", async (req, res) => {
+  const bill = await findById<Bill>(FILES.bills, req.params.id);
+  if (!bill) return res.status(404).json({ error: "bill not_found" });
+
+  const registry = await loadActRegistry();
+  const baseLaws = await readAll<BaseLaw>(FILES.baseLaws);
+  const baseLawById = new Map(baseLaws.map((bl) => [bl.id, bl] as const));
+  const snapshot = await loadSeedSnapshot();
+  const cannedByBaseLaw = new Map(
+    snapshot.lawVersions
+      .filter((lv) => lv.sourceBillId === bill.id)
+      .map((lv) => [lv.baseLawId, lv] as const),
+  );
+
+  const acts = actsAffectedByBill(bill, registry);
+  if (acts.length === 0) {
+    return res.status(409).json({
+      error:
+        "Bill has no targetActs on its clauses. Re-run the bill normalization upstream so each clause carries targetActs.",
+    });
+  }
+
+  const existing = await readAll<LawVersion>(FILES.lawVersions);
+  const existingByPair = new Map(
+    existing.map((lv) => [`${lv.sourceBillId}|${lv.baseLawId}`, lv] as const),
+  );
+
+  const result: LawVersion[] = [];
+  const errors: string[] = [];
+
+  for (const act of acts) {
+    const stubSlug = act.slug ?? `unregistered:${act.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+    const pairKey = `${bill.id}|${stubSlug}`;
+    const cached = existingByPair.get(pairKey);
+    if (cached) {
+      result.push(cached);
+      continue;
+    }
+
+    // Cold-demo cache (e.g. S-202 × FDA) wins over Gemini.
+    const canned = cannedByBaseLaw.get(stubSlug);
+    if (canned) {
+      const cloned: LawVersion = {
+        ...canned,
+        id: `lv-${bill.id}-${stubSlug}`,
+        createdAt: new Date().toISOString(),
+      };
+      await upsert(FILES.lawVersions, cloned);
+      result.push(cloned);
+      continue;
+    }
+
+    if (act.slug) {
+      const baseLaw = baseLawById.get(act.slug);
+      if (baseLaw) {
+        const lv = await buildLawVersionForRegisteredAct({
+          bill,
+          act,
+          baseLaw,
+        });
+        if (lv) {
+          await upsert(FILES.lawVersions, lv);
+          result.push(lv);
+          continue;
+        }
+        errors.push(
+          `Live extraction failed for "${act.title}" — set GEMINI_API_KEY in .env or check the server log.`,
+        );
+        // Still surface a stub so the workspace renders something.
+      }
+    }
+
+    const stub = buildStubLawVersion({ bill, act });
+    await upsert(FILES.lawVersions, stub);
+    result.push(stub);
+  }
+
+  res.json({ lawVersions: result, errors });
 });
