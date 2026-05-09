@@ -94,7 +94,7 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
       .list()
       .then(async (all) => {
         const demoMatch = all.find((item) => item.sourceBillNumber === "C-273") ??
-          all.find((item) => item.sourceBillNumber === "C-27") ??
+          all.find((item) => item.sourceBillNumber === "C-273") ??
           all[0];
         if (!demoMatch) return;
         const bills = await api.bills.list();
