@@ -1,0 +1,13 @@
+EventPour Technologies provides SaaS tools for festivals, venues, and event organizers that sell food and alcoholic beverages at events.
+
+EventPour does not sell alcohol directly. The platform manages vendor onboarding, age-gate workflows, booth inventory, point-of-sale integrations, and vendor compliance checklists.
+
+Customer terms say: "Customer and its vendors are responsible for obtaining all permits and complying with laws applicable to the sale, service, marketing, labelling, and distribution of regulated products."
+
+Operational facts:
+- Provides software infrastructure for alcohol sales at events.
+- Does not own, package, or label beverages.
+- Hosts vendor compliance workflows.
+- Could update templates, checklists, and indemnity language.
+- Risk is mostly indirect and contractual.
+

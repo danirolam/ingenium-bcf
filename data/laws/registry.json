@@ -1,0 +1,22 @@
+{
+  "description": "Registry of current laws we know how to retrieve from official sources. Bills point to laws by title; this file maps those law titles to stable Justice Laws XML URLs.",
+  "laws": {
+    "food-and-drugs-act": {
+      "title": "Food and Drugs Act",
+      "citation": "R.S.C., 1985, c. F-27",
+      "jurisdiction": "Canada",
+      "level": "federal",
+      "currentPath": "data/laws/current/federal/food-and-drugs-act",
+      "source": {
+        "publisher": "Justice Laws Website",
+        "htmlUrl": "https://lois.justice.gc.ca/eng/acts/F-27/FullText.html",
+        "xmlUrl": "https://lois.justice.gc.ca/eng/XML/F-27.xml"
+      },
+      "relatedBills": [
+        "S-202",
+        "C-224",
+        "C-265"
+      ]
+    }
+  }
+}

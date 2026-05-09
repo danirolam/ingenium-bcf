@@ -1,0 +1,84 @@
+{
+  "session": "45-1",
+  "number": "C-222",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-222/C-222_2/C-222_E.xml",
+  "stage": "second-reading",
+  "title": "An Act to amend the Employment Insurance Act and the Canada Labour Code (death of a child)",
+  "shortTitle": "",
+  "sponsor": "Mr. Beech",
+  "fullText": "C-222 1 45 3-4 Charles III 2025-2026 An Act to amend the Employment Insurance Act and the Canada Labour Code (death of a child) Relieving Grieving Parents of an Administrative Burden Act (Evan's Law) 2026 4 22 Reprinted as amended by the Standing Committee on Human Resources, Skills and Social Development and the Status of Persons with Disabilities as a working copy for the use of the House of Commons at Report Stage and as reported to the House on April 22, 2026 Mr. Beech 451105 SUMMARY This enactment amends the Employment Insurance Act to provide that a person to whom employment insurance benefits are payable to care for a newborn child or a child placed with them for the purpose of adoption remains eligible to receive those benefits even if the child dies during the benefit period. It also amends the Canada Labour Code to extend the period of bereavement leave to which an employee is entitled in the event of the death of a child of the employee or of their spouse or common-law partner. His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: Short Title Short title 1 This Act may be cited as the Relieving Grieving Parents of an Administrative Burden Act (Evan's Law) . 1996, c. 23 Employment Insurance Act 2 Section 23 of the Employment Insurance Act is amended by adding the following after subsection (2): Benefits still payable — death of child (2.1) For the purposes of subsection (1), paragraphs 12(3)(b) and (4)(b) and subsection 12(4.01), if the child or children referred to in that subsection (1) die during the period referred to in subsection (2), the claimant is deemed to care for the child or children until that period expires. No report or new claim required (2.2) Despite any other provision of this Act, the claimant referred to in subsection (2.1) is not required to make a new claim for benefits or file a report to prove their eligibility to receive or continue to receive benefits. Exception (2.3) Subsection (2.1) does not apply if the child or children die as the result of the commission of an offence and the claimant is convicted of the offence. 3 Section 152.05 of the Act is amended by adding the following after subsection (2): Benefits still payable — death of child (2.1) For the purposes of subsection (1), paragraphs 152.14(1)(b) and (2)(b) and subsection 152.14(4), if the child or children referred to in that subsection (1) die during the period referred to in subsection (2), the self-employed person is deemed to care for the child or children until that period expires. No report or new claim required (2.2) Despite any other provision of this Act, the self- employed person referred to in subsection (2.1) is not required to make a new claim for benefits or file a report to prove their eligibility to receive or continue to receive benefits. Exception (2.3) Subsection (2.1) does not apply if the child or children die as the result of the commission of an offence and the self-employed person is convicted of the offence. R.S., c. L-2 Canada Labour Code Amendments to the Act 4 [ Deleted ] 5 [ Deleted ] 6 (1) Subsection 210(1.01) of the Canada Labour Code is replaced by the following: Death of child (1.01) Subject to subsection (1.011), every employee is entitled to and shall be granted, in the event of the death of a child of the employee or the death of a child of their spouse or common-law partner, a leave of absence from employment of up to 10 weeks that may be taken during the period that begins on the day on which the death occurs and ends 12 weeks after the latest of the days on which any funeral, burial or memorial service of the child occurs. Death of child — leave under section 206 (1.011) Every employee is entitled to and shall be granted, in the event of the death of a child of the employee that occurs while the employee is on, or is entitled to be on, leave under section 206 in respect of that child, a leave of absence from employment of up to 10 weeks that may be taken during the period that begins on the day on which the death occurs and ends on the later of (a) 12 weeks after the latest of the days on which any funeral, burial or memorial service of the child occurs; and (b) 12 weeks after the end of the leave under section 206. (2) The portion of subsection 210(1.02) of the Act before paragraph (a) is replaced by the following: Definition of child (1.02) In subsections (1.01) and (1.011), child means Transitional Provisions Canada Labour Code — section 210 7 (1) Section 210 of the Canada Labour Code , as amended by section 6, applies to an employee if, on the day on which section 6 comes into force, (a) the period during which the employee is entitled to take leave under subsection 210(1.01) of that Act, as it read immediately before section 6 comes into force, has not ended; or (b) the employee is on, or entitled to be on, leave under section 206 of that Act. Periods of leave (2) For the purposes of subsection (1), an employee who has taken two periods of leave under subsection 210(1.2) of the Canada Labour Code before the day on which section 6 comes into force may, despite that subsection, take one additional period of leave. Coming into Force First Sunday after six months or order in council 8 This Act comes into force on the first Sunday after the day that is six months after the day on which this Act receives royal assent or on an earlier day to be fixed by order of the Governor in Council.",
+  "sections": [
+    {
+      "label": "1",
+      "type": null,
+      "marginalNote": "Short title",
+      "text": "Short title 1 This Act may be cited as the Relieving Grieving Parents of an Administrative Burden Act (Evan's Law) .",
+      "targetActs": [
+        "Relieving Grieving Parents of an Administrative Burden Act (Evan's Law)"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "2",
+      "type": "amending",
+      "marginalNote": "Benefits still payable — death of child",
+      "text": "2 Section 23 of the Employment Insurance Act is amended by adding the following after subsection (2): Benefits still payable — death of child (2.1) For the purposes of subsection (1), paragraphs 12(3)(b) and (4)(b) and subsection 12(4.01), if the child or children referred to in that subsection (1) die during the period referred to in subsection (2), the claimant is deemed to care for the child or children until that period expires. No report or new claim required (2.2) Despite any other provision of this Act, the claimant referred to in subsection (2.1) is not required to make a new claim for benefits or file a report to prove their eligibility to receive or continue to receive benefits. Exception (2.3) Subsection (2.1) does not apply if the child or children die as the result of the commission of an offence and the claimant is convicted of the offence.",
+      "targetActs": [
+        "Employment Insurance Act"
+      ],
+      "hasAmendedText": true
+    },
+    {
+      "label": "3",
+      "type": "amending",
+      "marginalNote": "Benefits still payable — death of child",
+      "text": "3 Section 152.05 of the Act is amended by adding the following after subsection (2): Benefits still payable — death of child (2.1) For the purposes of subsection (1), paragraphs 152.14(1)(b) and (2)(b) and subsection 152.14(4), if the child or children referred to in that subsection (1) die during the period referred to in subsection (2), the self-employed person is deemed to care for the child or children until that period expires. No report or new claim required (2.2) Despite any other provision of this Act, the self- employed person referred to in subsection (2.1) is not required to make a new claim for benefits or file a report to prove their eligibility to receive or continue to receive benefits. Exception (2.3) Subsection (2.1) does not apply if the child or children die as the result of the commission of an offence and the self-employed person is convicted of the offence.",
+      "targetActs": [],
+      "hasAmendedText": true
+    },
+    {
+      "label": "4",
+      "type": "amending",
+      "marginalNote": "",
+      "text": "4 [ Deleted ]",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "5",
+      "type": "amending",
+      "marginalNote": "",
+      "text": "5 [ Deleted ]",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "6",
+      "type": "amending",
+      "marginalNote": "Death of child",
+      "text": "6 (1) Subsection 210(1.01) of the Canada Labour Code is replaced by the following: Death of child (1.01) Subject to subsection (1.011), every employee is entitled to and shall be granted, in the event of the death of a child of the employee or the death of a child of their spouse or common-law partner, a leave of absence from employment of up to 10 weeks that may be taken during the period that begins on the day on which the death occurs and ends 12 weeks after the latest of the days on which any funeral, burial or memorial service of the child occurs. Death of child — leave under section 206 (1.011) Every employee is entitled to and shall be granted, in the event of the death of a child of the employee that occurs while the employee is on, or is entitled to be on, leave under section 206 in respect of that child, a leave of absence from employment of up to 10 weeks that may be taken during the period that begins on the day on which the death occurs and ends on the later of (a) 12 weeks after the latest of the days on which any funeral, burial or memorial service of the child occurs; and (b) 12 weeks after the end of the leave under section 206. (2) The portion of subsection 210(1.02) of the Act before paragraph (a) is replaced by the following: Definition of child (1.02) In subsections (1.01) and (1.011), child means",
+      "targetActs": [
+        "Canada Labour Code"
+      ],
+      "hasAmendedText": true
+    },
+    {
+      "label": "7",
+      "type": "amending",
+      "marginalNote": "Canada Labour Code — section 210",
+      "text": "Canada Labour Code — section 210 7 (1) Section 210 of the Canada Labour Code , as amended by section 6, applies to an employee if, on the day on which section 6 comes into force, (a) the period during which the employee is entitled to take leave under subsection 210(1.01) of that Act, as it read immediately before section 6 comes into force, has not ended; or (b) the employee is on, or entitled to be on, leave under section 206 of that Act. Periods of leave (2) For the purposes of subsection (1), an employee who has taken two periods of leave under subsection 210(1.2) of the Canada Labour Code before the day on which section 6 comes into force may, despite that subsection, take one additional period of leave.",
+      "targetActs": [
+        "Canada Labour Code"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "8",
+      "type": "amending",
+      "marginalNote": "First Sunday after six months or order in council",
+      "text": "First Sunday after six months or order in council 8 This Act comes into force on the first Sunday after the day that is six months after the day on which this Act receives royal assent or on an earlier day to be fixed by order of the Governor in Council.",
+      "targetActs": [],
+      "hasAmendedText": false
+    }
+  ]
+}

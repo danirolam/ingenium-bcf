@@ -1,0 +1,22 @@
+{
+  "session": "45-1",
+  "number": "C-247",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-247/C-247_1/C-247_E.xml",
+  "stage": "first-reading",
+  "title": "An Act to amend the Canada Labour Code",
+  "shortTitle": "",
+  "sponsor": "Ms. Gazan",
+  "fullText": "C-247 1 45 3-4 Charles III 2025 An Act to amend the Canada Labour Code An Act to amend the Canada Labour Code 2025 10 6 Ms. Gazan 451120 SUMMARY This enactment repeals the section of the Canada Labour Code that authorizes the Minister of Labour to take measures to promote conditions favourable to the settlement of an industrial dispute or difference, including referring any question to the Canada Industrial Relations Board or directing the Board to take any measure that the Minister considers necessary. His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: R.S., c. L-2 Canada Labour Code 1 Section 107 of the Canada Labour Code is repealed.",
+  "sections": [
+    {
+      "label": "1",
+      "type": "amending",
+      "marginalNote": "",
+      "text": "1 Section 107 of the Canada Labour Code is repealed.",
+      "targetActs": [
+        "Canada Labour Code"
+      ],
+      "hasAmendedText": false
+    }
+  ]
+}

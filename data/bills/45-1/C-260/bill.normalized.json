@@ -1,0 +1,32 @@
+{
+  "session": "45-1",
+  "number": "C-260",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-260/C-260_1/C-260_E.xml",
+  "stage": "first-reading",
+  "title": "An Act to amend the Criminal Code (medical assistance in dying — protection against coercion)",
+  "shortTitle": "",
+  "sponsor": "Mr. Genuis",
+  "fullText": "C-260 1 45 3-4 Charles III 2025-2026 An Act to amend the Criminal Code (medical assistance in dying — protection against coercion) Preventing Coercion of Persons Not Seeking Medical Assistance in Dying Act 2026 2 5 Mr. Genuis 451148 SUMMARY This enactment amends the Criminal Code to make it an offence for certain persons in certain circumstances to initiate a discussion with a person about the availability to them of medical assistance in dying, knowing that they have not specifically requested to have such a discussion. His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: Short Title Short title 1 This Act may be cited as the Preventing Coercion of Persons Not Seeking Medical Assistance in Dying Act . R.S., c. 46 Criminal Code 2 The Criminal Code is amended by adding the following after section 241.3: Unsolicited discussion — government officer or employee 241.301 Every person who, being an officer or employee of the Government of Canada or of a province, other than a medical practitioner or a registered nurse, including a nurse practitioner, initiates a discussion with a person about the availability to that person of medical assistance in dying is guilty of an offence punishable on summary conviction if they (a) by virtue of their profession, are in a position of trust or authority towards that person; and (b) know that the person has not specifically requested to have such a discussion with them.",
+  "sections": [
+    {
+      "label": "1",
+      "type": null,
+      "marginalNote": "Short title",
+      "text": "Short title 1 This Act may be cited as the Preventing Coercion of Persons Not Seeking Medical Assistance in Dying Act .",
+      "targetActs": [
+        "Preventing Coercion of Persons Not Seeking Medical Assistance in Dying Act"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "2",
+      "type": "amending",
+      "marginalNote": "Unsolicited discussion — government officer or employee",
+      "text": "2 The Criminal Code is amended by adding the following after section 241.3: Unsolicited discussion — government officer or employee 241.301 Every person who, being an officer or employee of the Government of Canada or of a province, other than a medical practitioner or a registered nurse, including a nurse practitioner, initiates a discussion with a person about the availability to that person of medical assistance in dying is guilty of an offence punishable on summary conviction if they (a) by virtue of their profession, are in a position of trust or authority towards that person; and (b) know that the person has not specifically requested to have such a discussion with them.",
+      "targetActs": [
+        "Criminal Code"
+      ],
+      "hasAmendedText": true
+    }
+  ]
+}

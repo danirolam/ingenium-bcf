@@ -1,0 +1,297 @@
+{
+  "session": "45-1",
+  "source": "data/normalized/recommended-bills.45-1.json",
+  "fetchedAt": "2026-05-09T16:15:21.150Z",
+  "count": 36,
+  "failures": [],
+  "bills": [
+    {
+      "number": "S-5",
+      "title": "Connected Care for Canadians Act",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Government/S-5/S-5_1/S-5_E.xml",
+      "sectionCount": 11,
+      "textLength": 8349
+    },
+    {
+      "number": "S-202",
+      "title": "An Act to amend the Food and Drugs Act (warning label on alcoholic beverages)",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/S-202/S-202_1/S-202_E.xml",
+      "sectionCount": 2,
+      "textLength": 2018
+    },
+    {
+      "number": "C-224",
+      "title": "An Act to amend the Food and Drugs Act (natural health products)",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/C-224/C-224_1/C-224_E.xml",
+      "sectionCount": 4,
+      "textLength": 1530
+    },
+    {
+      "number": "C-265",
+      "title": "An Act to amend the Food and Drugs Act (List of Therapeutic Products Pre-approved for Special Access)",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/C-265/C-265_1/C-265_E.xml",
+      "sectionCount": 23,
+      "textLength": 19816
+    },
+    {
+      "number": "C-230",
+      "title": "An Act to amend the Financial Administration Act and to make consequential amendments to other Acts (debt forgiveness registry)",
+      "stage": "third-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/C-230/C-230_3/C-230_E.xml",
+      "sectionCount": 8,
+      "textLength": 6138
+    },
+    {
+      "number": "C-19",
+      "title": "Canada Groceries and Essentials Benefit Act",
+      "stage": "royal-assent",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Government/C-19/C-19_4/C-19_E.xml",
+      "sectionCount": 6,
+      "textLength": 13574
+    },
+    {
+      "number": "C-202",
+      "title": "An Act to amend the Department of Foreign Affairs, Trade and Development Act (supply management)",
+      "stage": "royal-assent",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/C-202/C-202_4/C-202_E.xml",
+      "sectionCount": 1,
+      "textLength": 1334
+    },
+    {
+      "number": "S-214",
+      "title": "An Act to amend the Special Economic Measures Act (disposal of foreign state assets)",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/S-214/S-214_1/S-214_E.xml",
+      "sectionCount": 9,
+      "textLength": 4818
+    },
+    {
+      "number": "C-222",
+      "title": "Relieving Grieving Parents of an Administrative Burden Act (Evan's Law)",
+      "stage": "second-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/C-222/C-222_2/C-222_E.xml",
+      "sectionCount": 8,
+      "textLength": 5479
+    },
+    {
+      "number": "C-219",
+      "title": "Sergei Magnitsky International Anti-Corruption and Human Rights Act",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/C-219/C-219_1/C-219_E.xml",
+      "sectionCount": 25,
+      "textLength": 23284
+    },
+    {
+      "number": "C-8",
+      "title": "An Act respecting cyber security, amending the Telecommunications Act and making consequential amendments to other Acts",
+      "stage": "third-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Government/C-8/C-8_3/C-8_E.xml",
+      "sectionCount": 197,
+      "textLength": 182042
+    },
+    {
+      "number": "C-22",
+      "title": "Lawful Access Act, 2026",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Government/C-22/C-22_1/C-22_E.xml",
+      "sectionCount": 101,
+      "textLength": 108402
+    },
+    {
+      "number": "C-239",
+      "title": "An Act to amend the Canada Health Act (accountability)",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/C-239/C-239_1/C-239_E.xml",
+      "sectionCount": 6,
+      "textLength": 4193
+    },
+    {
+      "number": "C-11",
+      "title": "Military Justice System Modernization Act",
+      "stage": "second-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Government/C-11/C-11_2/C-11_E.xml",
+      "sectionCount": 81,
+      "textLength": 78994
+    },
+    {
+      "number": "S-239",
+      "title": "Canadian Prosperity Act",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/S-239/S-239_1/S-239_E.xml",
+      "sectionCount": 2,
+      "textLength": 4573
+    },
+    {
+      "number": "S-205",
+      "title": "Providing Alternatives to Isolation and Ensuring Oversight and Remedies in the Correctional System Act (Tona’s Law)",
+      "stage": "third-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/S-205/S-205_3/S-205_E.xml",
+      "sectionCount": 10,
+      "textLength": 11036
+    },
+    {
+      "number": "S-217",
+      "title": "Fairness for All Canadian Taxpayers Act (measuring the tax gap to fight international tax evasion)",
+      "stage": "third-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/S-217/S-217_3/S-217_E.xml",
+      "sectionCount": 3,
+      "textLength": 3673
+    },
+    {
+      "number": "C-269",
+      "title": "An Act to amend the Income Tax Act (heat recovery tax credit)",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/C-269/C-269_1/C-269_E.xml",
+      "sectionCount": 11,
+      "textLength": 15543
+    },
+    {
+      "number": "C-247",
+      "title": "An Act to amend the Canada Labour Code",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/C-247/C-247_1/C-247_E.xml",
+      "sectionCount": 1,
+      "textLength": 706
+    },
+    {
+      "number": "S-234",
+      "title": "National Framework on Fetal Alcohol Spectrum Disorder Act",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/S-234/S-234_1/S-234_E.xml",
+      "sectionCount": 4,
+      "textLength": 4873
+    },
+    {
+      "number": "C-3",
+      "title": "An Act to amend the Citizenship Act (2025)",
+      "stage": "royal-assent",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Government/C-3/C-3_4/C-3_E.xml",
+      "sectionCount": 7,
+      "textLength": 14737
+    },
+    {
+      "number": "C-25",
+      "title": "Strong and Free Elections Act",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Government/C-25/C-25_1/C-25_E.xml",
+      "sectionCount": 118,
+      "textLength": 80398
+    },
+    {
+      "number": "C-231",
+      "title": "An Act to amend the Youth Criminal Justice Act",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/C-231/C-231_1/C-231_E.xml",
+      "sectionCount": 5,
+      "textLength": 4499
+    },
+    {
+      "number": "S-229",
+      "title": "Gatineau Park Act",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/S-229/S-229_1/S-229_E.xml",
+      "sectionCount": 18,
+      "textLength": 103791
+    },
+    {
+      "number": "C-236",
+      "title": "Addressing the Continuing Victimization of Homicide Victims' Families Act",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/C-236/C-236_1/C-236_E.xml",
+      "sectionCount": 8,
+      "textLength": 7037
+    },
+    {
+      "number": "S-241",
+      "title": "An Act to amend the Criminal Code and the Indian Act",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/S-241/S-241_1/S-241_E.xml",
+      "sectionCount": 3,
+      "textLength": 12903
+    },
+    {
+      "number": "C-14",
+      "title": "Bail and Sentencing Reform Act",
+      "stage": "third-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Government/C-14/C-14_3/C-14_E.xml",
+      "sectionCount": 95,
+      "textLength": 75723
+    },
+    {
+      "number": "S-4",
+      "title": "An Act to amend the Energy Efficiency Act",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Government/S-4/S-4_1/S-4_E.xml",
+      "sectionCount": 61,
+      "textLength": 54879
+    },
+    {
+      "number": "S-2",
+      "title": "An Act to amend the Indian Act (new registration entitlements)",
+      "stage": "third-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Government/S-2/S-2_3/S-2_E.xml",
+      "sectionCount": 12,
+      "textLength": 9311
+    },
+    {
+      "number": "C-221",
+      "title": "An Act to amend the Corrections and Conditional Release Act (disclosure of information to victims)",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/C-221/C-221_1/C-221_E.xml",
+      "sectionCount": 3,
+      "textLength": 3474
+    },
+    {
+      "number": "C-244",
+      "title": "Clean Coasts Act",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/C-244/C-244_1/C-244_E.xml",
+      "sectionCount": 4,
+      "textLength": 1648
+    },
+    {
+      "number": "C-223",
+      "title": "Keeping Children Safe Act",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/C-223/C-223_1/C-223_E.xml",
+      "sectionCount": 9,
+      "textLength": 13991
+    },
+    {
+      "number": "C-260",
+      "title": "Preventing Coercion of Persons Not Seeking Medical Assistance in Dying Act",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/C-260/C-260_1/C-260_E.xml",
+      "sectionCount": 2,
+      "textLength": 1483
+    },
+    {
+      "number": "S-233",
+      "title": "An Act to amend the Criminal Code (assault against persons who provide health services and first responders)",
+      "stage": "third-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/S-233/S-233_3/S-233_E.xml",
+      "sectionCount": 1,
+      "textLength": 1681
+    },
+    {
+      "number": "C-218",
+      "title": "An Act to amend the Criminal Code (medical assistance in dying)",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/C-218/C-218_1/C-218_E.xml",
+      "sectionCount": 2,
+      "textLength": 2035
+    },
+    {
+      "number": "S-231",
+      "title": "An Act to amend the Criminal Code (medical assistance in dying)",
+      "stage": "first-reading",
+      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/S-231/S-231_1/S-231_E.xml",
+      "sectionCount": 1,
+      "textLength": 8476
+    }
+  ]
+}

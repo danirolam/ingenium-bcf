@@ -1,0 +1,50 @@
+{
+  "session": "45-1",
+  "number": "C-244",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-244/C-244_1/C-244_E.xml",
+  "stage": "first-reading",
+  "title": "An Act to amend the Canadian Environmental Protection Act, 1999 and the Wrecked, Abandoned or Hazardous Vessels Act",
+  "shortTitle": "",
+  "sponsor": "Mr. Weiler",
+  "fullText": "C-244 1 45 3-4 Charles III 2025 An Act to amend the Canadian Environmental Protection Act, 1999 and the Wrecked, Abandoned or Hazardous Vessels Act Clean Coasts Act 2025 9 22 Mr. Weiler 451087 SUMMARY This enactment amends the Canadian Environmental Protection Act,1999 and the Wrecked, Abandoned or Hazardous Vessels Act to enhance the protection of marine areas by providing for increased liability for damage to marine areas. His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: Short Title Short title 1 This Act may be cited as the Clean Coasts Act . 1999, c. 33 Canadian Environmental Protection Act, 1999 2 The portion of subsection 125(1) of the Canadian Environmental Protection Act, 1999 before paragraph (a) is replaced by the following: Disposal in waters under Canadian jurisdiction 125 (1) No person or ship shall dispose or allow the disposal of a substance in an area of the sea referred to in any of paragraphs 122(2)(a) to (e) unless 2019, c. 1 Wrecked, Abandoned or Hazardous Vessels Act 3 The Wrecked, Abandoned or Hazardous Vessels Act is amended by adding the following after section 34: Transfer of ownership 34.1 It is prohibited for an owner of a vessel to transfer ownership of it to a person, if the owner knows that — or is reckless as to whether — the person lacks the ability, resources or intent to maintain, operate or dispose of the vessel in a manner that prevents it from becoming wrecked, abandoned or hazardous. 4 Paragraph 90(1)(a) of the Act is replaced by the following: (a) subsection 30(1) or 32(1), section 33, subsection 34(1) or section 34.1 ;",
+  "sections": [
+    {
+      "label": "1",
+      "type": null,
+      "marginalNote": "Short title",
+      "text": "Short title 1 This Act may be cited as the Clean Coasts Act .",
+      "targetActs": [
+        "Clean Coasts Act"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "2",
+      "type": "amending",
+      "marginalNote": "Disposal in waters under Canadian jurisdiction",
+      "text": "2 The portion of subsection 125(1) of the Canadian Environmental Protection Act, 1999 before paragraph (a) is replaced by the following: Disposal in waters under Canadian jurisdiction 125 (1) No person or ship shall dispose or allow the disposal of a substance in an area of the sea referred to in any of paragraphs 122(2)(a) to (e) unless",
+      "targetActs": [
+        "Canadian Environmental Protection Act, 1999"
+      ],
+      "hasAmendedText": true
+    },
+    {
+      "label": "3",
+      "type": "amending",
+      "marginalNote": "Transfer of ownership",
+      "text": "3 The Wrecked, Abandoned or Hazardous Vessels Act is amended by adding the following after section 34: Transfer of ownership 34.1 It is prohibited for an owner of a vessel to transfer ownership of it to a person, if the owner knows that — or is reckless as to whether — the person lacks the ability, resources or intent to maintain, operate or dispose of the vessel in a manner that prevents it from becoming wrecked, abandoned or hazardous.",
+      "targetActs": [
+        "Wrecked, Abandoned or Hazardous Vessels Act"
+      ],
+      "hasAmendedText": true
+    },
+    {
+      "label": "4",
+      "type": "amending",
+      "marginalNote": "",
+      "text": "4 Paragraph 90(1)(a) of the Act is replaced by the following: (a) subsection 30(1) or 32(1), section 33, subsection 34(1) or section 34.1 ;",
+      "targetActs": [],
+      "hasAmendedText": true
+    }
+  ]
+}
