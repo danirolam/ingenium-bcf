@@ -1,10 +1,26 @@
 import { useEffect, useState } from "react";
+import {
+  AlertTriangle,
+  CheckCircle2,
+  ChevronDown,
+  FileText,
+  Scale,
+  ShieldCheck,
+} from "lucide-react";
 import type { Nav } from "../App";
 import { MomentumBadge, ReviewBadge } from "../components/badges";
 import { ConfidenceMeter } from "../components/ConfidenceMeter";
 import { DiffViewer } from "../components/DiffViewer";
 import { LegislativeJourney } from "../components/LegislativeJourney";
 import { PageHeader } from "../components/PageHeader";
+import {
+  Alert,
+  AlertContent,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+} from "../components/ui/alert-1";
+import { GlowingButton } from "../components/ui/glowing-button";
 import { api } from "../lib/api";
 import type { LawVersion } from "../types";
 
@@ -77,20 +93,22 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
         sub="Compare statutory text before and after the proposed amendment. Approve before distributing to client matters."
         actions={
           <>
-            <button className="btn" disabled={busy} onClick={flag}>
-              Needs manual review
+            <button className="btn review-action" disabled={busy} onClick={flag}>
+              <AlertTriangle size={16} strokeWidth={1.9} aria-hidden="true" />
+              Needs review
             </button>
-            <button
-              className="btn primary"
+            <GlowingButton
+              className="delta-approve"
               disabled={busy || lv.humanApproved}
               onClick={approve}
             >
-              {lv.humanApproved ? "Approved ✓" : "Approve updated law"}
-            </button>
+              <CheckCircle2 size={16} strokeWidth={2} aria-hidden="true" />
+              {lv.humanApproved ? "Approved" : "Approve updated law"}
+            </GlowingButton>
           </>
         }
       />
-      <div className="body">
+      <div className="body delta-body">
         <div className="delta-grid">
           <DiffViewer
             actName={lv.baseLawTitle.replace(/\s*\(.*\)\s*$/, "")}
@@ -104,7 +122,10 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
           <div className="right-panel">
             <div className="card">
               <div className="card-h">
-                <div className="card-title">Bill summary</div>
+                <div className="card-title-row">
+                  <FileText size={16} strokeWidth={1.8} aria-hidden="true" />
+                  <div className="card-title">Bill summary</div>
+                </div>
                 <ReviewBadge required={lv.humanReviewRequired} approved={lv.humanApproved} />
               </div>
               <div className="kv">
@@ -122,11 +143,11 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
                 <div className="v">{lv.comingIntoForceText ?? "—"}</div>
               </div>
 
-              <div className="hr" style={{ margin: "0 16px" }} />
-              <div className="dw-journey-h" style={{ paddingTop: 12 }}>
+              <div className="hr card-rule" />
+              <div className="dw-journey-h">
                 Legislative journey
               </div>
-              <div className="dw-journey-wrap" style={{ paddingTop: 0 }}>
+              <div className="dw-journey-wrap compact">
                 <LegislativeJourney
                   momentum={lv.legislativeMomentum}
                   status={lv.sourceBillStatus}
@@ -137,15 +158,20 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
             </div>
 
             <div className="card">
-              <div className="card-h"><div className="card-title">Legal delta</div></div>
-              <div style={{ padding: "12px 16px 12px", fontSize: 13, lineHeight: 1.55, color: "var(--ink-2)" }}>
-                <div style={{ marginBottom: 10 }}>{lv.deltaSummary}</div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
+              <div className="card-h">
+                <div className="card-title-row">
+                  <Scale size={16} strokeWidth={1.8} aria-hidden="true" />
+                  <div className="card-title">Legal delta</div>
+                </div>
+              </div>
+              <div className="delta-card-body">
+                <div className="delta-summary-text">{lv.deltaSummary}</div>
+                <div className="delta-chip-row">
                   {lv.affectedSections.map((s) => (
                     <span key={s} className="badge outline">{s}</span>
                   ))}
                 </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                <div className="delta-chip-row">
                   {lv.changeTypes.map((t) => (
                     <span key={t} className="badge outline dim">{t}</span>
                   ))}
@@ -157,34 +183,41 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
             </div>
 
             {lv.humanReviewRequired && (
-              <div className="card" style={{ borderColor: "#e3c884" }}>
-                <div className="card-h" style={{ background: "var(--high-bg)" }}>
-                  <div className="card-title" style={{ color: "var(--high)" }}>Human review required</div>
-                </div>
-                <div className="note" style={{ margin: 0, borderLeft: 0, background: "var(--high-bg)", color: "var(--high)" }}>
-                  {lv.humanReviewReason ?? "This delta needs lawyer verification before distribution."}
-                </div>
-              </div>
+              <Alert variant="warning" appearance="light" className="dw-alert">
+                <AlertIcon>
+                  <AlertTriangle size={18} strokeWidth={2} aria-hidden="true" />
+                </AlertIcon>
+                <AlertContent>
+                  <AlertTitle>Human review required</AlertTitle>
+                  <AlertDescription>
+                    {lv.humanReviewReason ?? "This delta needs lawyer verification before distribution."}
+                  </AlertDescription>
+                </AlertContent>
+              </Alert>
             )}
 
-            <div className="card" style={{ padding: 0 }}>
+            <div className="card">
               <button
                 type="button"
                 className="dw-tech-toggle"
                 onClick={() => setTechOpen((v) => !v)}
                 aria-expanded={techOpen}
               >
-                <span>Technical details</span>
-                <span className="dw-tech-caret">
+                <span className="card-title-row">
+                  <ShieldCheck size={16} strokeWidth={1.8} aria-hidden="true" />
+                  <span>Technical details</span>
+                </span>
+                <span className={`dw-tech-caret ${techOpen ? "open" : ""}`}>
                   {techOpen ? "Collapse" : "Expand"}
+                  <ChevronDown size={14} strokeWidth={2} aria-hidden="true" />
                 </span>
               </button>
               {techOpen && (
                 <div className="dw-tech-body">
                   <ConfidenceMeter value={lv.confidence} label="Gemini extraction confidence" />
                   <div>
-                    <div className="k" style={{ fontSize: 11, color: "var(--ink-3)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 }}>Detailed delta</div>
-                    <div style={{ fontSize: 12.5, color: "var(--ink-2)", lineHeight: 1.5 }}>{lv.detailedDelta}</div>
+                    <div className="dw-detail-label">Detailed delta</div>
+                    <div className="dw-detail-text">{lv.detailedDelta}</div>
                   </div>
                 </div>
               )}

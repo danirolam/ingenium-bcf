@@ -8,15 +8,16 @@ import type {
   LawVersion,
 } from "../../src/types.js";
 
-const MODEL = "gemini-2.5-flash";
+const DEFAULT_MODEL = "gemini-2.5-flash";
 
 function getModel() {
   const key = process.env.GEMINI_API_KEY;
   if (!key) return null;
+  const model = process.env.GEMINI_MODEL || DEFAULT_MODEL;
   try {
     const genAI = new GoogleGenerativeAI(key);
     return genAI.getGenerativeModel({
-      model: MODEL,
+      model,
       generationConfig: { responseMimeType: "application/json" },
     });
   } catch {

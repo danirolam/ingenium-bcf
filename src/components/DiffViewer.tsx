@@ -1,5 +1,6 @@
 import { diffWordsWithSpace } from "diff";
 import { Fragment, useMemo } from "react";
+import { GitCompareArrows } from "lucide-react";
 
 type InlinePart = { op: "eq" | "add" | "del"; t: string };
 
@@ -128,7 +129,7 @@ export function DiffViewer({
       );
     }
     if (b.kind === "added") {
-      if (side === "L") return <div className="diff-block" style={{ minHeight: 60 }} />;
+      if (side === "L") return <div className="diff-block diff-placeholder" />;
       return (
         <div className="diff-block added">
           <div className="lbl">{b.label}</div>
@@ -137,7 +138,7 @@ export function DiffViewer({
       );
     }
     if (b.kind === "removed") {
-      if (side === "R") return <div className="diff-block" style={{ minHeight: 60 }} />;
+      if (side === "R") return <div className="diff-block diff-placeholder" />;
       return (
         <div className="diff-block removed">
           <div className="lbl">{b.label}</div>
@@ -152,7 +153,10 @@ export function DiffViewer({
     <div className="diff-shell">
       <div className="diff-topbar">
         <div className="diff-crumbs">
-          <span>CanLII-style comparator</span>
+          <span className="diff-kicker">
+            <GitCompareArrows size={14} strokeWidth={1.8} aria-hidden="true" />
+            Statutory comparator
+          </span>
           <span className="sep">/</span>
           <b>{actName}</b>
           <span className="sep">/</span>
@@ -188,7 +192,7 @@ export function DiffViewer({
         <div className="diff-col">
           <div className="diff-act-head">{actName.toUpperCase()}</div>
           <div className="diff-act-cite">
-            {actCitation} <span style={{ color: "var(--accent)" }}>(as proposed)</span>
+            {actCitation} <span className="diff-proposed-tag">(as proposed)</span>
           </div>
         </div>
 
