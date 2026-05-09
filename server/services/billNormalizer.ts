@@ -1,24 +1,29 @@
 import type { Bill, BillClause, LegislativeMomentum } from "../../src/types.js";
 
 const STATUS_TO_MOMENTUM: Array<[RegExp, LegislativeMomentum]> = [
-  [/in\s*force/i, "in_force"],
-  [/royal\s*assent/i, "passed"],
+  [/in[\s-]*force/i, "in_force"],
   [/awaiting\s*royal\s*assent/i, "passed"],
+  [/royal[\s-]*assent/i, "passed"],
   [/passed/i, "passed"],
-  [/third\s*reading/i, "advanced"],
-  [/report\s*stage/i, "advanced"],
+  [/third[\s-]*reading/i, "advanced"],
+  [/report[\s-]*stage/i, "advanced"],
   [/senate.*(committee|reading|stage)/i, "advanced"],
   [/committee/i, "active"],
-  [/second\s*reading/i, "active"],
-  [/first\s*reading/i, "early"],
+  [/second[\s-]*reading/i, "active"],
+  [/first[\s-]*reading/i, "early"],
   [/introduced/i, "early"],
   [/defeated/i, "early"],
 ];
 
-export function mapMomentum(status: string | undefined): LegislativeMomentum {
-  if (!status) return "early";
-  for (const [re, mom] of STATUS_TO_MOMENTUM) {
-    if (re.test(status)) return mom;
+export function mapMomentum(
+  status: string | undefined,
+  ...fallbacks: Array<string | undefined>
+): LegislativeMomentum {
+  for (const candidate of [status, ...fallbacks]) {
+    if (!candidate) continue;
+    for (const [re, mom] of STATUS_TO_MOMENTUM) {
+      if (re.test(candidate)) return mom;
+    }
   }
   return "early";
 }
@@ -89,7 +94,10 @@ export function normalizeBill(raw: any): Bill {
     billNumber,
     title,
     status,
-    legislativeMomentum: mapMomentum(status),
+    legislativeMomentum: mapMomentum(
+      status,
+      pickString(raw, ["stage"]),
+    ),
     latestActivity: pickString(raw, [
       "latestActivity",
       "lastMovement",
