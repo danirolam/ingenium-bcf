@@ -6,13 +6,14 @@
   "currentPath": "data/laws/current/federal/food-and-drugs-act",
   "source": {
     "publisher": "Justice Laws Website",
-    "htmlUrl": "https://lois.justice.gc.ca/eng/acts/F-27/FullText.html",
-    "xmlUrl": "https://lois.justice.gc.ca/eng/XML/F-27.xml"
+    "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/F-27/FullText.html",
+    "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/F-27.xml"
   },
   "relatedBills": [
+    "C-273",
     "S-202",
     "C-224",
     "C-265"
   ],
-  "fetchedAt": "2026-05-09T16:49:07.151Z"
+  "fetchedAt": "2026-05-09T21:14:57.048Z"
 }

@@ -1,0 +1,16 @@
+{
+  "title": "Feeds Act",
+  "citation": "R.S.C., 1985, c. F-9",
+  "jurisdiction": "Canada",
+  "level": "federal",
+  "currentPath": "data/laws/current/federal/feeds-act",
+  "source": {
+    "publisher": "Justice Laws Website",
+    "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/F-9/FullText.html",
+    "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/F-9.xml"
+  },
+  "relatedBills": [
+    "C-273"
+  ],
+  "fetchedAt": "2026-05-09T21:13:27.862Z"
+}

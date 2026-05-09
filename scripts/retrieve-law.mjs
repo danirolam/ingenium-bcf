@@ -3,20 +3,28 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 const registry = JSON.parse(await readFile("data/laws/registry.json", "utf8"));
 const laws = registry.laws;
 
-const slug = process.argv[2] || "food-and-drugs-act";
-const law = laws[slug];
-if (!law) throw new Error(`Unknown law slug: ${slug}`);
+const args = process.argv.slice(2);
+const slugs = args.includes("--all")
+  ? Object.keys(laws)
+  : args.length
+    ? args
+    : ["food-and-drugs-act"];
 
-const xml = await fetchText(law.source.xmlUrl);
-const normalized = normalizeLawXml(xml, law);
-const dir = law.currentPath;
-await mkdir(dir, { recursive: true });
-await writeFile(`${dir}/current.xml`, xml);
-await writeFile(`${dir}/current.normalized.json`, `${JSON.stringify(normalized, null, 2)}\n`);
-await writeFile(`${dir}/source.json`, `${JSON.stringify({ ...law, fetchedAt: new Date().toISOString() }, null, 2)}\n`);
+for (const slug of slugs) {
+  const law = laws[slug];
+  if (!law) throw new Error(`Unknown law slug: ${slug}`);
 
-console.log(`retrieved ${law.title}`);
-console.log(`sections: ${normalized.sections.length}`);
+  const xml = await fetchText(law.source.xmlUrl);
+  const normalized = normalizeLawXml(xml, law);
+  const dir = law.currentPath;
+  await mkdir(dir, { recursive: true });
+  await writeFile(`${dir}/current.xml`, xml);
+  await writeFile(`${dir}/current.normalized.json`, `${JSON.stringify(normalized, null, 2)}\n`);
+  await writeFile(`${dir}/source.json`, `${JSON.stringify({ ...law, fetchedAt: new Date().toISOString() }, null, 2)}\n`);
+
+  console.log(`retrieved ${law.title}`);
+  console.log(`sections: ${normalized.sections.length}`);
+}
 
 function normalizeLawXml(xml, law) {
   const sections = [];

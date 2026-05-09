@@ -1,6 +1,6 @@
 AI x Law Hackathon
 
-Project Injenium is a federal bill monitoring and client impact prototype.
+Project Ingenium is a federal bill monitoring and client impact prototype.
 
 The project starts with LEGISinfo bill metadata in JSON, ranks bills by likely client relevance, retrieves official bill text XML, and keeps the data easy to refresh when new bills appear.
 

@@ -7,7 +7,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* App-level additions on top of the Injenium dark aesthetic */
+/* App-level additions on top of the Ingenium dark aesthetic */
 .rd-amber {
   background: var(--high-bg);
   color: var(--high);

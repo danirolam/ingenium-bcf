@@ -8,16 +8,15 @@ import type {
   LawVersion,
 } from "../../src/types.js";
 
-const DEFAULT_MODEL = "gemini-2.5-flash";
+const MODEL = "gemini-2.5-flash";
 
 function getModel() {
   const key = process.env.GEMINI_API_KEY;
   if (!key) return null;
-  const model = process.env.GEMINI_MODEL || DEFAULT_MODEL;
   try {
     const genAI = new GoogleGenerativeAI(key);
     return genAI.getGenerativeModel({
-      model,
+      model: MODEL,
       generationConfig: { responseMimeType: "application/json" },
     });
   } catch {
@@ -106,30 +105,41 @@ export async function analyzeClientImpact(args: {
   client: Client;
 }): Promise<ClientImpactAnalysis | null> {
   const { lawVersion, client } = args;
-  const prompt = `You are a Canadian legal compliance analyst. Determine how the following law change affects this specific client. Return STRICT JSON with exactly these keys:
 
-{
-  "affected": "yes"|"no"|"unclear",
-  "impactLevel": "low"|"medium"|"high"|"critical",
-  "urgency": "low"|"medium"|"high"|"immediate",
-  "timing": string,
-  "whyItAffectsClient": string,
-  "affectedClientAreas": string[],
-  "requiredAdaptations": [{"area": string, "currentIssue": string, "recommendation": string, "reason": string}],
-  "relevantClientText": [{"source": string, "excerpt": string, "issue": string}],
-  "lawyerVerificationQuestions": string[],
-  "emailDraft": {"subject": string, "body": string},
-  "confidence": number,
-  "humanReviewRequired": boolean,
-  "humanReviewReason": string|null
-}
+  const prompt = `You are a senior Canadian regulatory and business lawyer based in Montreal working for a big firm and advising a sophisticated corporate client. Assume the audience is an in-house legal department and senior executives familiar with their industrie's regulations. Use short analytical paragraphs and business-oriented headings. Prioritize precision, commercial relevance, and regulatory analysis over general explanation.
+    Return STRICT JSON with exactly these keys:
 
-Urgency rules:
-- If client is not affected, urgency = "low".
-- If law is in force and client is affected, urgency may be "immediate".
-- If bill received Royal Assent and client T&C/policies appear inconsistent, urgency = "high".
-- If bill is at first reading, urgency is usually "low" or "medium" with monitoring.
-- Consider effective date, penalty exposure, jurisdiction, industry, and operational burden.
+    {
+      "affected": "yes"|"no"|"unclear",
+      "impactLevel": "low"|"medium"|"high"|"critical",
+      "urgency": "low"|"medium"|"high"|"immediate",
+      "timing": string,
+      "whyItAffectsClient": string,
+      "affectedClientAreas": string[],
+      "requiredAdaptations": [{"area": string, "currentIssue": string, "recommendation": string, "reason": string}],
+      "relevantClientText": [{"source": string, "excerpt": string, "issue": string}],
+      "lawyerVerificationQuestions": string[],
+      "emailDraft": {"subject": string, "body": string},
+      "confidence": number,
+      "humanReviewRequired": boolean,
+      "humanReviewReason": string|null
+    }
+Analyze how [LAW CHANGE] would be relevant to ${client.name} as a [CURRENT/POTENTIAL] client.
+
+Focus specifically on:
+- the business and legal relevance of the bill to [COMPANY NAME's] operations;
+- concrete commercial impacts;
+- regulatory implications;
+- and strategic opportunities and risks.
+
+Include in the response:
+- Executive summary
+- New benefits/opportunities
+- New obligations/compliance implications
+- Strategic considerations
+- Concrete examples of how your firm could provide relevant services
+
+Write in a concise, professional legal-business style suitable for an internal client memorandum or partner briefing note. Avoid generic political commentary and focus on practical corporate implications.
 
 LAW CHANGE:
 Source: ${lawVersion.sourceBillNumber} — ${lawVersion.sourceBillTitle}
@@ -152,6 +162,7 @@ ${client.policies ?? "(none provided)"}
 
 Operations:
 ${client.operations ?? "(none provided)"}
+
 `;
 
   return callJson<ClientImpactAnalysis>(prompt);

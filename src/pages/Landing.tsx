@@ -13,17 +13,17 @@ import {
 const WORKFLOW = [
   {
     title: "Retrieve the bill",
-    text: "Start from Parliament bill data, normalize the metadata, and keep the bill text beside its source record.",
+    text: "Start from Parliament and Justice source data, normalize the record, and keep the bill text beside the source law.",
     icon: FileText,
   },
   {
     title: "Review the legal delta",
-    text: "Compare proposed amendments against the relevant law text before approving anything for client use.",
+    text: "Compare every affected Act against the current consolidated law before approving it for client analysis.",
     icon: GitCompareArrows,
   },
   {
     title: "Match client exposure",
-    text: "Use the approved law version to generate a client-specific impact review from known client materials.",
+    text: "Turn lawyer-approved deltas into client-specific exposure, recommendations, and next actions.",
     icon: BriefcaseBusiness,
   },
 ];
@@ -104,13 +104,14 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
         />
         <div className="lp-hero-shade" aria-hidden="true" />
         <div className="lp-hero-inner">
-          <div className="lp-eyebrow">Federal bill intelligence for BCF matters</div>
+          <div className="lp-eyebrow">Built for BCF by Ingenium</div>
           <h1 className="lp-h1">
-            From bill text to client-ready legal impact.
+            Bill change intelligence, ready for client work.
           </h1>
           <p className="lp-hero-copy">
-            A focused workspace for retrieving bills, reviewing proposed legal
-            changes, and turning approved deltas into client-specific analysis.
+            A premium review workspace for retrieving bills, comparing affected
+            federal Acts, approving legal deltas, and turning them into clear
+            client impact analysis.
           </p>
           <div className="lp-hero-actions">
             <button className="lp-primary" onClick={onLaunch}>
@@ -128,7 +129,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
       <section id="workflow" className="lp-workflow">
         <div className="lp-section-inner">
           <div className="lp-section-eyebrow">Workflow</div>
-          <h2 className="lp-h2">Built around the review path we can prove.</h2>
+          <h2 className="lp-h2">Built around source-backed legal review.</h2>
           <div className="lp-workflow-grid">
             {WORKFLOW.map((item) => (
               <article className="lp-workflow-card" key={item.title}>
@@ -187,7 +188,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
           <div className="lp-footer-l">
             <span className="lp-brand-dot lp-brand-dot-sm" aria-hidden="true" />
             <span>
-              Built by <b>Injenium</b> for <b>BCF</b>
+              Built for <b>BCF</b> by <b>Ingenium</b>
             </span>
           </div>
           <div className="lp-footer-r">

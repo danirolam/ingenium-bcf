@@ -109,19 +109,79 @@ export async function loadTeammateBills(): Promise<Bill[]> {
   return bills;
 }
 
+export interface RegistryEntry {
+  title: string;
+  citation: string;
+  jurisdiction: string;
+  level: string;
+  currentPath: string;
+  source: { publisher: string; htmlUrl: string; xmlUrl: string };
+  relatedBills?: string[];
+}
+
 interface RegistryFile {
-  laws: Record<
-    string,
-    {
-      title: string;
-      citation: string;
-      jurisdiction: string;
-      level: string;
-      currentPath: string;
-      source: { publisher: string; htmlUrl: string; xmlUrl: string };
-      relatedBills?: string[];
+  laws: Record<string, RegistryEntry>;
+}
+
+export async function loadActRegistry(): Promise<Record<string, RegistryEntry>> {
+  const f = await readJson<RegistryFile>(
+    path.join(TEAM_DATA, "laws", "registry.json"),
+  );
+  return f?.laws ?? {};
+}
+
+function slugifyActTitle(title: string): string {
+  return title
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+export function resolveActSlug(
+  actTitle: string,
+  registry: Record<string, RegistryEntry>,
+): string | null {
+  if (!actTitle) return null;
+  const wanted = actTitle.trim();
+  // Exact title match.
+  for (const [slug, entry] of Object.entries(registry)) {
+    if (entry.title.toLowerCase() === wanted.toLowerCase()) return slug;
+  }
+  // Slug match.
+  const slug = slugifyActTitle(wanted);
+  if (registry[slug]) return slug;
+  return null;
+}
+
+export interface AffectedAct {
+  title: string;
+  slug: string | null; // registry slug or null when unregistered
+  clauseIds: string[];
+}
+
+export function actsAffectedByBill(
+  bill: import("../../src/types.js").Bill,
+  registry: Record<string, RegistryEntry>,
+): AffectedAct[] {
+  const map = new Map<string, AffectedAct>();
+  for (const c of bill.clauses) {
+    if (!c.targetActs || c.targetActs.length === 0) continue;
+    for (const raw of c.targetActs) {
+      const title = raw.trim();
+      if (!title) continue;
+      const slug = resolveActSlug(title, registry);
+      const key = slug ?? `unregistered:${slugifyActTitle(title)}`;
+      let entry = map.get(key);
+      if (!entry) {
+        entry = { title, slug, clauseIds: [] };
+        map.set(key, entry);
+      }
+      entry.clauseIds.push(c.id);
     }
-  >;
+  }
+  return Array.from(map.values());
 }
 
 interface NormalizedLawFile {
