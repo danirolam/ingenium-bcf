@@ -54,9 +54,14 @@ function flattenClauses(raw: any): BillClause[] {
       if (!text) return;
       out.push({
         id: `cl-${i + 1}`,
-        number: pickString(c, ["number", "clauseNumber", "section", "id"]),
+        number: pickString(c, ["number", "clauseNumber", "label", "section", "id"]),
         heading: pickString(c, ["heading", "title", "marginalNote", "headnote"]),
         text,
+        targetActs: Array.isArray(c?.targetActs)
+          ? (c.targetActs as unknown[]).filter(
+              (s): s is string => typeof s === "string" && s.trim().length > 0,
+            )
+          : undefined,
       });
     });
   }

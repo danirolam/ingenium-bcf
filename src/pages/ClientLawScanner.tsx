@@ -27,7 +27,11 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
   }, []);
 
   const approvedLvs = useMemo(
-    () => lvs.filter((lv) => lv.humanApproved),
+    () =>
+      lvs.filter(
+        (lv) =>
+          lv.humanApproved && !lv.baseLawId.startsWith("unregistered:"),
+      ),
     [lvs],
   );
   const activeLv = approvedLvs.find((lv) => lv.id === activeLvId) ?? null;

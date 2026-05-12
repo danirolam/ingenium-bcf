@@ -1,6 +1,66 @@
 {
   "description": "Registry of current laws we know how to retrieve from official sources. Bills point to laws by title; this file maps those law titles to stable Justice Laws XML URLs.",
   "laws": {
+    "feeds-act": {
+      "title": "Feeds Act",
+      "citation": "R.S.C., 1985, c. F-9",
+      "jurisdiction": "Canada",
+      "level": "federal",
+      "currentPath": "data/laws/current/federal/feeds-act",
+      "source": {
+        "publisher": "Justice Laws Website",
+        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/F-9/FullText.html",
+        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/F-9.xml"
+      },
+      "relatedBills": [
+        "C-273"
+      ]
+    },
+    "fertilizers-act": {
+      "title": "Fertilizers Act",
+      "citation": "R.S.C., 1985, c. F-10",
+      "jurisdiction": "Canada",
+      "level": "federal",
+      "currentPath": "data/laws/current/federal/fertilizers-act",
+      "source": {
+        "publisher": "Justice Laws Website",
+        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/F-10/FullText.html",
+        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/F-10.xml"
+      },
+      "relatedBills": [
+        "C-273"
+      ]
+    },
+    "seeds-act": {
+      "title": "Seeds Act",
+      "citation": "R.S.C., 1985, c. S-8",
+      "jurisdiction": "Canada",
+      "level": "federal",
+      "currentPath": "data/laws/current/federal/seeds-act",
+      "source": {
+        "publisher": "Justice Laws Website",
+        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/S-8/FullText.html",
+        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/S-8.xml"
+      },
+      "relatedBills": [
+        "C-273"
+      ]
+    },
+    "pest-control-products-act": {
+      "title": "Pest Control Products Act",
+      "citation": "S.C. 2002, c. 28",
+      "jurisdiction": "Canada",
+      "level": "federal",
+      "currentPath": "data/laws/current/federal/pest-control-products-act",
+      "source": {
+        "publisher": "Justice Laws Website",
+        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/P-9.01/FullText.html",
+        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/P-9.01.xml"
+      },
+      "relatedBills": [
+        "C-273"
+      ]
+    },
     "food-and-drugs-act": {
       "title": "Food and Drugs Act",
       "citation": "R.S.C., 1985, c. F-27",
@@ -9,10 +69,11 @@
       "currentPath": "data/laws/current/federal/food-and-drugs-act",
       "source": {
         "publisher": "Justice Laws Website",
-        "htmlUrl": "https://lois.justice.gc.ca/eng/acts/F-27/FullText.html",
-        "xmlUrl": "https://lois.justice.gc.ca/eng/XML/F-27.xml"
+        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/F-27/FullText.html",
+        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/F-27.xml"
       },
       "relatedBills": [
+        "C-273",
         "S-202",
         "C-224",
         "C-265"

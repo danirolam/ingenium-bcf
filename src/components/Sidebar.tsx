@@ -20,7 +20,7 @@ export function Sidebar({
         <div className="sb-mark">In</div>
         <div>
           <div className="sb-name">
-            <b>Injenium</b>
+            <b>Ingenium</b>
           </div>
           <div
             style={{

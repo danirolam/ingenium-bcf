@@ -1,0 +1,16 @@
+{
+  "title": "Fertilizers Act",
+  "citation": "R.S.C., 1985, c. F-10",
+  "jurisdiction": "Canada",
+  "level": "federal",
+  "currentPath": "data/laws/current/federal/fertilizers-act",
+  "source": {
+    "publisher": "Justice Laws Website",
+    "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/F-10/FullText.html",
+    "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/F-10.xml"
+  },
+  "relatedBills": [
+    "C-273"
+  ],
+  "fetchedAt": "2026-05-09T21:13:27.907Z"
+}

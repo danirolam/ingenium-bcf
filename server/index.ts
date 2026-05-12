@@ -43,9 +43,9 @@ async function main() {
 
   const port = Number(process.env.PORT ?? 8787);
   app.listen(port, () => {
-    console.log(`[injenium] api listening on :${port}`);
-    if (!process.env.GEMINI_API_KEY) console.log("[injenium] GEMINI_API_KEY missing — fallback mode");
-    if (!process.env.RESEND_API_KEY) console.log("[injenium] RESEND_API_KEY missing — emails simulated");
+    console.log(`[Injenium] api listening on :${port}`);
+    if (!process.env.GEMINI_API_KEY) console.log("[Injenium] GEMINI_API_KEY missing — fallback mode");
+    if (!process.env.RESEND_API_KEY) console.log("[Injenium] RESEND_API_KEY missing — emails simulated");
   });
 }
 

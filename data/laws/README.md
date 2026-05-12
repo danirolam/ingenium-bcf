@@ -36,10 +36,32 @@ data/laws/current/federal/food-and-drugs-act/current.normalized.json
 data/laws/current/federal/food-and-drugs-act/source.json
 ```
 
+For the C-273 demo, the current-law baseline includes the five federal Acts named in the bill:
+
+```text
+data/laws/current/federal/feeds-act/
+data/laws/current/federal/fertilizers-act/
+data/laws/current/federal/seeds-act/
+data/laws/current/federal/pest-control-products-act/
+data/laws/current/federal/food-and-drugs-act/
+```
+
+The C-273 law pack lives at:
+
+```text
+data/laws/c-273-demo-laws.json
+```
+
 ## Refresh
 
 ```text
 node --use-system-ca scripts/retrieve-law.mjs food-and-drugs-act
+```
+
+Refresh every law in the registry:
+
+```text
+node --use-system-ca scripts/retrieve-law.mjs --all
 ```
 
 ## Important Distinction
