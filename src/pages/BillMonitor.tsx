@@ -214,7 +214,11 @@ export function BillMonitor({ nav }: { nav: Nav }) {
                 </thead>
                 <tbody>
                   {visibleBills.map((b) => (
-                    <tr key={b.id}>
+                    <tr
+                      key={b.id}
+                      onClick={() => !busy && openDelta(b)}
+                      style={{ cursor: busy ? "wait" : "pointer" }}
+                    >
                       <td>
                         <div className="billno tnum">{b.billNumber}</div>
                       </td>
@@ -245,7 +249,10 @@ export function BillMonitor({ nav }: { nav: Nav }) {
                         <button
                           className="btn sm"
                           disabled={busy}
-                          onClick={() => openDelta(b)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openDelta(b);
+                          }}
                         >
                           Open Delta
                           <ArrowRight size={14} strokeWidth={1.9} aria-hidden="true" />

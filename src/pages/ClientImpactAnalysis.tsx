@@ -43,15 +43,22 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
   useEffect(() => {
     const id = nav.params.id;
     if (!id) return;
-    api.clientImpact.get(id).then(async (a) => {
-      setAnalysis(a);
-      const [c, l] = await Promise.all([
-        api.clients.get(a.clientId).catch(() => null),
-        api.lawVersions.get(a.lawVersionId).catch(() => null),
-      ]);
-      setClient(c);
-      setLv(l);
-    });
+    api.clientImpact
+      .get(id)
+      .then(async (a) => {
+        setAnalysis(a);
+        const [c, l] = await Promise.all([
+          api.clients.get(a.clientId).catch(() => null),
+          api.lawVersions.get(a.lawVersionId).catch(() => null),
+        ]);
+        setClient(c);
+        setLv(l);
+      })
+      .catch((err) => {
+        console.error(err);
+        nav.toast(`Could not load analysis: ${err.message ?? err}`);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nav.params.id]);
 
   if (!analysis) {
