@@ -56,9 +56,9 @@ export function LawPickerGrid({
               {!isActive && <MomentumBadge value={lv.legislativeMomentum} />}
             </div>
             <div className="lpg-title">{lv.baseLawTitle}</div>
-            {lv.affectedSections.length > 0 && (
+            {(lv.affectedSections?.length ?? 0) > 0 && (
               <div className="lpg-sections">
-                {lv.affectedSections.join(", ")}
+                {(lv.affectedSections ?? []).join(", ")}
               </div>
             )}
             <div className="lpg-foot">

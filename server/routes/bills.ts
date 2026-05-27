@@ -63,7 +63,7 @@ function versionStatusFromBill(bill: Bill): VersionStatus {
 
 function clausesForAct(bill: Bill, act: AffectedAct): Bill["clauses"] {
   const ids = new Set(act.clauseIds);
-  return bill.clauses.filter((c) => ids.has(c.id));
+  return (bill.clauses ?? []).filter((c) => ids.has(c.id));
 }
 
 function buildStubLawVersion(args: {
@@ -73,13 +73,19 @@ function buildStubLawVersion(args: {
   const { bill, act } = args;
   const stubSlug = act.slug ?? `unregistered:${act.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
   const clauses = clausesForAct(bill, act);
-  const updatedText = clauses
-    .map((c) => {
-      const head = [c.number, c.heading].filter(Boolean).join(" — ");
-      return head ? `${head}\n${c.text}` : c.text;
-    })
-    .join("\n\n");
-  const summary = `Bill ${bill.billNumber} introduces ${clauses.length} clause${clauses.length === 1 ? "" : "s"} that target the ${act.title}. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.`;
+  const updatedText =
+    clauses.length > 0
+      ? clauses
+          .map((c) => {
+            const head = [c.number, c.heading].filter(Boolean).join(" — ");
+            return head ? `${head}\n${c.text}` : c.text;
+          })
+          .join("\n\n")
+      : `${bill.title}\n\nThis bill is tracked from LEGISinfo. Full clause text has not been ingested yet — open the LEGISinfo source link in the right rail for the official version, then re-run normalization to populate clauses.`;
+  const summary =
+    clauses.length > 0
+      ? `Bill ${bill.billNumber} introduces ${clauses.length} clause${clauses.length === 1 ? "" : "s"} that target the ${act.title}. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.`
+      : `Bill ${bill.billNumber} is tracked from LEGISinfo. Clause-level Act tagging is not yet available, so this is a placeholder review surface for ${act.title}. Use it to confirm scope before triggering full extraction.`;
   return {
     id: `lv-${bill.id}-${stubSlug}`,
     baseLawId: stubSlug,
@@ -168,17 +174,30 @@ billsRouter.post("/:id/extract-delta", async (req, res) => {
       .map((lv) => [lv.baseLawId, lv] as const),
   );
 
-  const acts = actsAffectedByBill(bill, registry);
+  let acts = actsAffectedByBill(bill, registry);
   if (acts.length === 0) {
-    return res.status(409).json({
-      error:
-        "Bill has no targetActs on its clauses. Re-run the bill normalization upstream so each clause carries targetActs.",
-    });
+    // Bill has no clause-level Act tagging (the 158 bills loaded from the
+    // raw LEGISinfo snapshot). Synthesize a single "subject Act" derived
+    // from the bill title so Delta Workspace still renders something.
+    const subjectTitle =
+      (bill.title.match(/Act to amend the ([^,]+?)(?:Act|act)\b/i)?.[0] ??
+        bill.title)
+        .replace(/^An Act to (?:amend|enact)\s+the\s+/i, "")
+        .replace(/^An Act to (?:amend|enact)\s+/i, "")
+        .replace(/\s*\(.*$/, "")
+        .trim() || bill.title;
+    acts = [
+      {
+        title: subjectTitle,
+        slug: null,
+        clauseIds: (bill.clauses ?? []).map((c) => c.id),
+      },
+    ];
   }
 
   const existing = await readAll<LawVersion>(FILES.lawVersions);
-  const existingByPair = new Map(
-    existing.map((lv) => [`${lv.sourceBillId}|${lv.baseLawId}`, lv] as const),
+  const existingByPair = new Map<string, LawVersion>(
+    existing.map((lv) => [`${lv.sourceBillId}|${lv.baseLawId}`, lv]),
   );
 
   const result: LawVersion[] = [];

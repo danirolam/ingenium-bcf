@@ -203,3 +203,19 @@
   padding: 2px 7px;
   color: var(--ink-2);
 }
+
+/* Load-more footer under the bills table */
+.bm-more-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 22px;
+  border-top: 1px solid var(--border);
+  background: var(--panel-2);
+}
+.bm-more-info {
+  font-size: 12px;
+  color: var(--ink-4);
+  letter-spacing: -0.005em;
+}

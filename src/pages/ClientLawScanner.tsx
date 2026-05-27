@@ -114,7 +114,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                       <div className="k">Industry</div>
                       <div className="v">{activeClient.industry}</div>
                       <div className="k">Jurisdictions</div>
-                      <div className="v">{activeClient.jurisdictions.join(", ")}</div>
+                      <div className="v">{(activeClient.jurisdictions ?? []).join(", ") || "—"}</div>
                       <div className="k">T&amp;C</div>
                       <div className="v">{activeClient.termsAndConditions ? "Included" : "Not provided"}</div>
                       <div className="k">Policies</div>
