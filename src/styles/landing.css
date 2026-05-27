@@ -19,6 +19,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+/* Account for sticky nav when jumping to anchors */
+.lp [id] {
+  scroll-margin-top: 72px;
 }
 
 .lp-nav {
