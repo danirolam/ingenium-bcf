@@ -183,13 +183,26 @@ function NewClientModal({
     operations: "",
   });
   const [busy, setBusy] = useState(false);
+  const canSubmit = form.name.trim().length > 0 && !busy;
+
+  // Esc to close
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
 
   async function submit() {
-    if (!form.name.trim()) return;
+    if (!canSubmit) return;
     setBusy(true);
     try {
-      const c = await api.clients.create(form as any);
+      const c = await api.clients.create(form as unknown as Partial<Client>);
       onCreated(c);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      alert(`Could not add client: ${msg}`);
     } finally {
       setBusy(false);
     }
@@ -261,7 +274,7 @@ function NewClientModal({
           <button className="btn" onClick={onClose}>
             Cancel
           </button>
-          <button className="btn primary" disabled={busy} onClick={submit}>
+          <button className="btn primary" disabled={!canSubmit} onClick={submit}>
             {busy ? "Saving…" : "Add client"}
           </button>
         </div>
