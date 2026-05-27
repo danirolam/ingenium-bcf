@@ -86,7 +86,7 @@ clientImpactRouter.post("/analyze", async (req, res) => {
         ],
         emailDraft: {
           subject: `${lv.sourceBillNumber} — preliminary impact note for ${client.name}`,
-          body: `Hi team,\n\nPreliminary impact note on ${lv.sourceBillNumber} (${lv.sourceBillTitle}) for ${client.name}:\n\nThe bill amends ${actName} at ${sections}. Based on the client's profile (${client.industry}, ${client.jurisdictions.join(", ")}), the changes likely touch contractual terms, operational compliance, and disclosure / labelling.\n\nNext step: a lawyer-led mapping of the client's current obligations under ${actName} against the proposed amendments.\n\n— Injenium`,
+          body: `Hi team,\n\nPreliminary impact note on ${lv.sourceBillNumber} (${lv.sourceBillTitle}) for ${client.name}:\n\nThe bill amends ${actName} at ${sections}. Based on the client's profile (${client.industry}, ${(client.jurisdictions ?? []).join(", ")}), the changes likely touch contractual terms, operational compliance, and disclosure / labelling.\n\nNext step: a lawyer-led mapping of the client's current obligations under ${actName} against the proposed amendments.\n\n— Ingenium`,
         },
         confidence: 0.55,
         humanReviewRequired: true,
