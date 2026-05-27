@@ -179,13 +179,28 @@ billsRouter.post("/:id/extract-delta", async (req, res) => {
     // Bill has no clause-level Act tagging (the 158 bills loaded from the
     // raw LEGISinfo snapshot). Synthesize a single "subject Act" derived
     // from the bill title so Delta Workspace still renders something.
-    const subjectTitle =
-      (bill.title.match(/Act to amend the ([^,]+?)(?:Act|act)\b/i)?.[0] ??
-        bill.title)
-        .replace(/^An Act to (?:amend|enact)\s+the\s+/i, "")
-        .replace(/^An Act to (?:amend|enact)\s+/i, "")
-        .replace(/\s*\(.*$/, "")
-        .trim() || bill.title;
+    // Matches: "An Act to amend the Foo Bar Act (parenthetical)"  →  "Foo Bar Act"
+    //          "An Act respecting the Foo Bar"                    →  "Foo Bar Act"
+    let subjectTitle = bill.title;
+    const amendActMatch = bill.title.match(
+      /amend(?:ing)? the ([A-Z][^,()]*? Act)\b/,
+    );
+    const amendOtherMatch = bill.title.match(
+      /amend(?:ing)? the (Criminal Code|Customs Tariff|Income Tax Act|[A-Z][a-z]+(?: [A-Z][a-z]+)* (?:Code|Tariff|Regulations))\b/,
+    );
+    const enactMatch = bill.title.match(
+      /(?:enact|respecting) (?:the\s+)?([A-Z][^,()]*?)(?:\s*\(|,|$)/,
+    );
+    if (amendActMatch) {
+      subjectTitle = amendActMatch[1].trim();
+    } else if (amendOtherMatch) {
+      subjectTitle = amendOtherMatch[1].trim();
+    } else if (enactMatch) {
+      const m = enactMatch[1].trim();
+      subjectTitle = /Act$/i.test(m) ? m : `${m} Act`;
+    } else {
+      subjectTitle = bill.title.replace(/\s*\(.*$/, "").trim() || bill.title;
+    }
     acts = [
       {
         title: subjectTitle,
