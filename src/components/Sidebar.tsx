@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import type { PageId } from "../App";
 import {
   ArrowLeft,
@@ -7,13 +8,13 @@ import {
   ScanSearch,
   type LucideIcon,
 } from "lucide-react";
+import { api } from "../lib/api";
 
 type SidebarItem = {
   id: PageId;
   num: string;
   label: string;
   description: string;
-  tally?: string;
   icon: LucideIcon;
 };
 
@@ -22,7 +23,6 @@ const ITEMS: SidebarItem[] = [
     id: "monitor",
     num: "01",
     label: "Bill Monitor",
-    tally: "12",
     icon: FileText,
     description: "Retrieve and normalize bill records before they enter legal review.",
   },
@@ -30,7 +30,6 @@ const ITEMS: SidebarItem[] = [
     id: "delta",
     num: "02",
     label: "Delta Workspace",
-    tally: "3",
     icon: GitCompareArrows,
     description: "Compare proposed amendments against current law, Act by Act.",
   },
@@ -59,6 +58,33 @@ export function Sidebar({
   setPage: (p: PageId) => void;
   onExit?: () => void;
 }) {
+  const [tallies, setTallies] = useState<Record<PageId, number | null>>({
+    monitor: null,
+    delta: null,
+    scanner: null,
+    impact: null,
+  });
+
+  useEffect(() => {
+    Promise.all([
+      api.bills.list().catch(() => []),
+      api.lawVersions.list().catch(() => []),
+      api.clients.list().catch(() => []),
+    ])
+      .then(([bills, lvs, clients]) => {
+        const approved = lvs.filter(
+          (lv) => lv.humanApproved && !lv.baseLawId.startsWith("unregistered:"),
+        ).length;
+        setTallies({
+          monitor: bills.length,
+          delta: lvs.length,
+          scanner: approved * clients.length,
+          impact: approved,
+        });
+      })
+      .catch(() => {});
+  }, [page]);
+
   return (
     <aside className="sb">
       <button
@@ -82,19 +108,24 @@ export function Sidebar({
 
       <div className="sb-section">Workspaces</div>
       <nav className="sb-nav">
-        {ITEMS.map((it) => (
-          <button
-            key={it.id}
-            className={page === it.id ? "active" : ""}
-            onClick={() => setPage(it.id)}
-          >
-            <it.icon className="sb-icon" size={16} strokeWidth={1.8} aria-hidden="true" />
-            <span className="sb-num">{it.num}</span>
-            <span className="sb-label">{it.label}</span>
-            {it.tally && <span className="sb-tag">{it.tally}</span>}
-            <span className="sb-help" role="tooltip">{it.description}</span>
-          </button>
-        ))}
+        {ITEMS.map((it) => {
+          const t = tallies[it.id];
+          return (
+            <button
+              key={it.id}
+              className={page === it.id ? "active" : ""}
+              onClick={() => setPage(it.id)}
+            >
+              <it.icon className="sb-icon" size={16} strokeWidth={1.8} aria-hidden="true" />
+              <span className="sb-num">{it.num}</span>
+              <span className="sb-label">{it.label}</span>
+              {typeof t === "number" && t > 0 && (
+                <span className="sb-tag">{t}</span>
+              )}
+              <span className="sb-help" role="tooltip">{it.description}</span>
+            </button>
+          );
+        })}
       </nav>
 
       <div className="sb-foot">
