@@ -54,7 +54,23 @@ export function BillMonitor({ nav }: { nav: Nav }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    api.bills.list().then(setBills).catch(console.error);
+    let cancelled = false;
+    api.bills
+      .list()
+      .then((b) => {
+        if (!cancelled) setBills(b);
+      })
+      .catch((err) => {
+        console.error(err);
+        if (!cancelled)
+          nav.toast(
+            `Could not load bills: ${err.message ?? err}. Is the api server running on :8787?`,
+          );
+      });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function onUpload(e: React.ChangeEvent<HTMLInputElement>) {
