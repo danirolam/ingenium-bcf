@@ -1,5 +1,31 @@
 [
   {
+    "id": "lv-bill-13953578-unregistered:food-and-drugs-act",
+    "baseLawId": "unregistered:food-and-drugs-act",
+    "baseLawTitle": "Food and Drugs Act",
+    "sourceBillId": "bill-13953578",
+    "sourceBillNumber": "C-265",
+    "sourceBillTitle": "An Act to amend the Food and Drugs Act (List of Therapeutic Products Pre-approved for Special Access)",
+    "sourceBillStatus": "At second reading in the House of Commons",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "An Act to amend the Food and Drugs Act (List of Therapeutic Products Pre-approved for Special Access)\n\nThis bill is tracked from LEGISinfo. Full clause text has not been ingested yet — open the LEGISinfo source link in the right rail for the official version, then re-run normalization to populate clauses.",
+    "affectedSections": [],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-265 is tracked from LEGISinfo. Clause-level Act tagging is not yet available, so this is a placeholder review surface for Food and Drugs Act. Use it to confirm scope before triggering full extraction.",
+    "detailedDelta": "Bill C-265 is tracked from LEGISinfo. Clause-level Act tagging is not yet available, so this is a placeholder review surface for Food and Drugs Act. Use it to confirm scope before triggering full extraction.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-27T11:37:17.629Z"
+  },
+  {
     "id": "lv-c273-feeds-act",
     "baseLawId": "feeds-act",
     "baseLawTitle": "Feeds Act",
