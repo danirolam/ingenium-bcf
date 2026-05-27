@@ -95,7 +95,11 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     }
   }
 
-  const totalRecs = analysis.requiredAdaptations.length;
+  const requiredAdaptations = analysis.requiredAdaptations ?? [];
+  const affectedClientAreas = analysis.affectedClientAreas ?? [];
+  const relevantClientText = analysis.relevantClientText ?? [];
+  const lawyerVerificationQuestions = analysis.lawyerVerificationQuestions ?? [];
+  const totalRecs = requiredAdaptations.length;
   const totalRecsPad = String(totalRecs).padStart(2, "0");
   const toggleSection = (id: string) => {
     setOpenSections((current) => ({ ...current, [id]: !current[id] }));
@@ -178,13 +182,13 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
               onToggle={toggleSection}
               icon={<ShieldCheck size={16} strokeWidth={1.8} aria-hidden="true" />}
               title="Why it matters"
-              summary={`${analysis.affectedClientAreas.length || 1} client area${analysis.affectedClientAreas.length === 1 ? "" : "s"} flagged`}
+              summary={`${affectedClientAreas.length || 1} client area${affectedClientAreas.length === 1 ? "" : "s"} flagged`}
             >
               <div className="rich-text-card">
                 <div>{analysis.whyItAffectsClient}</div>
-                {analysis.affectedClientAreas.length > 0 && (
+                {affectedClientAreas.length > 0 && (
                   <div className="chip-row">
-                    {analysis.affectedClientAreas.map((a) => (
+                    {affectedClientAreas.map((a) => (
                       <span key={a} className="badge outline">{a}</span>
                     ))}
                   </div>
@@ -200,7 +204,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
               title="Recommended adaptations"
               summary={`${totalRecs} action${totalRecs === 1 ? "" : "s"} proposed`}
             >
-              {analysis.requiredAdaptations.map((r, i) => {
+              {requiredAdaptations.map((r, i) => {
                 const num = String(i + 1).padStart(2, "0");
                 return (
                   <div className="rec" key={i}>
@@ -220,16 +224,16 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
               })}
             </InsightSection>
 
-            {analysis.relevantClientText.length > 0 && (
+            {relevantClientText.length > 0 && (
               <InsightSection
                 id="evidence"
                 open={openSections.evidence}
                 onToggle={toggleSection}
                 icon={<FileText size={16} strokeWidth={1.8} aria-hidden="true" />}
                 title="Relevant client text"
-                summary={`${analysis.relevantClientText.length} evidence excerpt${analysis.relevantClientText.length === 1 ? "" : "s"}`}
+                summary={`${relevantClientText.length} evidence excerpt${relevantClientText.length === 1 ? "" : "s"}`}
               >
-                {analysis.relevantClientText.map((r, i) => (
+                {relevantClientText.map((r, i) => (
                   <div className="rec" key={i}>
                     <div className="rec-h">
                       <span className="badge outline dim">{r.source}</span>
@@ -254,7 +258,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
                 onToggle={toggleSection}
                 icon={<AlertTriangle size={16} strokeWidth={1.9} aria-hidden="true" />}
                 title="Lawyer review"
-                summary={`${analysis.lawyerVerificationQuestions.length} verification question${analysis.lawyerVerificationQuestions.length === 1 ? "" : "s"}`}
+                summary={`${lawyerVerificationQuestions.length} verification question${lawyerVerificationQuestions.length === 1 ? "" : "s"}`}
                 tone="warning"
               >
                 <Alert variant="warning" appearance="light" className="analysis-alert flat-alert">
@@ -268,7 +272,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
                       {analysis.humanReviewReason ?? "This analysis needs lawyer verification before action."}
                     </div>
                     <ul className="review-question-list">
-                      {analysis.lawyerVerificationQuestions.map((q, i) => (
+                      {lawyerVerificationQuestions.map((q, i) => (
                         <li key={i}>{q}</li>
                       ))}
                     </ul>
@@ -303,7 +307,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
               onToggle={toggleSection}
               icon={<FileText size={16} strokeWidth={1.8} aria-hidden="true" />}
               title="Source law version"
-              summary={`${lv?.sourceBillNumber ?? "Bill"} · ${lv?.affectedSections.join(", ") ?? "sections pending"}`}
+              summary={`${lv?.sourceBillNumber ?? "Bill"} · ${(lv?.affectedSections ?? []).join(", ") || "sections pending"}`}
             >
               <div className="kv kv-card">
                 <div className="k">Bill</div>
@@ -311,7 +315,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
                 <div className="k">Status</div>
                 <div className="v">{lv?.sourceBillStatus}</div>
                 <div className="k">Sections</div>
-                <div className="v">{lv?.affectedSections.join(", ")}</div>
+                <div className="v">{(lv?.affectedSections ?? []).join(", ") || "—"}</div>
               </div>
             </InsightSection>
           </div>

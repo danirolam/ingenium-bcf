@@ -166,7 +166,7 @@ export function actsAffectedByBill(
   registry: Record<string, RegistryEntry>,
 ): AffectedAct[] {
   const map = new Map<string, AffectedAct>();
-  for (const c of bill.clauses) {
+  for (const c of bill.clauses ?? []) {
     if (!c.targetActs || c.targetActs.length === 0) continue;
     for (const raw of c.targetActs) {
       const title = raw.trim();

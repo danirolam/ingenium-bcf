@@ -49,7 +49,7 @@ export function ClientSelector({
             <div className="nm">{c.name}</div>
             <div className="meta">
               {c.industry}
-              {c.jurisdictions.length > 0 && ` · ${c.jurisdictions.join(", ")}`}
+              {(c.jurisdictions?.length ?? 0) > 0 && ` · ${(c.jurisdictions ?? []).join(", ")}`}
             </div>
           </div>
         ))}

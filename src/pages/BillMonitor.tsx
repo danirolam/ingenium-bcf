@@ -100,7 +100,7 @@ export function BillMonitor({ nav }: { nav: Nav }) {
     };
   }, [bills]);
 
-  const visibleBills = useMemo(() => {
+  const matchingBills = useMemo(() => {
     const q = query.trim().toLowerCase();
     return bills
       .filter((b) => matchesFilter(b, filter))
@@ -112,6 +112,17 @@ export function BillMonitor({ nav }: { nav: Nav }) {
         );
       });
   }, [bills, filter, query]);
+
+  const [pageSize, setPageSize] = useState(50);
+  // Reset cap when filter / query changes
+  useEffect(() => {
+    setPageSize(50);
+  }, [filter, query]);
+  const visibleBills = useMemo(
+    () => matchingBills.slice(0, pageSize),
+    [matchingBills, pageSize],
+  );
+  const hiddenCount = Math.max(0, matchingBills.length - visibleBills.length);
 
   const tabItems = [
     { value: "all", label: "All", count: counts.all },
@@ -245,6 +256,20 @@ export function BillMonitor({ nav }: { nav: Nav }) {
                 </tbody>
               </table>
             </div>
+            {hiddenCount > 0 && (
+              <div className="bm-more-row">
+                <span className="bm-more-info tnum">
+                  Showing {visibleBills.length} of {matchingBills.length}
+                </span>
+                <button
+                  type="button"
+                  className="btn sm"
+                  onClick={() => setPageSize((n) => n + 50)}
+                >
+                  Load 50 more
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
