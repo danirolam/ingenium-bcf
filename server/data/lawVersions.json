@@ -1,71 +1,5 @@
 [
   {
-    "id": "lv-bill-1778365251790-7powsm-1778365256441",
-    "baseLawId": "cppa-baseline",
-    "baseLawTitle": "Consumer Privacy Protection Act (proposed baseline)",
-    "sourceBillId": "bill-1778365251790-7powsm",
-    "sourceBillNumber": "C-25",
-    "sourceBillTitle": "An Act to amend the Canada Elections Act and to enact An Act to change the names of certain electoral districts, 2026",
-    "sourceBillStatus": "first-reading",
-    "legislativeMomentum": "early",
-    "versionStatus": "proposed_future",
-    "humanApproved": false,
-    "oldText": "Section 9 — Appropriate purposes.\n(1) An organization may collect, use or disclose personal information only for purposes that a reasonable person would consider appropriate in the circumstances.\n\nSection 15 — Consent.\n(3) Consent of an individual is required for the collection, use or disclosure of personal information, except as otherwise provided.\n\nSection 39 — Disclosure without consent.\n(1) An organization may disclose an individual's personal information without their knowledge or consent only in the circumstances expressly set out in this Act.",
-    "updatedText": "Section 9 — Appropriate purposes.\n(1) An organization may collect, use or disclose personal information only in a manner and for purposes that a reasonable person would consider appropriate in the circumstances, having regard to (a) the sensitivity of the personal information; (b) whether the purposes represent legitimate business needs of the organization; (c) the effectiveness of the collection, use or disclosure in meeting the organization's legitimate business needs; (d) whether there are less intrusive means of achieving those purposes at a comparable cost and with comparable benefits; and (e) whether the individual's loss of privacy is proportionate to the benefits.\n\nSection 15 — Valid consent.\n(3) The consent of an individual is valid only if it is reasonable to expect that the individual would understand the nature, purpose and consequences of the collection, use or disclosure of the personal information to which they are consenting.\n\nSection 39 — Disclosure for socially beneficial purposes.\n(1) An organization may disclose an individual's de-identified personal information without their knowledge or consent to a government institution, a health care institution, a post-secondary educational institution or public library in Canada, or any other prescribed entity, if the disclosure is made for a socially beneficial purpose.",
-    "affectedSections": [
-      "s. 9(1)",
-      "s. 15(3)",
-      "s. 39(1)"
-    ],
-    "changeTypes": [
-      "replace",
-      "definition_change",
-      "add",
-      "obligation_change"
-    ],
-    "deltaSummary": "C-27 introduces a five-factor reasonable-purposes test, narrows consent to 'valid consent', and adds a socially beneficial disclosure pathway for de-identified personal information.",
-    "detailedDelta": "Section 9(1) is replaced with a factor-based appropriateness test (sensitivity, legitimate business need, effectiveness, less intrusive alternatives, proportionality). Section 15(3) replaces 'consent' with 'valid consent', requiring that the individual could reasonably understand the nature, purpose and consequences. New s. 39(1) creates a permitted disclosure of de-identified personal information to government, health, post-secondary, library, or prescribed entities for socially beneficial purposes.",
-    "effectiveDate": null,
-    "comingIntoForceText": "On a day fixed by order of the Governor in Council, no earlier than one year after Royal Assent.",
-    "confidence": 0.72,
-    "humanReviewRequired": true,
-    "humanReviewReason": "Confidence below 0.75; effective date depends on order in council; coming-into-force language requires lawyer verification.",
-    "createdAt": "2026-05-09T22:20:56.441Z"
-  },
-  {
-    "id": "lv-bill-1778356931683-4olqax-1778356934715",
-    "baseLawId": "cppa-baseline",
-    "baseLawTitle": "Consumer Privacy Protection Act (proposed baseline)",
-    "sourceBillId": "bill-1778356931683-4olqax",
-    "sourceBillNumber": "C-218",
-    "sourceBillTitle": "An Act to amend the Criminal Code (medical assistance in dying)",
-    "sourceBillStatus": "first-reading",
-    "legislativeMomentum": "early",
-    "versionStatus": "proposed_future",
-    "humanApproved": true,
-    "oldText": "Section 9 — Appropriate purposes.\n(1) An organization may collect, use or disclose personal information only for purposes that a reasonable person would consider appropriate in the circumstances.\n\nSection 15 — Consent.\n(3) Consent of an individual is required for the collection, use or disclosure of personal information, except as otherwise provided.\n\nSection 39 — Disclosure without consent.\n(1) An organization may disclose an individual's personal information without their knowledge or consent only in the circumstances expressly set out in this Act.",
-    "updatedText": "Section 9 — Appropriate purposes.\n(1) An organization may collect, use or disclose personal information only in a manner and for purposes that a reasonable person would consider appropriate in the circumstances, having regard to (a) the sensitivity of the personal information; (b) whether the purposes represent legitimate business needs of the organization; (c) the effectiveness of the collection, use or disclosure in meeting the organization's legitimate business needs; (d) whether there are less intrusive means of achieving those purposes at a comparable cost and with comparable benefits; and (e) whether the individual's loss of privacy is proportionate to the benefits.\n\nSection 15 — Valid consent.\n(3) The consent of an individual is valid only if it is reasonable to expect that the individual would understand the nature, purpose and consequences of the collection, use or disclosure of the personal information to which they are consenting.\n\nSection 39 — Disclosure for socially beneficial purposes.\n(1) An organization may disclose an individual's de-identified personal information without their knowledge or consent to a government institution, a health care institution, a post-secondary educational institution or public library in Canada, or any other prescribed entity, if the disclosure is made for a socially beneficial purpose.",
-    "affectedSections": [
-      "s. 9(1)",
-      "s. 15(3)",
-      "s. 39(1)"
-    ],
-    "changeTypes": [
-      "replace",
-      "definition_change",
-      "add",
-      "obligation_change"
-    ],
-    "deltaSummary": "C-27 introduces a five-factor reasonable-purposes test, narrows consent to 'valid consent', and adds a socially beneficial disclosure pathway for de-identified personal information.",
-    "detailedDelta": "Section 9(1) is replaced with a factor-based appropriateness test (sensitivity, legitimate business need, effectiveness, less intrusive alternatives, proportionality). Section 15(3) replaces 'consent' with 'valid consent', requiring that the individual could reasonably understand the nature, purpose and consequences. New s. 39(1) creates a permitted disclosure of de-identified personal information to government, health, post-secondary, library, or prescribed entities for socially beneficial purposes.",
-    "effectiveDate": null,
-    "comingIntoForceText": "On a day fixed by order of the Governor in Council, no earlier than one year after Royal Assent.",
-    "confidence": 0.72,
-    "humanReviewRequired": false,
-    "humanReviewReason": null,
-    "createdAt": "2026-05-09T20:02:14.715Z"
-  },
-  {
     "id": "lv-c273-feeds-act",
     "baseLawId": "feeds-act",
     "baseLawTitle": "Feeds Act",
@@ -242,5 +176,93 @@
     "humanReviewRequired": false,
     "humanReviewReason": null,
     "createdAt": "2026-05-09T18:11:17.013Z"
+  },
+  {
+    "sourceBillId": "bill-1778365251790-7powsm",
+    "sourceBillNumber": "C-25",
+    "sourceBillTitle": "An Act to amend the Canada Elections Act and to enact An Act to change the names of certain electoral districts, 2026",
+    "sourceBillStatus": "first-reading",
+    "legislativeMomentum": "early",
+    "versionStatus": "proposed_future",
+    "humanApproved": true,
+    "effectiveDate": null,
+    "comingIntoForceText": "On a day fixed by order of the Governor in Council.",
+    "createdAt": "2026-05-27T03:17:33.783Z",
+    "id": "lv-c25-canada-elections-act",
+    "baseLawId": "canada-elections-act",
+    "baseLawTitle": "Canada Elections Act",
+    "oldText": "Section 161 — Right to vote at a polling station.\n(1) An elector who comes to vote at the polling station shall give their name and address to the deputy returning officer and the poll clerk, and prove their identity and residence in accordance with section 143.",
+    "updatedText": "Section 161 — Right to vote at a polling station.\n(1) An elector who comes to vote at the polling station shall give their name and address to the deputy returning officer and the poll clerk, and prove their identity and residence in accordance with section 143, and may, if unable to attend in person, request a curbside ballot under the conditions prescribed by the Chief Electoral Officer.",
+    "affectedSections": [
+      "s. 161(1)"
+    ],
+    "changeTypes": [
+      "add",
+      "obligation_change"
+    ],
+    "deltaSummary": "C-25 adds an explicit curbside-ballot accommodation pathway for electors unable to enter the polling place.",
+    "detailedDelta": "Section 161(1) is extended with a curbside-ballot option administered under Chief Electoral Officer guidance.",
+    "confidence": 0.79,
+    "humanReviewRequired": false,
+    "humanReviewReason": null
+  },
+  {
+    "sourceBillId": "bill-1778365251790-7powsm",
+    "sourceBillNumber": "C-25",
+    "sourceBillTitle": "An Act to amend the Canada Elections Act and to enact An Act to change the names of certain electoral districts, 2026",
+    "sourceBillStatus": "first-reading",
+    "legislativeMomentum": "early",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "effectiveDate": null,
+    "comingIntoForceText": "On a day fixed by order of the Governor in Council.",
+    "createdAt": "2026-05-27T03:17:33.783Z",
+    "id": "lv-c25-electoral-district-names",
+    "baseLawId": "electoral-boundaries-readjustment-act",
+    "baseLawTitle": "Electoral Boundaries Readjustment Act",
+    "oldText": "Schedule — Names and descriptions of the electoral districts established under the Representation Order in force on the date this Schedule was last amended.",
+    "updatedText": "Schedule — Names and descriptions of the electoral districts established under the Representation Order in force on the date this Schedule was last amended, as further amended by the renamings set out in An Act to change the names of certain electoral districts, 2026.",
+    "affectedSections": [
+      "Schedule"
+    ],
+    "changeTypes": [
+      "renumber",
+      "add"
+    ],
+    "deltaSummary": "C-25 layers in the 2026 electoral-district renamings to the existing schedule.",
+    "detailedDelta": "The Schedule is amended to incorporate the renamings enacted by the companion Act, without altering boundaries.",
+    "confidence": 0.86,
+    "humanReviewRequired": false,
+    "humanReviewReason": null
+  },
+  {
+    "sourceBillId": "bill-1778356931683-4olqax",
+    "sourceBillNumber": "C-218",
+    "sourceBillTitle": "An Act to amend the Criminal Code (medical assistance in dying)",
+    "sourceBillStatus": "first-reading",
+    "legislativeMomentum": "early",
+    "versionStatus": "proposed_future",
+    "humanApproved": true,
+    "effectiveDate": null,
+    "comingIntoForceText": "On the day on which this Act receives royal assent.",
+    "createdAt": "2026-05-27T03:17:33.783Z",
+    "id": "lv-c218-criminal-code",
+    "baseLawId": "criminal-code",
+    "baseLawTitle": "Criminal Code",
+    "oldText": "Section 241.2 — Eligibility for medical assistance in dying.\n(1) A person may receive medical assistance in dying only if they meet all of the following criteria: (a) they are eligible for health services funded by a government in Canada; (b) they are at least 18 years of age and capable of making decisions with respect to their health; (c) they have a grievous and irremediable medical condition; (d) they have made a voluntary request that, in particular, was not made as a result of external pressure; and (e) they give informed consent to receive medical assistance in dying.",
+    "updatedText": "Section 241.2 — Eligibility for medical assistance in dying.\n(1) A person may receive medical assistance in dying only if they meet all of the following criteria: (a) they are eligible for health services funded by a government in Canada; (b) they are at least 18 years of age and capable of making decisions with respect to their health; (c) they have a grievous and irremediable medical condition; (d) they have made a voluntary request that, in particular, was not made as a result of external pressure; (e) they give informed consent to receive medical assistance in dying after being informed of the means available to relieve their suffering, including palliative care; and (f) they have completed a 30-day reflection period from the day on which the first written request was signed, except where the assessing practitioner determines that the person's death is reasonably foreseeable within that period.",
+    "affectedSections": [
+      "s. 241.2(1)"
+    ],
+    "changeTypes": [
+      "add",
+      "obligation_change",
+      "deadline_change"
+    ],
+    "deltaSummary": "C-218 layers in a palliative-care information requirement and a 30-day reflection period, with a foreseeable-death carve-out.",
+    "detailedDelta": "Eligibility criteria gain (e) palliative-care information disclosure and (f) a 30-day reflection-period requirement subject to a reasonably-foreseeable-death exception.",
+    "confidence": 0.74,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Confidence below 0.75; the reflection-period carve-out wording will need lawyer interpretation against the existing reasonably-foreseeable-death jurisprudence."
   }
 ]
