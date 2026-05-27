@@ -75,11 +75,16 @@
     "sourceBillStatus": "first-reading",
     "legislativeMomentum": "early",
     "versionStatus": "proposed_future",
-    "humanApproved": false,
+    "humanApproved": true,
     "oldText": "Section 3 — Sale of feeds.\nNo person shall sell, offer for sale or have in possession for sale any feed unless the feed conforms to the prescribed standards and is registered as prescribed.",
     "updatedText": "Section 3 — Sale of feeds.\nNo person shall sell, offer for sale or have in possession for sale any feed unless the feed conforms to the prescribed standards, is registered as prescribed, and bears a label disclosing every novel ingredient and any genetically modified component, in plain language and in both official languages.",
-    "affectedSections": ["s. 3"],
-    "changeTypes": ["add", "obligation_change"],
+    "affectedSections": [
+      "s. 3"
+    ],
+    "changeTypes": [
+      "add",
+      "obligation_change"
+    ],
     "deltaSummary": "C-273 adds a plain-language, bilingual labelling obligation for novel and genetically modified feed ingredients on every retail unit.",
     "detailedDelta": "The existing s. 3 sale prohibition is extended with a labelling requirement covering novel ingredients and any genetically modified component. Labels must be plain-language and bilingual.",
     "effectiveDate": null,
@@ -102,8 +107,13 @@
     "humanApproved": false,
     "oldText": "Section 3 — Sale.\nNo person shall sell or import into Canada any fertilizer or supplement unless the fertilizer or supplement conforms to the prescribed standards and is registered.",
     "updatedText": "Section 3 — Sale.\nNo person shall sell or import into Canada any fertilizer or supplement unless the fertilizer or supplement conforms to the prescribed standards, is registered, and is accompanied by a publicly accessible disclosure of its source materials, processing aids and any genetically modified components.",
-    "affectedSections": ["s. 3"],
-    "changeTypes": ["add", "obligation_change"],
+    "affectedSections": [
+      "s. 3"
+    ],
+    "changeTypes": [
+      "add",
+      "obligation_change"
+    ],
     "deltaSummary": "C-273 adds a public source-and-component disclosure obligation for every fertilizer and supplement sold or imported.",
     "detailedDelta": "Section 3 is extended with a public disclosure obligation covering source materials, processing aids, and genetically modified components. The disclosure must be publicly accessible.",
     "effectiveDate": null,
@@ -126,8 +136,13 @@
     "humanApproved": false,
     "oldText": "Section 3 — Sale and import of seed.\nNo person shall sell, offer for sale or import into Canada any seed unless the seed conforms to the prescribed standards.",
     "updatedText": "Section 3 — Sale and import of seed.\nNo person shall sell, offer for sale or import into Canada any seed unless the seed conforms to the prescribed standards and is identified, on the package and in any sales record, as either conventional, hybrid or genetically modified.",
-    "affectedSections": ["s. 3"],
-    "changeTypes": ["add", "obligation_change"],
+    "affectedSections": [
+      "s. 3"
+    ],
+    "changeTypes": [
+      "add",
+      "obligation_change"
+    ],
     "deltaSummary": "C-273 requires every seed package and sales record to identify the seed as conventional, hybrid or genetically modified.",
     "detailedDelta": "Section 3 now requires a categorical disclosure (conventional / hybrid / genetically modified) on every seed package and in every sales record.",
     "effectiveDate": null,
@@ -150,8 +165,13 @@
     "humanApproved": false,
     "oldText": "Section 6 — Prohibitions.\n(1) No person shall manufacture, possess, handle, store, transport, import, distribute or use a pest control product that is not registered under this Act, except as authorized under this Act or the regulations.",
     "updatedText": "Section 6 — Prohibitions.\n(1) No person shall manufacture, possess, handle, store, transport, import, distribute or use a pest control product that is not registered under this Act, and every registered pest control product shall display, on the consumer-facing label, every active ingredient and the residue tolerance applicable to its principal authorized use, except as authorized under this Act or the regulations.",
-    "affectedSections": ["s. 6(1)"],
-    "changeTypes": ["add", "obligation_change"],
+    "affectedSections": [
+      "s. 6(1)"
+    ],
+    "changeTypes": [
+      "add",
+      "obligation_change"
+    ],
     "deltaSummary": "C-273 layers an active-ingredient and residue-tolerance disclosure onto the consumer-facing label of every registered pest control product.",
     "detailedDelta": "Section 6(1) is extended: registered pest control products must display every active ingredient and the residue tolerance for their principal authorized use on the consumer-facing label.",
     "effectiveDate": null,
@@ -171,11 +191,16 @@
     "sourceBillStatus": "first-reading",
     "legislativeMomentum": "early",
     "versionStatus": "proposed_future",
-    "humanApproved": false,
+    "humanApproved": true,
     "oldText": "Section 5 — Misleading labelling.\n(1) No person shall label, package, treat, process, sell or advertise any food in a manner that is false, misleading or deceptive or is likely to create an erroneous impression regarding its character, value, quantity, composition, merit or safety.",
     "updatedText": "Section 5 — Misleading labelling.\n(1) No person shall label, package, treat, process, sell or advertise any food in a manner that is false, misleading or deceptive or is likely to create an erroneous impression regarding its character, value, quantity, composition, merit or safety, and any food derived from genetically modified ingredients shall be conspicuously identified as such on the principal display panel.",
-    "affectedSections": ["s. 5(1)"],
-    "changeTypes": ["add", "obligation_change"],
+    "affectedSections": [
+      "s. 5(1)"
+    ],
+    "changeTypes": [
+      "add",
+      "obligation_change"
+    ],
     "deltaSummary": "C-273 layers a conspicuous GM-derived identification onto the principal display panel of any food derived from genetically modified ingredients.",
     "detailedDelta": "Section 5(1) of the Food and Drugs Act is extended: foods derived from genetically modified ingredients must carry a conspicuous identification on the principal display panel.",
     "effectiveDate": null,
