@@ -16,8 +16,8 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
   const [showNew, setShowNew] = useState(false);
 
   useEffect(() => {
-    Promise.all([api.clients.list(), api.lawVersions.list()]).then(
-      ([cs, ls]) => {
+    Promise.all([api.clients.list(), api.lawVersions.list()])
+      .then(([cs, ls]) => {
         setClients(cs);
         setLvs(ls);
         if (!activeClient && cs.length > 0) setActiveClient(cs[0]);
@@ -25,8 +25,12 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
           (lv) => lv.humanApproved && !lv.baseLawId.startsWith("unregistered:"),
         );
         if (!activeLvId && approved.length > 0) setActiveLvId(approved[0].id);
-      },
-    );
+      })
+      .catch((err) => {
+        console.error(err);
+        nav.toast(`Could not load scanner data: ${err.message ?? err}`);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const approvedLvs = useMemo(
