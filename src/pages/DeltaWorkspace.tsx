@@ -300,7 +300,11 @@ function DeltaSection({
   refSet: (el: HTMLDivElement | null) => void;
 }) {
   const stub = isStub(lv);
-  const confidencePct = Math.round(lv.confidence * 100);
+  const safeConfidence = Math.max(
+    0,
+    Math.min(1, Number.isFinite(lv.confidence) ? lv.confidence : 0),
+  );
+  const confidencePct = Math.round(safeConfidence * 100);
 
   return (
     <section className="delta-section" ref={refSet} data-lv-id={lv.id} id={lv.id}>
