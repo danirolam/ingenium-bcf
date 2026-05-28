@@ -79,20 +79,6 @@ current.normalized.json normalized full text and sections
 source.json             registry data, source URLs, and retrieval timestamp
 ```
 
-```text
-laws/c-273-demo-laws.json
-```
-
-Focused law pack for the C-273 demo. It maps the bill to the five current federal Acts it amends:
-
-```text
-Feeds Act
-Fertilizers Act
-Seeds Act
-Pest Control Products Act
-Food and Drugs Act
-```
-
 ## Recommended Data Pipeline
 
 ```text
@@ -209,16 +195,16 @@ Retrieve a small smoke-test sample:
 node --use-system-ca scripts/retrieve-bill-texts.mjs --limit 3
 ```
 
+Retrieve or refresh one specific bill:
+
+```text
+node --use-system-ca scripts/retrieve-bill-texts.mjs --bill C-273
+```
+
 Refresh the current Food and Drugs Act:
 
 ```text
 node --use-system-ca scripts/retrieve-law.mjs food-and-drugs-act
-```
-
-Refresh all current laws in the registry:
-
-```text
-node --use-system-ca scripts/retrieve-law.mjs --all
 ```
 
 ## Next Data Files To Add

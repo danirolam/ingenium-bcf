@@ -1,52 +1,131 @@
+import { useEffect, useState } from "react";
 import type { PageId } from "../App";
+import {
+  ArrowLeft,
+  BriefcaseBusiness,
+  FileText,
+  GitCompareArrows,
+  ScanSearch,
+  type LucideIcon,
+} from "lucide-react";
+import { api } from "../lib/api";
 
-const ITEMS: { id: PageId; num: string; label: string }[] = [
-  { id: "monitor", num: "01", label: "Bill Monitor" },
-  { id: "delta", num: "02", label: "Delta Workspace" },
-  { id: "scanner", num: "03", label: "Client-Law Scanner" },
-  { id: "impact", num: "04", label: "Client Impact Analysis" },
+type SidebarItem = {
+  id: PageId;
+  num: string;
+  label: string;
+  description: string;
+  icon: LucideIcon;
+};
+
+const ITEMS: SidebarItem[] = [
+  {
+    id: "monitor",
+    num: "01",
+    label: "Bill Monitor",
+    icon: FileText,
+    description: "Retrieve and normalize bill records before they enter legal review.",
+  },
+  {
+    id: "delta",
+    num: "02",
+    label: "Delta Workspace",
+    icon: GitCompareArrows,
+    description: "Compare proposed amendments against current law, Act by Act.",
+  },
+  {
+    id: "scanner",
+    num: "03",
+    label: "Client-Law Scanner",
+    icon: ScanSearch,
+    description: "Pair approved law versions with client materials for impact screening.",
+  },
+  {
+    id: "impact",
+    num: "04",
+    label: "Client Impact Analysis",
+    icon: BriefcaseBusiness,
+    description: "Review client-specific exposure, actions, timelines, and recommendations.",
+  },
 ];
 
 export function Sidebar({
   page,
   setPage,
+  onExit,
 }: {
   page: PageId;
   setPage: (p: PageId) => void;
+  onExit?: () => void;
 }) {
+  const [tallies, setTallies] = useState<Record<PageId, number | null>>({
+    monitor: null,
+    delta: null,
+    scanner: null,
+    impact: null,
+  });
+
+  useEffect(() => {
+    Promise.all([
+      api.bills.list().catch(() => []),
+      api.lawVersions.list().catch(() => []),
+      api.clients.list().catch(() => []),
+    ])
+      .then(([bills, lvs, clients]) => {
+        const approved = lvs.filter(
+          (lv) => lv.humanApproved && !lv.baseLawId.startsWith("unregistered:"),
+        ).length;
+        setTallies({
+          monitor: bills.length,
+          delta: lvs.length,
+          scanner: approved * clients.length,
+          impact: approved,
+        });
+      })
+      .catch(() => {});
+  }, [page]);
+
   return (
     <aside className="sb">
-      <div className="sb-brand">
-        <div className="sb-mark">In</div>
+      <button
+        type="button"
+        className="sb-brand sb-brand-button"
+        onClick={onExit}
+        aria-label="Back to landing page"
+      >
+        <div className="sb-mark" aria-hidden="true" />
         <div>
-          <div className="sb-name">
-            <b>Ingenium</b>
-          </div>
-          <div
-            style={{
-              fontSize: 10.5,
-              color: "var(--sidebar-ink-2)",
-              letterSpacing: "0.04em",
-              marginTop: 2,
-            }}
-          >
-            LEGISLATION INTELLIGENCE
-          </div>
+          <div className="sb-name">BCF</div>
+          <div className="sb-subname">by <span>Ingenium</span></div>
         </div>
-      </div>
+        <ArrowLeft
+          className="sb-back-arrow"
+          size={14}
+          strokeWidth={1.75}
+          aria-hidden="true"
+        />
+      </button>
 
       <div className="sb-section">Workspaces</div>
       <nav className="sb-nav">
-        {ITEMS.map((it) => (
-          <button
-            key={it.id}
-            className={page === it.id ? "active" : ""}
-            onClick={() => setPage(it.id)}
-          >
-            <span className="sb-num">{it.num}</span>
-            <span>{it.label}</span>
-          </button>
-        ))}
+        {ITEMS.map((it) => {
+          const t = tallies[it.id];
+          return (
+            <button
+              key={it.id}
+              className={page === it.id ? "active" : ""}
+              onClick={() => setPage(it.id)}
+            >
+              <it.icon className="sb-icon" size={16} strokeWidth={1.8} aria-hidden="true" />
+              <span className="sb-num">{it.num}</span>
+              <span className="sb-label">{it.label}</span>
+              {typeof t === "number" && t > 0 && (
+                <span className="sb-tag">{t}</span>
+              )}
+              <span className="sb-help" role="tooltip">{it.description}</span>
+            </button>
+          );
+        })}
       </nav>
 
       <div className="sb-foot">
@@ -57,7 +136,7 @@ export function Sidebar({
             <div className="sb-user-role">Senior Counsel · Privacy</div>
           </div>
         </div>
-        <div className="sb-build">Injenium · MVP</div>
+        <div className="sb-build">BCF · Ingenium build</div>
       </div>
     </aside>
   );

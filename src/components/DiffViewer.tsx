@@ -1,5 +1,6 @@
 import { diffArrays, diffWordsWithSpace } from "diff";
 import { Fragment, useMemo, useState } from "react";
+import { GitCompareArrows, Info } from "lucide-react";
 
 const TARGET_CONTEXT_CHARS = 100;
 
@@ -15,12 +16,7 @@ type Block =
   | { kind: "identical-collapse"; paragraphs: LegalChunk[] };
 
 type DiffEntry =
-  | {
-      kind: "equal";
-      chunks: LegalChunk[];
-      oldStart: number;
-      newStart: number;
-    }
+  | { kind: "equal"; chunks: LegalChunk[]; oldStart: number; newStart: number }
   | { kind: "changed"; label: string; old: InlinePart[]; new: InlinePart[] }
   | { kind: "added"; label: string; text: string }
   | { kind: "removed"; label: string; text: string };
@@ -107,8 +103,6 @@ function inlineParts(oldText: string, newText: string): {
 export function buildDiffBlocks(oldText: string, newText: string): Block[] {
   const left = segmentLegalText(oldText);
   const right = segmentLegalText(newText);
-
-  // diffArrays aligns legal text chunks across insertions/deletions correctly.
   const changes = diffArrays(left, right, {
     comparator: (a, b) => (a as LegalChunk).body === (b as LegalChunk).body,
   });
@@ -124,26 +118,17 @@ export function buildDiffBlocks(oldText: string, newText: string): Block[] {
     const chunks = c.value as LegalChunk[];
 
     if (!c.added && !c.removed) {
-      entries.push({
-        kind: "equal",
-        chunks,
-        oldStart: oldCursor,
-        newStart: newCursor,
-      });
+      entries.push({ kind: "equal", chunks, oldStart: oldCursor, newStart: newCursor });
       oldCursor += chunks.length;
       newCursor += chunks.length;
       continue;
     }
 
-    // Pair a removed run immediately followed by an added run as a sequence
-    // of word-level "changed" blocks (one per paired legal chunk).
     if (c.removed && i + 1 < changes.length && changes[i + 1].added) {
-      const next = changes[i + 1];
-      const removedChunks = chunks;
-      const addedChunks = next.value as LegalChunk[];
-      const pairLen = Math.min(removedChunks.length, addedChunks.length);
+      const addedChunks = changes[i + 1].value as LegalChunk[];
+      const pairLen = Math.min(chunks.length, addedChunks.length);
       for (let k = 0; k < pairLen; k++) {
-        const L = removedChunks[k];
+        const L = chunks[k];
         const R = addedChunks[k];
         const { oldParts, newParts } = inlineParts(L.body, R.body);
         entries.push({
@@ -155,52 +140,34 @@ export function buildDiffBlocks(oldText: string, newText: string): Block[] {
         oldMaterialIndexes.add(oldCursor + k);
         newMaterialIndexes.add(newCursor + k);
       }
-      // Surplus removed (deletion-only at the end of the removed run)
-      for (let k = pairLen; k < removedChunks.length; k++) {
-        const oldIndex = oldCursor + k;
-        oldMaterialIndexes.add(oldIndex);
-        entries.push({
-          kind: "removed",
-          label: removedChunks[k].label,
-          text: removedChunks[k].body,
-        });
+      for (let k = pairLen; k < chunks.length; k++) {
+        oldMaterialIndexes.add(oldCursor + k);
+        entries.push({ kind: "removed", label: chunks[k].label, text: chunks[k].body });
       }
-      // Surplus added (extra new paragraphs)
       for (let k = pairLen; k < addedChunks.length; k++) {
-        const newIndex = newCursor + k;
-        newMaterialIndexes.add(newIndex);
+        newMaterialIndexes.add(newCursor + k);
         entries.push({
           kind: "added",
           label: addedChunks[k].label,
           text: addedChunks[k].body,
         });
       }
-      oldCursor += removedChunks.length;
+      oldCursor += chunks.length;
       newCursor += addedChunks.length;
-      i += 1; // skip the paired added change
+      i += 1;
       continue;
     }
 
     if (c.added) {
       for (let k = 0; k < chunks.length; k++) {
-        const newIndex = newCursor + k;
-        newMaterialIndexes.add(newIndex);
-        entries.push({
-          kind: "added",
-          label: chunks[k].label,
-          text: chunks[k].body,
-        });
+        newMaterialIndexes.add(newCursor + k);
+        entries.push({ kind: "added", label: chunks[k].label, text: chunks[k].body });
       }
       newCursor += chunks.length;
     } else if (c.removed) {
       for (let k = 0; k < chunks.length; k++) {
-        const oldIndex = oldCursor + k;
-        oldMaterialIndexes.add(oldIndex);
-        entries.push({
-          kind: "removed",
-          label: chunks[k].label,
-          text: chunks[k].body,
-        });
+        oldMaterialIndexes.add(oldCursor + k);
+        entries.push({ kind: "removed", label: chunks[k].label, text: chunks[k].body });
       }
       oldCursor += chunks.length;
     }
@@ -219,10 +186,7 @@ export function buildDiffBlocks(oldText: string, newText: string): Block[] {
     let collapsedRun: LegalChunk[] = [];
     const flushCollapsedRun = () => {
       if (collapsedRun.length > 0) {
-        blocks.push({
-          kind: "identical-collapse",
-          paragraphs: collapsedRun,
-        });
+        blocks.push({ kind: "identical-collapse", paragraphs: collapsedRun });
         collapsedRun = [];
       }
     };
@@ -235,11 +199,7 @@ export function buildDiffBlocks(oldText: string, newText: string): Block[] {
 
       if (isContext) {
         flushCollapsedRun();
-        blocks.push({
-          kind: "unchanged",
-          label: chunk.label,
-          text: chunk.body,
-        });
+        blocks.push({ kind: "unchanged", label: chunk.label, text: chunk.body });
       } else {
         collapsedRun.push(chunk);
       }
@@ -267,12 +227,73 @@ export function countMaterialChanges(blocks: Block[]): {
   return { added, removed, changed, total: added + removed + changed };
 }
 
-function renderInline(parts: InlinePart[]) {
+function renderInline(parts: InlinePart[], onExplain: () => void) {
   return parts.map((p, i) => {
-    if (p.op === "del") return <span className="del" key={i}>{p.t}</span>;
-    if (p.op === "add") return <span className="add" key={i}>{p.t}</span>;
+    if (p.op === "del") {
+      return (
+        <button className="diff-token del" key={i} type="button" onClick={onExplain}>
+          {p.t}
+        </button>
+      );
+    }
+    if (p.op === "add") {
+      return (
+        <button className="diff-token add" key={i} type="button" onClick={onExplain}>
+          {p.t}
+        </button>
+      );
+    }
     return <span key={i}>{p.t}</span>;
   });
+}
+
+function phraseFromParts(parts: InlinePart[], op: InlinePart["op"]) {
+  return parts
+    .filter((p) => p.op === op)
+    .map((p) => p.t)
+    .join(" ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 180);
+}
+
+function insightForBlock(block: Exclude<Block, { kind: "identical-collapse" }>) {
+  if (block.kind === "changed") {
+    const added = phraseFromParts(block.new, "add");
+    const removed = phraseFromParts(block.old, "del");
+    return {
+      title: `${block.label} is being revised`,
+      purpose: "This is an amendment to existing law. It keeps the section in place, but changes the legal test or obligation inside it.",
+      how: "Text highlighted in green is the proposed operative wording. Text highlighted in red is wording that would no longer govern once the bill is in force.",
+      why: added
+        ? `The practical review point is the new language: "${added}${added.length === 180 ? "..." : ""}".`
+        : removed
+          ? `The practical review point is what disappears: "${removed}${removed.length === 180 ? "..." : ""}".`
+          : "The practical review point is whether the revised wording changes scope, timing, discretion, or compliance burden.",
+    };
+  }
+  if (block.kind === "added") {
+    return {
+      title: `${block.label} would be added`,
+      purpose: "This creates new statutory text. It is not commentary; if enacted, it becomes part of the operative law.",
+      how: "The new provision has to be read with definitions, regulation-making powers, and coming-into-force language around it.",
+      why: "For client impact, this is where new permissions, deadlines, review standards, or compliance duties usually appear.",
+    };
+  }
+  if (block.kind === "removed") {
+    return {
+      title: `${block.label} would be removed`,
+      purpose: "This deletes current statutory language. That can narrow a duty, remove a condition, or shift the legal analysis elsewhere.",
+      how: "Counsel should confirm whether the bill replaces the rule in another section or truly removes the requirement.",
+      why: "For client impact, deletions matter when existing policies, contracts, or operating procedures still assume the old rule applies.",
+    };
+  }
+  return {
+    title: `${block.label}`,
+    purpose: "This section provides context for interpreting the amendment.",
+    how: "Read it with the surrounding definitions and related provisions before treating the change as isolated.",
+    why: "Context avoids overstating the client impact.",
+  };
 }
 
 export function DiffViewer({
@@ -294,9 +315,10 @@ export function DiffViewer({
 }) {
   const blocks = useMemo(() => buildDiffBlocks(oldText, newText), [oldText, newText]);
   const counts = useMemo(() => countMaterialChanges(blocks), [blocks]);
+  const [openInsight, setOpenInsight] = useState<number | null>(null);
   const [expanded, setExpanded] = useState<Set<number>>(() => new Set());
 
-  const toggle = (idx: number) => {
+  const toggleCollapsed = (idx: number) => {
     setExpanded((prev) => {
       const next = new Set(prev);
       if (next.has(idx)) next.delete(idx);
@@ -305,11 +327,23 @@ export function DiffViewer({
     });
   };
 
-  const renderSide = (b: Block, side: "L" | "R") => {
+  const renderLabel = (label: string, index: number) => (
+    <button
+      type="button"
+      className="diff-label-button"
+      onClick={() => setOpenInsight((current) => (current === index ? null : index))}
+      aria-expanded={openInsight === index}
+    >
+      {label}
+    </button>
+  );
+
+  const renderSide = (b: Block, side: "L" | "R", index: number) => {
+    const explain = () => setOpenInsight((current) => (current === index ? null : index));
     if (b.kind === "unchanged") {
       return (
         <div className="diff-block">
-          <div className="lbl">{b.label}</div>
+          <div className="lbl">{renderLabel(b.label, index)}</div>
           <div className="txt">{b.text}</div>
         </div>
       );
@@ -317,25 +351,25 @@ export function DiffViewer({
     if (b.kind === "changed") {
       return (
         <div className="diff-block changed">
-          <div className="lbl">{b.label}</div>
-          <div className="txt">{renderInline(side === "L" ? b.old : b.new)}</div>
+          <div className="lbl">{renderLabel(b.label, index)}</div>
+          <div className="txt">{renderInline(side === "L" ? b.old : b.new, explain)}</div>
         </div>
       );
     }
     if (b.kind === "added") {
-      if (side === "L") return <div className="diff-block" style={{ minHeight: 60 }} />;
+      if (side === "L") return <div className="diff-block diff-placeholder" />;
       return (
         <div className="diff-block added">
-          <div className="lbl">{b.label}</div>
+          <div className="lbl">{renderLabel(b.label, index)}</div>
           <div className="txt">{b.text}</div>
         </div>
       );
     }
     if (b.kind === "removed") {
-      if (side === "R") return <div className="diff-block" style={{ minHeight: 60 }} />;
+      if (side === "R") return <div className="diff-block diff-placeholder" />;
       return (
         <div className="diff-block removed">
-          <div className="lbl">{b.label}</div>
+          <div className="lbl">{renderLabel(b.label, index)}</div>
           <div className="txt">{b.text}</div>
         </div>
       );
@@ -347,7 +381,10 @@ export function DiffViewer({
     <div className="diff-shell">
       <div className="diff-topbar">
         <div className="diff-crumbs">
-          <span>CanLII-style comparator</span>
+          <span className="diff-kicker">
+            <GitCompareArrows size={14} strokeWidth={1.8} aria-hidden="true" />
+            Statutory comparator
+          </span>
           <span className="sep">/</span>
           <b>{actName}</b>
           <span className="sep">/</span>
@@ -383,10 +420,7 @@ export function DiffViewer({
         <div className="diff-col">
           <div className="diff-act-head">{actName.toUpperCase()}</div>
           <div className="diff-act-cite">
-            {actCitation}{" "}
-            {proposed && (
-              <span style={{ color: "var(--accent)" }}>(as proposed)</span>
-            )}
+            {actCitation} {proposed && <span className="diff-proposed-tag">(as proposed)</span>}
           </div>
         </div>
 
@@ -395,31 +429,29 @@ export function DiffViewer({
             const isOpen = expanded.has(i);
             if (!isOpen) {
               return (
-                <div
+                <button
                   className="diff-collapse"
                   key={i}
-                  onClick={() => toggle(i)}
-                  role="button"
-                  style={{ cursor: "pointer", userSelect: "none" }}
+                  type="button"
+                  onClick={() => toggleCollapsed(i)}
                   title="Click to expand"
                 >
                   {b.paragraphs.length} unchanged legal unit
                   {b.paragraphs.length === 1 ? "" : "s"}
-                </div>
+                </button>
               );
             }
             return (
               <Fragment key={i}>
-                <div
+                <button
                   className="diff-collapse"
-                  onClick={() => toggle(i)}
-                  role="button"
-                  style={{ cursor: "pointer", userSelect: "none" }}
+                  type="button"
+                  onClick={() => toggleCollapsed(i)}
                   title="Click to collapse"
                 >
                   Hide {b.paragraphs.length} unchanged legal unit
                   {b.paragraphs.length === 1 ? "" : "s"}
-                </div>
+                </button>
                 {b.paragraphs.map((p, j) => (
                   <Fragment key={`${i}-${j}`}>
                     <div>
@@ -439,10 +471,37 @@ export function DiffViewer({
               </Fragment>
             );
           }
+          const insight = insightForBlock(b);
           return (
             <Fragment key={i}>
-              <div>{renderSide(b, "L")}</div>
-              <div>{renderSide(b, "R")}</div>
+              <div>{renderSide(b, "L", i)}</div>
+              <div>{renderSide(b, "R", i)}</div>
+              {openInsight === i && (
+                <div className="diff-insight-row">
+                  <div className="diff-insight">
+                    <div className="diff-insight-icon">
+                      <Info size={15} strokeWidth={2} aria-hidden="true" />
+                    </div>
+                    <div>
+                      <div className="diff-insight-title">{insight.title}</div>
+                      <div className="diff-insight-grid">
+                        <div>
+                          <b>What it is for</b>
+                          <span>{insight.purpose}</span>
+                        </div>
+                        <div>
+                          <b>How it works</b>
+                          <span>{insight.how}</span>
+                        </div>
+                        <div>
+                          <b>Why it matters</b>
+                          <span>{insight.why}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </Fragment>
           );
         })}

@@ -3,7 +3,12 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DATA_DIR = path.resolve(__dirname, "..", "data");
+// On Vercel the bundled filesystem is read-only except /tmp, so the runtime
+// store lives there (seeded fresh per warm instance from the bundled data/
+// snapshot). Locally it stays under server/data.
+const DATA_DIR = process.env.VERCEL
+  ? path.join("/tmp", "ingenium-data")
+  : path.resolve(__dirname, "..", "data");
 
 async function ensureDir() {
   await fs.mkdir(DATA_DIR, { recursive: true });

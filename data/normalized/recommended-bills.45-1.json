@@ -57,34 +57,6 @@
     "recommendation": "analyze_now"
   },
   {
-    "billId": 13900001,
-    "session": "45-1",
-    "number": "C-273",
-    "title": "An Act respecting the Facilitating Agricultural Regulatory Modernization Act",
-    "longTitle": "An Act respecting the Facilitating Agricultural Regulatory Modernization Act",
-    "status": "At second reading in the House of Commons",
-    "stage": "first-reading",
-    "latestActivity": "Introduction and first reading on April 22, 2026 (House of Commons)",
-    "latestActivityDate": "2026-04-22T10:00:00-04:00",
-    "sponsor": "John Barlow",
-    "type": "Private Member’s Bill",
-    "royalAssentDate": null,
-    "latestBillTextTypeId": 80701,
-    "source": {
-      "billDetailJson": "https://www.parl.ca/legisinfo/en/bill/45-1/c-273/json",
-      "billDetailXml": "https://www.parl.ca/legisinfo/en/bill/45-1/c-273/xml",
-      "documentViewer": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-273/first-reading"
-    },
-    "categories": [
-      "amends_existing_act",
-      "agriculture_relevant",
-      "high_demo_value",
-      "multi_act"
-    ],
-    "score": 18,
-    "recommendation": "analyze_now"
-  },
-  {
     "billId": 13585232,
     "session": "45-1",
     "number": "C-224",

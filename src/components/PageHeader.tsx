@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
 
 export function PageHeader({
-  crumbs = [],
   title,
   sub,
   actions,
 }: {
+  /** kept for backward compat; intentionally unused */
   crumbs?: string[];
   title: ReactNode;
   sub?: ReactNode;
@@ -13,15 +13,8 @@ export function PageHeader({
 }) {
   return (
     <header className="ph">
-      {crumbs.length > 0 && (
-        <div className="ph-crumbs">
-          {crumbs.map((c, i) => (
-            <span key={i}>{c}</span>
-          ))}
-        </div>
-      )}
       <div className="ph-row">
-        <div>
+        <div className="ph-main">
           <h1 className="ph-title">{title}</h1>
           {sub && <div className="ph-sub">{sub}</div>}
         </div>

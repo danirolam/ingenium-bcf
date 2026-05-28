@@ -2,7 +2,7 @@
   "session": "45-1",
   "source": "data/normalized/recommended-bills.45-1.json",
   "fetchedAt": "2026-05-09T16:15:21.150Z",
-  "count": 37,
+  "count": 36,
   "failures": [],
   "bills": [
     {
@@ -292,14 +292,6 @@
       "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/S-231/S-231_1/S-231_E.xml",
       "sectionCount": 1,
       "textLength": 8476
-    },
-    {
-      "number": "C-273",
-      "title": "An Act respecting the Facilitating Agricultural Regulatory Modernization Act",
-      "stage": "first-reading",
-      "xmlUrl": "https://www.parl.ca/Content/Bills/451/Private/C-273/C-273_1/C-273_E.xml",
-      "sectionCount": 20,
-      "textLength": 8400
     }
   ]
 }

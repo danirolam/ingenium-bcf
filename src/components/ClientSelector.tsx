@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Search, Users } from "lucide-react";
 import type { Client } from "../types";
 
 export function ClientSelector({
@@ -17,14 +18,15 @@ export function ClientSelector({
   return (
     <div className="card">
       <div className="card-h">
-        <div className="card-title">Clients</div>
+        <div className="card-title-row">
+          <Users size={16} strokeWidth={1.8} aria-hidden="true" />
+          <div className="card-title">Clients</div>
+        </div>
         <span className="badge outline dim">{clients.length}</span>
       </div>
-      <div
-        style={{ padding: "10px 12px", borderBottom: "1px solid var(--border)" }}
-      >
+      <div className="client-search-wrap">
         <div className="search">
-          <span className="muted">⌕</span>
+          <Search className="search-icon" size={16} strokeWidth={1.8} aria-hidden="true" />
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
@@ -34,7 +36,7 @@ export function ClientSelector({
       </div>
       <div className="client-list">
         {filtered.length === 0 && (
-          <div style={{ padding: 18 }} className="muted">
+          <div className="empty-small">
             No clients yet.
           </div>
         )}
@@ -47,7 +49,7 @@ export function ClientSelector({
             <div className="nm">{c.name}</div>
             <div className="meta">
               {c.industry}
-              {c.jurisdictions.length > 0 && ` · ${c.jurisdictions.join(", ")}`}
+              {(c.jurisdictions?.length ?? 0) > 0 && ` · ${(c.jurisdictions ?? []).join(", ")}`}
             </div>
           </div>
         ))}

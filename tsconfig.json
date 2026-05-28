@@ -13,7 +13,11 @@
     "isolatedModules": true,
     "noEmit": true,
     "allowImportingTsExtensions": false,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  "include": ["src", "server", "vite.config.ts"]
+  "include": ["src", "server", "api", "vite.config.ts"]
 }
