@@ -5,7 +5,7 @@ import type {
   ClientImpactAnalysis,
   LawVersion,
 } from "../../src/types.js";
-import { FILES, readAll, writeAll } from "../services/jsonStore.js";
+import { FILES, hydrateFromSnapshot, readAll, writeAll } from "../services/jsonStore.js";
 import {
   buildSeedLawVersion,
   CANNED_IMPACTS,
@@ -52,6 +52,9 @@ export async function loadSeedSnapshot(): Promise<SeedSnapshot> {
 }
 
 export async function seedDemo() {
+  // On Vercel, restore the curated snapshot into /tmp before the gap-fill seed.
+  await hydrateFromSnapshot();
+
   const snap = await loadSeedSnapshot();
 
   const bills = await readAll(FILES.bills);
