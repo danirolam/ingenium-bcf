@@ -4,3 +4,4 @@ dist
 server/data/*.json
 !server/data/.gitkeep
 .DS_Store
+dev-server*.log

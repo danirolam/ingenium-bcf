@@ -1,0 +1,47 @@
+[
+  {
+    "id": "client-corebloom",
+    "name": "Corebloom Health AI Inc.",
+    "industry": "Health-tech / AI",
+    "jurisdictions": [
+      "Vancouver, BC",
+      "Canada"
+    ],
+    "description": "Clinical AI company processing patient data and de-identified datasets for diagnostic models and academic research partnerships.",
+    "termsAndConditions": "By creating a Corebloom account, the patient grants Corebloom and its affiliates a perpetual, broad licence to use, store and disclose their personal health information, including in de-identified form, for any secondary purpose Corebloom determines, including model training, product improvement, and research collaborations, without further notice.",
+    "policies": "Privacy Policy v3.2: Corebloom may share de-identified patient data with academic partners under data-sharing MOUs. Patients consent to research uses at onboarding. Corebloom does not seek separate consent for downstream secondary uses.",
+    "operations": "AI model training pipeline ingests EHR exports nightly. Three active hospital research MOUs (UBC, McGill, U of T). Onboarding flow: single checkbox for terms + privacy policy. No granular purpose-by-purpose consent.",
+    "riskTolerance": "medium",
+    "createdAt": "2026-05-09T18:11:17.013Z"
+  },
+  {
+    "id": "client-northcedar-elections",
+    "name": "Northcedar Civic Tech Inc.",
+    "industry": "Civic-tech / Elections software",
+    "jurisdictions": [
+      "Ottawa, ON",
+      "Canada"
+    ],
+    "description": "SaaS provider of polling-place coordination, accessible-voting tooling and elections-day workflow software used by provincial returning officers and federal pilot programs.",
+    "termsAndConditions": "Customer engages Northcedar as a processor of personally identifying voter information solely for the purposes of administering elections, with strict deletion windows after every event.",
+    "policies": "Accessibility Policy v2.1 mandates support for curbside ballot workflows and assistive devices. Data Retention Policy purges voter PII 30 days post-event.",
+    "operations": "Active deployments with 4 provincial returning officers. Federal pilot for curbside ballot tablet workflow with Elections Canada. Engineering team of 22, mostly in Ottawa.",
+    "riskTolerance": "low",
+    "createdAt": "2026-05-27T03:38:00.367Z"
+  },
+  {
+    "id": "client-prairie-agri",
+    "name": "Prairie Yield Co-operative",
+    "industry": "Agriculture / Seeds & Fertilizers",
+    "jurisdictions": [
+      "Saskatoon, SK",
+      "Canada"
+    ],
+    "description": "Producer-owned co-op selling certified seeds, fertilizer blends, and crop-input bundles to roughly 3,200 grain farms across the prairies.",
+    "termsAndConditions": "Member contracts assign Prairie Yield responsibility for ensuring all distributed inputs are registered under the Feeds Act, Fertilizers Act, Seeds Act and Pest Control Products Act, and for labelling in both official languages.",
+    "policies": "Quality Policy v4 commits to publishing source-and-component disclosures for every fertilizer blend within 30 days of formulation change. Labelling Policy mirrors CFIA requirements verbatim.",
+    "operations": "3 blending plants (Regina, Brandon, Lethbridge). 14 SKUs of fertilizer blends, 47 SKUs of certified seed. Currently no GM seed product line, but expansion under board review for 2026.",
+    "riskTolerance": "medium",
+    "createdAt": "2026-05-27T03:38:00.367Z"
+  }
+]

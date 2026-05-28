@@ -70,7 +70,7 @@ function decodeEntities(value) {
 
 async function fetchText(url) {
   const response = await fetch(url, {
-    headers: { "user-agent": "project-Injenium-hackathon-prototype" }
+    headers: { "user-agent": "project-injenium-hackathon-prototype" }
   });
   if (!response.ok) throw new Error(`${response.status} ${response.statusText} for ${url}`);
   return response.text();

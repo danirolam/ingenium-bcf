@@ -212,7 +212,7 @@ async function fetchJson(url) {
 
 async function fetchText(url) {
   const response = await fetch(url, {
-    headers: { "user-agent": "project-Injenium-hackathon-prototype" }
+    headers: { "user-agent": "project-injenium-hackathon-prototype" }
   });
   if (!response.ok) throw new Error(`${response.status} ${response.statusText} for ${url}`);
   return response.text();
@@ -220,7 +220,7 @@ async function fetchText(url) {
 
 async function fetchTextOrNull(url) {
   const response = await fetch(url, {
-    headers: { "user-agent": "project-Injenium-hackathon-prototype" }
+    headers: { "user-agent": "project-injenium-hackathon-prototype" }
   });
   if (response.status === 404) return null;
   if (!response.ok) throw new Error(`${response.status} ${response.statusText} for ${url}`);

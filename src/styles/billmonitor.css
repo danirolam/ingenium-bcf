@@ -1,0 +1,221 @@
+/* Bill Monitor — page-scoped styles. Prefixed .bm- / .seg- / .spark- */
+
+/* ───────── Stats ribbon ───────── */
+.bm-ribbon {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-bottom: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(255, 253, 248, 0)),
+    var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.bm-cell {
+  padding: 22px 24px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-right: 1px solid var(--border);
+  position: relative;
+  min-width: 0;
+}
+.bm-cell:last-child {
+  border-right: none;
+}
+.bm-cell .stat-l {
+  font-size: 12.5px;
+  letter-spacing: 0;
+  color: var(--ink-3);
+  font-family: var(--sans);
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+.bm-cell .stat-v {
+  font-family: var(--sans);
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.bm-cell .bm-delta {
+  display: none;
+}
+.bm-cell .accent-bar {
+  display: none;
+}
+.bm-cell-spark .bm-cell-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 110px;
+  gap: 12px;
+  align-items: end;
+}
+.bm-spark {
+  width: 110px;
+  height: 40px;
+}
+
+@media (max-width: 900px) {
+  .bm-ribbon {
+    grid-template-columns: 1fr 1fr;
+  }
+  .bm-cell:nth-child(2) {
+    border-right: none;
+  }
+  .bm-cell:nth-child(1),
+  .bm-cell:nth-child(2) {
+    border-bottom: 1px solid var(--border);
+  }
+}
+@media (max-width: 560px) {
+  .bm-ribbon {
+    grid-template-columns: 1fr;
+  }
+  .bm-cell {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .bm-cell:last-child {
+    border-bottom: none;
+  }
+}
+
+/* ───────── Toolbar (segmented + search) ───────── */
+.bm-toolbar {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.bm-toolbar-left {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.bm-toolbar-right {
+  flex: 0 1 320px;
+  display: flex;
+  align-items: center;
+  padding-bottom: 8px;
+}
+
+/* ───────── Segmented tabs ───────── */
+.seg {
+  border-bottom: 1px solid var(--border);
+  padding-left: 2px;
+}
+.seg-list {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 4px;
+  align-items: stretch;
+}
+.seg-item {
+  display: flex;
+}
+.seg-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 10px 14px 12px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--ink-3);
+  font-family: var(--sans);
+  letter-spacing: 0;
+  outline: none;
+  transition: color 0.15s ease;
+}
+.seg-btn:hover {
+  color: var(--ink-2);
+}
+.seg-btn:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: -3px;
+  border-radius: 4px;
+}
+.seg-label {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  font-weight: 500;
+}
+.seg-btn.is-active {
+  color: var(--ink);
+}
+.seg-btn.is-active .seg-label {
+  font-weight: 600;
+}
+.seg-count {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--ink-4);
+  background: transparent;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  font-variant-numeric: tabular-nums;
+}
+.seg-btn.is-active .seg-count {
+  color: var(--accent);
+}
+.seg-ribbon {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--accent-warm);
+  pointer-events: none;
+  border-radius: 999px;
+}
+
+/* ───────── Sparkline ───────── */
+.spark {
+  display: inline-block;
+  width: 60px;
+  height: 18px;
+  vertical-align: middle;
+}
+
+/* ───────── Empty / state inside table area ───────── */
+.bm-empty-inline {
+  padding: 36px 18px;
+  text-align: center;
+  font-family: var(--sans);
+  font-size: 13.5px;
+  color: var(--ink-4);
+}
+.bm-empty-inline code {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 7px;
+  color: var(--ink-2);
+}
+
+/* Load-more footer under the bills table */
+.bm-more-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 22px;
+  border-top: 1px solid var(--border);
+  background: var(--panel-2);
+}
+.bm-more-info {
+  font-size: 12px;
+  color: var(--ink-4);
+  letter-spacing: -0.005em;
+}

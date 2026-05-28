@@ -43,10 +43,58 @@ clientImpactRouter.post("/analyze", async (req, res) => {
         createdAt: new Date().toISOString(),
       };
     } else {
-      return res.status(503).json({
-        error:
-          "Live client-impact analysis is unavailable: no canned demo for this (client, law) pair and GEMINI_API_KEY is missing or the call failed. Set GEMINI_API_KEY in .env to enable live analysis.",
-      });
+      // Generic synthesized fallback — keeps the app usable without
+      // GEMINI_API_KEY for any (client, law) pair.
+      console.log("[gemini] using synthesized generic impact fallback");
+      const actName = lv.baseLawTitle.replace(/\s*\([^)]*\)\s*$/, "");
+      const sections = (lv.affectedSections ?? []).join(", ") || "the affected provisions";
+      result = {
+        id: "",
+        clientId: client.id,
+        lawVersionId: lv.id,
+        affected: "unclear",
+        impactLevel: "medium",
+        urgency: "medium",
+        timing: `${lv.sourceBillNumber} is at ${lv.sourceBillStatus}. ${lv.comingIntoForceText ?? "Coming-into-force timing is unspecified — assume a 6–12 month transition window from royal assent."}`,
+        whyItAffectsClient: `${client.name} operates in ${client.industry} across ${client.jurisdictions.join(", ")}. The proposed amendments to ${actName} (${sections}) plausibly touch the client's operations; counsel verification is required to confirm scope and magnitude.`,
+        affectedClientAreas: [
+          "Contractual terms",
+          "Operational compliance",
+          "Disclosure / labelling",
+        ],
+        requiredAdaptations: [
+          {
+            area: `${actName} compliance review`,
+            currentIssue: `Existing client posture has not been mapped against the proposed ${sections} amendments.`,
+            recommendation: `Pull the client's current obligations under ${actName} and walk each affected section against today's practice to identify gaps.`,
+            reason: `${lv.deltaSummary}`,
+          },
+        ],
+        relevantClientText: client.termsAndConditions
+          ? [
+              {
+                source: "Terms & Conditions",
+                excerpt: (client.termsAndConditions ?? "").slice(0, 240),
+                issue: `Verify these terms remain consistent with the revised ${actName}.`,
+              },
+            ]
+          : [],
+        lawyerVerificationQuestions: [
+          `Does ${client.name} currently rely on any provision modified by ${lv.sourceBillNumber}?`,
+          `What is the cost and lead time of bringing operations into compliance with the revised ${actName}?`,
+          `Are there client communications (T&Cs, policies, product labels) that need to be re-papered?`,
+        ],
+        emailDraft: {
+          subject: `${lv.sourceBillNumber} — preliminary impact note for ${client.name}`,
+          body: `Hi team,\n\nPreliminary impact note on ${lv.sourceBillNumber} (${lv.sourceBillTitle}) for ${client.name}:\n\nThe bill amends ${actName} at ${sections}. Based on the client's profile (${client.industry}, ${(client.jurisdictions ?? []).join(", ")}), the changes likely touch contractual terms, operational compliance, and disclosure / labelling.\n\nNext step: a lawyer-led mapping of the client's current obligations under ${actName} against the proposed amendments.\n\n— Ingenium`,
+        },
+        confidence: 0.55,
+        humanReviewRequired: true,
+        humanReviewReason:
+          "Generic synthesized analysis (no Gemini, no canned demo for this pair). Counsel must verify before client use.",
+        saved: false,
+        createdAt: new Date().toISOString(),
+      };
     }
   }
 

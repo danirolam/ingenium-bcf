@@ -4,7 +4,7 @@
 
 ```bash
 git clone <this repo>
-cd project-Injenium
+cd project-injenium
 npm install
 cp .env.example .env       # edit and add your keys (see below)
 npm run dev                # web on :5173, api on :8787

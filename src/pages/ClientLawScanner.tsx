@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
+import { ArrowRight, FileCheck2, Plus, Sparkles } from "lucide-react";
 import type { Nav } from "../App";
 import { ClientSelector } from "../components/ClientSelector";
-import { MomentumBadge } from "../components/badges";
+import { LawPickerGrid } from "../components/LawPickerGrid";
 import { PageHeader } from "../components/PageHeader";
 import { api } from "../lib/api";
 import type { Client, LawVersion } from "../types";
@@ -15,23 +16,25 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
   const [showNew, setShowNew] = useState(false);
 
   useEffect(() => {
-    Promise.all([api.clients.list(), api.lawVersions.list()]).then(
-      ([cs, ls]) => {
+    Promise.all([api.clients.list(), api.lawVersions.list()])
+      .then(([cs, ls]) => {
         setClients(cs);
         setLvs(ls);
         if (!activeClient && cs.length > 0) setActiveClient(cs[0]);
-        const approved = ls.filter((lv) => lv.humanApproved);
+        const approved = ls.filter(
+          (lv) => lv.humanApproved && !lv.baseLawId.startsWith("unregistered:"),
+        );
         if (!activeLvId && approved.length > 0) setActiveLvId(approved[0].id);
-      },
-    );
+      })
+      .catch((err) => {
+        console.error(err);
+        nav.toast(`Could not load scanner data: ${err.message ?? err}`);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const approvedLvs = useMemo(
-    () =>
-      lvs.filter(
-        (lv) =>
-          lv.humanApproved && !lv.baseLawId.startsWith("unregistered:"),
-      ),
+    () => lvs.filter((lv) => lv.humanApproved && !lv.baseLawId.startsWith("unregistered:")),
     [lvs],
   );
   const activeLv = approvedLvs.find((lv) => lv.id === activeLvId) ?? null;
@@ -65,117 +68,83 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
         sub="Pair an approved updated law with a client to generate a client-specific impact analysis."
         actions={
           <button className="btn primary" onClick={() => setShowNew(true)}>
-            + New client
+            <Plus size={16} strokeWidth={1.9} aria-hidden="true" />
+            New client
           </button>
         }
       />
       <div className="body">
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "280px minmax(0, 1fr)",
-            gap: 18,
-            alignItems: "start",
-          }}
-        >
+        <div className="scanner-grid">
           <ClientSelector
             clients={clients}
             activeId={activeClient?.id}
             onSelect={setActiveClient}
           />
 
-          <div className="card">
-            <div className="card-h">
-              <div className="card-title">Run client impact analysis</div>
+          <div className="scanner-stack">
+            <div className="card">
+              <div className="card-h">
+                <div className="card-title-row">
+                  <FileCheck2 size={16} strokeWidth={1.8} aria-hidden="true" />
+                  <div className="card-title">Approved laws ready for matching</div>
+                </div>
+                <span className="cs-count">({approvedLvs.length})</span>
+              </div>
+              <div className="card-pad">
+                <LawPickerGrid
+                  lawVersions={approvedLvs}
+                  activeId={activeLvId}
+                  onSelect={setActiveLvId}
+                />
+              </div>
             </div>
-            <div style={{ padding: 18, display: "flex", flexDirection: "column", gap: 18 }}>
-              <div className="rd-field">
-                <label>Approved updated law</label>
-                {approvedLvs.length === 0 ? (
-                  <div className="note rd-amber" style={{ margin: 0 }}>
-                    No approved law versions yet. Open a bill in the Delta Workspace
-                    and click <b>Approve updated law</b> to make it selectable here.
+
+            <div className="card">
+              <div className="card-h">
+                <div className="card-title-row">
+                  <Sparkles size={16} strokeWidth={1.8} aria-hidden="true" />
+                  <div className="card-title">Generate client impact</div>
+                </div>
+              </div>
+              <div className="scanner-card-body">
+                <div>
+                  <div className="section-label">
+                    Client materials included in analysis
                   </div>
-                ) : (
-                  <select
-                    value={activeLvId}
-                    onChange={(e) => setActiveLvId(e.target.value)}
+                  {activeClient ? (
+                    <div className="kv kv-compact">
+                      <div className="k">Client</div>
+                      <div className="v">{activeClient.name}</div>
+                      <div className="k">Industry</div>
+                      <div className="v">{activeClient.industry}</div>
+                      <div className="k">Jurisdictions</div>
+                      <div className="v">{(activeClient.jurisdictions ?? []).join(", ") || "—"}</div>
+                      <div className="k">T&amp;C</div>
+                      <div className="v">{activeClient.termsAndConditions ? "Included" : "Not provided"}</div>
+                      <div className="k">Policies</div>
+                      <div className="v">{activeClient.policies ? "Included" : "Not provided"}</div>
+                      <div className="k">Operations</div>
+                      <div className="v">{activeClient.operations ? "Included" : "Not provided"}</div>
+                    </div>
+                  ) : (
+                    <div className="empty-small">
+                      Select a client from the list.
+                    </div>
+                  )}
+                </div>
+
+                <div className="hr" />
+
+                <div className="actions-row">
+                  <button
+                    className="btn primary"
+                    disabled={busy || !activeClient || !activeLv}
+                    onClick={analyze}
                   >
-                    {approvedLvs.map((lv) => (
-                      <option key={lv.id} value={lv.id}>
-                        {lv.sourceBillNumber} — {lv.baseLawTitle}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              </div>
-
-              {activeLv && (
-                <div className="kv" style={{ padding: 0 }}>
-                  <div className="k">Bill</div>
-                  <div className="v">
-                    {activeLv.sourceBillNumber} — {activeLv.sourceBillTitle}
-                  </div>
-                  <div className="k">Momentum</div>
-                  <div className="v">
-                    <MomentumBadge value={activeLv.legislativeMomentum} />
-                  </div>
-                  <div className="k">Effective</div>
-                  <div className="v">
-                    {activeLv.effectiveDate ?? activeLv.comingIntoForceText ?? "—"}
-                  </div>
-                  <div className="k">Affected sections</div>
-                  <div className="v">{activeLv.affectedSections.join(", ")}</div>
+                    {busy ? "Analyzing..." : "Analyze client impact"}
+                    <ArrowRight size={15} strokeWidth={1.9} aria-hidden="true" />
+                  </button>
                 </div>
-              )}
-
-              <div className="hr" />
-
-              <div>
-                <div
-                  className="k"
-                  style={{
-                    fontSize: 11,
-                    color: "var(--ink-3)",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.06em",
-                    marginBottom: 8,
-                  }}
-                >
-                  Client materials included in analysis
-                </div>
-                {activeClient ? (
-                  <div className="kv" style={{ padding: 0 }}>
-                    <div className="k">Client</div>
-                    <div className="v">{activeClient.name}</div>
-                    <div className="k">Industry</div>
-                    <div className="v">{activeClient.industry}</div>
-                    <div className="k">Jurisdictions</div>
-                    <div className="v">{activeClient.jurisdictions.join(", ")}</div>
-                    <div className="k">T&amp;C</div>
-                    <div className="v">{activeClient.termsAndConditions ? "Included" : "Not provided"}</div>
-                    <div className="k">Policies</div>
-                    <div className="v">{activeClient.policies ? "Included" : "Not provided"}</div>
-                    <div className="k">Operations</div>
-                    <div className="v">{activeClient.operations ? "Included" : "Not provided"}</div>
-                  </div>
-                ) : (
-                  <div className="muted" style={{ fontSize: 13 }}>
-                    Select a client from the list.
-                  </div>
-                )}
-              </div>
-
-              <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
-                <button
-                  className="btn primary"
-                  disabled={
-                    busy || !activeClient || !activeLv || approvedLvs.length === 0
-                  }
-                  onClick={analyze}
-                >
-                  {busy ? "Analyzing…" : "Analyze client impact →"}
-                </button>
               </div>
             </div>
           </div>
@@ -214,13 +183,26 @@ function NewClientModal({
     operations: "",
   });
   const [busy, setBusy] = useState(false);
+  const canSubmit = form.name.trim().length > 0 && !busy;
+
+  // Esc to close
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
 
   async function submit() {
-    if (!form.name.trim()) return;
+    if (!canSubmit) return;
     setBusy(true);
     try {
-      const c = await api.clients.create(form as any);
+      const c = await api.clients.create(form as unknown as Partial<Client>);
       onCreated(c);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      alert(`Could not add client: ${msg}`);
     } finally {
       setBusy(false);
     }
@@ -239,7 +221,7 @@ function NewClientModal({
               placeholder="Corebloom Health AI Inc."
             />
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <div className="modal-grid-2">
             <div className="rd-field">
               <label>Industry</label>
               <input
@@ -292,7 +274,7 @@ function NewClientModal({
           <button className="btn" onClick={onClose}>
             Cancel
           </button>
-          <button className="btn primary" disabled={busy} onClick={submit}>
+          <button className="btn primary" disabled={!canSubmit} onClick={submit}>
             {busy ? "Saving…" : "Add client"}
           </button>
         </div>
