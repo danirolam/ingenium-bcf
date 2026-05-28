@@ -3,12 +3,15 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-// On Vercel the bundled filesystem is read-only except /tmp, so the runtime
-// store lives there (seeded fresh per warm instance from the bundled data/
-// snapshot). Locally it stays under server/data.
+// The committed curated snapshot (162 bills, approved law versions, demo
+// clients, pre-computed analyses) lives in server/data and is the store used
+// locally. On Vercel the bundled filesystem is read-only except /tmp, so the
+// runtime store lives there and is hydrated from the bundled snapshot on cold
+// start (see hydrateFromSnapshot).
+const SNAPSHOT_DIR = path.resolve(__dirname, "..", "data");
 const DATA_DIR = process.env.VERCEL
   ? path.join("/tmp", "ingenium-data")
-  : path.resolve(__dirname, "..", "data");
+  : SNAPSHOT_DIR;
 
 async function ensureDir() {
   await fs.mkdir(DATA_DIR, { recursive: true });
@@ -60,3 +63,30 @@ export const FILES = {
   impacts: "clientImpactAnalyses.json",
   baseLaws: "baseLaws.json",
 };
+
+/**
+ * On Vercel, copy the bundled committed snapshot (server/data/*.json) into the
+ * writable /tmp store on a fresh cold start so production serves the same
+ * curated state as local. No-op locally (where DATA_DIR already is the
+ * snapshot) and for any file already present. Missing snapshot files are left
+ * for seedDemo to regenerate from the data/ seed source.
+ */
+export async function hydrateFromSnapshot(): Promise<void> {
+  if (DATA_DIR === SNAPSHOT_DIR) return;
+  await ensureDir();
+  for (const file of Object.values(FILES)) {
+    const dest = path.join(DATA_DIR, file);
+    try {
+      await fs.access(dest);
+      continue;
+    } catch {
+      /* not yet copied */
+    }
+    try {
+      const buf = await fs.readFile(path.join(SNAPSHOT_DIR, file), "utf-8");
+      await fs.writeFile(dest, buf, "utf-8");
+    } catch {
+      /* snapshot file absent — seedDemo will fill it from data/ */
+    }
+  }
+}
