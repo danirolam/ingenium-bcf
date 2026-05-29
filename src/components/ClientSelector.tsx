@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Search, Users } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass, faUsers } from "@fortawesome/free-solid-svg-icons";
 import type { Client } from "../types";
 
 export function ClientSelector({
@@ -19,14 +20,14 @@ export function ClientSelector({
     <div className="card">
       <div className="card-h">
         <div className="card-title-row">
-          <Users size={16} strokeWidth={1.8} aria-hidden="true" />
+          <FontAwesomeIcon icon={faUsers} aria-hidden="true" />
           <div className="card-title">Clients</div>
         </div>
         <span className="badge outline dim">{clients.length}</span>
       </div>
       <div className="client-search-wrap">
         <div className="search">
-          <Search className="search-icon" size={16} strokeWidth={1.8} aria-hidden="true" />
+          <FontAwesomeIcon icon={faMagnifyingGlass} className="search-icon" aria-hidden="true" />
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}

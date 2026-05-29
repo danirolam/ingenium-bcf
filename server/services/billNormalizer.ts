@@ -1,4 +1,5 @@
 import type { Bill, BillClause, LegislativeMomentum } from "../../src/types.js";
+import { derivePracticeAreas } from "../../src/lib/practiceAreas.js";
 
 const STATUS_TO_MOMENTUM: Array<[RegExp, LegislativeMomentum]> = [
   [/in[\s-]*force/i, "in_force"],
@@ -94,6 +95,8 @@ export function normalizeBill(raw: any): Bill {
     pickString(raw, ["status", "stage", "currentStatus", "latestStage"]) ??
     "Introduced";
 
+  const clauses = flattenClauses(raw);
+
   return {
     id,
     billNumber,
@@ -113,6 +116,7 @@ export function normalizeBill(raw: any): Bill {
     sourceUrl: pickString(raw, ["sourceUrl", "url", "link"]),
     uploadedAt: new Date().toISOString(),
     rawJson: raw,
-    clauses: flattenClauses(raw),
+    clauses,
+    practiceAreas: derivePracticeAreas({ title, clauses, rawJson: raw }),
   };
 }

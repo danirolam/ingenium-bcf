@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import type { PageId } from "../App";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  ArrowLeft,
-  BriefcaseBusiness,
-  FileText,
-  GitCompareArrows,
-  ScanSearch,
-  type LucideIcon,
-} from "lucide-react";
+  faArrowLeft,
+  faBriefcase,
+  faCodeCompare,
+  faFileLines,
+  faMagnifyingGlassChart,
+} from "@fortawesome/free-solid-svg-icons";
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { api } from "../lib/api";
 
 type SidebarItem = {
@@ -15,7 +16,7 @@ type SidebarItem = {
   num: string;
   label: string;
   description: string;
-  icon: LucideIcon;
+  icon: IconDefinition;
 };
 
 const ITEMS: SidebarItem[] = [
@@ -23,28 +24,28 @@ const ITEMS: SidebarItem[] = [
     id: "monitor",
     num: "01",
     label: "Bill Monitor",
-    icon: FileText,
+    icon: faFileLines,
     description: "Retrieve and normalize bill records before they enter legal review.",
   },
   {
     id: "delta",
     num: "02",
     label: "Delta Workspace",
-    icon: GitCompareArrows,
+    icon: faCodeCompare,
     description: "Compare proposed amendments against current law, Act by Act.",
   },
   {
     id: "scanner",
     num: "03",
     label: "Client-Law Scanner",
-    icon: ScanSearch,
+    icon: faMagnifyingGlassChart,
     description: "Pair approved law versions with client materials for impact screening.",
   },
   {
     id: "impact",
     num: "04",
     label: "Client Impact Analysis",
-    icon: BriefcaseBusiness,
+    icon: faBriefcase,
     description: "Review client-specific exposure, actions, timelines, and recommendations.",
   },
 ];
@@ -98,10 +99,9 @@ export function Sidebar({
           <div className="sb-name">BCF</div>
           <div className="sb-subname">by <span>Ingenium</span></div>
         </div>
-        <ArrowLeft
+        <FontAwesomeIcon
+          icon={faArrowLeft}
           className="sb-back-arrow"
-          size={14}
-          strokeWidth={1.75}
           aria-hidden="true"
         />
       </button>
@@ -116,7 +116,7 @@ export function Sidebar({
               className={page === it.id ? "active" : ""}
               onClick={() => setPage(it.id)}
             >
-              <it.icon className="sb-icon" size={16} strokeWidth={1.8} aria-hidden="true" />
+              <FontAwesomeIcon icon={it.icon} className="sb-icon" aria-hidden="true" />
               <span className="sb-num">{it.num}</span>
               <span className="sb-label">{it.label}</span>
               {typeof t === "number" && t > 0 && (

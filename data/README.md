@@ -173,7 +173,7 @@ Parliament bill text XML
 Justice Laws current Act XML
 ```
 
-Immediately convert legal XML into normalized JSON before AI analysis or UI rendering.
+Immediately convert legal XML into normalized JSON before analysis or UI rendering.
 
 ## Refresh Commands
 

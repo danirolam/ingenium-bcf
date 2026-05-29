@@ -1,4 +1,4 @@
-AI x Law Hackathon
+# Ingenium
 
 Project Ingenium is a federal bill monitoring and client impact prototype.
 
@@ -10,7 +10,7 @@ The web app lives at the repo root: React + Vite + TypeScript frontend, Express 
 
 ```bash
 npm install
-cp .env.example .env       # add GEMINI_API_KEY for live AI; without it, the S-202 demo path still works
+cp .env.example .env       # add GEMINI_API_KEY for live extraction; without it, the S-202 demo path still works
 npm run dev                # web on :5173, api on :8787
 ```
 
@@ -40,7 +40,7 @@ High-priority bills scored for demo/client relevance.
 data/bills/45-1/
 ```
 
-Official Parliament bill text for the recommended bills. Each bill folder contains source metadata, official XML, and normalized JSON for app/search/AI use.
+Official Parliament bill text for the recommended bills. Each bill folder contains source metadata, official XML, and normalized JSON for app/search/analysis use.
 
 ```text
 data/laws/

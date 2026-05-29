@@ -31,6 +31,7 @@ export interface Bill {
   uploadedAt: string;
   rawJson: unknown;
   clauses: BillClause[];
+  practiceAreas: string[];
 }
 
 export interface AmendmentExtraction {

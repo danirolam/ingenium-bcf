@@ -1,16 +1,16 @@
 [
   {
     "id": "client-corebloom",
-    "name": "Corebloom Health AI Inc.",
-    "industry": "Health-tech / AI",
+    "name": "Corebloom Health Inc.",
+    "industry": "Digital health",
     "jurisdictions": [
       "Vancouver, BC",
       "Canada"
     ],
-    "description": "Clinical AI company processing patient data and de-identified datasets for diagnostic models and academic research partnerships.",
+    "description": "Clinical-data company processing patient data and de-identified datasets for diagnostic models and academic research partnerships.",
     "termsAndConditions": "By creating a Corebloom account, the patient grants Corebloom and its affiliates a perpetual, broad licence to use, store and disclose their personal health information, including in de-identified form, for any secondary purpose Corebloom determines, including model training, product improvement, and research collaborations, without further notice.",
     "policies": "Privacy Policy v3.2: Corebloom may share de-identified patient data with academic partners under data-sharing MOUs. Patients consent to research uses at onboarding. Corebloom does not seek separate consent for downstream secondary uses.",
-    "operations": "AI model training pipeline ingests EHR exports nightly. Three active hospital research MOUs (UBC, McGill, U of T). Onboarding flow: single checkbox for terms + privacy policy. No granular purpose-by-purpose consent.",
+    "operations": "Diagnostic model training pipeline ingests EHR exports nightly. Three active hospital research MOUs (UBC, McGill, U of T). Onboarding flow: single checkbox for terms + privacy policy. No granular purpose-by-purpose consent.",
     "riskTolerance": "medium",
     "createdAt": "2026-05-09T18:11:17.013Z"
   },
