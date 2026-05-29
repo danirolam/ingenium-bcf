@@ -182,10 +182,11 @@ export function BillMonitor({ nav }: { nav: Nav }) {
   function exportCsv() {
     downloadCsv(
       `ingenium-bills-${new Date().toISOString().slice(0, 10)}.csv`,
-      ["Bill", "Title", "Status", "Momentum", "Practice areas", "Latest activity", "Session", "Source"],
+      ["Bill", "Title", "Sponsor", "Status", "Momentum", "Practice areas", "Latest activity", "Session", "Source"],
       matchingBills.map((b) => [
         b.billNumber,
         b.shortTitle || b.title,
+        b.sponsor?.name ?? "",
         b.status,
         b.legislativeMomentum,
         (b.practiceAreas ?? []).join("; "),
