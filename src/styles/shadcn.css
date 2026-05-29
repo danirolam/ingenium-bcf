@@ -1,0 +1,26 @@
+/* shadcn/ui design tokens, namespaced --sc-* so they never collide with the
+   existing app variables (--accent, --border, --background are already used by
+   injenium.css). These back the ported template components (button, card,
+   input, badge, avatar) and the ported screens. Dark values by default. */
+:root {
+  --sc-background: 240 10% 3.9%;
+  --sc-foreground: 0 0% 98%;
+  --sc-card: 240 10% 3.9%;
+  --sc-card-foreground: 0 0% 98%;
+  --sc-popover: 240 10% 3.9%;
+  --sc-popover-foreground: 0 0% 98%;
+  --sc-primary: 0 0% 98%;
+  --sc-primary-foreground: 240 5.9% 10%;
+  --sc-secondary: 240 3.7% 15.9%;
+  --sc-secondary-foreground: 0 0% 98%;
+  --sc-muted: 240 3.7% 15.9%;
+  --sc-muted-foreground: 240 5% 64.9%;
+  --sc-accent: 240 3.7% 15.9%;
+  --sc-accent-foreground: 0 0% 98%;
+  --sc-destructive: 0 72% 51%;
+  --sc-destructive-foreground: 0 0% 98%;
+  --sc-border: 240 3.7% 15.9%;
+  --sc-input: 240 3.7% 15.9%;
+  --sc-ring: 240 4.9% 83.9%;
+  --sc-radius: 0.625rem;
+}
