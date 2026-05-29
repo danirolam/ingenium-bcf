@@ -42,6 +42,7 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [techOpen, setTechOpen] = useState(false);
+  const [pickList, setPickList] = useState<Bill[]>([]);
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const activeLv = lvs.find((lv) => lv.id === activeId) ?? lvs[0] ?? null;
@@ -51,21 +52,22 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
     const lawVersionId = nav.params.lawVersionId;
 
     if (billId) {
-      // Fall back to client-side filter if /api/bills/:id/law-versions
-      // isn't on the running server (older builds, restart pending).
-      const lvForBill = api.bills
-        .lawVersions(billId)
-        .catch(() =>
-          api.lawVersions
-            .list()
-            .then((all) => all.filter((lv) => lv.sourceBillId === billId)),
-        );
-      Promise.all([api.bills.get(billId), lvForBill])
-        .then(([b, ls]) => {
+      // Generate AND use the delta in a single request. The serverless data
+      // store is ephemeral, so a separate GET can land on a cold instance that
+      // never saw the write — reading extract-delta's own response avoids that.
+      api.bills.list().then(setPickList).catch(() => {});
+      Promise.all([
+        api.bills.get(billId),
+        api.bills.extractDelta(billId).catch(() => null),
+      ])
+        .then(([b, res]) => {
           setBill(b);
-          const list = Array.isArray(ls) ? ls : [];
+          const list = (res?.lawVersions ?? []).filter(
+            (lv) => lv.sourceBillId === billId,
+          );
           setLvs(list);
           setActiveId(list[0]?.id ?? null);
+          if (list.length === 0 && res?.errors?.length) nav.toast(res.errors[0]);
         })
         .catch((err) => {
           console.error(err);
@@ -90,6 +92,7 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
       return;
     }
 
+    api.bills.list().then(setPickList).catch(() => {});
     api.lawVersions
       .list()
       .then(async (all) => {
@@ -154,16 +157,86 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
   }
 
   if (lvs.length === 0) {
+    const candidates = pickList
+      .filter((b) => /\bamend/i.test(b.title))
+      .slice(0, 24);
+    const noDeltaForBill = Boolean(nav.params.billId && bill);
     return (
       <>
         <PageHeader
-          crumbs={["Workspace", "Delta Workspace"]}
-          title="Delta Workspace"
-          sub="Open a bill from Bill Monitor to start reviewing the proposed legal delta."
+          crumbs={["Workspace", "Legal delta"]}
+          title="Legal delta"
+          hint={{
+            title: "Legal delta",
+            body: "Pick a bill to see exactly which sections of which Acts it changes. Bills that amend an existing Act produce a delta; bills that create a brand-new Act have nothing to diff yet.",
+          }}
+          sub="Choose a bill to review the changes it makes to existing law."
         />
         <div className="body">
-          <div className="rd-empty">
-            No law version selected. Go to Bill Monitor and click <b>Open Delta</b> on a bill.
+          <div className="card" style={{ padding: "22px 24px" }}>
+            <h3 style={{ margin: "0 0 6px", fontSize: 15, fontWeight: 700 }}>
+              {noDeltaForBill
+                ? `${bill?.billNumber} has no comparable Act to diff yet`
+                : "Pick a bill to review"}
+            </h3>
+            <p style={{ margin: "0 0 18px", fontSize: 13, color: "var(--ink-3)", lineHeight: 1.5 }}>
+              {noDeltaForBill
+                ? "This bill creates a new Act (or doesn't amend a tracked one), so there's no side-by-side delta. Open one of the amending bills below — they change existing law."
+                : "Select a bill that amends an existing Act to see its legal delta."}
+            </p>
+            {candidates.length === 0 ? (
+              <div className="rd-empty">Loading bills…</div>
+            ) : (
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(258px, 1fr))",
+                  gap: 10,
+                }}
+              >
+                {candidates.map((b) => (
+                  <button
+                    key={b.id}
+                    onClick={() => nav.go("delta", { billId: b.id })}
+                    className="dx-pick"
+                    style={{
+                      textAlign: "left",
+                      padding: "12px 14px",
+                      borderRadius: 12,
+                      border: "1px solid var(--border)",
+                      background: "var(--panel)",
+                      cursor: "pointer",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 7,
+                    }}
+                  >
+                    <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <span
+                        className="tnum"
+                        style={{ color: "var(--accent-warm)", fontWeight: 600, fontFamily: "var(--mono)" }}
+                      >
+                        {b.billNumber}
+                      </span>
+                      <MomentumBadge value={b.legislativeMomentum} />
+                    </span>
+                    <span
+                      style={{
+                        fontSize: 12.5,
+                        color: "var(--ink-2)",
+                        lineHeight: 1.4,
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {b.title}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </>
