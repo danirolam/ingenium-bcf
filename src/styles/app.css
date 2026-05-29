@@ -6,6 +6,7 @@
 @import "./billdetail.css";
 @import "./pages-extra.css";
 @import "./landing.css";
+@import "./glass.css";
 
 @tailwind base;
 @tailwind components;
