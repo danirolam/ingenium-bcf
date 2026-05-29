@@ -1,0 +1,42 @@
+{
+  "session": "45-1",
+  "number": "C-272",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-272/C-272_1/C-272_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13992976",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to amend the Controlled Drugs and Substances Act (supervised drug consumption sites)",
+  "shortTitle": "",
+  "sponsor": "Mr. Mazier",
+  "fullText": "C-272 1 45 3-4 Charles III 2025-2026 An Act to amend the Controlled Drugs and Substances Act (supervised drug consumption sites) An Act to amend the Controlled Drugs and Substances Act (supervised drug consumption sites) 2026 3 26 Mr. Mazier 451172 SUMMARY This enactment amends the Controlled Drugs and Substances Act to provide that regulations made and exemptions granted under that Act must not have the effect of allowing a site providing services in relation to the consumption of certain substances to be located within 500 metres of an elementary or secondary school, a daycare centre or a playground. His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: 1996, c. 19 Controlled Drugs and Substances Act 1 The Controlled Drugs and Substances Act is amended by adding the following after the heading “Regulations and Exemptions” before section 55: Restriction — regulations and exemptions 54.2 Despite any other provision of this Act, regulations made and exemptions granted under this Act must not have the effect of allowing a site providing services in relation to the consumption of any controlled substance or precursor — or any class of either of them — that is obtained in a manner not authorized under this Act to be located within 500 metres of an elementary or secondary school, a daycare centre or a playground. Transitional Provision Exemptions and authorizations in force 2 Any exemption or authorization that is granted or issued under the Controlled Drugs and Substances Act , that is valid on the day on which this Act comes into force and that applies, directly or indirectly, in respect of a site providing services in relation to the consumption of any controlled substance or precursor — or any class of either of them — that is obtained in a manner not authorized under that Act is (a) revoked on that day, to the extent that the exemption or authorization applies in respect of a site located within 500 metres of an elementary or secondary school, a daycare centre or a playground; or (b) deemed to include as a condition that such services must not be provided at the site when it is within 500 metres of an elementary or secondary school, a daycare centre or a playground, if the exemption or authorization applies in respect of a mobile site. Coming into Force 180 days after royal assent 3 This Act comes into force 180 days after the day on which it receives royal assent.",
+  "sections": [
+    {
+      "label": "1",
+      "type": "amending",
+      "marginalNote": "Restriction — regulations and exemptions",
+      "text": "1 The Controlled Drugs and Substances Act is amended by adding the following after the heading “Regulations and Exemptions” before section 55: Restriction — regulations and exemptions 54.2 Despite any other provision of this Act, regulations made and exemptions granted under this Act must not have the effect of allowing a site providing services in relation to the consumption of any controlled substance or precursor — or any class of either of them — that is obtained in a manner not authorized under this Act to be located within 500 metres of an elementary or secondary school, a daycare centre or a playground.",
+      "targetActs": [
+        "Controlled Drugs and Substances Act"
+      ],
+      "hasAmendedText": true
+    },
+    {
+      "label": "2",
+      "type": "transitional",
+      "marginalNote": "Exemptions and authorizations in force",
+      "text": "Exemptions and authorizations in force 2 Any exemption or authorization that is granted or issued under the Controlled Drugs and Substances Act , that is valid on the day on which this Act comes into force and that applies, directly or indirectly, in respect of a site providing services in relation to the consumption of any controlled substance or precursor — or any class of either of them — that is obtained in a manner not authorized under that Act is (a) revoked on that day, to the extent that the exemption or authorization applies in respect of a site located within 500 metres of an elementary or secondary school, a daycare centre or a playground; or (b) deemed to include as a condition that such services must not be provided at the site when it is within 500 metres of an elementary or secondary school, a daycare centre or a playground, if the exemption or authorization applies in respect of a mobile site.",
+      "targetActs": [
+        "Controlled Drugs and Substances Act"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "3",
+      "type": "amending",
+      "marginalNote": "180 days after royal assent",
+      "text": "180 days after royal assent 3 This Act comes into force 180 days after the day on which it receives royal assent.",
+      "targetActs": [],
+      "hasAmendedText": false
+    }
+  ]
+}

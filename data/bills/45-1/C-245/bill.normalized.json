@@ -1,0 +1,24 @@
+{
+  "session": "45-1",
+  "number": "C-245",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-245/C-245_1/C-245_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13600927",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to amend the Canadian Multiculturalism Act (non-application in Quebec)",
+  "shortTitle": "",
+  "sponsor": "Mr. Barsalou-Duval",
+  "fullText": "C-245 1 45 3-4 Charles III 2025 An Act to amend the Canadian Multiculturalism Act (non-application in Quebec) An Act to amend the Canadian Multiculturalism Act (non-application in Quebec) 2025 9 23 Mr. Barsalou-Duval 451054 SUMMARY This enactment amends the Canadian Multiculturalism Act to provide that it does not apply in Quebec. Preamble Whereas Quebecers form a nation and therefore possess all the tools needed to define their identity and protect their common values, including as regards the protection of the French language, the separation of state and religion, and gender equality; Now, therefore, His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: R.S., c. 24 (4th Supp.) Canadian Multiculturalism Act 1 The Canadian Multiculturalism Act is amended by adding the following after section 2: Application Exemption 2.1 This Act does not apply in Quebec.",
+  "sections": [
+    {
+      "label": "1",
+      "type": "amending",
+      "marginalNote": "Exemption",
+      "text": "1 The Canadian Multiculturalism Act is amended by adding the following after section 2: Application Exemption 2.1 This Act does not apply in Quebec.",
+      "targetActs": [
+        "Canadian Multiculturalism Act"
+      ],
+      "hasAmendedText": true
+    }
+  ]
+}

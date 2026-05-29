@@ -1,0 +1,34 @@
+{
+  "session": "45-1",
+  "number": "C-211",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-211/C-211_1/C-211_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13565143",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to amend the Income Tax Act and the Canada Pension Plan (deeming provision)",
+  "shortTitle": "",
+  "sponsor": "Mr. Johns",
+  "fullText": "C-211 1 45 3 Charles III 2025 An Act to amend the Income Tax Act and the Canada Pension Plan (deeming provision) An Act to amend the Income Tax Act and the Canada Pension Plan (deeming provision) 2025 6 17 Mr. Johns 451036 SUMMARY This enactment amends the Income Tax Act to add a deeming provision in relation to the credit for mental or physical impairment set out in section 118.3. It also amends the Canada Pension Plan to add a deeming provision in relation to disability pensions and benefits. Preamble Whereas, in order to be eligible for a disability tax credit for mental or physical impairment, or a disability pension or benefit, an individual has to meet certain criteria and sometimes apply for the disability tax credit, pension or benefit at both the provincial and federal levels; Whereas having to apply for a disability tax credit, pension or benefit twice for the same impairment causes undue hardship to an individual; And whereas Parliament considers that it is desirable that an individual who is eligible for a provincial disability tax credit, pension or benefit be deemed to be eligible for the federal disability tax credit, pension or benefit; Now, therefore, His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: R.S., c. 1 (5th Supp.) Income Tax Act 1 (1) Section 118.3 of the Income Tax Act is amended by adding the following after subsection (1): Deeming (1.01) For the purposes of subsection (1), an individual in respect of whom an amount is deductible for mental or physical impairment under the laws of the province in which they reside is deemed to meet the requirements under that subsection and to be an individual in respect of whom an amount is deductible, unless the Minister determines otherwise. (2) Subsection (1) applies to the 2026 and subsequent taxation years. R.S., c. C-8 Canada Pension Plan 2 Paragraph 42(2)(a) of the Canada Pension Plan is replaced by the following: (a) unless the Minister determines otherwise , a person shall be considered to be disabled if (i) the person is determined in the prescribed manner to have a severe and prolonged mental or physical disability, and for the purposes of this paragraph, (A) a disability is severe only if by reason thereof the person in respect of whom the determination is made is incapable regularly of pursuing any substantially gainful occupation, and (B) a disability is prolonged only if it is determined in the prescribed manner that the disability is likely to be long continued and of indefinite duration or is likely to result in death, (ii) the person is in receipt of a provincial pension or benefit by reason of disability; and",
+  "sections": [
+    {
+      "label": "1",
+      "type": "amending",
+      "marginalNote": "Deeming",
+      "text": "1 (1) Section 118.3 of the Income Tax Act is amended by adding the following after subsection (1): Deeming (1.01) For the purposes of subsection (1), an individual in respect of whom an amount is deductible for mental or physical impairment under the laws of the province in which they reside is deemed to meet the requirements under that subsection and to be an individual in respect of whom an amount is deductible, unless the Minister determines otherwise. (2) Subsection (1) applies to the 2026 and subsequent taxation years.",
+      "targetActs": [
+        "Income Tax Act"
+      ],
+      "hasAmendedText": true
+    },
+    {
+      "label": "2",
+      "type": "amending",
+      "marginalNote": "",
+      "text": "2 Paragraph 42(2)(a) of the Canada Pension Plan is replaced by the following: (a) unless the Minister determines otherwise , a person shall be considered to be disabled if (i) the person is determined in the prescribed manner to have a severe and prolonged mental or physical disability, and for the purposes of this paragraph, (A) a disability is severe only if by reason thereof the person in respect of whom the determination is made is incapable regularly of pursuing any substantially gainful occupation, and (B) a disability is prolonged only if it is determined in the prescribed manner that the disability is likely to be long continued and of indefinite duration or is likely to result in death, (ii) the person is in receipt of a provincial pension or benefit by reason of disability; and",
+      "targetActs": [
+        "Canada Pension Plan"
+      ],
+      "hasAmendedText": true
+    }
+  ]
+}

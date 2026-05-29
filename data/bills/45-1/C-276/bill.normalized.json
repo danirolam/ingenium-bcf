@@ -1,0 +1,96 @@
+{
+  "session": "45-1",
+  "number": "C-276",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-276/C-276_1/C-276_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/14071741",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to establish a framework for the continued access to and use of cash in Canada and to make related amendments to other Acts",
+  "shortTitle": "",
+  "sponsor": "Mr. Falk",
+  "fullText": "C-276 1 45 3-4 Charles III 2025-2026 An Act to establish a framework for the continued access to and use of cash in Canada and to make related amendments to other Acts Framework on the Access to and Use of Cash Act 2026 5 4 Mr. Falk 451181 SUMMARY This enactment provides for the development and implementation of a framework to ensure that cash continues to be available throughout Canada. It also amends the Currency Act and the Bank of Canada Act to remove the Governor in Council’s power to call in coins and notes. Finally, it amends the Bank of Canada Act to prohibit the Bank of Canada from issuing a digital form of the dollar. Preamble Whereas the use of cash is significantly more prevalent among vulnerable population groups such as seniors, Indigenous peoples, newcomers to Canada and persons with low income, including those who live in poverty or who rely on income assistance programs; Whereas non-profit organizations and community organizations rely on cash for charitable fundraising activities; And whereas cash as a form of payment provides a higher level of privacy than digital alternatives and that Canadians’ right to privacy is enshrined in the Canadian Charter of Rights and Freedoms and the Privacy Act , as well as provincial privacy legislation; Now, therefore, His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: Short Title Short title 1 This Act may be cited as the Framework on the Access to and Use of Cash Act . Interpretation Definitions 2 The following definitions apply in this Act. cash means coins and notes referred to in subsection 8(1) of the Currency Act . ( espèces ) Minister means the Minister of Finance. ( ministre ) Comprehensive Review Review by Minister 3 Within 90 days after the day on which this Act comes into force, the Minister must undertake a comprehensive review of existing legislation, regulations and policies in relation to the availability of cash within financial institutions. Framework Development 4 (1) The Minister must develop and implement a framework to ensure continued access to cash in Canada. Contents (2) The framework must include measures to (a) ensure that everyone in Canada has access to cash by ensuring, among other things, that the necessary infrastructure is present across Canada to allow cash withdrawals and deposits, and determining a reasonable distance for people to travel to withdraw or deposit cash; (b) protect the ability of persons, including businesses, in Canada to continue to use cash despite the availability of digital currencies, including cryptocurrencies; (c) remove barriers and disincentives in relation to donations made in cash to non-profit organizations and community organizations, without compromising efforts to curtail money laundering, fraud and other financial crimes; and (d) ensure the long-term viability of Canada’s cash infrastructure — which includes the equipment and facilities required for the sorting, storing and distribution of cash — by ensuring that it remains effective, resilient and sustainable. Reports to Parliament Tabling of framework 5 (1) Within 18 months after the day on which this Act comes into force, the Minister must prepare a report setting out the framework and any recommendations related to its development and implementation and cause the report to be tabled in each House of Parliament on any of the first 15 days on which that House is sitting after it is completed. Publication (2) The Minister must publish the report on the website of the Department of Finance within 10 days after the report has been tabled in both Houses of Parliament. Review 6 Within three years after the report referred to in section 5 has been tabled in both Houses of Parliament, the Minister must undertake a review of the implementation, effectiveness and social and economic impacts of the framework, prepare a report setting out any findings and recommendations and cause the report to be tabled in each House of Parliament on any of the first 15 days on which that House is sitting after it is completed. Related Amendments R.S., c. C-52 Currency Act 7 Subsection 9(1) of the Currency Act is repealed. R.S., c. B-2 Bank of Canada Act 8 Section 23 of the Bank of Canada Act is renumbered as subsection 23(1) and is amended by adding the following: Prohibition — central bank digital currency (2) The Bank shall not issue a digital form of the dollar. 9 Subparagraph 25(2)(b)(ii) of the Act is replaced by the following: (ii) its notes that were called in by an order made under the Currency Act .",
+  "sections": [
+    {
+      "label": "1",
+      "type": null,
+      "marginalNote": "Short title",
+      "text": "Short title 1 This Act may be cited as the Framework on the Access to and Use of Cash Act .",
+      "targetActs": [
+        "Framework on the Access to and Use of Cash Act"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "2",
+      "type": null,
+      "marginalNote": "Definitions",
+      "text": "Definitions 2 The following definitions apply in this Act. cash means coins and notes referred to in subsection 8(1) of the Currency Act . ( espèces ) Minister means the Minister of Finance. ( ministre )",
+      "targetActs": [
+        "Currency Act"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "3",
+      "type": null,
+      "marginalNote": "Review by Minister",
+      "text": "Review by Minister 3 Within 90 days after the day on which this Act comes into force, the Minister must undertake a comprehensive review of existing legislation, regulations and policies in relation to the availability of cash within financial institutions.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "4",
+      "type": null,
+      "marginalNote": "Development",
+      "text": "Development 4 (1) The Minister must develop and implement a framework to ensure continued access to cash in Canada. Contents (2) The framework must include measures to (a) ensure that everyone in Canada has access to cash by ensuring, among other things, that the necessary infrastructure is present across Canada to allow cash withdrawals and deposits, and determining a reasonable distance for people to travel to withdraw or deposit cash; (b) protect the ability of persons, including businesses, in Canada to continue to use cash despite the availability of digital currencies, including cryptocurrencies; (c) remove barriers and disincentives in relation to donations made in cash to non-profit organizations and community organizations, without compromising efforts to curtail money laundering, fraud and other financial crimes; and (d) ensure the long-term viability of Canada’s cash infrastructure — which includes the equipment and facilities required for the sorting, storing and distribution of cash — by ensuring that it remains effective, resilient and sustainable.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "5",
+      "type": null,
+      "marginalNote": "Tabling of framework",
+      "text": "Tabling of framework 5 (1) Within 18 months after the day on which this Act comes into force, the Minister must prepare a report setting out the framework and any recommendations related to its development and implementation and cause the report to be tabled in each House of Parliament on any of the first 15 days on which that House is sitting after it is completed. Publication (2) The Minister must publish the report on the website of the Department of Finance within 10 days after the report has been tabled in both Houses of Parliament.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "6",
+      "type": null,
+      "marginalNote": "Review",
+      "text": "Review 6 Within three years after the report referred to in section 5 has been tabled in both Houses of Parliament, the Minister must undertake a review of the implementation, effectiveness and social and economic impacts of the framework, prepare a report setting out any findings and recommendations and cause the report to be tabled in each House of Parliament on any of the first 15 days on which that House is sitting after it is completed.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "7",
+      "type": "amending",
+      "marginalNote": "",
+      "text": "7 Subsection 9(1) of the Currency Act is repealed.",
+      "targetActs": [
+        "Currency Act"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "8",
+      "type": "amending",
+      "marginalNote": "Prohibition — central bank digital currency",
+      "text": "8 Section 23 of the Bank of Canada Act is renumbered as subsection 23(1) and is amended by adding the following: Prohibition — central bank digital currency (2) The Bank shall not issue a digital form of the dollar.",
+      "targetActs": [
+        "Bank of Canada Act"
+      ],
+      "hasAmendedText": true
+    },
+    {
+      "label": "9",
+      "type": "amending",
+      "marginalNote": "",
+      "text": "9 Subparagraph 25(2)(b)(ii) of the Act is replaced by the following: (ii) its notes that were called in by an order made under the Currency Act .",
+      "targetActs": [
+        "Currency Act"
+      ],
+      "hasAmendedText": true
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "session": "45-1",
+  "number": "C-210",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-210/C-210_1/C-210_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13563844",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to amend the Constitution Act, 1867 (oath of office)",
+  "shortTitle": "",
+  "sponsor": "Mr. Barsalou-Duval",
+  "fullText": "C-210 1 45 3 Charles III 2025 An Act to amend the Constitution Act, 1867 (oath of office) An Act to amend the Constitution Act, 1867 (oath of office) 2025 6 16 Mr. Barsalou-Duval 451011 SUMMARY This enactment amends section 128 of the Constitution Act, 1867 to provide that every member of the Senate or House of Commons of Canada may, before taking their seat, choose to take and subscribe the oath of allegiance, the oath of office or both. His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: 30-31 Vict., c. 3 (U.K.); 1982, c. 11 (U.K.) Constitution Act, 1867 1 Section 128 of the Constitution Act, 1867 is renumbered as subsection 128(1) and is amended by adding the following: Choice of oath (2) Notwithstanding subsection (1), every Member of the Senate or House of Commons of Canada may take and subscribe the Oath of Office contained in the Fifth Schedule to this Act instead of the Oath of Allegiance or may take and subscribe both. 2 The Fifth Schedule to the Act is amended by adding the following after the Oath of Allegiance: Oath of Office I, A.B. , do solemnly and sincerely promise and declare that I will truly and faithfully and to the best of my skill and knowledge execute the powers and trusts reposed in me as a member of the Senate [ or House of Commons ( as the case may be )] of Canada. Interpretation Interpretation 3 A reference to the Constitution Acts, 1867 to 1982 is deemed to include a reference to this Act.",
+  "sections": [
+    {
+      "label": "1",
+      "type": "amending",
+      "marginalNote": "Choice of oath",
+      "text": "1 Section 128 of the Constitution Act, 1867 is renumbered as subsection 128(1) and is amended by adding the following: Choice of oath (2) Notwithstanding subsection (1), every Member of the Senate or House of Commons of Canada may take and subscribe the Oath of Office contained in the Fifth Schedule to this Act instead of the Oath of Allegiance or may take and subscribe both.",
+      "targetActs": [
+        "Constitution Act, 1867"
+      ],
+      "hasAmendedText": true
+    },
+    {
+      "label": "2",
+      "type": "amending",
+      "marginalNote": "",
+      "text": "2 The Fifth Schedule to the Act is amended by adding the following after the Oath of Allegiance: Oath of Office I, A.B. , do solemnly and sincerely promise and declare that I will truly and faithfully and to the best of my skill and knowledge execute the powers and trusts reposed in me as a member of the Senate [ or House of Commons ( as the case may be )] of Canada.",
+      "targetActs": [],
+      "hasAmendedText": true
+    },
+    {
+      "label": "3",
+      "type": "amending",
+      "marginalNote": "Interpretation",
+      "text": "Interpretation 3 A reference to the Constitution Acts, 1867 to 1982 is deemed to include a reference to this Act.",
+      "targetActs": [
+        "Constitution Acts, 1867 to 1982"
+      ],
+      "hasAmendedText": false
+    }
+  ]
+}

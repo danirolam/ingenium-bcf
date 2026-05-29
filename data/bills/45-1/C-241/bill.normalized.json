@@ -1,0 +1,58 @@
+{
+  "session": "45-1",
+  "number": "C-241",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-241/C-241_1/C-241_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13599571",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to establish a national strategy respecting flood and drought forecasting",
+  "shortTitle": "National Strategy on Flood and Drought Forecasting Act",
+  "sponsor": "Ms. Auguste",
+  "fullText": "C-241 1 45 3-4 Charles III 2025 An Act to establish a national strategy respecting flood and drought forecasting National Strategy on Flood and Drought Forecasting Act National Strategy on Flood and Drought Forecasting Act 2025 9 22 Ms. Auguste 451093 SUMMARY This enactment provides for the development of a national strategy to provide key stakeholders with the information they need to forecast floods and droughts. Preamble Whereas flood and drought damages have risen dramatically in Canada and are expected to rise further owing to extreme weather and water events related to climate change; Whereas, as a result of floodplains expanding and droughts intensifying, a growing number of communities and industries, notably the farming industry, are inordinately impacted by floods and droughts; Whereas current flood and drought forecasting in Canada is conducted by the provinces without coordination between them and with limited federal technical support; Whereas advanced flood and drought forecasting models require sophisticated integration of spatially detailed hydrological management models and water-resource management models running on supercomputers with inputs from multiple meteorological forecast models as well as from onsite observations of rainfall, soil moisture, snowpacks, glaciers, lake levels, ice jams and streamflow; Whereas Canadian universities have developed sophisticated water-forecasting models, which are sought-after by the United States and around the world; And whereas most technologically advanced countries have a national flood forecasting service; Now, therefore, His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: Short Title Short title 1 This Act may be cited as the National Strategy on Flood and Drought Forecasting Act . Interpretation Definitions 2 The following definitions apply in this Act. Indigenous governing body means a council, government or other entity that is authorized to act on behalf of an Indigenous group, community or people that holds rights recognized and affirmed by section 35 of the Constitution Act, 1982 . ( corps dirigeant autochtone ) Minister means the Minister of the Environment. ( ministre ) National Strategy on Flood and Drought Forecasting National strategy 3 (1) The Minister, in collaboration with the Minister of Agriculture and Agri-Food, the Minister of Infrastructure and Communities, the Minister of Natural Resources and the Minister of Public Safety and Emergency Preparedness, must develop a national strategy respecting flood and drought forecasting to help provide key stakeholders with the information they need to forecast floods and droughts. Consultations (2) In developing the strategy, the Minister must consult with representatives of provincial and municipal governments, Indigenous governing bodies and other relevant stakeholders, including representatives from Canadian universities, civil society organizations and industry, including from the insurance industry. Contents (3) The strategy must provide for (a) an assessment of the need for, and the benefits of, national coordination, new investment and the application of novel technologies in forecasting floods and droughts; (b) an assessment of the need for modelling that would identify properties and infrastructure at risk from floods; (c) an assessment of opportunities to develop national flood and drought forecasting across Canada in order to help meet the information needs of the provinces, municipalities, industry, including the insurance industry, and Indigenous communities in respect of short- and long-term flood and drought forecasting, including current and future flood-plain delineation; and (d) the preparation of a proposal for the establishment of a cooperative, national hydrological and water resources forecasting service and system based on the federal-provincial distributed model of the National Hydrological Service. Reports to Parliament Tabling of strategy 4 (1) Within two years after the day on which this Act comes into force, the Minister must prepare a report setting out the strategy and cause the report to be tabled before each House of Parliament on any of the first 15 days on which that House is sitting after the report is completed. Publication (2) The Minister must publish the report on a Government of Canada website within 10 days after the day on which the report is tabled in both Houses of Parliament. Report 5 (1) Within five years after the day on which the report referred to in section 4 is tabled, the Minister must, in consultation with the parties referred to in subsections 3(1) and (2), prepare a report on the effectiveness of the strategy that sets out the Minister’s conclusions and recommendations, and cause the report to be tabled in each House of Parliament on any of the first 15 days on which that House is sitting after it is completed. Publication (2) The Minister must publish the report on a Government of Canada website within 10 days after the day on which the report is tabled in both Houses of Parliament.",
+  "sections": [
+    {
+      "label": "1",
+      "type": null,
+      "marginalNote": "Short title",
+      "text": "Short title 1 This Act may be cited as the National Strategy on Flood and Drought Forecasting Act .",
+      "targetActs": [
+        "National Strategy on Flood and Drought Forecasting Act"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "2",
+      "type": null,
+      "marginalNote": "Definitions",
+      "text": "Definitions 2 The following definitions apply in this Act. Indigenous governing body means a council, government or other entity that is authorized to act on behalf of an Indigenous group, community or people that holds rights recognized and affirmed by section 35 of the Constitution Act, 1982 . ( corps dirigeant autochtone ) Minister means the Minister of the Environment. ( ministre )",
+      "targetActs": [
+        "Constitution Act, 1982"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "3",
+      "type": null,
+      "marginalNote": "National strategy",
+      "text": "National strategy 3 (1) The Minister, in collaboration with the Minister of Agriculture and Agri-Food, the Minister of Infrastructure and Communities, the Minister of Natural Resources and the Minister of Public Safety and Emergency Preparedness, must develop a national strategy respecting flood and drought forecasting to help provide key stakeholders with the information they need to forecast floods and droughts. Consultations (2) In developing the strategy, the Minister must consult with representatives of provincial and municipal governments, Indigenous governing bodies and other relevant stakeholders, including representatives from Canadian universities, civil society organizations and industry, including from the insurance industry. Contents (3) The strategy must provide for (a) an assessment of the need for, and the benefits of, national coordination, new investment and the application of novel technologies in forecasting floods and droughts; (b) an assessment of the need for modelling that would identify properties and infrastructure at risk from floods; (c) an assessment of opportunities to develop national flood and drought forecasting across Canada in order to help meet the information needs of the provinces, municipalities, industry, including the insurance industry, and Indigenous communities in respect of short- and long-term flood and drought forecasting, including current and future flood-plain delineation; and (d) the preparation of a proposal for the establishment of a cooperative, national hydrological and water resources forecasting service and system based on the federal-provincial distributed model of the National Hydrological Service.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "4",
+      "type": null,
+      "marginalNote": "Tabling of strategy",
+      "text": "Tabling of strategy 4 (1) Within two years after the day on which this Act comes into force, the Minister must prepare a report setting out the strategy and cause the report to be tabled before each House of Parliament on any of the first 15 days on which that House is sitting after the report is completed. Publication (2) The Minister must publish the report on a Government of Canada website within 10 days after the day on which the report is tabled in both Houses of Parliament.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "5",
+      "type": null,
+      "marginalNote": "Report",
+      "text": "Report 5 (1) Within five years after the day on which the report referred to in section 4 is tabled, the Minister must, in consultation with the parties referred to in subsections 3(1) and (2), prepare a report on the effectiveness of the strategy that sets out the Minister’s conclusions and recommendations, and cause the report to be tabled in each House of Parliament on any of the first 15 days on which that House is sitting after it is completed. Publication (2) The Minister must publish the report on a Government of Canada website within 10 days after the day on which the report is tabled in both Houses of Parliament.",
+      "targetActs": [],
+      "hasAmendedText": false
+    }
+  ]
+}

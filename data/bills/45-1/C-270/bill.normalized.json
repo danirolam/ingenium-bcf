@@ -1,0 +1,34 @@
+{
+  "session": "45-1",
+  "number": "C-270",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-270/C-270_1/C-270_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13966432",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to amend the Criminal Code (defence of person)",
+  "shortTitle": "",
+  "sponsor": "Ms. Cobena",
+  "fullText": "C-270 1 45 3-4 Charles III 2025-2026 An Act to amend the Criminal Code (defence of person) Stand on Guard Act 2026 3 12 Ms. Cobena 451119 SUMMARY This enactment amends the Criminal Code to add presumptions in relation to the defence of person. His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: Short Title Short title 1 This Act may be cited as the Stand on Guard Act . R.S., c. C-46 Criminal Code 2 Section 34 of the Criminal Code is amended by adding the following after subsection (1): For greater certainty (1.1) The act that constitutes the offence under subsection (1) may involve force by the person, including lethal force, that they deem reasonably necessary to defend or protect themselves or another person against a person who, without being entitled by law to do so, has entered a dwelling-house in which they are lawfully present. (2) Section 34 of the Act is amended by adding the following after subsection (2): Presumption — intent (2.1) For the purposes of subsection (1.1), the fact that, knowingly and without being entitled by law to do so, the person against whom the act was committed had entered the dwelling-house is proof, in the absence of evidence to the contrary, that they had entered with intent to use force against a person lawfully present in the dwelling-house. Presumption — valid defence (2.2) The conditions under subsection (1) are presumed to be met if a person uses force, including lethal force, against a person who, without being entitled by law to do so, has entered the dwelling-house in which they are lawfully present.",
+  "sections": [
+    {
+      "label": "1",
+      "type": null,
+      "marginalNote": "Short title",
+      "text": "Short title 1 This Act may be cited as the Stand on Guard Act .",
+      "targetActs": [
+        "Stand on Guard Act"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "2",
+      "type": "amending",
+      "marginalNote": "For greater certainty",
+      "text": "2 Section 34 of the Criminal Code is amended by adding the following after subsection (1): For greater certainty (1.1) The act that constitutes the offence under subsection (1) may involve force by the person, including lethal force, that they deem reasonably necessary to defend or protect themselves or another person against a person who, without being entitled by law to do so, has entered a dwelling-house in which they are lawfully present. (2) Section 34 of the Act is amended by adding the following after subsection (2): Presumption — intent (2.1) For the purposes of subsection (1.1), the fact that, knowingly and without being entitled by law to do so, the person against whom the act was committed had entered the dwelling-house is proof, in the absence of evidence to the contrary, that they had entered with intent to use force against a person lawfully present in the dwelling-house. Presumption — valid defence (2.2) The conditions under subsection (1) are presumed to be met if a person uses force, including lethal force, against a person who, without being entitled by law to do so, has entered the dwelling-house in which they are lawfully present.",
+      "targetActs": [
+        "Criminal Code"
+      ],
+      "hasAmendedText": true
+    }
+  ]
+}

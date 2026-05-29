@@ -29,9 +29,22 @@ import { loadSeedSnapshot } from "../seed/seedDemo.js";
 
 export const billsRouter = Router();
 
+// The list view never needs the heavy per-bill payload (full clause text, the
+// legislative path, recorded divisions, or the raw source record). Stripping
+// them keeps /api/bills small and fast; the detail route returns everything.
+const LIST_OMIT = new Set(["clauses", "legislativePath", "divisions", "rawJson"]);
+function toListItem(bill: Bill) {
+  const full = ensurePracticeAreas(bill) as unknown as Record<string, unknown>;
+  const out: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(full)) {
+    if (!LIST_OMIT.has(key)) out[key] = value;
+  }
+  return out;
+}
+
 billsRouter.get("/", async (_req, res) => {
   const bills = await readAll<Bill>(FILES.bills);
-  res.json(bills.map(ensurePracticeAreas));
+  res.json(bills.map(toListItem));
 });
 
 billsRouter.get("/:id", async (req, res) => {

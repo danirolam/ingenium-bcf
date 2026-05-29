@@ -1,0 +1,34 @@
+{
+  "session": "45-1",
+  "number": "C-250",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-250/C-250_1/C-250_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13677826",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to amend the Canada Labour Code (flight attendants)",
+  "shortTitle": "Flight Attendants' Remuneration Act",
+  "sponsor": "Mr. Davies (Vancouver Kingsway)",
+  "fullText": "C-250 1 45 3-4 Charles III 2025 An Act to amend the Canada Labour Code (flight attendants) Flight Attendants' Remuneration Act Flight Attendants' Remuneration Act 2025 10 21 Mr. Davies (Vancouver Kingsway) 451094 SUMMARY This enactment amends the Canada Labour Code to provide that, in calculating the time in respect of which an employee who is a flight attendant is to be paid, the employer must include the time that the employee spends in carrying out their pre-flight and post-flight duties and in completing mandatory training programs. It also provides that the employer must pay this employee not less than their regular rate of wages for carrying out these duties. His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: Short Title Short title 1 This Act may be cited as the Flight Attendants' Remuneration Act . R.S., c. L-2 Canada Labour Code 2 The Canada Labour Code is amended by adding the following after section 177: DIVISION I.01 Flight Attendants Calculation of hours of work 177.01 (1) For the purposes of section 169, in calculating the time worked in a day, a week or a pay period, as the case may be, for which an employee who is a flight attendant is to be paid, the employer must include the time that the employee (a) spends carrying out all pre-flight and post-flight duties relating to aircraft security and passenger service, including assisting with embarking and disembarking and pre-flight cabin and passenger safety checks; (b) spends completing mandatory training programs; and (c) is in the work place , within the meaning of section 122, at the call of the employer and at the disposal of the employer, including during a flight delay, whether or not the delay is within the employer’s control. Wage rate (2) An employer must pay to each employee who is a flight attendant a wage at a rate not less than the employee’s regular rate of wages for the work described in subsection (1).",
+  "sections": [
+    {
+      "label": "1",
+      "type": null,
+      "marginalNote": "Short title",
+      "text": "Short title 1 This Act may be cited as the Flight Attendants' Remuneration Act .",
+      "targetActs": [
+        "Flight Attendants' Remuneration Act"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "2",
+      "type": "amending",
+      "marginalNote": "Calculation of hours of work",
+      "text": "2 The Canada Labour Code is amended by adding the following after section 177: DIVISION I.01 Flight Attendants Calculation of hours of work 177.01 (1) For the purposes of section 169, in calculating the time worked in a day, a week or a pay period, as the case may be, for which an employee who is a flight attendant is to be paid, the employer must include the time that the employee (a) spends carrying out all pre-flight and post-flight duties relating to aircraft security and passenger service, including assisting with embarking and disembarking and pre-flight cabin and passenger safety checks; (b) spends completing mandatory training programs; and (c) is in the work place , within the meaning of section 122, at the call of the employer and at the disposal of the employer, including during a flight delay, whether or not the delay is within the employer’s control. Wage rate (2) An employer must pay to each employee who is a flight attendant a wage at a rate not less than the employee’s regular rate of wages for the work described in subsection (1).",
+      "targetActs": [
+        "Canada Labour Code"
+      ],
+      "hasAmendedText": true
+    }
+  ]
+}

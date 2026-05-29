@@ -62,6 +62,10 @@ export interface Bill {
   latestEvent?: { name?: string; date?: string; chamber?: string };
   categories?: string[];
 
+  // Provenance of the full text baked into `clauses` (latest published version).
+  textStage?: string;
+  textSourceUrl?: string;
+
   // The path a bill travels — the centrepiece of the bill detail view.
   legislativePath?: BillStageEntry[];
   divisions?: BillDivision[];

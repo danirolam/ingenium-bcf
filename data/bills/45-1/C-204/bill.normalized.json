@@ -1,0 +1,40 @@
+{
+  "session": "45-1",
+  "number": "C-204",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-204/C-204_1/C-204_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13547449",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to amend the Income Tax Act (volunteer firefighting and search and rescue volunteer tax credit)",
+  "shortTitle": "",
+  "sponsor": "Mr. Johns",
+  "fullText": "C-204 1 45 3 Charles III 2025 An Act to amend the Income Tax Act (volunteer firefighting and search and rescue volunteer tax credit) An Act to amend the Income Tax Act (volunteer firefighting and search and rescue volunteer tax credit) 2025 6 4 Mr. Johns 451008 SUMMARY This enactment amends subsections 118.06(2) and 118.07(2) of the Income Tax Act in order to increase the amount of the tax credits for volunteer firefighting and search and rescue volunteer services from $6,000 to $10,000. The enactment also modifies the definition of “eligible volunteer firefighting services”. His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: R.S., c. 1 (5th Supp.) Income Tax Act 1 (1) Subsection 118.06(1) of the Income Tax Act is replaced by the following: Definition of eligible volunteer firefighting services 118.06 (1) In this section and section 118.07, eligible volunteer firefighting services means services provided by an individual in the individual’s capacity as a volunteer firefighter to a fire department that consist of being available or on call to perform firefighting services, emergency services and non-emergency duties for that fire department as needed. In return for their time, the individual may receive a nominal remuneration that does not constitute a liveable wage . (2) The portion of subsection 118.06(2) of the Act before paragraph (a) is replaced by the following: Volunteer firefighter tax credit (2) For the purpose of computing the tax payable under this Part for a taxation year by an individual who performs eligible volunteer firefighting services in the year, there may be deducted the amount determined by multiplying $10,000 by the appropriate percentage for the taxation year if the individual 2 The portion of subsection 118.07(2) of the Act before paragraph (a) is replaced by the following: Search and rescue volunteer tax credit (2) For the purpose of computing the tax payable under this Part for a taxation year by an individual who performs eligible search and rescue volunteer services in the year, there may be deducted the amount determined by multiplying $10,000 by the appropriate percentage for the taxation year if the individual Application 3 Sections 1 and 2 apply to the 2026 and subsequent taxation years.",
+  "sections": [
+    {
+      "label": "1",
+      "type": "amending",
+      "marginalNote": "Definition of eligible volunteer firefighting services",
+      "text": "1 (1) Subsection 118.06(1) of the Income Tax Act is replaced by the following: Definition of eligible volunteer firefighting services 118.06 (1) In this section and section 118.07, eligible volunteer firefighting services means services provided by an individual in the individual’s capacity as a volunteer firefighter to a fire department that consist of being available or on call to perform firefighting services, emergency services and non-emergency duties for that fire department as needed. In return for their time, the individual may receive a nominal remuneration that does not constitute a liveable wage .",
+      "targetActs": [
+        "Income Tax Act"
+      ],
+      "hasAmendedText": true
+    },
+    {
+      "label": "2",
+      "type": "amending",
+      "marginalNote": "Search and rescue volunteer tax credit",
+      "text": "2 The portion of subsection 118.07(2) of the Act before paragraph (a) is replaced by the following: Search and rescue volunteer tax credit (2) For the purpose of computing the tax payable under this Part for a taxation year by an individual who performs eligible search and rescue volunteer services in the year, there may be deducted the amount determined by multiplying $10,000 by the appropriate percentage for the taxation year if the individual",
+      "targetActs": [],
+      "hasAmendedText": true
+    },
+    {
+      "label": "3",
+      "type": "amending",
+      "marginalNote": "Application",
+      "text": "Application 3 Sections 1 and 2 apply to the 2026 and subsequent taxation years.",
+      "targetActs": [],
+      "hasAmendedText": false
+    }
+  ]
+}

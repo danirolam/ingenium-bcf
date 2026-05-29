@@ -1,0 +1,34 @@
+{
+  "session": "45-1",
+  "number": "S-223",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/S-223/S-223_1/S-223_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13545908",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to amend the Royal Canadian Mounted Police Act",
+  "shortTitle": "",
+  "sponsor": "Senator M C CALLUM",
+  "fullText": "S-223 1 45 3 Charles III 2025 An Act to amend the Royal Canadian Mounted Police Act An Act to amend the Royal Canadian Mounted Police Act 2025 6 3 Senator M C CALLUM 4512323 SUMMARY This enactment amends the Royal Canadian Mounted Police Act to provide that the duties of members who are peace officers include the prevention of offences against First Nation laws and the execution of warrants that may, under First Nation laws, be lawfully executed and performed by peace officers. His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: R.S., c. R-10 Royal Canadian Mounted Police Act 1 Subsection 2(1) of the Royal Canadian Mounted Police Act is amended by adding the following in alphabetical order: First Nation law means (a) a bylaw made under the Indian Act ; (b) a First Nation law as defined in subsection 2(1) of the Framework Agreement on First Nation Land Management Act ; or (c) a law enacted by a council, government or other entity that is authorized to act on behalf of a First Nation under a self-government agreement implemented by an Act of Parliament. ( texte législatif de première nation ) Royal Canadian Mounted Police Act Clause 1 : New. 2 Paragraphs 18(a) and (b) of the Act are replaced by the following: (a) to perform all duties that are assigned to peace officers in relation to the preservation of the peace, the prevention of crime and of offences against the laws of Canada, the laws in force in any province in which they may be employed and First Nation laws, and the apprehension of criminals and offenders and others who may be lawfully taken into custody; (b) to execute all warrants, and perform all duties and services in relation thereto, that may, under this Act or the laws of Canada, the laws in force in any province or First Nation laws, be lawfully executed and performed by peace officers; Clause 2 : Text of relevant portions of section 18: 18 It is the duty of members who are peace officers, subject to the orders of the Commissioner, (a) to perform all duties that are assigned to peace officers in relation to the preservation of the peace, the prevention of crime and of offences against the laws of Canada and the laws in force in any province in which they may be employed, and the apprehension of criminals and offenders and others who may be lawfully taken into custody; (b) to execute all warrants, and perform all duties and services in relation thereto, that may, under this Act or the laws of Canada or the laws in force in any province, be lawfully executed and performed by peace officers;",
+  "sections": [
+    {
+      "label": "1",
+      "type": "amending",
+      "marginalNote": "",
+      "text": "1 Subsection 2(1) of the Royal Canadian Mounted Police Act is amended by adding the following in alphabetical order: First Nation law means (a) a bylaw made under the Indian Act ; (b) a First Nation law as defined in subsection 2(1) of the Framework Agreement on First Nation Land Management Act ; or (c) a law enacted by a council, government or other entity that is authorized to act on behalf of a First Nation under a self-government agreement implemented by an Act of Parliament. ( texte législatif de première nation ) Royal Canadian Mounted Police Act Clause 1 : New.",
+      "targetActs": [
+        "Royal Canadian Mounted Police Act",
+        "Indian Act",
+        "Framework Agreement on First Nation Land Management Act"
+      ],
+      "hasAmendedText": true
+    },
+    {
+      "label": "2",
+      "type": "amending",
+      "marginalNote": "",
+      "text": "2 Paragraphs 18(a) and (b) of the Act are replaced by the following: (a) to perform all duties that are assigned to peace officers in relation to the preservation of the peace, the prevention of crime and of offences against the laws of Canada, the laws in force in any province in which they may be employed and First Nation laws, and the apprehension of criminals and offenders and others who may be lawfully taken into custody; (b) to execute all warrants, and perform all duties and services in relation thereto, that may, under this Act or the laws of Canada, the laws in force in any province or First Nation laws, be lawfully executed and performed by peace officers; Clause 2 : Text of relevant portions of section 18: 18 It is the duty of members who are peace officers, subject to the orders of the Commissioner, (a) to perform all duties that are assigned to peace officers in relation to the preservation of the peace, the prevention of crime and of offences against the laws of Canada and the laws in force in any province in which they may be employed, and the apprehension of criminals and offenders and others who may be lawfully taken into custody; (b) to execute all warrants, and perform all duties and services in relation thereto, that may, under this Act or the laws of Canada or the laws in force in any province, be lawfully executed and performed by peace officers;",
+      "targetActs": [],
+      "hasAmendedText": true
+    }
+  ]
+}

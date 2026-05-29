@@ -1,0 +1,58 @@
+{
+  "session": "45-1",
+  "number": "C-248",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-248/C-248_1/C-248_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13632138",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act respecting the holding of a pan-Canadian conference on time change",
+  "shortTitle": "Time Change Act",
+  "sponsor": "Mrs. Lalonde",
+  "fullText": "C-248 1 45 3-4 Charles III 2025 An Act respecting the holding of a pan-Canadian conference on time change Time Change Act Time Change Act 2025 10 6 Mrs. Lalonde 451034 SUMMARY This enactment provides that a pan-Canadian conference on time change must be held with representatives of the provincial governments, Indigenous governing bodies and other relevant stakeholders, and that a report on the conference must be published online. His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: Short Title Short title 1 This Act may be cited as the Time Change Act . Interpretation Definitions 2 The following definitions apply in this Act. Indigenous governing body means a council, government or other entity that is authorized to act on behalf of an Indigenous group, community or people that holds rights recognized and affirmed by section 35 of the Constitution Act, 1982 . ( corps dirigeant autochtone ) Minister means the Minister designated under section 3. ( ministre ) Designation of Minister Order 3 The Governor in Council may, by order, designate a member of the King’s Privy Council for Canada as the Minister for the purposes of this Act. Pan-Canadian Conference Conference 4 (1) Within a year after the day on which this Act comes into force, the Minister must hold a pan-Canadian conference on time change to promote cooperation on the matter between the federal and provincial governments. Agenda (2) The conference topics must include the following: (a) the main issues respecting time change, including economic issues; (b) the scientific studies on the effects of time change on health, safety and productivity; and (c) the possibility of adopting a more uniform approach across Canada. Participants (3) The Minister must invite to the conference (a) representatives of the provincial governments responsible for matters related to time change; (b) Indigenous governing bodies; and (c) any other relevant stakeholders, including health scientists and representatives from municipal governments and from the public safety, agriculture, education, early childhood care and eldercare sectors. Report 5 (1) Within six months after the day on which the conference referred to in section 4 is held, the Minister must prepare a report on the conference and publish it on the departmental website. Content (2) The report must set out the information and recommendations resulting from the discussions held at the conference.",
+  "sections": [
+    {
+      "label": "1",
+      "type": null,
+      "marginalNote": "Short title",
+      "text": "Short title 1 This Act may be cited as the Time Change Act .",
+      "targetActs": [
+        "Time Change Act"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "2",
+      "type": null,
+      "marginalNote": "Definitions",
+      "text": "Definitions 2 The following definitions apply in this Act. Indigenous governing body means a council, government or other entity that is authorized to act on behalf of an Indigenous group, community or people that holds rights recognized and affirmed by section 35 of the Constitution Act, 1982 . ( corps dirigeant autochtone ) Minister means the Minister designated under section 3. ( ministre )",
+      "targetActs": [
+        "Constitution Act, 1982"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "3",
+      "type": null,
+      "marginalNote": "Order",
+      "text": "Order 3 The Governor in Council may, by order, designate a member of the King’s Privy Council for Canada as the Minister for the purposes of this Act.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "4",
+      "type": null,
+      "marginalNote": "Conference",
+      "text": "Conference 4 (1) Within a year after the day on which this Act comes into force, the Minister must hold a pan-Canadian conference on time change to promote cooperation on the matter between the federal and provincial governments. Agenda (2) The conference topics must include the following: (a) the main issues respecting time change, including economic issues; (b) the scientific studies on the effects of time change on health, safety and productivity; and (c) the possibility of adopting a more uniform approach across Canada. Participants (3) The Minister must invite to the conference (a) representatives of the provincial governments responsible for matters related to time change; (b) Indigenous governing bodies; and (c) any other relevant stakeholders, including health scientists and representatives from municipal governments and from the public safety, agriculture, education, early childhood care and eldercare sectors.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "5",
+      "type": null,
+      "marginalNote": "Report",
+      "text": "Report 5 (1) Within six months after the day on which the conference referred to in section 4 is held, the Minister must prepare a report on the conference and publish it on the departmental website. Content (2) The report must set out the information and recommendations resulting from the discussions held at the conference.",
+      "targetActs": [],
+      "hasAmendedText": false
+    }
+  ]
+}

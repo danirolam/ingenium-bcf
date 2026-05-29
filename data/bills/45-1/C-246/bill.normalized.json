@@ -1,0 +1,24 @@
+{
+  "session": "45-1",
+  "number": "C-246",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-246/C-246_1/C-246_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13602792",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to amend the Criminal Code (consecutive sentences for sexual offences)",
+  "shortTitle": "",
+  "sponsor": "Mrs. Thomas",
+  "fullText": "C-246 1 45 3-4 Charles III 2025 An Act to amend the Criminal Code (consecutive sentences for sexual offences) An Act to amend the Criminal Code (consecutive sentences for sexual offences) 2025 9 23 Mrs. Thomas 451090 SUMMARY This enactment amends the Criminal Code to require that sentences for sexual offences be served consecutively. Preamble Whereas Parliament recognizes that sexual offences inflict profound and lasting harm on victims, their families and communities, and that such offences often involve a pattern of repeated conduct that must be addressed firmly and consistently in sentencing; Whereas Parliament considers it essential, in the interests of public safety and the protection of vulnerable persons, that sentences for multiple sexual offences reflect the gravity of each offence and the distinct harm caused to each victim; And whereas Parliament wishes to ensure that sentencing practices denounce sexual violence, deter its commission and promote confidence in the administration of justice, while respecting the principle of proportionality; Now, therefore, His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: R.S., c. C-46 Criminal Code 1 Subsection 718.3(7) of the Criminal Code is replaced by the following: Cumulative punishments — sexual offences (7) When a court sentences an accused for a sexual offence, the court shall direct that the sentence of imprisonment it imposes for that sexual offence be served consecutively to (a) any other sentence of imprisonment for a sexual offence that the court imposes on the accused at the same time; and (b) any other sentence of imprisonment for a sexual offence to which the accused is subject at the time of sentencing.",
+  "sections": [
+    {
+      "label": "1",
+      "type": "amending",
+      "marginalNote": "Cumulative punishments — sexual offences",
+      "text": "1 Subsection 718.3(7) of the Criminal Code is replaced by the following: Cumulative punishments — sexual offences (7) When a court sentences an accused for a sexual offence, the court shall direct that the sentence of imprisonment it imposes for that sexual offence be served consecutively to (a) any other sentence of imprisonment for a sexual offence that the court imposes on the accused at the same time; and (b) any other sentence of imprisonment for a sexual offence to which the accused is subject at the time of sentencing.",
+      "targetActs": [
+        "Criminal Code"
+      ],
+      "hasAmendedText": true
+    }
+  ]
+}
