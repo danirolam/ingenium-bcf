@@ -3,11 +3,12 @@ import { Layout } from "./components/Layout";
 import { Toast } from "./components/Toast";
 import { Landing } from "./pages/Landing";
 import { BillMonitor } from "./pages/BillMonitor";
+import { BillDetail } from "./pages/BillDetail";
 import { ClientImpactAnalysisPage } from "./pages/ClientImpactAnalysis";
 import { ClientLawScanner } from "./pages/ClientLawScanner";
 import { DeltaWorkspace } from "./pages/DeltaWorkspace";
 
-export type PageId = "monitor" | "delta" | "scanner" | "impact";
+export type PageId = "monitor" | "bill" | "delta" | "scanner" | "impact";
 type Surface = "landing" | "app";
 
 export type Nav = {
@@ -59,6 +60,7 @@ export default function App() {
 
   let view;
   if (page === "monitor") view = <BillMonitor nav={nav} />;
+  else if (page === "bill") view = <BillDetail nav={nav} />;
   else if (page === "delta") view = <DeltaWorkspace nav={nav} />;
   else if (page === "scanner") view = <ClientLawScanner nav={nav} />;
   else view = <ClientImpactAnalysisPage nav={nav} />;

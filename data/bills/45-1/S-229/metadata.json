@@ -267,10 +267,10 @@
     ],
     "SenateBillStages": [
       {
-        "BillStageId": 60038,
-        "BillStageNameEn": "Senate pre-study",
-        "BillStageNameFr": "Étude préalable au Sénat",
-        "BillStageName": "Senate pre-study",
+        "BillStageId": 60029,
+        "BillStageNameEn": "First reading",
+        "BillStageNameFr": "Première lecture",
+        "BillStageName": "First reading",
         "ChamberOrganizationId": 2,
         "ParliamentNumber": 45,
         "SessionNumber": 1,
@@ -312,52 +312,7 @@
             "AdditionalInformation": "",
             "MeetingEventId": null,
             "AmendmentNoteId": null
-          }
-        ],
-        "EndOfStageEvent": {
-          "EventTypeId": 60110,
-          "EventTypeNameEn": "Introduction and first reading",
-          "EventTypeNameFr": "Dépôt et première lecture",
-          "EventTypeName": "Introduction and first reading",
-          "EventStartDateTime": "2025-06-10T00:00:00",
-          "EventEndDateTime": "2025-06-10T00:00:00"
-        },
-        "StageEventCount": 1,
-        "LastStageEventStartDateTime": "2025-06-10T00:00:00",
-        "Speeches": null,
-        "ContainsReferralToCommitteeEvent": false,
-        "ContainsRecommittalOfBillEvent": false
-      },
-      {
-        "BillStageId": 60029,
-        "BillStageNameEn": "First reading",
-        "BillStageNameFr": "Première lecture",
-        "BillStageName": "First reading",
-        "ChamberOrganizationId": 2,
-        "ParliamentNumber": 45,
-        "SessionNumber": 1,
-        "State": 4,
-        "StateNameEn": "Completed",
-        "StateNameFr": "Terminée",
-        "StateAsOfDate": "2025-06-10T10:00:00",
-        "StateName": "Completed",
-        "Committee": null,
-        "Sittings": [
-          {
-            "NameEn": "Introduction and first reading",
-            "NameFr": "Dépôt et première lecture",
-            "Name": "Introduction and first reading",
-            "Number": "8",
-            "Date": "2025-06-10T00:00:00",
-            "AdditionalInformationEn": null,
-            "AdditionalInformationFr": null,
-            "AdditionalInformation": null,
-            "IsPublished": false
-          }
-        ],
-        "Decisions": [],
-        "CommitteeMeetings": [],
-        "SignificantEvents": [
+          },
           {
             "EventTypeId": 60110,
             "BillDocumentId": 0,
@@ -381,8 +336,8 @@
           "EventTypeNameEn": "Introduction and first reading",
           "EventTypeNameFr": "Dépôt et première lecture",
           "EventTypeName": "Introduction and first reading",
-          "EventStartDateTime": "2025-06-10T10:00:00",
-          "EventEndDateTime": "2025-06-10T10:00:00"
+          "EventStartDateTime": "2025-06-10T00:00:00",
+          "EventEndDateTime": "2025-06-10T00:00:00"
         },
         "StageEventCount": 1,
         "LastStageEventStartDateTime": "2025-06-10T10:00:00",
@@ -568,7 +523,7 @@
         "ContainsRecommittalOfBillEvent": false
       },
       {
-        "BillStageId": 60032,
+        "BillStageId": 60049,
         "BillStageNameEn": "Consideration in committee",
         "BillStageNameFr": "Examen en comité",
         "BillStageName": "Consideration in committee",
@@ -580,6 +535,45 @@
         "StateNameFr": "Aucune activité",
         "StateAsOfDate": null,
         "StateName": "No activity",
+        "Committee": {
+          "BillDocumentId": 0,
+          "CommitteeOrganizationId": 16096,
+          "CommitteeNameEn": "Standing Senate Committee on Energy, the Environment and Natural Resources",
+          "CommitteeNameFr": "Comité sénatorial permanent de l’énergie, de l’environnement et des ressources naturelles",
+          "CommitteeAcronym": "ENEV",
+          "CommitteeName": "Standing Senate Committee on Energy, the Environment and Natural Resources",
+          "StudyActivityId": null,
+          "OrganizationTypeId": null,
+          "ParentCommittee": null,
+          "IsSubCommittee": false,
+          "IsHouseOfCommonsCommittee": true,
+          "IsSenateCommittee": false,
+          "IsJointCommittee": false
+        },
+        "Sittings": [],
+        "Decisions": [],
+        "CommitteeMeetings": [],
+        "SignificantEvents": [],
+        "EndOfStageEvent": null,
+        "StageEventCount": 0,
+        "LastStageEventStartDateTime": null,
+        "Speeches": null,
+        "ContainsReferralToCommitteeEvent": false,
+        "ContainsRecommittalOfBillEvent": false
+      },
+      {
+        "BillStageId": 60032,
+        "BillStageNameEn": "Report stage",
+        "BillStageNameFr": "Étape du rapport",
+        "BillStageName": "Report stage",
+        "ChamberOrganizationId": 0,
+        "ParliamentNumber": 0,
+        "SessionNumber": 0,
+        "State": 1,
+        "StateNameEn": "Not reached",
+        "StateNameFr": "Non atteinte",
+        "StateAsOfDate": null,
+        "StateName": "Not reached",
         "Committee": null,
         "Sittings": [],
         "Decisions": [],

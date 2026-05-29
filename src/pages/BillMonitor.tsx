@@ -275,8 +275,8 @@ export function BillMonitor({ nav }: { nav: Nav }) {
                   {visibleBills.map((b) => (
                     <tr
                       key={b.id}
-                      onClick={() => !busy && openDelta(b)}
-                      style={{ cursor: busy ? "wait" : "pointer" }}
+                      onClick={() => nav.go("bill", { billId: b.id })}
+                      style={{ cursor: "pointer" }}
                     >
                       <td>
                         <div className="billno tnum">{b.billNumber}</div>

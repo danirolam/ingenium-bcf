@@ -411,11 +411,11 @@
         "ChamberOrganizationId": 1,
         "ParliamentNumber": 45,
         "SessionNumber": 1,
-        "State": 2,
-        "StateNameEn": "No activity",
-        "StateNameFr": "Aucune activité",
+        "State": 3,
+        "StateNameEn": "In progress",
+        "StateNameFr": "En cours",
         "StateAsOfDate": null,
-        "StateName": "No activity",
+        "StateName": "In progress",
         "Committee": {
           "BillDocumentId": 0,
           "CommitteeOrganizationId": 30560,
@@ -433,11 +433,30 @@
         },
         "Sittings": [],
         "Decisions": [],
-        "CommitteeMeetings": [],
+        "CommitteeMeetings": [
+          {
+            "CommitteeOrganizationId": 30560,
+            "CommitteeNameEn": "Standing Committee on Foreign Affairs and International Development",
+            "CommitteeNameFr": "Comité permanent des affaires étrangères et du développement international",
+            "CommitteeAcronym": "FAAE",
+            "Number": "33",
+            "Date": "2026-04-30T00:00:00",
+            "CommitteeName": "Standing Committee on Foreign Affairs and International Development"
+          },
+          {
+            "CommitteeOrganizationId": 30560,
+            "CommitteeNameEn": "Standing Committee on Foreign Affairs and International Development",
+            "CommitteeNameFr": "Comité permanent des affaires étrangères et du développement international",
+            "CommitteeAcronym": "FAAE",
+            "Number": "34",
+            "Date": "2026-05-07T00:00:00",
+            "CommitteeName": "Standing Committee on Foreign Affairs and International Development"
+          }
+        ],
         "SignificantEvents": [],
         "EndOfStageEvent": null,
-        "StageEventCount": 0,
-        "LastStageEventStartDateTime": null,
+        "StageEventCount": 1,
+        "LastStageEventStartDateTime": "2026-05-07T15:32:02",
         "Speeches": null,
         "ContainsReferralToCommitteeEvent": false,
         "ContainsRecommittalOfBillEvent": false

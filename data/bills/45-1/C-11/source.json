@@ -2,8 +2,8 @@
   "session": "45-1",
   "number": "C-11",
   "detailUrl": "https://www.parl.ca/legisinfo/en/bill/45-1/c-11/json",
-  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-11/second-reading",
-  "xmlUrl": "https://www.parl.ca/Content/Bills/451/Government/C-11/C-11_2/C-11_E.xml",
-  "stage": "second-reading",
-  "fetchedAt": "2026-05-09T16:15:37.239Z"
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/45-1/bill/C-11/third-reading",
+  "xmlUrl": "https://www.parl.ca/Content/Bills/451/Government/C-11/C-11_3/C-11_E.xml",
+  "stage": "third-reading",
+  "fetchedAt": "2026-05-29T02:54:07.947Z"
 }

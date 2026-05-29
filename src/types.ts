@@ -1,3 +1,17 @@
+import type {
+  BillStageEntry,
+  BillDivision,
+  LegislativeSponsor,
+} from "./lib/legislativePath";
+
+export type {
+  BillStageEntry,
+  BillDivision,
+  LegislativeSponsor,
+  StageState,
+  StageChamber,
+} from "./lib/legislativePath";
+
 export type LegislativeMomentum =
   | "early"
   | "active"
@@ -32,6 +46,25 @@ export interface Bill {
   rawJson: unknown;
   clauses: BillClause[];
   practiceAreas: string[];
+
+  // Legislative profile (derived from the LEGISinfo detail record).
+  shortTitle?: string;
+  summary?: string;
+  billType?: string;
+  billForm?: string;
+  isGovernmentBill?: boolean;
+  isProForma?: boolean;
+  originatingChamber?: string;
+  sponsor?: LegislativeSponsor;
+  statuteCitation?: string;
+  introducedDate?: string;
+  royalAssentDate?: string;
+  latestEvent?: { name?: string; date?: string; chamber?: string };
+  categories?: string[];
+
+  // The path a bill travels — the centrepiece of the bill detail view.
+  legislativePath?: BillStageEntry[];
+  divisions?: BillDivision[];
 }
 
 export interface AmendmentExtraction {
