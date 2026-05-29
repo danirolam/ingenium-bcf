@@ -41,8 +41,8 @@ export function BillMonitor({ nav }: { nav: Nav }) {
   const [busy, setBusy] = useState(false);
   const [filter, setFilter] = useState<FilterValue>("all");
   const [query, setQuery] = useState("");
-  const [practice, setPractice] = useState<string>("all");
-  const [session, setSession] = useState<string>("45-1");
+  const [practice, setPractice] = useState<string>(nav.params.practice ?? "all");
+  const [session, setSession] = useState<string>(nav.params.session ?? "45-1");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -244,6 +244,48 @@ export function BillMonitor({ nav }: { nav: Nav }) {
         }
       />
       <div className="body">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            flexWrap: "wrap",
+            margin: "0 0 18px",
+            fontSize: 12.5,
+            color: "var(--ink-3)",
+          }}
+        >
+          {[
+            "Pick a session",
+            "Narrow by category, momentum, or search",
+            "Open a bill for its full record",
+          ].map((step, i) => (
+            <span
+              key={i}
+              style={{ display: "inline-flex", alignItems: "center", gap: 10 }}
+            >
+              {i > 0 && (
+                <FontAwesomeIcon
+                  icon={faArrowRight}
+                  style={{ fontSize: 10, color: "var(--ink-4)" }}
+                  aria-hidden="true"
+                />
+              )}
+              <span>
+                <b
+                  style={{
+                    color: "var(--accent-warm)",
+                    fontFamily: "var(--mono)",
+                    marginRight: 7,
+                  }}
+                >
+                  {i + 1}
+                </b>
+                {step}
+              </span>
+            </span>
+          ))}
+        </div>
         <StatsRibbon bills={sessionBills} />
 
         <div className="bm-toolbar">
@@ -312,10 +354,10 @@ export function BillMonitor({ nav }: { nav: Nav }) {
         {bills.length > 0 && (
           <div className="bm-practice-filter">
             <span className="bm-practice-label">
-              Practice
+              Category
               <InfoHint
-                title="Practice filter"
-                body="Narrow the docket to one BCF practice group. Bills are tagged automatically from their title and subject, so a bill can appear under more than one group."
+                title="Browse by category"
+                body="Not sure which bill? Pick a practice area to see every bill that touches it — tagged automatically from each bill's title and subject."
               />
             </span>
             <div className="bm-practice-pills">
@@ -324,7 +366,7 @@ export function BillMonitor({ nav }: { nav: Nav }) {
                 className={`bm-pill${practice === "all" ? " is-active" : ""}`}
                 onClick={() => setPractice("all")}
               >
-                All practices
+                All categories
                 <span className="bm-pill-count tnum">
                   {billsByMomentumQuery.length}
                 </span>

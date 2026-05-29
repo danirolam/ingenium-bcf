@@ -269,7 +269,9 @@ export function Overview({ nav }: { nav: Nav }) {
                   type="button"
                   key={label}
                   className="ov-prac-row"
-                  onClick={() => nav.go("monitor")}
+                  onClick={() =>
+                    nav.go("monitor", { session: "all", practice: label })
+                  }
                 >
                   <span className="ov-prac-name">{label}</span>
                   <span className="ov-prac-count tnum">{count}</span>
