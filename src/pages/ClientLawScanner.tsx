@@ -1,5 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, FileCheck2, Plus, Sparkles } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowRight,
+  faFileCircleCheck,
+  faPlus,
+  faScaleBalanced,
+} from "@fortawesome/free-solid-svg-icons";
 import type { Nav } from "../App";
 import { ClientSelector } from "../components/ClientSelector";
 import { LawPickerGrid } from "../components/LawPickerGrid";
@@ -68,7 +74,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
         sub="Pair an approved updated law with a client to generate a client-specific impact analysis."
         actions={
           <button className="btn primary" onClick={() => setShowNew(true)}>
-            <Plus size={16} strokeWidth={1.9} aria-hidden="true" />
+            <FontAwesomeIcon icon={faPlus} aria-hidden="true" />
             New client
           </button>
         }
@@ -85,7 +91,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
             <div className="card">
               <div className="card-h">
                 <div className="card-title-row">
-                  <FileCheck2 size={16} strokeWidth={1.8} aria-hidden="true" />
+                  <FontAwesomeIcon icon={faFileCircleCheck} aria-hidden="true" />
                   <div className="card-title">Approved laws ready for matching</div>
                 </div>
                 <span className="cs-count">({approvedLvs.length})</span>
@@ -102,7 +108,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
             <div className="card">
               <div className="card-h">
                 <div className="card-title-row">
-                  <Sparkles size={16} strokeWidth={1.8} aria-hidden="true" />
+                  <FontAwesomeIcon icon={faScaleBalanced} aria-hidden="true" />
                   <div className="card-title">Generate client impact</div>
                 </div>
               </div>
@@ -142,7 +148,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                     onClick={analyze}
                   >
                     {busy ? "Analyzing..." : "Analyze client impact"}
-                    <ArrowRight size={15} strokeWidth={1.9} aria-hidden="true" />
+                    <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
                   </button>
                 </div>
               </div>
@@ -218,7 +224,7 @@ function NewClientModal({
             <input
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              placeholder="Corebloom Health AI Inc."
+              placeholder="Corebloom Health Inc."
             />
           </div>
           <div className="modal-grid-2">

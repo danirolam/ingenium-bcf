@@ -1,6 +1,7 @@
 import { diffArrays, diffWordsWithSpace } from "diff";
 import { Fragment, useMemo, useState } from "react";
-import { GitCompareArrows, Info } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleInfo, faCodeCompare } from "@fortawesome/free-solid-svg-icons";
 
 const TARGET_CONTEXT_CHARS = 100;
 
@@ -382,7 +383,7 @@ export function DiffViewer({
       <div className="diff-topbar">
         <div className="diff-crumbs">
           <span className="diff-kicker">
-            <GitCompareArrows size={14} strokeWidth={1.8} aria-hidden="true" />
+            <FontAwesomeIcon icon={faCodeCompare} aria-hidden="true" />
             Statutory comparator
           </span>
           <span className="sep">/</span>
@@ -480,7 +481,7 @@ export function DiffViewer({
                 <div className="diff-insight-row">
                   <div className="diff-insight">
                     <div className="diff-insight-icon">
-                      <Info size={15} strokeWidth={2} aria-hidden="true" />
+                      <FontAwesomeIcon icon={faCircleInfo} aria-hidden="true" />
                     </div>
                     <div>
                       <div className="diff-insight-title">{insight.title}</div>

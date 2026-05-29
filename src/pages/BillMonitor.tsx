@@ -1,12 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight, Search, Upload } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowRight,
+  faMagnifyingGlass,
+  faUpload,
+} from "@fortawesome/free-solid-svg-icons";
 import type { Nav } from "../App";
 import { MomentumBadge } from "../components/badges";
 import { PageHeader } from "../components/PageHeader";
 import { SegmentedTabs } from "../components/SegmentedTabs";
-import { Sparkline } from "../components/Sparkline";
 import { StatsRibbon } from "../components/StatsRibbon";
 import { api } from "../lib/api";
+import { PRACTICE_AREAS } from "../lib/practiceAreas";
 import type { Bill, LegislativeMomentum } from "../types";
 
 type FilterValue = "all" | "active" | "late" | "assent" | "defeated";
@@ -27,30 +32,12 @@ function matchesFilter(b: Bill, f: FilterValue): boolean {
   }
 }
 
-function hashSeed(id: string): number {
-  let h = 2166136261;
-  for (let i = 0; i < id.length; i++) {
-    h ^= id.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return h >>> 0;
-}
-
-function activitySeries(id: string, n = 6): number[] {
-  let x = hashSeed(id) || 1;
-  const out: number[] = [];
-  for (let i = 0; i < n; i++) {
-    x = (x * 1664525 + 1013904223) >>> 0;
-    out.push(4 + (x % 16) + i * 0.4);
-  }
-  return out;
-}
-
 export function BillMonitor({ nav }: { nav: Nav }) {
   const [bills, setBills] = useState<Bill[]>([]);
   const [busy, setBusy] = useState(false);
   const [filter, setFilter] = useState<FilterValue>("all");
   const [query, setQuery] = useState("");
+  const [practice, setPractice] = useState<string>("all");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -116,7 +103,7 @@ export function BillMonitor({ nav }: { nav: Nav }) {
     };
   }, [bills]);
 
-  const matchingBills = useMemo(() => {
+  const billsByMomentumQuery = useMemo(() => {
     const q = query.trim().toLowerCase();
     return bills
       .filter((b) => matchesFilter(b, filter))
@@ -129,11 +116,35 @@ export function BillMonitor({ nav }: { nav: Nav }) {
       });
   }, [bills, filter, query]);
 
+  const practiceCounts = useMemo(() => {
+    const m: Record<string, number> = {};
+    for (const b of billsByMomentumQuery)
+      for (const p of b.practiceAreas ?? []) m[p] = (m[p] ?? 0) + 1;
+    return m;
+  }, [billsByMomentumQuery]);
+
+  // Show a pill for every practice with a bill in the current view, plus the
+  // active one even if a momentum/search change just emptied it.
+  const practiceItems = useMemo(
+    () =>
+      PRACTICE_AREAS.filter(
+        (p) => (practiceCounts[p.label] ?? 0) > 0 || p.label === practice,
+      ),
+    [practiceCounts, practice],
+  );
+
+  const matchingBills = useMemo(() => {
+    if (practice === "all") return billsByMomentumQuery;
+    return billsByMomentumQuery.filter((b) =>
+      (b.practiceAreas ?? []).includes(practice),
+    );
+  }, [billsByMomentumQuery, practice]);
+
   const [pageSize, setPageSize] = useState(50);
-  // Reset cap when filter / query changes
+  // Reset cap when any filter / query changes
   useEffect(() => {
     setPageSize(50);
-  }, [filter, query]);
+  }, [filter, query, practice]);
   const visibleBills = useMemo(
     () => matchingBills.slice(0, pageSize),
     [matchingBills, pageSize],
@@ -168,7 +179,7 @@ export function BillMonitor({ nav }: { nav: Nav }) {
               disabled={busy}
               onClick={() => fileInputRef.current?.click()}
             >
-              <Upload size={16} strokeWidth={1.9} aria-hidden="true" />
+              <FontAwesomeIcon icon={faUpload} aria-hidden="true" />
               {busy ? "Working..." : "Upload bill JSON"}
             </button>
           </>
@@ -187,7 +198,7 @@ export function BillMonitor({ nav }: { nav: Nav }) {
           </div>
           <div className="bm-toolbar-right">
             <div className="search">
-              <Search className="search-icon" size={16} strokeWidth={1.8} aria-hidden="true" />
+              <FontAwesomeIcon icon={faMagnifyingGlass} className="search-icon" aria-hidden="true" />
               <input
                 type="text"
                 placeholder="Search bills by number or title"
@@ -198,6 +209,39 @@ export function BillMonitor({ nav }: { nav: Nav }) {
             </div>
           </div>
         </div>
+
+        {bills.length > 0 && (
+          <div className="bm-practice-filter">
+            <span className="bm-practice-label">Practice</span>
+            <div className="bm-practice-pills">
+              <button
+                type="button"
+                className={`bm-pill${practice === "all" ? " is-active" : ""}`}
+                onClick={() => setPractice("all")}
+              >
+                All practices
+                <span className="bm-pill-count tnum">
+                  {billsByMomentumQuery.length}
+                </span>
+              </button>
+              {practiceItems.map((p) => (
+                <button
+                  key={p.id}
+                  type="button"
+                  className={`bm-pill${practice === p.label ? " is-active" : ""}`}
+                  onClick={() =>
+                    setPractice(practice === p.label ? "all" : p.label)
+                  }
+                >
+                  {p.label}
+                  <span className="bm-pill-count tnum">
+                    {practiceCounts[p.label] ?? 0}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {bills.length === 0 ? (
           <div className="rd-empty">
@@ -223,7 +267,6 @@ export function BillMonitor({ nav }: { nav: Nav }) {
                     <th>Title</th>
                     <th className="col-status">Status</th>
                     <th className="col-momentum">Momentum</th>
-                    <th className="col-activity">Activity</th>
                     <th className="col-movement">Latest movement</th>
                     <th className="col-action"></th>
                   </tr>
@@ -243,15 +286,21 @@ export function BillMonitor({ nav }: { nav: Nav }) {
                         {b.session && (
                           <div className="meta">Session {b.session}</div>
                         )}
+                        {(b.practiceAreas?.length ?? 0) > 0 && (
+                          <div className="bm-tag-row">
+                            {b.practiceAreas.map((p) => (
+                              <span key={p} className="badge outline dim bm-tag">
+                                {p}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                       </td>
                       <td>
                         <div className="table-status">{b.status}</div>
                       </td>
                       <td>
                         <MomentumBadge value={b.legislativeMomentum} />
-                      </td>
-                      <td>
-                        <Sparkline values={activitySeries(b.id)} />
                       </td>
                       <td>
                         <div className="meta">
@@ -271,7 +320,7 @@ export function BillMonitor({ nav }: { nav: Nav }) {
                           }}
                         >
                           Open Delta
-                          <ArrowRight size={14} strokeWidth={1.9} aria-hidden="true" />
+                          <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
                         </button>
                       </td>
                     </tr>

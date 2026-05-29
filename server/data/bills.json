@@ -37,7 +37,10 @@
       "score": 13,
       "recommendation": "analyze_now"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Health & Life Sciences"
+    ]
   },
   {
     "id": "bill-13608745",
@@ -77,7 +80,8 @@
       "score": 10,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13590170",
@@ -118,7 +122,11 @@
       "score": 13,
       "recommendation": "analyze_now"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Business & M&A",
+      "Banking & Securities"
+    ]
   },
   {
     "id": "bill-14075197",
@@ -157,7 +165,10 @@
       "score": 3,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Health & Life Sciences"
+    ]
   },
   {
     "id": "bill-13881240",
@@ -197,7 +208,11 @@
       "score": 16,
       "recommendation": "analyze_now"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Privacy & Technology",
+      "Health & Life Sciences"
+    ]
   },
   {
     "id": "bill-13541851",
@@ -238,7 +253,8 @@
       "score": 12,
       "recommendation": "analyze_now"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13948667",
@@ -276,7 +292,8 @@
       "score": -1,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-14071880",
@@ -311,7 +328,10 @@
       "score": 0,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Taxation"
+    ]
   },
   {
     "id": "bill-14049789",
@@ -346,7 +366,10 @@
       "score": 0,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Taxation"
+    ]
   },
   {
     "id": "bill-14019746",
@@ -384,7 +407,10 @@
       "score": -1,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Privacy & Technology"
+    ]
   },
   {
     "id": "bill-13669451",
@@ -421,7 +447,10 @@
       "score": 3,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Business & M&A"
+    ]
   },
   {
     "id": "bill-13824752",
@@ -458,7 +487,10 @@
       "score": 3,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Business & M&A"
+    ]
   },
   {
     "id": "bill-13951565",
@@ -497,7 +529,10 @@
       "score": 4,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Privacy & Technology"
+    ]
   },
   {
     "id": "bill-14019015",
@@ -536,7 +571,8 @@
       "score": -4,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13707662",
@@ -576,7 +612,10 @@
       "score": 10,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Business & M&A"
+    ]
   },
   {
     "id": "bill-13541971",
@@ -614,7 +653,10 @@
       "score": 2,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13540351",
@@ -653,7 +695,8 @@
       "score": 7,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-14053824",
@@ -693,7 +736,11 @@
       "score": -8,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Business & M&A",
+      "Banking & Securities"
+    ]
   },
   {
     "id": "bill-13548203",
@@ -731,7 +778,10 @@
       "score": 7,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13878167",
@@ -769,7 +819,8 @@
       "score": 2,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13589558",
@@ -808,7 +859,11 @@
       "score": 7,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Health & Life Sciences",
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13954018",
@@ -846,7 +901,10 @@
       "score": -1,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Privacy & Technology"
+    ]
   },
   {
     "id": "bill-13541954",
@@ -883,7 +941,10 @@
       "score": 5,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Privacy & Technology"
+    ]
   },
   {
     "id": "bill-13590613",
@@ -921,7 +982,10 @@
       "score": 6,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13870255",
@@ -959,7 +1023,10 @@
       "score": 8,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Health & Life Sciences"
+    ]
   },
   {
     "id": "bill-13698308",
@@ -998,7 +1065,8 @@
       "score": 7,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-14023030",
@@ -1037,7 +1105,8 @@
       "score": 7,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13541884",
@@ -1077,7 +1146,8 @@
       "score": 10,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-14034077",
@@ -1115,7 +1185,10 @@
       "score": -6,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13584104",
@@ -1154,7 +1227,10 @@
       "score": 7,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-14031568",
@@ -1192,7 +1268,10 @@
       "score": 3,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Business & M&A"
+    ]
   },
   {
     "id": "bill-13548190",
@@ -1229,7 +1308,10 @@
       "score": 0,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Taxation"
+    ]
   },
   {
     "id": "bill-1778365251790-7powsm",
@@ -2785,6 +2867,11 @@
         "heading": "90th day after royal assent",
         "text": "90th day after royal assent 89 Section 88 comes into force on the 90th day after the day on which this Act receives royal assent."
       }
+    ],
+    "practiceAreas": [
+      "Banking & Securities",
+      "Privacy & Technology",
+      "Litigation & Regulatory"
     ]
   },
   {
@@ -2824,7 +2911,10 @@
       "score": 2,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Labour & Employment"
+    ]
   },
   {
     "id": "bill-13563649",
@@ -2863,7 +2953,10 @@
       "score": 11,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Privacy & Technology"
+    ]
   },
   {
     "id": "bill-13583696",
@@ -2901,7 +2994,8 @@
       "score": -6,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13865078",
@@ -2938,7 +3032,8 @@
       "score": -6,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13554334",
@@ -2977,7 +3072,10 @@
       "score": 3,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Health & Life Sciences"
+    ]
   },
   {
     "id": "bill-13583158",
@@ -3016,7 +3114,8 @@
       "score": 1,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13590474",
@@ -3054,7 +3153,10 @@
       "score": 6,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13541972",
@@ -3093,7 +3195,8 @@
       "score": 1,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13586188",
@@ -3134,7 +3237,12 @@
       "score": 12,
       "recommendation": "analyze_now"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Business & M&A",
+      "Banking & Securities",
+      "Labour & Employment"
+    ]
   },
   {
     "id": "bill-13605049",
@@ -3172,7 +3280,8 @@
       "score": 3,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13702272",
@@ -3209,7 +3318,8 @@
       "score": 0,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13542654",
@@ -3249,7 +3359,8 @@
       "score": -3,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13545907",
@@ -3288,7 +3399,8 @@
       "score": -3,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13957880",
@@ -3327,7 +3439,10 @@
       "score": 11,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Privacy & Technology"
+    ]
   },
   {
     "id": "bill-13865920",
@@ -3367,7 +3482,10 @@
       "score": -3,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Immigration"
+    ]
   },
   {
     "id": "bill-13540346",
@@ -3405,7 +3523,8 @@
       "score": -1,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13827943",
@@ -3443,7 +3562,8 @@
       "score": -6,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13933855",
@@ -3481,7 +3601,8 @@
       "score": 6,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13589531",
@@ -3521,7 +3642,10 @@
       "score": 9,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13559594",
@@ -3558,7 +3682,8 @@
       "score": 0,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13554320",
@@ -3598,7 +3723,8 @@
       "score": 9,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-1778356773007-swaxf9",
@@ -3873,6 +3999,9 @@
         "heading": "Deeming order",
         "text": "19 Subsection 30.06(1) of the Food and Drugs Act is replaced by the following: Deeming order 30.06 (1) Subject to subsection (2) and any regulations made under paragraph 30(1)(j.1), the Minister may, by order, deem that specified requirements of this Act or the regulations are met — in respect of a therapeutic product, a veterinary drug or food that belongs to a class specified in the order — on the basis of a decision of, or any information or document produced by, a foreign regulatory authority in respect of that therapeutic product, veterinary drug or food."
       }
+    ],
+    "practiceAreas": [
+      "Health & Life Sciences"
     ]
   },
   {
@@ -3912,7 +4041,8 @@
       "score": -4,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13548201",
@@ -3951,7 +4081,8 @@
       "score": -4,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13632609",
@@ -3989,7 +4120,10 @@
       "score": 3,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Immigration"
+    ]
   },
   {
     "id": "bill-13587241",
@@ -4029,7 +4163,10 @@
       "score": 9,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13822755",
@@ -4069,7 +4206,10 @@
       "score": 5,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Health & Life Sciences"
+    ]
   },
   {
     "id": "bill-13541945",
@@ -4109,7 +4249,11 @@
       "score": 10,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Business & M&A",
+      "Taxation"
+    ]
   },
   {
     "id": "bill-c27-demo",
@@ -4176,6 +4320,9 @@
         "heading": "Coming into force",
         "text": "This Act comes into force on a day to be fixed by order of the Governor in Council, but not earlier than one year after the day on which it receives royal assent."
       }
+    ],
+    "practiceAreas": [
+      "Privacy & Technology"
     ]
   },
   {
@@ -4213,7 +4360,10 @@
       "score": 3,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Taxation"
+    ]
   },
   {
     "id": "bill-13978480",
@@ -4251,7 +4401,10 @@
       "score": -3,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Taxation"
+    ]
   },
   {
     "id": "bill-13978563",
@@ -4289,7 +4442,10 @@
       "score": -3,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Taxation"
+    ]
   },
   {
     "id": "bill-13983245",
@@ -4329,7 +4485,10 @@
       "score": -3,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Health & Life Sciences"
+    ]
   },
   {
     "id": "bill-13986875",
@@ -4364,7 +4523,8 @@
       "score": 0,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13591943",
@@ -4404,7 +4564,10 @@
       "score": -3,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13595422",
@@ -4444,7 +4607,8 @@
       "score": -3,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13583780",
@@ -4482,7 +4646,11 @@
       "score": -6,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Immigration",
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13588503",
@@ -4520,7 +4688,10 @@
       "score": -6,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13588449",
@@ -4558,7 +4729,10 @@
       "score": 6,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13985244",
@@ -4596,7 +4770,8 @@
       "score": -6,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13854949",
@@ -4634,7 +4809,11 @@
       "score": 7,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Business & M&A",
+      "Labour & Employment"
+    ]
   },
   {
     "id": "bill-13888588",
@@ -4673,7 +4852,10 @@
       "score": 7,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Banking & Securities"
+    ]
   },
   {
     "id": "bill-13954296",
@@ -4710,7 +4892,10 @@
       "score": 4,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13956772",
@@ -4750,7 +4935,10 @@
       "score": 10,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Taxation"
+    ]
   },
   {
     "id": "bill-13621852",
@@ -4790,7 +4978,10 @@
       "score": 10,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Labour & Employment"
+    ]
   },
   {
     "id": "bill-13933510",
@@ -4827,7 +5018,10 @@
       "score": 3,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Business & M&A"
+    ]
   },
   {
     "id": "bill-13701896",
@@ -4864,7 +5058,10 @@
       "score": 4,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13960784",
@@ -4902,7 +5099,10 @@
       "score": -6,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13539746",
@@ -4940,7 +5140,8 @@
       "score": 3,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13540330",
@@ -4978,7 +5179,8 @@
       "score": -1,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13760362",
@@ -5018,7 +5220,10 @@
       "score": 9,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13679516",
@@ -5058,7 +5263,10 @@
       "score": 9,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13589584",
@@ -5098,7 +5306,8 @@
       "score": -3,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13779589",
@@ -5138,7 +5347,8 @@
       "score": 9,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13585232",
@@ -5179,7 +5389,10 @@
       "score": 15,
       "recommendation": "analyze_now"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Health & Life Sciences"
+    ]
   },
   {
     "id": "bill-13585516",
@@ -5218,7 +5431,8 @@
       "score": 7,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13540359",
@@ -5259,7 +5473,10 @@
       "score": 16,
       "recommendation": "analyze_now"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Health & Life Sciences"
+    ]
   },
   {
     "id": "bill-13922919",
@@ -5299,7 +5516,10 @@
       "score": -3,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Business & M&A"
+    ]
   },
   {
     "id": "bill-13542628",
@@ -5339,7 +5559,8 @@
       "score": 9,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13585237",
@@ -5379,7 +5600,8 @@
       "score": 9,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13591570",
@@ -5419,7 +5641,8 @@
       "score": -3,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13596532",
@@ -5459,7 +5682,8 @@
       "score": 9,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13583642",
@@ -5500,7 +5724,11 @@
       "score": 12,
       "recommendation": "analyze_now"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Business & M&A",
+      "Privacy & Technology"
+    ]
   },
   {
     "id": "bill-13797949",
@@ -5538,7 +5766,8 @@
       "score": 3,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13587256",
@@ -5577,7 +5806,8 @@
       "score": 1,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13859405",
@@ -5618,7 +5848,11 @@
       "score": 13,
       "recommendation": "analyze_now"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Business & M&A",
+      "Taxation"
+    ]
   },
   {
     "id": "bill-13623903",
@@ -5656,7 +5890,8 @@
       "score": 2,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13541955",
@@ -5695,7 +5930,8 @@
       "score": 7,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13541901",
@@ -5732,7 +5968,8 @@
       "score": 2,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13541944",
@@ -5769,7 +6006,10 @@
       "score": 4,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13541848",
@@ -5804,7 +6044,8 @@
       "score": 0,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13602805",
@@ -5842,7 +6083,11 @@
       "score": 8,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Health & Life Sciences",
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13589580",
@@ -5882,7 +6127,8 @@
       "score": -3,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13586181",
@@ -5922,7 +6168,8 @@
       "score": 9,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13813664",
@@ -5960,7 +6207,10 @@
       "score": 6,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13588678",
@@ -6001,7 +6251,10 @@
       "score": 0,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Business & M&A"
+    ]
   },
   {
     "id": "bill-13813004",
@@ -6039,7 +6292,10 @@
       "score": -3,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Taxation"
+    ]
   },
   {
     "id": "bill-13541857",
@@ -6078,7 +6334,8 @@
       "score": 1,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-1778356931683-4olqax",
@@ -6132,6 +6389,10 @@
         "heading": "Exclusion",
         "text": "2 (1) In this section, other Act means An Act to amend the Criminal Code (medical assistance in dying) , chapter 2 of the Statutes of Canada, 2021. (2) If section 1 of this Act comes into force before subsection 1(2.1) of the other Act, then that subsection 1(2.1) is repealed. (3) If subsection 1(2.1) of the other Act comes into force before section 1 of this Act, then section 241.2 of the Criminal Code is amended by adding the following after subsection (2): Exclusion (2.1) For the purposes of subsection (2), a mental disorder is not a grievous and irremediable medical condition. (4) If subsection 1(2.1) of the other Act comes into force on the same day as section 1 of this Act, then that subsection 1(2.1) is deemed to have come into force before that section 1 and subsection (3) applies as a consequence."
       }
+    ],
+    "practiceAreas": [
+      "Health & Life Sciences",
+      "Litigation & Regulatory"
     ]
   },
   {
@@ -6172,7 +6433,10 @@
       "score": -3,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13592619",
@@ -6211,7 +6475,8 @@
       "score": 1,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13541987",
@@ -6249,7 +6514,8 @@
       "score": -4,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13602863",
@@ -6290,7 +6556,11 @@
       "score": 10,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Privacy & Technology",
+      "Health & Life Sciences"
+    ]
   },
   {
     "id": "bill-13545922",
@@ -6327,7 +6597,10 @@
       "score": 3,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Banking & Securities"
+    ]
   },
   {
     "id": "bill-13546143",
@@ -6367,7 +6640,10 @@
       "score": 10,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Immigration"
+    ]
   },
   {
     "id": "bill-13731554",
@@ -6405,7 +6681,10 @@
       "score": -6,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13727227",
@@ -6443,7 +6722,10 @@
       "score": -6,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Banking & Securities"
+    ]
   },
   {
     "id": "bill-13541900",
@@ -6481,7 +6763,8 @@
       "score": 1,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13726738",
@@ -6518,7 +6801,10 @@
       "score": 4,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13703329",
@@ -6556,7 +6842,10 @@
       "score": -6,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13583805",
@@ -6596,7 +6885,10 @@
       "score": 11,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Health & Life Sciences"
+    ]
   },
   {
     "id": "bill-13603482",
@@ -6634,7 +6926,8 @@
       "score": -11,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13559562",
@@ -6672,7 +6965,11 @@
       "score": 8,
       "recommendation": "monitor_closely"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Health & Life Sciences",
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13668620",
@@ -6710,7 +7007,8 @@
       "score": -10,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13569694",
@@ -6751,7 +7049,11 @@
       "score": 0,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Taxation",
+      "Labour & Employment"
+    ]
   },
   {
     "id": "bill-13632066",
@@ -6790,7 +7092,11 @@
       "score": -3,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Business & M&A",
+      "Labour & Employment"
+    ]
   },
   {
     "id": "bill-13597539",
@@ -6830,7 +7136,11 @@
       "score": -3,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Banking & Securities",
+      "Labour & Employment"
+    ]
   },
   {
     "id": "bill-13628491",
@@ -6868,7 +7178,8 @@
       "score": -10,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13541931",
@@ -6907,7 +7218,10 @@
       "score": 7,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Litigation & Regulatory"
+    ]
   },
   {
     "id": "bill-13619775",
@@ -6946,7 +7260,8 @@
       "score": 6,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13611963",
@@ -6984,7 +7299,8 @@
       "score": -1,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13545225",
@@ -7023,7 +7339,8 @@
       "score": -11,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13543613",
@@ -7060,7 +7377,8 @@
       "score": 0,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13547622",
@@ -7099,7 +7417,11 @@
       "score": 6,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Business & M&A",
+      "Labour & Employment"
+    ]
   },
   {
     "id": "bill-13561553",
@@ -7137,7 +7459,10 @@
       "score": -3,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Taxation"
+    ]
   },
   {
     "id": "bill-13561557",
@@ -7175,7 +7500,10 @@
       "score": -3,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Taxation"
+    ]
   },
   {
     "id": "bill-13539592",
@@ -7216,7 +7544,10 @@
       "score": 13,
       "recommendation": "analyze_now"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Business & M&A"
+    ]
   },
   {
     "id": "bill-13545940",
@@ -7255,7 +7586,8 @@
       "score": 7,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13541991",
@@ -7293,7 +7625,8 @@
       "score": -4,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13564930",
@@ -7334,7 +7667,11 @@
       "score": 0,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Business & M&A",
+      "Taxation"
+    ]
   },
   {
     "id": "bill-13565288",
@@ -7374,7 +7711,10 @@
       "score": -1,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Privacy & Technology"
+    ]
   },
   {
     "id": "bill-13562824",
@@ -7415,7 +7755,10 @@
       "score": -1,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Business & M&A"
+    ]
   },
   {
     "id": "bill-13561665",
@@ -7453,7 +7796,8 @@
       "score": -10,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13551324",
@@ -7493,7 +7837,10 @@
       "score": -3,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Immigration"
+    ]
   },
   {
     "id": "bill-13551707",
@@ -7531,7 +7878,10 @@
       "score": -10,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Immigration"
+    ]
   },
   {
     "id": "bill-13545905",
@@ -7570,7 +7920,8 @@
       "score": 7,
       "recommendation": "low_priority_watch"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13541873",
@@ -7608,7 +7959,10 @@
       "score": 2,
       "recommendation": "ignore_for_demo"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Immigration"
+    ]
   },
   {
     "id": "bill-13551940",
@@ -7649,7 +8003,11 @@
       "score": 0,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Banking & Securities",
+      "Taxation"
+    ]
   },
   {
     "id": "bill-13544328",
@@ -7689,7 +8047,8 @@
       "score": -3,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13554119",
@@ -7728,7 +8087,8 @@
       "score": -16,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13551147",
@@ -7765,7 +8125,8 @@
       "score": -10,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13540152",
@@ -7805,7 +8166,10 @@
       "score": -3,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Banking & Securities"
+    ]
   },
   {
     "id": "bill-13546896",
@@ -7844,7 +8208,8 @@
       "score": -11,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13550483",
@@ -7884,7 +8249,8 @@
       "score": -3,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13538631",
@@ -7925,7 +8291,10 @@
       "score": 0,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Taxation"
+    ]
   },
   {
     "id": "bill-13543368",
@@ -7964,7 +8333,8 @@
       "score": -16,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13538627",
@@ -8005,7 +8375,10 @@
       "score": 1,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": [
+      "Health & Life Sciences"
+    ]
   },
   {
     "id": "bill-13539341",
@@ -8043,7 +8416,8 @@
       "score": -10,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   },
   {
     "id": "bill-13539458",
@@ -8080,6 +8454,7 @@
       "score": -10,
       "recommendation": "archive"
     },
-    "clauses": []
+    "clauses": [],
+    "practiceAreas": []
   }
 ]

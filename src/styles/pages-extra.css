@@ -309,7 +309,7 @@
   background: var(--panel-2);
 }
 .file-row.active {
-  background: linear-gradient(90deg, rgba(167, 92, 63, 0.13), rgba(255, 253, 248, 0));
+  background: linear-gradient(90deg, rgba(47, 129, 247, 0.14), rgba(47, 129, 247, 0));
   box-shadow: inset 3px 0 0 var(--accent-warm);
 }
 .file-row-name {

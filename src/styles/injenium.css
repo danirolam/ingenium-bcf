@@ -2,67 +2,67 @@
    Aesthetic: BCF black, warm legal paper, copper signal, restrained motion. */
 
 :root {
-  /* Workspace: BCF black sidebar rail, near-white canvas with a barely-warm
-     undertone. Off the cream/beige cliché — reads like Westlaw / Lexis paper,
-     not a "let's make it warm so it doesn't look generic" hackathon move. */
-  --bg: #f4f2ec;
-  --panel: #fffdf8;
-  --panel-2: #eee9df;
-  --panel-3: #ded7ca;
+  /* Workspace: GitHub "dark default" (Primer). Near-black canvas, raised
+     panels in graphite, hairline borders. Professional dev-tool surface —
+     legible, calm, no warm cast. */
+  --bg: #0d1117;
+  --panel: #161b22;
+  --panel-2: #21262d;
+  --panel-3: #30363d;
 
-  /* Sidebar: confident BCF black rail. */
-  --sidebar: #15130f;
-  --sidebar-2: #242019;
-  --sidebar-ink: #fbf7ed;
-  --sidebar-ink-2: #bdb5a6;
+  /* Sidebar: one shade darker than the canvas so the rail reads as a frame. */
+  --sidebar: #010409;
+  --sidebar-2: #161b22;
+  --sidebar-ink: #e6edf3;
+  --sidebar-ink-2: #7d8590;
 
-  /* Text — near-black, slightly warm */
-  --ink: #0c0b09;
-  --ink-2: #2b2822;
-  --ink-3: #5e5950;
-  --ink-4: #918a7e;
+  /* Text — GitHub foreground ramp */
+  --ink: #e6edf3;
+  --ink-2: #c9d1d9;
+  --ink-3: #7d8590;
+  --ink-4: #6e7681;
 
-  /* Borders / rules — cool warm gray, no yellow cast */
-  --border: #ddd8cc;
-  --border-2: #c5beaf;
-  --border-3: #ebe7df;
-  --rule: #ddd8cc;
+  /* Borders / rules — graphite hairlines */
+  --border: #30363d;
+  --border-2: #3d444d;
+  --border-3: #21262d;
+  --rule: #30363d;
 
-  /* Accent: BCF monochrome — black for primary, restrained warm amber for status */
-  --accent: #0c0b09;
-  --accent-2: #2b2822;
-  --accent-warm: #a75c3f;
-  --accent-warm-2: #704029;
-  --accent-soft: rgba(12, 11, 9, 0.07);
-  --accent-warm-soft: rgba(167, 92, 63, 0.14);
+  /* Accent: GitHub green for primary actions, blue for links/info */
+  --accent: #238636;
+  --accent-2: #2ea043;
+  --accent-warm: #2f81f7;
+  --accent-warm-2: #1f6feb;
+  --accent-soft: rgba(35, 134, 54, 0.15);
+  --accent-warm-soft: rgba(47, 129, 247, 0.15);
 
-  /* Semantic status — muted, archival */
-  --crit: #b54a2a;
-  --crit-bg: rgba(181, 74, 42, 0.10);
-  --high: #b8861a;
-  --high-bg: rgba(184, 134, 26, 0.10);
-  --med: #4a6da3;
-  --med-bg: rgba(74, 109, 163, 0.10);
-  --low: #6b6b6b;
-  --low-bg: rgba(107, 107, 107, 0.06);
-  --ok: #2a7044;
-  --ok-bg: rgba(42, 112, 68, 0.10);
+  /* Semantic status — GitHub Primer signal colors */
+  --crit: #f85149;
+  --crit-bg: rgba(248, 81, 73, 0.12);
+  --high: #d29922;
+  --high-bg: rgba(210, 153, 34, 0.12);
+  --med: #2f81f7;
+  --med-bg: rgba(47, 129, 247, 0.12);
+  --low: #7d8590;
+  --low-bg: rgba(125, 133, 144, 0.10);
+  --ok: #3fb950;
+  --ok-bg: rgba(63, 185, 80, 0.12);
 
-  /* Diff */
-  --diff-del-bg: rgba(181, 74, 42, 0.12);
-  --diff-del-ink: #7a2f15;
-  --diff-add-bg: rgba(42, 112, 68, 0.12);
-  --diff-add-ink: #1f4a30;
-  --diff-context-bg: #f6f5f1;
+  /* Diff — GitHub line-level add/del */
+  --diff-del-bg: rgba(248, 81, 73, 0.15);
+  --diff-del-ink: #ffa198;
+  --diff-add-bg: rgba(63, 185, 80, 0.15);
+  --diff-add-ink: #56d364;
+  --diff-context-bg: #161b22;
 
-  --shadow-sm: 0 1px 0 rgba(12, 11, 9, 0.04), 0 8px 22px -20px rgba(12, 11, 9, 0.34);
+  /* Dark UIs lean on 1px borders + low-opacity black, not big drop shadows */
+  --shadow-sm: 0 1px 0 rgba(1, 4, 9, 0.30), 0 8px 24px -18px rgba(1, 4, 9, 0.80);
   --shadow-md:
-    0 1px 0 rgba(12, 11, 9, 0.05), 0 24px 54px -32px rgba(12, 11, 9, 0.46);
+    0 1px 0 rgba(1, 4, 9, 0.30), 0 16px 40px -24px rgba(1, 4, 9, 0.85);
 
-  /* One family across the entire product: Manrope.
-     --serif and --mono both alias --sans so legacy class references
-     don't accidentally pull in a second face. Tabular numerals and
-     letter-spacing carry the "mono" feel where it's needed. */
+  /* Manrope for UI text; a real monospace stack for diff / clause / code.
+     --serif still aliases --sans; --mono is now a genuine mono family so the
+     diff viewer and statute text read like GitHub. */
   --sans:
     "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
     "Helvetica Neue", "Arial", sans-serif;
@@ -70,17 +70,17 @@
     "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
     "Helvetica Neue", "Arial", sans-serif;
   --mono:
-    "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    "Helvetica Neue", "Arial", sans-serif;
+    ui-monospace, "SFMono-Regular", "SF Mono", "Menlo", "Consolas",
+    "Liberation Mono", monospace;
 
-  /* shadcn HSL tokens — light variants for any ui/* components reading these */
-  --background: 42 26% 93%;
-  --foreground: 0 0% 4%;
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 4%;
-  --muted: 48 12% 95%;
-  --muted-foreground: 0 0% 35%;
-  --border-hsl: 40 18% 88%;
+  /* shadcn HSL tokens — dark variants for any ui/* components reading these */
+  --background: 215 28% 7%;
+  --foreground: 210 30% 92%;
+  --card: 215 21% 11%;
+  --card-foreground: 210 30% 92%;
+  --muted: 215 19% 16%;
+  --muted-foreground: 213 8% 53%;
+  --border-hsl: 213 13% 21%;
 }
 
 * {
@@ -270,8 +270,8 @@ a {
   font-variant-numeric: tabular-nums;
 }
 .sb-nav button.active .sb-tag {
-  background: rgba(167, 92, 63, 0.22);
-  color: #ffd8c8;
+  background: rgba(47, 129, 247, 0.22);
+  color: #79c0ff;
 }
 .sb-help {
   position: absolute;
@@ -283,7 +283,7 @@ a {
   opacity: 0;
   pointer-events: none;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(21, 19, 15, 0.96);
+  background: #1c2128;
   color: rgba(251, 247, 237, 0.86);
   border-radius: 8px;
   padding: 10px 11px;
@@ -299,7 +299,7 @@ a {
   left: -5px;
   width: 8px;
   height: 8px;
-  background: rgba(21, 19, 15, 0.96);
+  background: #1c2128;
   border-left: 1px solid rgba(255, 255, 255, 0.12);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   transform: translateY(-50%) rotate(45deg);
@@ -435,13 +435,13 @@ a {
   border-color: var(--ink-4);
 }
 .btn.primary {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--bg);
+  background: var(--accent);
+  border-color: rgba(240, 246, 252, 0.10);
+  color: #ffffff;
 }
 .btn.primary:hover {
-  background: var(--ink-2);
-  border-color: var(--ink-2);
+  background: var(--accent-2);
+  border-color: rgba(240, 246, 252, 0.10);
 }
 .btn.primary:disabled {
   background: var(--panel-2);
@@ -450,80 +450,14 @@ a {
   cursor: not-allowed;
 }
 .review-action {
-  color: var(--accent-warm-2);
-  border-color: rgba(167, 92, 63, 0.32);
-  background: rgba(255, 253, 250, 0.78);
+  color: var(--med);
+  border-color: var(--border-2);
+  background: var(--panel-2);
 }
 .review-action:hover {
-  color: var(--accent-warm-2);
-  border-color: rgba(167, 92, 63, 0.50);
+  color: var(--med);
+  border-color: var(--accent-warm);
   background: var(--accent-warm-soft);
-}
-.glowing-button {
-  min-height: 40px;
-  padding: 0 18px;
-  border: 1px solid rgba(12, 11, 9, 0.92);
-  border-right: 0;
-  border-radius: 7px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0)),
-    var(--ink);
-  color: var(--bg);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-  white-space: nowrap;
-  font-family: var(--sans);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0;
-  transition:
-    color 0.15s ease,
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
-  box-shadow: 0 10px 22px -16px rgba(12, 11, 9, 0.65);
-}
-.glowing-button::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(90deg, transparent 42%, var(--glow-color-via) 70%, var(--glow-color-to));
-  pointer-events: none;
-}
-.glowing-button::before {
-  content: "";
-  position: absolute;
-  right: 0;
-  top: 20%;
-  width: 5px;
-  height: 60%;
-  border-radius: 999px 0 0 999px;
-  background: var(--glow-color);
-  box-shadow: -2px 0 14px var(--glow-color);
-  transition: transform 0.18s ease;
-}
-.glowing-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 16px 26px -18px rgba(12, 11, 9, 0.72);
-}
-.glowing-button:hover::before {
-  transform: translateX(-8px);
-}
-.glowing-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.56;
-  transform: none;
-}
-.glowing-button-content {
-  position: relative;
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
 }
 .btn.ghost {
   background: transparent;
@@ -692,19 +626,19 @@ a {
   opacity: 0.7;
 }
 .alert-1-close:hover {
-  background: rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.08);
   opacity: 1;
 }
 .alert-1-warning.alert-1-light {
-  border-color: rgba(167, 92, 63, 0.28);
-  background: rgba(167, 92, 63, 0.10);
+  border-color: rgba(210, 153, 34, 0.40);
+  background: var(--high-bg);
 }
 .alert-1-warning .alert-1-icon,
 .alert-1-warning .alert-1-title {
-  color: var(--accent-warm-2);
+  color: var(--high);
 }
 .alert-1-success.alert-1-light {
-  border-color: rgba(42, 112, 68, 0.24);
+  border-color: rgba(63, 185, 80, 0.34);
   background: var(--ok-bg);
 }
 .alert-1-success .alert-1-icon,
@@ -859,9 +793,6 @@ table.tbl tbody td:last-child {
 }
 .tbl .col-momentum {
   width: 146px;
-}
-.tbl .col-activity {
-  width: 82px;
 }
 .tbl .col-movement {
   width: 230px;
@@ -1462,7 +1393,7 @@ table.tbl tbody td:last-child {
   background: var(--panel-2);
 }
 .client-row.active {
-  background: linear-gradient(90deg, rgba(167, 92, 63, 0.13), rgba(255, 253, 248, 0));
+  background: linear-gradient(90deg, rgba(47, 129, 247, 0.14), rgba(47, 129, 247, 0));
   box-shadow: inset 3px 0 0 var(--accent-warm);
   padding-left: 16px;
 }

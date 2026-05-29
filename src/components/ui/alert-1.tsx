@@ -1,5 +1,6 @@
 import * as React from "react";
-import { X } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { cn } from "@/lib/utils";
 
 type AlertVariant =
@@ -61,7 +62,7 @@ function Alert({
           data-slot="alert-close"
           className="alert-1-close"
         >
-          <X size={14} />
+          <FontAwesomeIcon icon={faXmark} />
         </button>
       )}
     </div>

@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  AlertTriangle,
-  ChevronDown,
-  FileText,
-  Mail,
-  Save,
-  Scale,
-  Send,
-  ShieldCheck,
-} from "lucide-react";
+  faChevronDown,
+  faEnvelope,
+  faFileLines,
+  faFloppyDisk,
+  faPaperPlane,
+  faScaleBalanced,
+  faShieldHalved,
+  faTriangleExclamation,
+} from "@fortawesome/free-solid-svg-icons";
 import type { Nav } from "../App";
 import {
   AffectedBadge,
@@ -129,7 +130,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
         actions={
           <>
             <button className="btn" disabled={busy} onClick={emailLawyer}>
-              <Mail size={16} strokeWidth={1.9} aria-hidden="true" />
+              <FontAwesomeIcon icon={faEnvelope} aria-hidden="true" />
               Email lawyer
             </button>
             <button
@@ -137,7 +138,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
               disabled={busy || analysis.saved}
               onClick={save}
             >
-              <Save size={16} strokeWidth={1.9} aria-hidden="true" />
+              <FontAwesomeIcon icon={faFloppyDisk} aria-hidden="true" />
               {analysis.saved ? "Saved" : "Save analysis"}
             </button>
           </>
@@ -148,7 +149,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
           <div className="card-h">
             <div>
               <div className="card-title-row">
-                <Scale size={16} strokeWidth={1.8} aria-hidden="true" />
+                <FontAwesomeIcon icon={faScaleBalanced} aria-hidden="true" />
                 <div className="card-title" data-toc data-toc-depth="1" data-toc-title="Summary">
                   Summary
                 </div>
@@ -187,7 +188,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
               id="why"
               open={openSections.why}
               onToggle={toggleSection}
-              icon={<ShieldCheck size={16} strokeWidth={1.8} aria-hidden="true" />}
+              icon={<FontAwesomeIcon icon={faShieldHalved} aria-hidden="true" />}
               title="Why it matters"
               summary={`${affectedClientAreas.length || 1} client area${affectedClientAreas.length === 1 ? "" : "s"} flagged`}
             >
@@ -207,7 +208,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
               id="adaptations"
               open={openSections.adaptations}
               onToggle={toggleSection}
-              icon={<Send size={16} strokeWidth={1.8} aria-hidden="true" />}
+              icon={<FontAwesomeIcon icon={faPaperPlane} aria-hidden="true" />}
               title="Recommended adaptations"
               summary={`${totalRecs} action${totalRecs === 1 ? "" : "s"} proposed`}
             >
@@ -236,7 +237,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
                 id="evidence"
                 open={openSections.evidence}
                 onToggle={toggleSection}
-                icon={<FileText size={16} strokeWidth={1.8} aria-hidden="true" />}
+                icon={<FontAwesomeIcon icon={faFileLines} aria-hidden="true" />}
                 title="Relevant client text"
                 summary={`${relevantClientText.length} evidence excerpt${relevantClientText.length === 1 ? "" : "s"}`}
               >
@@ -263,14 +264,14 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
                 id="review"
                 open={openSections.review}
                 onToggle={toggleSection}
-                icon={<AlertTriangle size={16} strokeWidth={1.9} aria-hidden="true" />}
+                icon={<FontAwesomeIcon icon={faTriangleExclamation} aria-hidden="true" />}
                 title="Lawyer review"
                 summary={`${lawyerVerificationQuestions.length} verification question${lawyerVerificationQuestions.length === 1 ? "" : "s"}`}
                 tone="warning"
               >
                 <Alert variant="warning" appearance="light" className="analysis-alert flat-alert">
                   <AlertIcon>
-                    <AlertTriangle size={18} strokeWidth={2} aria-hidden="true" />
+                    <FontAwesomeIcon icon={faTriangleExclamation} aria-hidden="true" />
                   </AlertIcon>
                   <AlertContent>
                     <AlertTitle data-toc data-toc-depth="2">Review before sending</AlertTitle>
@@ -293,7 +294,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
               id="email"
               open={openSections.email}
               onToggle={toggleSection}
-              icon={<Mail size={16} strokeWidth={1.8} aria-hidden="true" />}
+              icon={<FontAwesomeIcon icon={faEnvelope} aria-hidden="true" />}
               title="Email draft"
               summary={analysis.emailDraft.subject}
             >
@@ -312,7 +313,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
               id="source"
               open={openSections.source}
               onToggle={toggleSection}
-              icon={<FileText size={16} strokeWidth={1.8} aria-hidden="true" />}
+              icon={<FontAwesomeIcon icon={faFileLines} aria-hidden="true" />}
               title="Source law version"
               summary={`${lv?.sourceBillNumber ?? "Bill"} · ${(lv?.affectedSections ?? []).join(", ") || "sections pending"}`}
             >
@@ -365,7 +366,7 @@ function InsightSection({
         </span>
         <span className="cia-fold-meta">
           {summary && <span className="cia-fold-summary">{summary}</span>}
-          <ChevronDown className={open ? "open" : ""} size={15} strokeWidth={2} aria-hidden="true" />
+          <FontAwesomeIcon icon={faChevronDown} className={open ? "open" : ""} aria-hidden="true" />
         </span>
       </button>
       {open && <div className="cia-fold-body">{children}</div>}

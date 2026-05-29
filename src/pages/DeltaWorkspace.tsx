@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  AlertTriangle,
-  CheckCircle2,
-  ChevronDown,
-  FileText,
-  Scale,
-  ShieldCheck,
-} from "lucide-react";
+  faChevronDown,
+  faCircleCheck,
+  faFileLines,
+  faScaleBalanced,
+  faShieldHalved,
+  faTriangleExclamation,
+} from "@fortawesome/free-solid-svg-icons";
 import type { Nav } from "../App";
 import { MomentumBadge, ReviewBadge } from "../components/badges";
 import { ConfidenceMeter } from "../components/ConfidenceMeter";
@@ -24,7 +25,6 @@ import {
   AlertIcon,
   AlertTitle,
 } from "../components/ui/alert-1";
-import { GlowingButton } from "../components/ui/glowing-button";
 import { api } from "../lib/api";
 import type { Bill, LawVersion } from "../types";
 
@@ -232,7 +232,7 @@ function FilesChangedRail({
     <div className="card files-rail">
       <div className="card-h">
         <div className="card-title-row">
-          <FileText size={16} strokeWidth={1.8} aria-hidden="true" />
+          <FontAwesomeIcon icon={faFileLines} aria-hidden="true" />
           <div className="card-title">Acts changed</div>
         </div>
         <span className="badge outline dim">{lvs.length}</span>
@@ -321,24 +321,24 @@ function DeltaSection({
           <ReviewBadge required={lv.humanReviewRequired} approved={lv.humanApproved} />
           {stub && <span className="badge outline dim">unregistered Act</span>}
           <button className="btn sm review-action" disabled={busy} onClick={onFlag}>
-            <AlertTriangle size={14} strokeWidth={1.9} aria-hidden="true" />
+            <FontAwesomeIcon icon={faTriangleExclamation} aria-hidden="true" />
             Needs review
           </button>
-          <GlowingButton
-            className="delta-section-approve"
+          <button
+            className="btn sm primary delta-section-approve"
             disabled={busy || lv.humanApproved}
             onClick={onApprove}
           >
-            <CheckCircle2 size={14} strokeWidth={2} aria-hidden="true" />
+            <FontAwesomeIcon icon={faCircleCheck} aria-hidden="true" />
             {lv.humanApproved ? "Approved" : "Approve"}
-          </GlowingButton>
+          </button>
         </div>
       </div>
 
       {stub && (
         <Alert variant="warning" appearance="light" className="dw-alert delta-section-alert">
           <AlertIcon>
-            <AlertTriangle size={18} strokeWidth={2} aria-hidden="true" />
+            <FontAwesomeIcon icon={faTriangleExclamation} aria-hidden="true" />
           </AlertIcon>
           <AlertContent>
             <AlertTitle>Current consolidated law not yet registered</AlertTitle>
@@ -354,7 +354,7 @@ function DeltaSection({
       {lv.humanReviewRequired && !stub && (
         <Alert variant="warning" appearance="light" className="dw-alert delta-section-alert">
           <AlertIcon>
-            <AlertTriangle size={18} strokeWidth={2} aria-hidden="true" />
+            <FontAwesomeIcon icon={faTriangleExclamation} aria-hidden="true" />
           </AlertIcon>
           <AlertContent>
             <AlertTitle>Human review required</AlertTitle>
@@ -406,7 +406,7 @@ function DeltaRightRail({
       <div className="card">
         <div className="card-h">
           <div className="card-title-row">
-            <FileText size={16} strokeWidth={1.8} aria-hidden="true" />
+            <FontAwesomeIcon icon={faFileLines} aria-hidden="true" />
             <div className="card-title">Bill summary</div>
           </div>
           {activeLv && (
@@ -464,7 +464,7 @@ function DeltaRightRail({
         <div className="card">
           <div className="card-h">
             <div className="card-title-row">
-              <Scale size={16} strokeWidth={1.8} aria-hidden="true" />
+              <FontAwesomeIcon icon={faScaleBalanced} aria-hidden="true" />
               <div className="card-title">Active legal delta</div>
             </div>
           </div>
@@ -496,12 +496,12 @@ function DeltaRightRail({
           aria-expanded={techOpen}
         >
           <span className="card-title-row">
-            <ShieldCheck size={16} strokeWidth={1.8} aria-hidden="true" />
+            <FontAwesomeIcon icon={faShieldHalved} aria-hidden="true" />
             <span>Technical details</span>
           </span>
           <span className={`dw-tech-caret ${techOpen ? "open" : ""}`}>
             {techOpen ? "Collapse" : "Expand"}
-            <ChevronDown size={14} strokeWidth={2} aria-hidden="true" />
+            <FontAwesomeIcon icon={faChevronDown} aria-hidden="true" />
           </span>
         </button>
         {techOpen && (

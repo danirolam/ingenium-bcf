@@ -7,6 +7,7 @@ import type {
   VersionStatus,
 } from "../../src/types.js";
 import { normalizeBill } from "../services/billNormalizer.js";
+import { ensurePracticeAreas } from "../../src/lib/practiceAreas.js";
 import { sendBillUploadedEmail } from "../services/email.js";
 import {
   extractAmendmentsFromBill,
@@ -30,13 +31,13 @@ export const billsRouter = Router();
 
 billsRouter.get("/", async (_req, res) => {
   const bills = await readAll<Bill>(FILES.bills);
-  res.json(bills);
+  res.json(bills.map(ensurePracticeAreas));
 });
 
 billsRouter.get("/:id", async (req, res) => {
   const bill = await findById<Bill>(FILES.bills, req.params.id);
   if (!bill) return res.status(404).json({ error: "not_found" });
-  res.json(bill);
+  res.json(ensurePracticeAreas(bill));
 });
 
 billsRouter.get("/:id/law-versions", async (req, res) => {

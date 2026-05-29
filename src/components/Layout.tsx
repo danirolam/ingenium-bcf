@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import type { PageId } from "../App";
 import { Sidebar } from "./Sidebar";
-import { DynamicIslandTOC } from "./ui/dynamic-island-toc";
 
 export function Layout({
   page,
@@ -17,9 +16,7 @@ export function Layout({
   return (
     <div className="app">
       <Sidebar page={page} setPage={setPage} onExit={onExit} />
-      <main className="main">
-        <DynamicIslandTOC>{children}</DynamicIslandTOC>
-      </main>
+      <main className="main">{children}</main>
     </div>
   );
 }

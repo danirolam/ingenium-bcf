@@ -26,9 +26,9 @@ For any other (bill, client) pairing, the routes return HTTP 503 with a message 
 
 ## Getting the API keys
 
-You only need two: **Gemini** (required for live AI) and **Resend** (optional, only if you want real emails).
+You only need two: **Gemini** (required for live extraction) and **Resend** (optional, only if you want real emails).
 
-### 1. Google Gemini API key (required for live AI)
+### 1. Google Gemini API key (required for live extraction)
 
 1. Go to **https://aistudio.google.com/apikey**.
 2. Sign in with the Google account you want to bill (free tier is fine for demo traffic).
@@ -83,14 +83,14 @@ To send real emails:
 
 ```env
 # .env (gitignored)
-GEMINI_API_KEY=AIzaSy...           # required for live AI; without it, only canned demo paths work
+GEMINI_API_KEY=AIzaSy...           # required for live extraction; without it, only canned demo paths work
 RESEND_API_KEY=re_...              # optional; without it, emails are simulated
 RESEND_FROM=Injenium <onboarding@resend.dev>
 NOTIFY_EMAIL=lawyer@example.com    # recipient for [New Bill Uploaded] / [Client Impact Ready] emails
 PORT=8787                          # api port (vite proxies /api here)
 ```
 
-## Replacing canned data with live AI output
+## Replacing canned data with live extraction output
 
 Once `GEMINI_API_KEY` is set, the live paths take over **automatically**. There is no flag to flip; the canned data is only a fallback.
 
@@ -104,7 +104,7 @@ Concretely:
 | Analyze impact on **S-202 × demo clients** | Canned analysis | **Live** Gemini analysis (overrides canned) |
 | Analyze impact on any other approved law × any client | 503 error | **Live** Gemini analysis |
 
-To force a re-run with live AI on a bill that already has a cached LawVersion, delete it from `server/data/lawVersions.json` (or the whole file to fully reset) and call `extract-delta` again.
+To force a re-run with live extraction on a bill that already has a cached LawVersion, delete it from `server/data/lawVersions.json` (or the whole file to fully reset) and call `extract-delta` again.
 
 To fully reset all runtime state:
 
