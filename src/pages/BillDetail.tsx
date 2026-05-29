@@ -25,6 +25,8 @@ import type {
 } from "../types";
 import { api } from "../lib/api";
 import { MomentumBadge } from "../components/badges";
+import { InfoHint } from "../components/InfoHint";
+import { Tooltip } from "../components/Tooltip";
 
 function fmtDate(iso?: string): string | undefined {
   if (!iso) return undefined;
@@ -341,10 +343,16 @@ export function BillDetail({ nav }: { nav: Nav }) {
           <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
           Bill Monitor
         </button>
-        <button className="btn primary" disabled={busy} onClick={openDelta}>
-          <FontAwesomeIcon icon={faCodeCompare} aria-hidden="true" />
-          {busy ? "Opening…" : "Review legal delta"}
-        </button>
+        <Tooltip
+          placement="bottom"
+          title="Review legal delta"
+          body="Stage 2. Extract what this bill changes in current law and open it side by side with the consolidated Acts it amends."
+        >
+          <button className="btn primary" disabled={busy} onClick={openDelta}>
+            <FontAwesomeIcon icon={faCodeCompare} aria-hidden="true" />
+            {busy ? "Opening…" : "Review legal delta"}
+          </button>
+        </Tooltip>
       </div>
 
       <div className="body bd-body">
@@ -400,6 +408,10 @@ export function BillDetail({ nav }: { nav: Nav }) {
           <div className="bd-section-head">
             <FontAwesomeIcon icon={faScaleBalanced} aria-hidden="true" />
             <h2>Legislative path</h2>
+            <InfoHint
+              title="Legislative path"
+              body="The bill's route through Parliament — House of Commons, then Senate, then Royal Assent. A filled dot is a completed stage; blue is in progress. Recorded divisions show the yea / nay vote on a motion."
+            />
             {progress.total > 0 && (
               <span className="bd-progress tnum">
                 {progress.completed} of {progress.total} stages completed

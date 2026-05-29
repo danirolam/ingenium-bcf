@@ -8,6 +8,8 @@ import {
 import type { Nav } from "../App";
 import { MomentumBadge } from "../components/badges";
 import { PageHeader } from "../components/PageHeader";
+import { InfoHint } from "../components/InfoHint";
+import { Tooltip } from "../components/Tooltip";
 import { SegmentedTabs } from "../components/SegmentedTabs";
 import { StatsRibbon } from "../components/StatsRibbon";
 import { api } from "../lib/api";
@@ -164,6 +166,10 @@ export function BillMonitor({ nav }: { nav: Nav }) {
       <PageHeader
         crumbs={["Workspace", "Bill Monitor"]}
         title="Bill Monitor"
+        hint={{
+          title: "Bill Monitor",
+          body: "Stage 1 of 4. Every federal bill the firm tracks, filterable by practice group and momentum. Open any bill to read its full path through Parliament, then send it on to legal-delta review.",
+        }}
         sub="Federal and provincial legislation tracked here. Upload a bill JSON to ingest, normalize, and queue it for legal-delta review."
         actions={
           <>
@@ -174,14 +180,20 @@ export function BillMonitor({ nav }: { nav: Nav }) {
               onChange={onUpload}
               hidden
             />
-            <button
-              className="btn primary"
-              disabled={busy}
-              onClick={() => fileInputRef.current?.click()}
+            <Tooltip
+              placement="bottom"
+              title="Upload a bill"
+              body="Add a LEGISinfo bill JSON. Ingenium normalizes it, tags its practice areas, and queues it for legal-delta review."
             >
-              <FontAwesomeIcon icon={faUpload} aria-hidden="true" />
-              {busy ? "Working..." : "Upload bill JSON"}
-            </button>
+              <button
+                className="btn primary"
+                disabled={busy}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <FontAwesomeIcon icon={faUpload} aria-hidden="true" />
+                {busy ? "Working..." : "Upload bill JSON"}
+              </button>
+            </Tooltip>
           </>
         }
       />
@@ -212,7 +224,13 @@ export function BillMonitor({ nav }: { nav: Nav }) {
 
         {bills.length > 0 && (
           <div className="bm-practice-filter">
-            <span className="bm-practice-label">Practice</span>
+            <span className="bm-practice-label">
+              Practice
+              <InfoHint
+                title="Practice filter"
+                body="Narrow the docket to one BCF practice group. Bills are tagged automatically from their title and subject, so a bill can appear under more than one group."
+              />
+            </span>
             <div className="bm-practice-pills">
               <button
                 type="button"
