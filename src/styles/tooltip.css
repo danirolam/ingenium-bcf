@@ -1,0 +1,106 @@
+/* Portal tooltips + the ⓘ info-hint affordance. Dark, dense, bordered — the
+   kind of self-documenting hover help a real dashboard has on every control. */
+
+.tt-trigger {
+  display: inline-flex;
+}
+
+.tt-pop {
+  position: fixed;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  max-width: min(304px, calc(100vw - 24px));
+  padding: 9px 11px;
+  background: #1c2128;
+  border: 1px solid var(--border-2);
+  border-radius: 8px;
+  box-shadow:
+    0 1px 0 rgba(1, 4, 9, 0.4),
+    0 14px 34px -16px rgba(1, 4, 9, 0.92);
+  pointer-events: none;
+  animation: tt-in 0.12s ease;
+}
+.tt-bottom {
+  transform: translateX(-50%);
+}
+.tt-top {
+  transform: translate(-50%, -100%);
+}
+@keyframes tt-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(2px);
+  }
+}
+.tt-top.tt-pop {
+  animation-name: tt-in-top;
+}
+@keyframes tt-in-top {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-100% + 2px));
+  }
+}
+
+.tt-title {
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+}
+.tt-body {
+  margin-top: 3px;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+.tt-title + .tt-body {
+  margin-top: 5px;
+}
+/* The "what this produces" footnote inside a step tooltip. */
+.tt-produces {
+  display: block;
+  margin-top: 7px;
+  padding-top: 7px;
+  border-top: 1px solid var(--border);
+  color: var(--ink-4);
+}
+.tt-kbd {
+  align-self: flex-start;
+  margin-top: 7px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-3);
+  border: 1px solid var(--border-2);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+/* ⓘ info hint */
+.info-hint-wrap {
+  display: inline-flex;
+  vertical-align: middle;
+}
+.info-hint {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  margin-left: 7px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-4);
+  font-size: 12px;
+  cursor: help;
+  vertical-align: middle;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.info-hint:hover,
+.info-hint:focus-visible {
+  color: var(--accent-warm);
+  background: var(--accent-warm-soft);
+  outline: none;
+}
