@@ -4,6 +4,7 @@ import {
   faArrowRight,
   faMagnifyingGlass,
   faUpload,
+  faFileCsv,
 } from "@fortawesome/free-solid-svg-icons";
 import type { Nav } from "../App";
 import { MomentumBadge } from "../components/badges";
@@ -13,6 +14,7 @@ import { Tooltip } from "../components/Tooltip";
 import { SegmentedTabs } from "../components/SegmentedTabs";
 import { StatsRibbon } from "../components/StatsRibbon";
 import { api } from "../lib/api";
+import { downloadCsv } from "../lib/export";
 import { PRACTICE_AREAS } from "../lib/practiceAreas";
 import type { Bill, LegislativeMomentum } from "../types";
 
@@ -161,6 +163,24 @@ export function BillMonitor({ nav }: { nav: Nav }) {
     { value: "defeated", label: "Defeated", count: counts.defeated },
   ];
 
+  function exportCsv() {
+    downloadCsv(
+      `ingenium-bills-${new Date().toISOString().slice(0, 10)}.csv`,
+      ["Bill", "Title", "Status", "Momentum", "Practice areas", "Latest activity", "Session", "Source"],
+      matchingBills.map((b) => [
+        b.billNumber,
+        b.shortTitle || b.title,
+        b.status,
+        b.legislativeMomentum,
+        (b.practiceAreas ?? []).join("; "),
+        b.latestActivity ?? "",
+        b.session ?? "",
+        b.textSourceUrl ?? b.sourceUrl ?? "",
+      ]),
+    );
+    nav.toast(`Exported ${matchingBills.length} bills to CSV.`);
+  }
+
   return (
     <>
       <PageHeader
@@ -180,6 +200,16 @@ export function BillMonitor({ nav }: { nav: Nav }) {
               onChange={onUpload}
               hidden
             />
+            <Tooltip
+              placement="bottom"
+              title="Export to CSV"
+              body="Download the bills currently shown (after your filters) as a spreadsheet."
+            >
+              <button className="btn" disabled={!bills.length} onClick={exportCsv}>
+                <FontAwesomeIcon icon={faFileCsv} aria-hidden="true" />
+                Export CSV
+              </button>
+            </Tooltip>
             <Tooltip
               placement="bottom"
               title="Upload a bill"

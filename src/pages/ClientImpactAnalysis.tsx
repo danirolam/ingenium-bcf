@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown,
   faEnvelope,
+  faFileArrowDown,
   faFileLines,
   faFloppyDisk,
   faPaperPlane,
@@ -25,6 +26,7 @@ import {
   AlertTitle,
 } from "../components/ui/alert-1";
 import { api } from "../lib/api";
+import { downloadDoc, esc } from "../lib/export";
 import type { Client, ClientImpactAnalysis, LawVersion } from "../types";
 
 export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
@@ -103,6 +105,44 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     }
   }
 
+  function downloadBrief() {
+    if (!analysis) return;
+    const a = analysis;
+    const recs = (a.requiredAdaptations ?? [])
+      .map(
+        (r) =>
+          `<h3>${esc(r.area)}</h3><p><b>Issue:</b> ${esc(r.currentIssue)}</p><p><b>Recommendation:</b> ${esc(r.recommendation)}</p><p class="doc-meta">${esc(r.reason)}</p>`,
+      )
+      .join("");
+    const questions = (a.lawyerVerificationQuestions ?? [])
+      .map((q) => `<li>${esc(q)}</li>`)
+      .join("");
+    const body = `
+      <div class="doc-label">Privileged &amp; confidential · Counsel work product</div>
+      <h1>Client exposure brief — ${esc(client?.name ?? "Client")}</h1>
+      <p class="doc-meta">${esc(lv?.sourceBillNumber ?? "")} — ${esc(lv?.sourceBillTitle ?? "")}${
+        lv?.baseLawTitle ? ` · affecting the ${esc(lv.baseLawTitle)}` : ""
+      }</p>
+      <h2>Assessment</h2>
+      <p><b>Affected:</b> ${esc(a.affected)} &nbsp;·&nbsp; <b>Impact:</b> ${esc(a.impactLevel)} &nbsp;·&nbsp; <b>Urgency:</b> ${esc(a.urgency)} &nbsp;·&nbsp; <b>Timing:</b> ${esc(a.timing)}</p>
+      <p>${esc(a.whyItAffectsClient)}</p>
+      ${recs ? `<h2>Recommended actions</h2>${recs}` : ""}
+      ${questions ? `<h2>For counsel to verify</h2><ul>${questions}</ul>` : ""}
+      ${
+        a.emailDraft
+          ? `<h2>Draft client note</h2><p><b>Subject:</b> ${esc(a.emailDraft.subject)}</p><blockquote>${esc(a.emailDraft.body).replace(/\n/g, "<br/>")}</blockquote>`
+          : ""
+      }
+      <div class="doc-foot">Prepared with Ingenium for BCF. Counsel review required before sending.</div>`;
+    const slug = (client?.name ?? "client").replace(/\W+/g, "-").toLowerCase();
+    downloadDoc(
+      `brief-${slug}-${(lv?.sourceBillNumber ?? "bill").toLowerCase()}.doc`,
+      `Client brief — ${client?.name ?? "Client"}`,
+      body,
+    );
+    nav.toast("Brief downloaded (opens in Word; save as PDF from there).");
+  }
+
   const requiredAdaptations = analysis.requiredAdaptations ?? [];
   const affectedClientAreas = analysis.affectedClientAreas ?? [];
   const relevantClientText = analysis.relevantClientText ?? [];
@@ -129,6 +169,10 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
         }
         actions={
           <>
+            <button className="btn" onClick={downloadBrief}>
+              <FontAwesomeIcon icon={faFileArrowDown} aria-hidden="true" />
+              Download brief
+            </button>
             <button className="btn" disabled={busy} onClick={emailLawyer}>
               <FontAwesomeIcon icon={faEnvelope} aria-hidden="true" />
               Email lawyer

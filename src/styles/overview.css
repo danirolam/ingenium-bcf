@@ -24,6 +24,43 @@
   background: var(--border-2);
 }
 
+/* Clarity hero — what this is + the obvious first action */
+.ov-intro {
+  padding: 6px 0 30px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.ov-intro-title {
+  margin: 0;
+  max-width: 20ch;
+  font-size: clamp(26px, 3.4vw, 40px);
+  font-weight: 750;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.ov-intro-sub {
+  margin: 14px 0 0;
+  max-width: 62ch;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+.ov-intro-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+.ov-intro-metaline {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
 .ov-sec {
   margin-bottom: 30px;
 }

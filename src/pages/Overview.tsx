@@ -121,13 +121,26 @@ export function Overview({ nav }: { nav: Nav }) {
         sub="Turn federal legislative change into clear, client-specific advice — in four stages."
       />
       <div className="body ov-body">
-        <div className="ov-meta">
-          45th Parliament · 1st Session
-          <span className="ov-meta-dot" aria-hidden="true" />
-          {fmt(total)} bills tracked
-          <span className="ov-meta-dot" aria-hidden="true" />
-          {fmt(royalAssent)} received royal assent
-        </div>
+        <section className="ov-intro">
+          <h1 className="ov-intro-title">
+            Turn any federal bill into client-ready advice.
+          </h1>
+          <p className="ov-intro-sub">
+            Track all {fmt(total)} federal bills, see exactly what each one
+            changes in law, match it to your clients, and produce the
+            counsel-approved memo — in the four steps below.
+          </p>
+          <div className="ov-intro-actions">
+            <button className="btn primary" onClick={() => nav.go("monitor")}>
+              Browse all bills
+              <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
+            </button>
+            <span className="ov-intro-metaline">
+              45th Parliament · 1st Session · {fmt(royalAssent)} received royal
+              assent
+            </span>
+          </div>
+        </section>
 
         <section className="ov-sec">
           <div className="ov-sec-head">
