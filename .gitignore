@@ -7,3 +7,7 @@ server/data/*.json
 dev-server*.log
 .vercel
 .claude
+
+# Design reference archives (not part of the app)
+*.zip
+references/
