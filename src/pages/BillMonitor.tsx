@@ -42,6 +42,7 @@ export function BillMonitor({ nav }: { nav: Nav }) {
   const [filter, setFilter] = useState<FilterValue>("all");
   const [query, setQuery] = useState("");
   const [practice, setPractice] = useState<string>("all");
+  const [session, setSession] = useState<string>("45-1");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -97,19 +98,34 @@ export function BillMonitor({ nav }: { nav: Nav }) {
     }
   }
 
+  // Distinct sessions present, newest first (45-1, 44-1, 43-2, …).
+  const sessions = useMemo(() => {
+    const s = new Set<string>();
+    for (const b of bills) if (b.session) s.add(b.session);
+    return [...s].sort((a, b) =>
+      b.localeCompare(a, undefined, { numeric: true }),
+    );
+  }, [bills]);
+
+  const sessionBills = useMemo(
+    () =>
+      session === "all" ? bills : bills.filter((b) => b.session === session),
+    [bills, session],
+  );
+
   const counts = useMemo(() => {
     return {
-      all: bills.length,
-      active: bills.filter((b) => matchesFilter(b, "active")).length,
-      late: bills.filter((b) => matchesFilter(b, "late")).length,
-      assent: bills.filter((b) => matchesFilter(b, "assent")).length,
+      all: sessionBills.length,
+      active: sessionBills.filter((b) => matchesFilter(b, "active")).length,
+      late: sessionBills.filter((b) => matchesFilter(b, "late")).length,
+      assent: sessionBills.filter((b) => matchesFilter(b, "assent")).length,
       defeated: 0,
     };
-  }, [bills]);
+  }, [sessionBills]);
 
   const billsByMomentumQuery = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return bills
+    return sessionBills
       .filter((b) => matchesFilter(b, filter))
       .filter((b) => {
         if (!q) return true;
@@ -118,7 +134,7 @@ export function BillMonitor({ nav }: { nav: Nav }) {
           b.title.toLowerCase().includes(q)
         );
       });
-  }, [bills, filter, query]);
+  }, [sessionBills, filter, query]);
 
   const practiceCounts = useMemo(() => {
     const m: Record<string, number> = {};
@@ -148,7 +164,7 @@ export function BillMonitor({ nav }: { nav: Nav }) {
   // Reset cap when any filter / query changes
   useEffect(() => {
     setPageSize(50);
-  }, [filter, query, practice]);
+  }, [filter, query, practice, session]);
   const visibleBills = useMemo(
     () => matchingBills.slice(0, pageSize),
     [matchingBills, pageSize],
@@ -190,7 +206,7 @@ export function BillMonitor({ nav }: { nav: Nav }) {
           title: "Bill Monitor",
           body: "Stage 1 of 4. Every federal bill the firm tracks, filterable by practice group and momentum. Open any bill to read its full path through Parliament, then send it on to legal-delta review.",
         }}
-        sub="Federal and provincial legislation tracked here. Upload a bill JSON to ingest, normalize, and queue it for legal-delta review."
+        sub="Every federal bill from the 37th–45th Parliaments. Filter by session, practice group, and momentum — or open any 45-1 bill for its full path and text."
         actions={
           <>
             <input
@@ -228,10 +244,51 @@ export function BillMonitor({ nav }: { nav: Nav }) {
         }
       />
       <div className="body">
-        <StatsRibbon bills={bills} />
+        <StatsRibbon bills={sessionBills} />
 
         <div className="bm-toolbar">
           <div className="bm-toolbar-left">
+            <label
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                marginRight: 14,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 11,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.04em",
+                  color: "var(--ink-4)",
+                  fontFamily: "var(--mono)",
+                }}
+              >
+                Session
+              </span>
+              <select
+                value={session}
+                onChange={(e) => setSession(e.target.value)}
+                style={{
+                  background: "var(--panel-2)",
+                  color: "var(--ink)",
+                  border: "1px solid var(--border-2)",
+                  borderRadius: 8,
+                  padding: "7px 10px",
+                  fontSize: 13,
+                  fontFamily: "var(--sans)",
+                  cursor: "pointer",
+                }}
+              >
+                <option value="all">All sessions ({bills.length})</option>
+                {sessions.map((s) => (
+                  <option key={s} value={s}>
+                    {s === "45-1" ? "45-1 (current)" : s}
+                  </option>
+                ))}
+              </select>
+            </label>
             <SegmentedTabs
               items={tabItems}
               value={filter}
