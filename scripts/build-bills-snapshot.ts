@@ -34,6 +34,7 @@ const bills = JSON.parse(await fs.readFile(billsFile, "utf-8")) as Bill[];
 let enriched = 0;
 let preserved = 0;
 let withPath = 0;
+let withText = 0;
 const missing: string[] = [];
 
 for (const bill of bills) {
@@ -69,6 +70,56 @@ for (const bill of bills) {
   bill.divisions = parsed.divisions;
   bill.categories = categoriesOf(bill);
 
+  // Text provenance — the latest published version — refreshed every run.
+  const pubs = (
+    detail as { Publications?: Array<{ PublicationTypeNameEn?: string }> }
+  ).Publications;
+  const latestPub =
+    Array.isArray(pubs) && pubs.length ? pubs[pubs.length - 1] : null;
+  if (latestPub?.PublicationTypeNameEn) {
+    bill.textStage = latestPub.PublicationTypeNameEn;
+  }
+
+  // Bake the full bill text (clauses) from the parsed XML sections, leaving any
+  // curated demo clauses untouched.
+  try {
+    const norm = JSON.parse(
+      await fs.readFile(
+        path.join(billsDir, bill.billNumber, "bill.normalized.json"),
+        "utf-8",
+      ),
+    ) as {
+      sections?: Array<{
+        label?: string;
+        marginalNote?: string;
+        text?: string;
+        targetActs?: string[];
+      }>;
+      sourceUrl?: string;
+      publicationType?: string;
+    };
+    if (norm.sourceUrl) bill.textSourceUrl = norm.sourceUrl;
+    if (!bill.textStage && norm.publicationType) {
+      bill.textStage = norm.publicationType;
+    }
+    const sections = Array.isArray(norm.sections) ? norm.sections : [];
+    if (sections.length && bill.clauses.length === 0) {
+      bill.clauses = sections
+        .map((s, i) => ({
+          id: `${bill.id}-c${i + 1}`,
+          number: s.label || undefined,
+          heading: s.marginalNote || undefined,
+          text: s.text ?? "",
+          targetActs:
+            s.targetActs && s.targetActs.length ? s.targetActs : undefined,
+        }))
+        .filter((c) => c.text.trim());
+      if (bill.clauses.length) withText += 1;
+    }
+  } catch {
+    /* no parsed text for this bill */
+  }
+
   // Refresh status + momentum from the authoritative current record.
   if (parsed.status) bill.status = parsed.status;
   if (parsed.latestEvent?.name) {
@@ -95,6 +146,7 @@ for (const b of bills) {
 
 console.log(`bills: ${bills.length}`);
 console.log(`enriched: ${enriched}  (with legislative path: ${withPath})`);
+console.log(`with full bill text (clauses): ${withText}`);
 console.log(`preserved (curated demo bills): ${preserved}`);
 console.log(`missing metadata: ${missing.length}${missing.length ? " " + missing.join(", ") : ""}`);
 console.log("momentum:", JSON.stringify(momentumTally));

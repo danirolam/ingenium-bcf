@@ -1,0 +1,82 @@
+{
+  "session": "45-1",
+  "number": "C-271",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-271/C-271_1/C-271_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13970628",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to amend the Criminal Code (scrap metal trafficking and essential infrastructure protection)",
+  "shortTitle": "",
+  "sponsor": "Mrs. Cody",
+  "fullText": "C-271 1 45 3-4 Charles III 2025-2026 An Act to amend the Criminal Code (scrap metal trafficking and essential infrastructure protection) Protecting Canada’s Essential Infrastructure Metals Act 2026 3 13 Mrs. Cody 451141 SUMMARY This enactment amends the Criminal Code to create offences in relation to the trafficking of scrap metal obtained by crime and an offence of mischief in relation to essential infrastructure. His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: Short Title Short title 1 This Act may be cited as the Protecting Canada’s Essential Infrastructure Metals Act . R.S., c. C-46 Criminal Code 2 Section 355.1 of the Criminal Code is replaced by the following: Definition of traffic 355.1 For the purposes of sections 355.2, 355.4, 355.6 and 355.9 , traffic means to sell, give, transfer, transport, export from Canada, import into Canada, send, deliver or deal with in any other way, or to offer to do any of those acts. 3 The Act is amended by adding the following after section 355.5: Trafficking or possession for trafficking — scrap metal obtained by crime 355.6 Everyone commits an offence who traffics in — or has in their possession for the purpose of trafficking — scrap metal knowing that all or part of it was obtained by or derived directly or indirectly from the commission of an offence under this Act or any other Act of Parliament. Punishment 355.7 Everyone who commits an offence under section 355.6 (a) is guilty of an indictable offence and liable (i) in the case of a first offence, to a fine of not more than $10,000 or to imprisonment for a term of not more than 10 years, or to both, and (ii) in the case of a second or subsequent offence, to a fine of not more than $25,000 or to imprisonment for a term of not more than 10 years, or to both; or (b) is guilty of an offence punishable on summary conviction and liable (i) in the case of a first offence, to a fine of not more than $5,000 or to imprisonment for a term of not more than two years less a day, or to both, and (ii) in the case of a second or subsequent offence, to a fine of not more than $15,000 or to imprisonment for a term of not more than two years less a day, or to both. Aggravating circumstance — public or private infrastructure 355.8 If a person is convicted of an offence under section 355.6, the court that imposes the sentence shall consider as an aggravating circumstance the fact that the offence involved scrap metal taken from public or private infrastructure — particularly from systems essential to public safety or to the delivery of critical services — including electrical systems, telecommunications infrastructure, railways, pipelines, water or wastewater systems, transportation signage or safety equipment. Dealer in scrap metal 355.9 Every person who, being a dealer in scrap metal, trades or traffics in or has in their possession for sale or traffic any scrap metal, being reckless or wilfully blind as to whether it was obtained by the commission of an offence, is guilty of an offence punishable on summary conviction and liable to a fine of not more than $10,000 or to imprisonment for a term of not more than two years less a day, or to both. Definition of scrap metal 355.10 For the purposes of sections 355.6, 355.8 and 355.9, scrap metal means copper, aluminum, brass, bronze, steel or iron — or any alloy or derivative of those metals — that has been dismantled, altered or prepared for recycling or resale. 4 Section 430 of the Act is amended by adding the following after subsection (4.2): Mischief in relation to essential infrastructure (4.3) Everyone who commits mischief in relation to a physical component of an essential infrastructure , within the meaning of subsection 52.1(2), knowing that or being reckless as to whether that infrastructure cannot function as intended without the component is guilty of (a) an indictable offence and liable to a fine of not more than $10,000 or to imprisonment for a term not exceeding 10 years, or to both; or (b) an offence punishable on summary conviction and liable to a fine of not more than $5,000 or to imprisonment for a term of not more than two years less a day, or to both. Aggravating circumstances (4.4) If a person is convicted of an offence under subsection (4.3), the court that imposes the sentence shall consider as an aggravating circumstance the fact that the mischief (a) resulted in an interruption of essential services; (b) endangered the life, health or safety of the public; or (c) was committed for the purpose of committing or facilitating another offence, including theft or trafficking in property obtained by crime.",
+  "sections": [
+    {
+      "label": "1",
+      "type": null,
+      "marginalNote": "Short title",
+      "text": "Short title 1 This Act may be cited as the Protecting Canada’s Essential Infrastructure Metals Act .",
+      "targetActs": [
+        "Protecting Canada’s Essential Infrastructure Metals Act"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "2",
+      "type": "amending",
+      "marginalNote": "Definition of traffic",
+      "text": "2 Section 355.1 of the Criminal Code is replaced by the following: Definition of traffic 355.1 For the purposes of sections 355.2, 355.4, 355.6 and 355.9 , traffic means to sell, give, transfer, transport, export from Canada, import into Canada, send, deliver or deal with in any other way, or to offer to do any of those acts.",
+      "targetActs": [
+        "Criminal Code"
+      ],
+      "hasAmendedText": true
+    },
+    {
+      "label": "3",
+      "type": "amending",
+      "marginalNote": "Trafficking or possession for trafficking — scrap metal obtained by crime",
+      "text": "3 The Act is amended by adding the following after section 355.5: Trafficking or possession for trafficking — scrap metal obtained by crime 355.6 Everyone commits an offence who traffics in — or has in their possession for the purpose of trafficking — scrap metal knowing that all or part of it was obtained by or derived directly or indirectly from the commission of an offence under this Act or any other Act of Parliament.",
+      "targetActs": [],
+      "hasAmendedText": true
+    },
+    {
+      "label": "355.7",
+      "type": null,
+      "marginalNote": "Punishment",
+      "text": "Punishment 355.7 Everyone who commits an offence under section 355.6 (a) is guilty of an indictable offence and liable (i) in the case of a first offence, to a fine of not more than $10,000 or to imprisonment for a term of not more than 10 years, or to both, and (ii) in the case of a second or subsequent offence, to a fine of not more than $25,000 or to imprisonment for a term of not more than 10 years, or to both; or (b) is guilty of an offence punishable on summary conviction and liable (i) in the case of a first offence, to a fine of not more than $5,000 or to imprisonment for a term of not more than two years less a day, or to both, and (ii) in the case of a second or subsequent offence, to a fine of not more than $15,000 or to imprisonment for a term of not more than two years less a day, or to both.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "355.8",
+      "type": null,
+      "marginalNote": "Aggravating circumstance — public or private infrastructure",
+      "text": "Aggravating circumstance — public or private infrastructure 355.8 If a person is convicted of an offence under section 355.6, the court that imposes the sentence shall consider as an aggravating circumstance the fact that the offence involved scrap metal taken from public or private infrastructure — particularly from systems essential to public safety or to the delivery of critical services — including electrical systems, telecommunications infrastructure, railways, pipelines, water or wastewater systems, transportation signage or safety equipment.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "355.9",
+      "type": null,
+      "marginalNote": "Dealer in scrap metal",
+      "text": "Dealer in scrap metal 355.9 Every person who, being a dealer in scrap metal, trades or traffics in or has in their possession for sale or traffic any scrap metal, being reckless or wilfully blind as to whether it was obtained by the commission of an offence, is guilty of an offence punishable on summary conviction and liable to a fine of not more than $10,000 or to imprisonment for a term of not more than two years less a day, or to both.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "355.10",
+      "type": null,
+      "marginalNote": "Definition of scrap metal",
+      "text": "Definition of scrap metal 355.10 For the purposes of sections 355.6, 355.8 and 355.9, scrap metal means copper, aluminum, brass, bronze, steel or iron — or any alloy or derivative of those metals — that has been dismantled, altered or prepared for recycling or resale.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "4",
+      "type": "amending",
+      "marginalNote": "Mischief in relation to essential infrastructure",
+      "text": "4 Section 430 of the Act is amended by adding the following after subsection (4.2): Mischief in relation to essential infrastructure (4.3) Everyone who commits mischief in relation to a physical component of an essential infrastructure , within the meaning of subsection 52.1(2), knowing that or being reckless as to whether that infrastructure cannot function as intended without the component is guilty of (a) an indictable offence and liable to a fine of not more than $10,000 or to imprisonment for a term not exceeding 10 years, or to both; or (b) an offence punishable on summary conviction and liable to a fine of not more than $5,000 or to imprisonment for a term of not more than two years less a day, or to both. Aggravating circumstances (4.4) If a person is convicted of an offence under subsection (4.3), the court that imposes the sentence shall consider as an aggravating circumstance the fact that the mischief (a) resulted in an interruption of essential services; (b) endangered the life, health or safety of the public; or (c) was committed for the purpose of committing or facilitating another offence, including theft or trafficking in property obtained by crime.",
+      "targetActs": [],
+      "hasAmendedText": true
+    }
+  ]
+}

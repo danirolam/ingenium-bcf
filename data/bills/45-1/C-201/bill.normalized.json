@@ -1,0 +1,32 @@
+{
+  "session": "45-1",
+  "number": "C-201",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-201/C-201_1/C-201_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13542332",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to amend the Canada Health Act (mental, addictions and substance use health services)",
+  "shortTitle": "",
+  "sponsor": "Mr. Johns",
+  "fullText": "C-201 1 45 3 Charles III 2025 An Act to amend the Canada Health Act (mental, addictions and substance use health services) An Act to amend the Canada Health Act (mental, addictions and substance use health services) 2025 5 29 Mr. Johns 451009 SUMMARY This enactment amends the Canada Health Act to add mental, addictions and substance use health services to the definition of “insured health services”. His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: R.S., c. C-6 Canada Health Act 1 (1) The definition insured health services in section 2 of the Canada Health Act is replaced by the following: insured health services means hospital services, physician services, surgical-dental services and mental, addictions and substance use health services provided to insured persons, but does not include any health services that a person is entitled to and eligible for under any other Act of Parliament or under any Act of the legislature of a province that relates to workers’ or workmen’s compensation; ( services de santé assurés ) (2) Section 2 of the Act is amended by adding the following in alphabetical order: mental, addictions and substance use health services includes mental, addictions and substances use health services provided in community settings; ( services de santé en matière de santé mentale, de dépendances ou de consommation de substances ) 2 Section 9 of the Act is replaced by the following: Comprehensiveness 9 In order to satisfy the criterion respecting comprehensiveness, the health care insurance plan of a province must insure all insured health services provided by hospitals, medical practitioners or dentists, and where the law of the province so permits, similar or additional services rendered by other health care practitioners, including those provided in community settings .",
+  "sections": [
+    {
+      "label": "1",
+      "type": "amending",
+      "marginalNote": "",
+      "text": "1 (1) The definition insured health services in section 2 of the Canada Health Act is replaced by the following: insured health services means hospital services, physician services, surgical-dental services and mental, addictions and substance use health services provided to insured persons, but does not include any health services that a person is entitled to and eligible for under any other Act of Parliament or under any Act of the legislature of a province that relates to workers’ or workmen’s compensation; ( services de santé assurés ) (2) Section 2 of the Act is amended by adding the following in alphabetical order: mental, addictions and substance use health services includes mental, addictions and substances use health services provided in community settings; ( services de santé en matière de santé mentale, de dépendances ou de consommation de substances )",
+      "targetActs": [
+        "Canada Health Act"
+      ],
+      "hasAmendedText": true
+    },
+    {
+      "label": "2",
+      "type": "amending",
+      "marginalNote": "Comprehensiveness",
+      "text": "2 Section 9 of the Act is replaced by the following: Comprehensiveness 9 In order to satisfy the criterion respecting comprehensiveness, the health care insurance plan of a province must insure all insured health services provided by hospitals, medical practitioners or dentists, and where the law of the province so permits, similar or additional services rendered by other health care practitioners, including those provided in community settings .",
+      "targetActs": [],
+      "hasAmendedText": true
+    }
+  ]
+}

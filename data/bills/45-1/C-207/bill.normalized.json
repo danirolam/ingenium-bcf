@@ -1,0 +1,32 @@
+{
+  "session": "45-1",
+  "number": "C-207",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-207/C-207_1/C-207_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13553852",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to amend the Canada Pension Plan",
+  "shortTitle": "",
+  "sponsor": "Ms. McPherson",
+  "fullText": "C-207 1 45 3 Charles III 2025 An Act to amend the Canada Pension Plan An Act to amend the Canada Pension Plan 2025 6 10 Ms. McPherson 451017 SUMMARY This enactment amends the Canada Pension Plan to provide that the consent of at least two thirds of the provinces that do not provide a comprehensive pension plan is required before a province may adopt such a plan. Preamble Whereas Canadians living and working in provinces in which the Canada Pension Plan applies may incur changes to their pension benefits as a result of a province withdrawing from the Canada Pension Plan; And whereas Parliament believes it is necessary to ensure that Canadians remain entitled to the pension benefits that they have worked for; Now, therefore, His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: R.S., c. C-8 Canada Pension Plan 1 Section 3 of the Canada Pension Plan is amended by adding the following after subsection (2): Provincial consent (2.1) Regulations under subsection (2) may only be made if the lieutenant governor in council of each of at least two thirds of the provinces that are not provinces providing a comprehensive pension plan, having in total not less than two thirds of the population of all those provinces, has signified the consent of that province. Coming Into Force 180th day after royal assent 2 This Act comes into force on the 180th day after the day on which it receives royal assent.",
+  "sections": [
+    {
+      "label": "1",
+      "type": "amending",
+      "marginalNote": "Provincial consent",
+      "text": "1 Section 3 of the Canada Pension Plan is amended by adding the following after subsection (2): Provincial consent (2.1) Regulations under subsection (2) may only be made if the lieutenant governor in council of each of at least two thirds of the provinces that are not provinces providing a comprehensive pension plan, having in total not less than two thirds of the population of all those provinces, has signified the consent of that province.",
+      "targetActs": [
+        "Canada Pension Plan"
+      ],
+      "hasAmendedText": true
+    },
+    {
+      "label": "2",
+      "type": "amending",
+      "marginalNote": "180th day after royal assent",
+      "text": "180th day after royal assent 2 This Act comes into force on the 180th day after the day on which it receives royal assent.",
+      "targetActs": [],
+      "hasAmendedText": false
+    }
+  ]
+}

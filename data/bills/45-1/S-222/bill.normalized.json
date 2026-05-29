@@ -1,0 +1,104 @@
+{
+  "session": "45-1",
+  "number": "S-222",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/S-222/S-222_1/S-222_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13542655",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to amend the Canada Elections Act and the Regulation Adapting the Canada Elections Act for the Purposes of a Referendum",
+  "shortTitle": "Vote 16 Act",
+  "sponsor": "Senator M C PHEDRAN",
+  "fullText": "S-222 1 45 3 Charles III 2025 An Act to amend the Canada Elections Act and the Regulation Adapting the Canada Elections Act for the Purposes of a Referendum Vote 16 Act Vote 16 Act 2025 5 29 Senator M C PHEDRAN 4511927 SUMMARY This enactment amends the Canada Elections Act and the Regulation Adapting the Canada Elections Act for the Purposes of a Referendum to extend the right to vote to citizens aged 16 and 17. His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: Short Title Short title 1 This Act may be cited as the Vote 16 Act . 2000, c. 9 Canada Elections Act 2 The definition future elector in subsection 2(1) of the Canada Elections Act is replaced by the following: future elector means a Canadian citizen who is 14 or 15 years of age. ( futur électeur ) Canada Elections Act Clause 2 : Text of the definition: future elector means a Canadian citizen who is 14 years of age or older but under 18 years of age. ( futur électeur ) 3 Section 3 of the Act is replaced by the following: Persons qualified as electors 3 Every person who is a Canadian citizen and is 16 years of age or older on polling day is qualified as an elector. Clause 3 : Text of section 3: 3 Every person who is a Canadian citizen and who on polling day is 18 years of age or older is qualified as an elector. 4 Subsection 22(5) of the Act is repealed. Clause 4 : Text of subsection 22(5) : (5) Despite subsection (4), an election officer appointed under section 32 may be under 18 years of age but must be at least 16 years of age. 5 (1) Subparagraph 281.3(a)(ii) of the Act is replaced by the following: (ii) is not or will not be 16 years of age or older on polling day; or Clause 5 : Text of relevant portions of section 281.3: 281.3 No person shall (a) vote or attempt to vote at an election knowing that he or she . . . (ii) is not 18 years of age or older — or will not be 18 years of age or older — on polling day; or (b) induce or attempt to induce another person to vote at an election knowing that the other person . . . (ii) is not 18 years of age or older — or will not be 18 years of age or older — on polling day. (2) Subparagraph 281.3(b)(ii) of the Act is replaced by the following: (ii) is not or will not be 16 years of age or older on polling day. 6 Paragraph 384.3(3)(a) is replaced by the following: (a) any person who was under 16 years of age on the day on which the event took place; Clause 6 : Text of relevant portions of subsection 384.3(3): (3) The registered party’s chief agent shall not include in the report referred to in subsection (1) the name of any of the following persons who attended the regulated fundraising event, nor the name of their municipality or its equivalent, their province or their postal code: (a) any person who was under 18 years of age on the day on which the event took place; 7 Paragraph 549.1(1)(b) is replaced by the following: (b) the elector is or will be 16 years of age or older on polling day; Clause 7 : Text of relevant portions of subsection 549.1(1): 549.1 (1) For the purposes of subsections 143(3) and (3.2), sections 144 and 147 and paragraphs 161(1)(b) and 169(2)(b), the solemn declaration by which an elector proves his or her identity and residence, proves his or her residence only, proves that he or she is qualified as an elector or proves that he or she has not previously voted at the election shall be in the prescribed form, which shall include the statements that . . . (b) the elector is 18 years of age or older or will be 18 years of age or older on polling day; . . . SOR/2010-20 Regulation Adapting the Canada Elections Act for the Purposes of a Referendum 8 Section 3 of the Schedule to the Regulation Adapting the Canada Elections Act for the Purposes of a Referendum is replaced by the following: Persons qualified as electors 3 Every person who is a Canadian citizen and is 16 years of age or older on polling day is qualified as an elector. Regulation Adapting the Canada Elections Act for the Purposes of a Referendum Clause 8 : Text of section 3 of the Schedule: 3 Every person who is a Canadian citizen and is 18 years of age or older on polling day is qualified as an elector. Coming into Force Six months after royal assent 9 This Act comes into force on the day that, in the sixth month after the month in which it receives royal assent, has the same calendar number as the day on which it receives royal assent — or, if that sixth month has no day with that number, the last day of that sixth month — unless, before then, the Chief Electoral Officer publishes a notice in the Canada Gazette that the necessary preparations for the bringing into operation of this Act, or of a specified provision of this Act, have been made and that this Act or the specified provision may come into force accordingly, in which case this Act or the provision, as the case may be, comes into force on the day on which the notice is published.",
+  "sections": [
+    {
+      "label": "1",
+      "type": null,
+      "marginalNote": "Short title",
+      "text": "Short title 1 This Act may be cited as the Vote 16 Act .",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "2",
+      "type": "amending",
+      "marginalNote": "",
+      "text": "2 The definition future elector in subsection 2(1) of the Canada Elections Act is replaced by the following: future elector means a Canadian citizen who is 14 or 15 years of age. ( futur électeur ) Canada Elections Act Clause 2 : Text of the definition: future elector means a Canadian citizen who is 14 years of age or older but under 18 years of age. ( futur électeur )",
+      "targetActs": [
+        "Canada Elections Act"
+      ],
+      "hasAmendedText": true
+    },
+    {
+      "label": "3",
+      "type": "amending",
+      "marginalNote": "Persons qualified as electors",
+      "text": "3 Section 3 of the Act is replaced by the following: Persons qualified as electors 3 Every person who is a Canadian citizen and is 16 years of age or older on polling day is qualified as an elector.",
+      "targetActs": [],
+      "hasAmendedText": true
+    },
+    {
+      "label": "3",
+      "type": "normal",
+      "marginalNote": "",
+      "text": "3 Every person who is a Canadian citizen and who on polling day is 18 years of age or older is qualified as an elector.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "4",
+      "type": "amending",
+      "marginalNote": "",
+      "text": "4 Subsection 22(5) of the Act is repealed. Clause 4 : Text of subsection 22(5) : (5) Despite subsection (4), an election officer appointed under section 32 may be under 18 years of age but must be at least 16 years of age.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "5",
+      "type": "amending",
+      "marginalNote": "",
+      "text": "5 (1) Subparagraph 281.3(a)(ii) of the Act is replaced by the following: (ii) is not or will not be 16 years of age or older on polling day; or Clause 5 : Text of relevant portions of section 281.3: 281.3 No person shall (a) vote or attempt to vote at an election knowing that he or she . . . (ii) is not 18 years of age or older — or will not be 18 years of age or older — on polling day; or (b) induce or attempt to induce another person to vote at an election knowing that the other person . . . (ii) is not 18 years of age or older — or will not be 18 years of age or older — on polling day.",
+      "targetActs": [],
+      "hasAmendedText": true
+    },
+    {
+      "label": "6",
+      "type": "amending",
+      "marginalNote": "",
+      "text": "6 Paragraph 384.3(3)(a) is replaced by the following: (a) any person who was under 16 years of age on the day on which the event took place; Clause 6 : Text of relevant portions of subsection 384.3(3): (3) The registered party’s chief agent shall not include in the report referred to in subsection (1) the name of any of the following persons who attended the regulated fundraising event, nor the name of their municipality or its equivalent, their province or their postal code: (a) any person who was under 18 years of age on the day on which the event took place;",
+      "targetActs": [],
+      "hasAmendedText": true
+    },
+    {
+      "label": "7",
+      "type": "amending",
+      "marginalNote": "",
+      "text": "7 Paragraph 549.1(1)(b) is replaced by the following: (b) the elector is or will be 16 years of age or older on polling day; Clause 7 : Text of relevant portions of subsection 549.1(1): 549.1 (1) For the purposes of subsections 143(3) and (3.2), sections 144 and 147 and paragraphs 161(1)(b) and 169(2)(b), the solemn declaration by which an elector proves his or her identity and residence, proves his or her residence only, proves that he or she is qualified as an elector or proves that he or she has not previously voted at the election shall be in the prescribed form, which shall include the statements that . . . (b) the elector is 18 years of age or older or will be 18 years of age or older on polling day; . . .",
+      "targetActs": [],
+      "hasAmendedText": true
+    },
+    {
+      "label": "8",
+      "type": "amending",
+      "marginalNote": "Persons qualified as electors",
+      "text": "8 Section 3 of the Schedule to the Regulation Adapting the Canada Elections Act for the Purposes of a Referendum is replaced by the following: Persons qualified as electors 3 Every person who is a Canadian citizen and is 16 years of age or older on polling day is qualified as an elector.",
+      "targetActs": [],
+      "hasAmendedText": true
+    },
+    {
+      "label": "3",
+      "type": null,
+      "marginalNote": "",
+      "text": "3 Every person who is a Canadian citizen and is 18 years of age or older on polling day is qualified as an elector.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "9",
+      "type": "amending",
+      "marginalNote": "Six months after royal assent",
+      "text": "Six months after royal assent 9 This Act comes into force on the day that, in the sixth month after the month in which it receives royal assent, has the same calendar number as the day on which it receives royal assent — or, if that sixth month has no day with that number, the last day of that sixth month — unless, before then, the Chief Electoral Officer publishes a notice in the Canada Gazette that the necessary preparations for the bringing into operation of this Act, or of a specified provision of this Act, have been made and that this Act or the specified provision may come into force accordingly, in which case this Act or the provision, as the case may be, comes into force on the day on which the notice is published.",
+      "targetActs": [],
+      "hasAmendedText": false
+    }
+  ]
+}

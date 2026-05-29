@@ -1,0 +1,48 @@
+{
+  "session": "45-1",
+  "number": "C-252",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-252/C-252_1/C-252_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13682989",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act respecting a national day of remembrance to honour Canadian Armed Forces members who have lost their lives in peacetime in Canada",
+  "shortTitle": "Peacetime Service and Sacrifice Memorial Day Act",
+  "sponsor": "Mr. Johns",
+  "fullText": "C-252 1 45 3-4 Charles III 2025 An Act respecting a national day of remembrance to honour Canadian Armed Forces members who have lost their lives in peacetime in Canada Peacetime Service and Sacrifice Memorial Day Act Peacetime Service and Sacrifice Memorial Day Act 2025 10 22 Mr. Johns 451013 SUMMARY This enactment designates the 22nd day of October, in each year, as “Peacetime Service and Sacrifice Memorial Day”. Preamble Whereas, on November 11 every year, Canadians pause for two minutes of silence to remember and honour the Canadian Armed Forces members who have served, and continue to serve, Canada during times of war and conflict, especially the more than 118,000 who have made the ultimate sacrifice; Whereas on Monday, October 20, 2014, Warrant Officer Patrice Vincent, a member of the Canadian Armed Forces, was killed by a deliberate vehicular attack at Saint-Jean-sur-Richelieu; Whereas on Wednesday, October 22, 2014, Corporal Nathan Cirillo, a member of the Canadian Armed Forces was shot and killed while standing guard at the National War Memorial in Ottawa; Whereas, since 1914, approximately 2,000 Canadian Armed Forces members have lost their lives in non-combat roles on Canadian soil; Whereas, between 2013 and 2024, 177 members of the Regular Force and at least 36 members of the Reserve Force died by suicide; And whereas the Government of Canada is committed to honouring the memory of Canadian Armed Forces members who have lost their lives in the line of duty on Canadian soil during peacetime; Now, therefore, His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: Short Title Short title 1 This Act may be cited as the Peacetime Service and Sacrifice Memorial Day Act . Purpose of Act Purpose 2 The purpose of this Act is to encourage all Canadians to remember and honour the Canadian Armed Forces members who have lost their lives on Canadian soil during peacetime. Peacetime Service and Sacrifice Memorial Day Designation 3 Throughout Canada, in each year, the 22nd day of October is to be known as “Peacetime Service and Sacrifice Memorial Day”. National flag at half-mast 4 On Peacetime Service and Sacrifice Memorial Day, the national flag of Canada on the Peace Tower is to be lowered to half-mast.",
+  "sections": [
+    {
+      "label": "1",
+      "type": null,
+      "marginalNote": "Short title",
+      "text": "Short title 1 This Act may be cited as the Peacetime Service and Sacrifice Memorial Day Act .",
+      "targetActs": [
+        "Peacetime Service and Sacrifice Memorial Day Act"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "2",
+      "type": null,
+      "marginalNote": "Purpose",
+      "text": "Purpose 2 The purpose of this Act is to encourage all Canadians to remember and honour the Canadian Armed Forces members who have lost their lives on Canadian soil during peacetime.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "3",
+      "type": null,
+      "marginalNote": "Designation",
+      "text": "Designation 3 Throughout Canada, in each year, the 22nd day of October is to be known as “Peacetime Service and Sacrifice Memorial Day”.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "4",
+      "type": null,
+      "marginalNote": "National flag at half-mast",
+      "text": "National flag at half-mast 4 On Peacetime Service and Sacrifice Memorial Day, the national flag of Canada on the Peace Tower is to be lowered to half-mast.",
+      "targetActs": [],
+      "hasAmendedText": false
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "session": "45-1",
+  "number": "S-224",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/S-224/S-224_1/S-224_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13545943",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to amend the Director of Public Prosecutions Act",
+  "shortTitle": "",
+  "sponsor": "Senator M C CALLUM",
+  "fullText": "S-224 1 45 3 Charles III 2025 An Act to amend the Director of Public Prosecutions Act An Act to amend the Director of Public Prosecutions Act 2025 6 3 Senator M C CALLUM 4512324 SUMMARY This enactment amends the Director of Public Prosecutions Act to provide that the Director of Public Prosecutions initiates and conducts prosecutions of summary conviction offences under First Nation laws on behalf of the First Nation that made or enacted the First Nation law, unless the First Nation has appointed or retained a prosecutor or entered into an agreement with a provincial or territorial government for the prosecution of such offences. His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: S.C. 2006, c. 9, s. 121 Director of Public Prosecutions Act 1 (1) Section 2 of the Director of Public Prosecutions Act is amended by adding the following in alphabetical order: First Nation means (a) a band as defined in subsection 2(1) of the Indian Act ; (b) a First Nation as defined in subsection 2(2) of the Framework Agreement on First Nation Land Management Act ; or (c) a First Nation that is party to a self-government agreement implemented by an Act of Parliament. ( première nation ) First Nation law means (a) a bylaw made under the Indian Act ; (b) a First Nation law as defined in subsection 2(1) of the Framework Agreement on First Nation Land Management Act ; or (c) a law enacted by a council, government or other entity that is authorized to act on behalf of a First Nation under a self-government agreement implemented by an Act of Parliament. ( texte législatif de première nation ) Director of Public Prosecutions Act Clause 1 : (1) New. (2) The definition of prosecution in section 2 of the Act is replaced by the following: prosecution , except in relation to matters referred to in subsection 3(8) or section 3.1 , means a prosecution under the jurisdiction of the Attorney General, a proceeding respecting any offence, the prosecution — or prospective prosecution — of which is under the jurisdiction of the Attorney General, and any appeal related to such a prosecution or proceeding. ( poursuite ) (2) Text of the definition: prosecution , except in relation to matters referred to in subsection 3(8), means a prosecution under the jurisdiction of the Attorney General , a proceeding respecting any offence, the prosecution — or prospective prosecution — of which is under the jurisdiction of the Attorney General, and any appeal related to such a prosecution or proceeding. ( poursuite ) 2 The Act is amended by adding the following after section 3: Duties — First Nation laws 3.1 (1) Subject to subsection (2), the Director initiates and conducts prosecutions of summary conviction offences under First Nation laws, as well as any appeal or other proceeding related to such a prosecution, on behalf of the First Nation that made or enacted the First Nation law. Exception (2) The Director shall not initiate or conduct a prosecution of a summary conviction offence under a First Nation law, or any appeal or other proceeding related to such a prosecution, if the First Nation that made or enacted the First Nation law has appointed or retained a prosecutor or entered into an agreement with a provincial or territorial government for the prosecution of summary conviction offences created by its First Nation laws. Clause 2 : New.",
+  "sections": [
+    {
+      "label": "1",
+      "type": null,
+      "marginalNote": "",
+      "text": "1 (1) Section 2 of the Director of Public Prosecutions Act is amended by adding the following in alphabetical order: First Nation means (a) a band as defined in subsection 2(1) of the Indian Act ; (b) a First Nation as defined in subsection 2(2) of the Framework Agreement on First Nation Land Management Act ; or (c) a First Nation that is party to a self-government agreement implemented by an Act of Parliament. ( première nation ) First Nation law means (a) a bylaw made under the Indian Act ; (b) a First Nation law as defined in subsection 2(1) of the Framework Agreement on First Nation Land Management Act ; or (c) a law enacted by a council, government or other entity that is authorized to act on behalf of a First Nation under a self-government agreement implemented by an Act of Parliament. ( texte législatif de première nation ) Director of Public Prosecutions Act Clause 1 : (1) New. (2) The definition of prosecution in section 2 of the Act is replaced by the following: prosecution , except in relation to matters referred to in subsection 3(8) or section 3.1 , means a prosecution under the jurisdiction of the Attorney General, a proceeding respecting any offence, the prosecution — or prospective prosecution — of which is under the jurisdiction of the Attorney General, and any appeal related to such a prosecution or proceeding. ( poursuite ) (2) Text of the definition: prosecution , except in relation to matters referred to in subsection 3(8), means a prosecution under the jurisdiction of the Attorney General , a proceeding respecting any offence, the prosecution — or prospective prosecution — of which is under the jurisdiction of the Attorney General, and any appeal related to such a prosecution or proceeding. ( poursuite )",
+      "targetActs": [
+        "Director of Public Prosecutions Act",
+        "Indian Act",
+        "Framework Agreement on First Nation Land Management Act"
+      ],
+      "hasAmendedText": true
+    },
+    {
+      "label": "2",
+      "type": null,
+      "marginalNote": "Duties — First Nation laws",
+      "text": "2 The Act is amended by adding the following after section 3: Duties — First Nation laws 3.1 (1) Subject to subsection (2), the Director initiates and conducts prosecutions of summary conviction offences under First Nation laws, as well as any appeal or other proceeding related to such a prosecution, on behalf of the First Nation that made or enacted the First Nation law.",
+      "targetActs": [],
+      "hasAmendedText": true
+    },
+    {
+      "label": "Exception (2)",
+      "type": null,
+      "marginalNote": "Exception",
+      "text": "Exception (2) The Director shall not initiate or conduct a prosecution of a summary conviction offence under a First Nation law, or any appeal or other proceeding related to such a prosecution, if the First Nation that made or enacted the First Nation law has appointed or retained a prosecutor or entered into an agreement with a provincial or territorial government for the prosecution of summary conviction offences created by its First Nation laws.",
+      "targetActs": [],
+      "hasAmendedText": false
+    }
+  ]
+}

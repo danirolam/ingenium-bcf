@@ -1,0 +1,24 @@
+{
+  "session": "45-1",
+  "number": "C-220",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-220/C-220_1/C-220_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13591508",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to amend the Criminal Code (immigration status in sentencing)",
+  "shortTitle": "",
+  "sponsor": "Ms. Rempel Garner",
+  "fullText": "C-220 1 45 3-4 Charles III 2025 An Act to amend the Criminal Code (immigration status in sentencing) An Act to amend the Criminal Code (immigration status in sentencing) 2025 9 17 Ms. Rempel Garner 451081 SUMMARY This enactment amends the Criminal Code to provide that, in imposing a sentence on an offender who is not a Canadian citizen, a court must not take into consideration the offender’s immigration status in Canada. His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: R.S., c. C-46 Criminal Code 1 The Criminal Code is amended by adding the following after section 718.201: Immigration status not to be considered 718.202 A court that imposes a sentence on an offender who is not a Canadian citizen shall not take into consideration any potential impact the sentence could have on the offender’s immigration status in Canada, or on that of a member of their family.",
+  "sections": [
+    {
+      "label": "1",
+      "type": "amending",
+      "marginalNote": "Immigration status not to be considered",
+      "text": "1 The Criminal Code is amended by adding the following after section 718.201: Immigration status not to be considered 718.202 A court that imposes a sentence on an offender who is not a Canadian citizen shall not take into consideration any potential impact the sentence could have on the offender’s immigration status in Canada, or on that of a member of their family.",
+      "targetActs": [
+        "Criminal Code"
+      ],
+      "hasAmendedText": true
+    }
+  ]
+}

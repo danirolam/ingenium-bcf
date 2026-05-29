@@ -1,0 +1,54 @@
+{
+  "session": "45-1",
+  "number": "C-217",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-217/C-217_1/C-217_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13571035",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to amend the Canada Student Financial Assistance Act and the Income Tax Act",
+  "shortTitle": "",
+  "sponsor": "Mr. Davies",
+  "fullText": "C-217 1 45 3 Charles III 2025 An Act to amend the Canada Student Financial Assistance Act and the Income Tax Act Post-Secondary Education Financial Assistance for Persons with Disabilities Act 2025 6 19 Mr. Davies 451046 SUMMARY This enactment provides for financial assistance for Canadians with disabilities to improve their access to post-secondary education. Preamble Whereas an estimated one in four Canadians aged 15 years and over has one or more disabilities that limit them in their daily activities; Whereas the 2022 Canadian Survey on Disability indicated that youth with disabilities are at a higher risk of not being in school or employed and that this risk increases with the severity of the disability; And whereas Parliament recognizes the importance of ensuring that all Canadians with disabilities have access to post-secondary education; Now, therefore, His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: Alternative Title Alternative title 1 This Act may be cited as the Post-Secondary Education Financial Assistance for Persons with Disabilities Act . 1994, c. 28 Canada Student Financial Assistance Act 2 The Canada Student Financial Assistance Act is amended by adding the following after section 9.2: Tuition for Persons with Disabilities Payment of tuition 9.21 (1) Subject to any prescribed conditions, if an individual in respect of whom an amount is deductible under section 118.3 of the Income Tax Act is enrolled in a designated educational institution, the Minister shall pay the individual’s tuition fees to the designated educational institution. Grant (2) The amount of any tuition fees paid under subsection (1) is deemed to be a grant to the individual on whose behalf it is paid. 3 Subsection 15(1) of the Act is amended by adding the following after paragraph (p): (p.1) providing for the conditions to be met before a payment under section 9.21 may be made; R.S., c.1 (5 th Supp.) Income Tax Act 4 Subsection 81(1) of the Income Tax Act is amended by adding the following after paragraph (h.1): Tuition for persons with disabilities (h.2) an amount paid under section 9.21 of the Canada Student Financial Assistance Act ;",
+  "sections": [
+    {
+      "label": "1",
+      "type": null,
+      "marginalNote": "Alternative title",
+      "text": "Alternative title 1 This Act may be cited as the Post-Secondary Education Financial Assistance for Persons with Disabilities Act .",
+      "targetActs": [
+        "Post-Secondary Education Financial Assistance for Persons with Disabilities Act"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "2",
+      "type": "amending",
+      "marginalNote": "Payment of tuition",
+      "text": "2 The Canada Student Financial Assistance Act is amended by adding the following after section 9.2: Tuition for Persons with Disabilities Payment of tuition 9.21 (1) Subject to any prescribed conditions, if an individual in respect of whom an amount is deductible under section 118.3 of the Income Tax Act is enrolled in a designated educational institution, the Minister shall pay the individual’s tuition fees to the designated educational institution. Grant (2) The amount of any tuition fees paid under subsection (1) is deemed to be a grant to the individual on whose behalf it is paid.",
+      "targetActs": [
+        "Canada Student Financial Assistance Act",
+        "Income Tax Act"
+      ],
+      "hasAmendedText": true
+    },
+    {
+      "label": "3",
+      "type": "amending",
+      "marginalNote": "",
+      "text": "3 Subsection 15(1) of the Act is amended by adding the following after paragraph (p): (p.1) providing for the conditions to be met before a payment under section 9.21 may be made;",
+      "targetActs": [],
+      "hasAmendedText": true
+    },
+    {
+      "label": "4",
+      "type": "amending",
+      "marginalNote": "Tuition for persons with disabilities",
+      "text": "4 Subsection 81(1) of the Income Tax Act is amended by adding the following after paragraph (h.1): Tuition for persons with disabilities (h.2) an amount paid under section 9.21 of the Canada Student Financial Assistance Act ;",
+      "targetActs": [
+        "Income Tax Act",
+        "Canada Student Financial Assistance Act"
+      ],
+      "hasAmendedText": true
+    }
+  ]
+}

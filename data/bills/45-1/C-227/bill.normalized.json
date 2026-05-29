@@ -1,0 +1,64 @@
+{
+  "session": "45-1",
+  "number": "C-227",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-227/C-227_1/C-227_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13592752",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to establish a national strategy on housing for young Canadians",
+  "shortTitle": "",
+  "sponsor": "Mr. Clark",
+  "fullText": "C-227 1 45 3-4 Charles III 2025 An Act to establish a national strategy on housing for young Canadians National Strategy on Housing for Young Canadians Act 2025 9 18 Mr. Clark 451101 SUMMARY This enactment provides for the development of a national strategy on housing for young Canadians to ensure they have greater access to affordable and secure housing. It also provides for reporting requirements in respect of the strategy. His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: Short Title Short title 1 This Act may be cited as the National Strategy on Housing for Young Canadians Act . Interpretation Definitions 2 The following definitions apply in this Act. Minister means the Minister designated under section 3. ( ministre ) young Canadian means a person in Canada who is at least 17 years of age but less than 35 years of age. ( jeune Canadien ) Designation of Minister Order 3 The Governor in Council may, by order, designate a member of the King’s Privy Council for Canada as the Minister for the purposes of this Act. National Strategy on Housing for Young Canadians National strategy 4 (1) The Minister, in consultation with representatives of provincial and territorial governments responsible for housing, organizations and communities providing housing services, municipalities, young Canadians, youth-serving organizations and other relevant stakeholders, must develop a national strategy on housing for young Canadians to ensure they have greater access to affordable and secure housing. Content (2) The strategy must provide an assessment of the current state of housing affordability and availability for young Canadians, including access to rental housing, student housing and entry-level home ownership, and must, among other things, include measures that can be taken to (a) improve access to affordable and secure rental housing; (b) support young Canadians seeking to purchase their first home; (c) promote the construction of rental housing, student housing, co-operative housing and housing that is affordable for first-time buyers; (d) encourage knowledge-sharing and coordination among federal, provincial and municipal partners; and (e) identify further ways to reduce barriers faced by young Canadians seeking affordable and secure housing. Considerations (3) The strategy must take into consideration (a) existing federal frameworks and strategies related to housing for young Canadians; and (b) relevant provincial, territorial and municipal housing initiatives. Conference (4) For the purpose of developing the strategy, the Minister must hold at least one conference with the persons referred to in subsection (1). Reports to Parliament Tabling of national strategy 5 (1) Within 18 months after the day on which this Act comes into force, the Minister must prepare a report setting out the national strategy and cause it to be tabled in each House of Parliament on any of the first 15 days on which that House is sitting after it is completed. Publication (2) The Minister must publish the report on a publicly available website within 10 days after it has been tabled in both Houses of Parliament. Report 6 (1) Within four years after the day on which the report referred to in section 5 has been tabled in both Houses of Parliament, the Minister must prepare a report on the effectiveness of the national strategy that also sets out the Minister’s conclusions and recommendations, and cause the report to be tabled in each House of Parliament on any of the first 15 days on which that House is sitting after it is completed. Publication (2) The Minister must publish the report on a publicly available website within 10 days after it has been tabled in both Houses of Parliament.",
+  "sections": [
+    {
+      "label": "1",
+      "type": null,
+      "marginalNote": "Short title",
+      "text": "Short title 1 This Act may be cited as the National Strategy on Housing for Young Canadians Act .",
+      "targetActs": [
+        "National Strategy on Housing for Young Canadians Act"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "2",
+      "type": null,
+      "marginalNote": "Definitions",
+      "text": "Definitions 2 The following definitions apply in this Act. Minister means the Minister designated under section 3. ( ministre ) young Canadian means a person in Canada who is at least 17 years of age but less than 35 years of age. ( jeune Canadien )",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "3",
+      "type": null,
+      "marginalNote": "Order",
+      "text": "Order 3 The Governor in Council may, by order, designate a member of the King’s Privy Council for Canada as the Minister for the purposes of this Act.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "4",
+      "type": null,
+      "marginalNote": "National strategy",
+      "text": "National strategy 4 (1) The Minister, in consultation with representatives of provincial and territorial governments responsible for housing, organizations and communities providing housing services, municipalities, young Canadians, youth-serving organizations and other relevant stakeholders, must develop a national strategy on housing for young Canadians to ensure they have greater access to affordable and secure housing. Content (2) The strategy must provide an assessment of the current state of housing affordability and availability for young Canadians, including access to rental housing, student housing and entry-level home ownership, and must, among other things, include measures that can be taken to (a) improve access to affordable and secure rental housing; (b) support young Canadians seeking to purchase their first home; (c) promote the construction of rental housing, student housing, co-operative housing and housing that is affordable for first-time buyers; (d) encourage knowledge-sharing and coordination among federal, provincial and municipal partners; and (e) identify further ways to reduce barriers faced by young Canadians seeking affordable and secure housing. Considerations (3) The strategy must take into consideration (a) existing federal frameworks and strategies related to housing for young Canadians; and (b) relevant provincial, territorial and municipal housing initiatives. Conference (4) For the purpose of developing the strategy, the Minister must hold at least one conference with the persons referred to in subsection (1).",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "5",
+      "type": null,
+      "marginalNote": "Tabling of national strategy",
+      "text": "Tabling of national strategy 5 (1) Within 18 months after the day on which this Act comes into force, the Minister must prepare a report setting out the national strategy and cause it to be tabled in each House of Parliament on any of the first 15 days on which that House is sitting after it is completed. Publication (2) The Minister must publish the report on a publicly available website within 10 days after it has been tabled in both Houses of Parliament.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "6",
+      "type": null,
+      "marginalNote": "Report",
+      "text": "Report 6 (1) Within four years after the day on which the report referred to in section 5 has been tabled in both Houses of Parliament, the Minister must prepare a report on the effectiveness of the national strategy that also sets out the Minister’s conclusions and recommendations, and cause the report to be tabled in each House of Parliament on any of the first 15 days on which that House is sitting after it is completed. Publication (2) The Minister must publish the report on a publicly available website within 10 days after it has been tabled in both Houses of Parliament.",
+      "targetActs": [],
+      "hasAmendedText": false
+    }
+  ]
+}

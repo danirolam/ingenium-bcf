@@ -12,6 +12,7 @@ import {
   faGavel,
   faLandmark,
   faScaleBalanced,
+  faUpRightFromSquare,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
@@ -219,11 +220,14 @@ function StageRow({ stage }: { stage: BillStageEntry }) {
   );
 }
 
+const CLAUSE_PREVIEW = 12;
+
 export function BillDetail({ nav }: { nav: Nav }) {
   const billId = nav.params.billId;
   const [bill, setBill] = useState<Bill | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [showAllClauses, setShowAllClauses] = useState(false);
 
   useEffect(() => {
     if (!billId) {
@@ -231,6 +235,7 @@ export function BillDetail({ nav }: { nav: Nav }) {
       return;
     }
     let cancelled = false;
+    setShowAllClauses(false);
     api.bills
       .get(billId)
       .then((b) => {
@@ -452,13 +457,41 @@ export function BillDetail({ nav }: { nav: Nav }) {
             <div className="bd-section-head">
               <FontAwesomeIcon icon={faFileLines} aria-hidden="true" />
               <h2>Bill text</h2>
+              <InfoHint
+                title="Bill text"
+                body="The enacting clauses of the latest published version, parsed from the official bill. Each clause shows its number, its marginal note, and the Acts it amends."
+              />
               <span className="bd-progress tnum">
                 {bill.clauses.length}{" "}
                 {bill.clauses.length === 1 ? "clause" : "clauses"}
               </span>
             </div>
+            {(bill.textStage || bill.textSourceUrl) && (
+              <div className="bd-text-meta">
+                {bill.textStage && (
+                  <span className="bd-text-stage">{bill.textStage}</span>
+                )}
+                {bill.textSourceUrl && (
+                  <a
+                    className="bd-text-src"
+                    href={bill.textSourceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <FontAwesomeIcon
+                      icon={faUpRightFromSquare}
+                      aria-hidden="true"
+                    />
+                    Official text
+                  </a>
+                )}
+              </div>
+            )}
             <div className="bd-clauses">
-              {bill.clauses.map((c) => (
+              {(showAllClauses
+                ? bill.clauses
+                : bill.clauses.slice(0, CLAUSE_PREVIEW)
+              ).map((c) => (
                 <article className="bd-clause" key={c.id}>
                   <div className="bd-clause-head">
                     {c.number && (
@@ -481,6 +514,17 @@ export function BillDetail({ nav }: { nav: Nav }) {
                 </article>
               ))}
             </div>
+            {bill.clauses.length > CLAUSE_PREVIEW && (
+              <button
+                type="button"
+                className="btn sm bd-clauses-toggle"
+                onClick={() => setShowAllClauses((v) => !v)}
+              >
+                {showAllClauses
+                  ? "Show fewer"
+                  : `Show all ${bill.clauses.length} clauses`}
+              </button>
+            )}
           </section>
         )}
 

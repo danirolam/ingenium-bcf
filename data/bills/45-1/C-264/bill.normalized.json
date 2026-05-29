@@ -1,0 +1,24 @@
+{
+  "session": "45-1",
+  "number": "C-264",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-264/C-264_1/C-264_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13962352",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to repeal certain restrictions on shipping",
+  "shortTitle": "",
+  "sponsor": "Mr. McKenzie",
+  "fullText": "C-264 1 45 3-4 Charles III 2025-2026 An Act to repeal certain restrictions on shipping An Act to repeal certain restrictions on shipping 2026 3 11 Mr. McKenzie 451151 SUMMARY This enactment repeals the Oil Tanker Moratorium Act . His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: 2019, c. 26 Oil Tanker Moratorium Act Repeal 1 The Oil Tanker Moratorium Act , chapter 26 of the Statutes of Canada, 2019, is repealed.",
+  "sections": [
+    {
+      "label": "1",
+      "type": "amending",
+      "marginalNote": "Repeal",
+      "text": "Repeal 1 The Oil Tanker Moratorium Act , chapter 26 of the Statutes of Canada, 2019, is repealed.",
+      "targetActs": [
+        "Oil Tanker Moratorium Act"
+      ],
+      "hasAmendedText": false
+    }
+  ]
+}

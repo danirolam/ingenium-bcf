@@ -1,0 +1,48 @@
+{
+  "session": "45-1",
+  "number": "C-257",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-257/C-257_1/C-257_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13744985",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to amend the Criminal Code (promotion of terrorist activity or group)",
+  "shortTitle": "",
+  "sponsor": "Mr. Baber",
+  "fullText": "C-257 1 45 3-4 Charles III 2025 An Act to amend the Criminal Code (promotion of terrorist activity or group) An Act to amend the Criminal Code (promotion of terrorist activity or group) 2025 11 17 Mr. Baber 451068 SUMMARY This enactment amends the Criminal Code to create an offence of wilfully promoting a terrorist activity or a terrorist group, or any activity of a terrorist group. His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: R.S., c. C-46 Criminal Code 1 Paragraph (a) of the definition terrorism offence in section 2 of the Criminal Code is replaced by the following: (a) an offence under any of sections 83.02 to 83.04 or 83.171 to 83.23, 2 The heading before section 83.18 of the Act is replaced by the following: Promoting , Participating, Facilitating, Instructing and Harbouring Wilful promotion of terrorist activity or terrorist group 83.171 (1) Every person who, by communicating statements, wilfully promotes any terrorist activity or terrorist group, or any activity of a terrorist group, is guilty of an indictable offence and liable to imprisonment for a term of not more than five years. Prosecution (2) An offence may be committed under subsection (1) whether or not the statements communicated by the accused (a) specifically or generally relate to a terrorist activity or terrorist group, or to an activity of a terrorist group; or (b) actually encouraged or instigated any person to participate in a terrorist activity or in an activity of a terrorist group. Defences (3) No person shall be convicted of an offence under subsection (1) if (a) they establish that the statements communicated were true; (b) in good faith, they expressed or attempted to establish by an argument an opinion on a religious subject or an opinion based on a belief in a religious text; (c) the statements were relevant to any subject of public interest, the discussion of which was for the public benefit, and they believe on reasonable grounds that the statements are true; or (d) in good faith, they intended to point out, for the purpose of removal, matters promoting or tending to promote a terrorist activity or terrorist group, or an activity of a terrorist group. Definitions (4) In this section, communicating and statements have the same meaning as in subsection 319(7). 3 The portion of section 83.26 of the Act before paragraph (a) is replaced by the following: Sentences to be served consecutively 83.26 A sentence, other than one of life imprisonment, imposed on a person for an offence under any of sections 83.02 to 83.04 and 83.171 to 83.23 shall be served consecutively to 4 Paragraph (a) of the definition offence in section 183 of the Act is amended by adding the following after subparagraph (xii.3): (xii.31) section 83.171 (wilful promotion of terrorist activity or terrorist group),",
+  "sections": [
+    {
+      "label": "1",
+      "type": "amending",
+      "marginalNote": "",
+      "text": "1 Paragraph (a) of the definition terrorism offence in section 2 of the Criminal Code is replaced by the following: (a) an offence under any of sections 83.02 to 83.04 or 83.171 to 83.23,",
+      "targetActs": [
+        "Criminal Code"
+      ],
+      "hasAmendedText": true
+    },
+    {
+      "label": "2",
+      "type": "amending",
+      "marginalNote": "Wilful promotion of terrorist activity or terrorist group",
+      "text": "2 The heading before section 83.18 of the Act is replaced by the following: Promoting , Participating, Facilitating, Instructing and Harbouring Wilful promotion of terrorist activity or terrorist group 83.171 (1) Every person who, by communicating statements, wilfully promotes any terrorist activity or terrorist group, or any activity of a terrorist group, is guilty of an indictable offence and liable to imprisonment for a term of not more than five years. Prosecution (2) An offence may be committed under subsection (1) whether or not the statements communicated by the accused (a) specifically or generally relate to a terrorist activity or terrorist group, or to an activity of a terrorist group; or (b) actually encouraged or instigated any person to participate in a terrorist activity or in an activity of a terrorist group. Defences (3) No person shall be convicted of an offence under subsection (1) if (a) they establish that the statements communicated were true; (b) in good faith, they expressed or attempted to establish by an argument an opinion on a religious subject or an opinion based on a belief in a religious text; (c) the statements were relevant to any subject of public interest, the discussion of which was for the public benefit, and they believe on reasonable grounds that the statements are true; or (d) in good faith, they intended to point out, for the purpose of removal, matters promoting or tending to promote a terrorist activity or terrorist group, or an activity of a terrorist group. Definitions (4) In this section, communicating and statements have the same meaning as in subsection 319(7).",
+      "targetActs": [],
+      "hasAmendedText": true
+    },
+    {
+      "label": "3",
+      "type": "amending",
+      "marginalNote": "Sentences to be served consecutively",
+      "text": "3 The portion of section 83.26 of the Act before paragraph (a) is replaced by the following: Sentences to be served consecutively 83.26 A sentence, other than one of life imprisonment, imposed on a person for an offence under any of sections 83.02 to 83.04 and 83.171 to 83.23 shall be served consecutively to",
+      "targetActs": [],
+      "hasAmendedText": true
+    },
+    {
+      "label": "4",
+      "type": "amending",
+      "marginalNote": "",
+      "text": "4 Paragraph (a) of the definition offence in section 183 of the Act is amended by adding the following after subparagraph (xii.3): (xii.31) section 83.171 (wilful promotion of terrorist activity or terrorist group),",
+      "targetActs": [],
+      "hasAmendedText": true
+    }
+  ]
+}

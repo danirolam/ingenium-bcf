@@ -1,0 +1,56 @@
+{
+  "session": "45-1",
+  "number": "C-226",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-226/C-226_1/C-226_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13592715",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to establish a national framework to improve food price transparency",
+  "shortTitle": "National Framework for Food Price Transparency Act",
+  "sponsor": "Mr. Saini",
+  "fullText": "C-226 1 45 3-4 Charles III 2025 An Act to establish a national framework to improve food price transparency National Framework for Food Price Transparency Act National Framework for Food Price Transparency Act 2025 9 18 Mr. Saini 451073 SUMMARY This enactment provides for the development of a national framework respecting grocery pricing and unit price display practices. It also sets out reporting requirements in relation to the framework. His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: Short Title Short title 1 This Act may be cited as the National Framework for Food Price Transparency Act . Interpretation Definition of Minister 2 In this Act, Minister means the Minister of Industry. National Framework to Improve Food Price Transparency Development 3 (1) The Minister must, in consultation with the representatives of the provincial governments responsible for consumer affairs, develop a national framework respecting grocery pricing and unit price display practices to assist consumers in making informed decisions when purchasing food and other household goods. Content (2) The framework must include measures (a) to establish national standards for the grocery retail sector respecting (i) unit pricing for food and other household goods, including the accuracy, usability and accessibility of unit price displays for consumers, and (ii) transparency regarding price increases, adjustments and fluctuations; and (b) to promote unit pricing education to consumers across Canada, including what unit prices are and how they are used. Reports to Parliament Report 4 (1) Within 18 months after the day on which this Act comes into force, the Minister must prepare a report setting out the framework. Tabling of report (2) The Minister must cause the report to be tabled in each House of Parliament on any of the first 15 days on which that House is sitting after the report is completed. Publication (3) The Minister must publish the report on the website of the Department of Industry within 10 days after the day on which the report is tabled in both Houses of Parliament. Review and report 5 (1) Within five years after the day on which the report referred to in subsection 4(1) is tabled in both Houses of Parliament, the Minister must, in consultation with the parties referred to in subsection 3(1), undertake a review of the implementation and effectiveness of the framework and prepare a report that sets out the conclusions and recommendations resulting from that review. Tabling of report (2) The Minister must cause the report to be tabled in each House of Parliament on any of the first 15 days on which that House is sitting after the report is completed. Publication (3) The Minister must publish the report on the website of the Department of Industry within 10 days after the day on which the report is tabled in both Houses of Parliament.",
+  "sections": [
+    {
+      "label": "1",
+      "type": null,
+      "marginalNote": "Short title",
+      "text": "Short title 1 This Act may be cited as the National Framework for Food Price Transparency Act .",
+      "targetActs": [
+        "National Framework for Food Price Transparency Act"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "2",
+      "type": null,
+      "marginalNote": "Definition of Minister",
+      "text": "Definition of Minister 2 In this Act, Minister means the Minister of Industry.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "3",
+      "type": null,
+      "marginalNote": "Development",
+      "text": "Development 3 (1) The Minister must, in consultation with the representatives of the provincial governments responsible for consumer affairs, develop a national framework respecting grocery pricing and unit price display practices to assist consumers in making informed decisions when purchasing food and other household goods. Content (2) The framework must include measures (a) to establish national standards for the grocery retail sector respecting (i) unit pricing for food and other household goods, including the accuracy, usability and accessibility of unit price displays for consumers, and (ii) transparency regarding price increases, adjustments and fluctuations; and (b) to promote unit pricing education to consumers across Canada, including what unit prices are and how they are used.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "4",
+      "type": null,
+      "marginalNote": "Report",
+      "text": "Report 4 (1) Within 18 months after the day on which this Act comes into force, the Minister must prepare a report setting out the framework. Tabling of report (2) The Minister must cause the report to be tabled in each House of Parliament on any of the first 15 days on which that House is sitting after the report is completed. Publication (3) The Minister must publish the report on the website of the Department of Industry within 10 days after the day on which the report is tabled in both Houses of Parliament.",
+      "targetActs": [],
+      "hasAmendedText": false
+    },
+    {
+      "label": "5",
+      "type": null,
+      "marginalNote": "Review and report",
+      "text": "Review and report 5 (1) Within five years after the day on which the report referred to in subsection 4(1) is tabled in both Houses of Parliament, the Minister must, in consultation with the parties referred to in subsection 3(1), undertake a review of the implementation and effectiveness of the framework and prepare a report that sets out the conclusions and recommendations resulting from that review. Tabling of report (2) The Minister must cause the report to be tabled in each House of Parliament on any of the first 15 days on which that House is sitting after the report is completed. Publication (3) The Minister must publish the report on the website of the Department of Industry within 10 days after the day on which the report is tabled in both Houses of Parliament.",
+      "targetActs": [],
+      "hasAmendedText": false
+    }
+  ]
+}

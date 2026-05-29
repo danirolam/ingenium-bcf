@@ -1,0 +1,32 @@
+{
+  "session": "45-1",
+  "number": "C-209",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-209/C-209_1/C-209_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13559231",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to establish Albanian Heritage Month",
+  "shortTitle": "",
+  "sponsor": "Mr. Baker",
+  "fullText": "C-209 1 45 3 Charles III 2025 An Act to establish Albanian Heritage Month Albanian Heritage Month Act 2025 6 12 Mr. Baker 451028 SUMMARY This enactment designates the month of November as “Albanian Heritage Month”. Preamble Whereas Canada’s strength is reflected in the diversity of its population and of its local communities; Whereas Canada is home to many Albanian Canadians; Whereas Albanian Canadians have left and continue to leave a historic mark on Canada, with contributions that span communities across the country and are reflected in Canada’s economic, political, social and cultural life; Whereas Parliament wishes to recognize that Albanian Canadians have made and continue to make significant contributions to Canada, and wishes to better inform Canadians about those contributions by recognizing and celebrating them; Whereas November is a significant month for the Albanian community as Albanian Canadians celebrate Albania’s Declaration of Independence, which declared Albania an independent sovereign nation on November 28th, 1912; And whereas, in November, Albania also celebrates Liberation Day, which commemorates its liberation from Nazi forces on November 29th, 1944, following the Albanian resistance; Now, therefore, His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: Short Title Short title 1 This Act may be cited as the Albanian Heritage Month Act . Albanian Heritage Month Albanian Heritage Month 2 Throughout Canada, in each year, the month of November is to be known as “Albanian Heritage Month”.",
+  "sections": [
+    {
+      "label": "1",
+      "type": null,
+      "marginalNote": "Short title",
+      "text": "Short title 1 This Act may be cited as the Albanian Heritage Month Act .",
+      "targetActs": [
+        "Albanian Heritage Month Act"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "2",
+      "type": null,
+      "marginalNote": "Albanian Heritage Month",
+      "text": "Albanian Heritage Month 2 Throughout Canada, in each year, the month of November is to be known as “Albanian Heritage Month”.",
+      "targetActs": [],
+      "hasAmendedText": false
+    }
+  ]
+}

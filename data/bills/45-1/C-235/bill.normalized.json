@@ -1,0 +1,50 @@
+{
+  "session": "45-1",
+  "number": "C-235",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/C-235/C-235_1/C-235_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13599324",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to amend the Criminal Code (increasing parole ineligibility)",
+  "shortTitle": "",
+  "sponsor": "Mr. Kibble",
+  "fullText": "C-235 1 45 3-4 Charles III 2025 An Act to amend the Criminal Code (increasing parole ineligibility) Respecting Families of Murdered and Brutalized Persons Act 2025 9 22 Mr. Kibble 451099 SUMMARY This enactment amends the Criminal Code to provide that a person convicted of the abduction, sexual assault and murder of the same victim in respect of the same event or series of events is to be sentenced to imprisonment for life without eligibility for parole until the person has served a sentence of between twenty-five and forty years, as determined by the presiding judge after considering the recommendation, if any, of the jury. His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: Short Title Short title 1 This Act may be cited as the Respecting Families of Murdered and Brutalized Persons Act . R.S., c. C-46 Criminal Code 2 Section 745 of the Criminal Code is amended by adding the following after paragraph (a): (a.1) in respect of an accused who has been convicted — in respect of the same victim and the same event or series of events — of an offence under section 151 to 153.1 or 271 to 273, an offence under section 279 or 280 to 283, and murder, that the accused be sentenced to imprisonment for life without eligibility for parole until the accused has served at least twenty-five years of the sentence or until the period referred to under section 745.52 has expired; 3 The Act is amended by adding the following after section 745.21: Recommendation by jury 745.22 When a jury finds an accused referred to in paragraph 745(a.1) guilty, the judge presiding at the trial shall, before discharging the jury, put to them the following question: You have found the accused guilty of ( state offences ) and the law requires that I now pronounce a sentence of imprisonment for life against the accused. Do you wish to make any recommendation with respect to the number of years that the accused must serve before the accused is eligible for release on parole? You are not required to make any recommendation but if you do, your recommendation will be considered by me when I am determining whether I should substitute for the twenty-five year period, which the law would otherwise require the accused to serve before the accused is eligible to be considered for release on parole, a number of years that is more than twenty -five but not more than forty. 4 The Act is amended by adding the following after section 745.51: Ineligibility for parole 745.52 At the time of the sentencing under section 745 of an accused referred to in paragraph 745(a.1), the judge who presided at the trial of the accused or, if that judge is unable to do so, any judge of the same court may, having regard to the character of the accused, the nature of the offences and the circumstances surrounding their commission, and to the recommendation, if any, made under section 745.22, by order, substitute for twenty-five years a number of years of imprisonment that is more than twenty-five but not more than forty without eligibility for parole, as the judge deems fit in the circumstances.",
+  "sections": [
+    {
+      "label": "1",
+      "type": null,
+      "marginalNote": "Short title",
+      "text": "Short title 1 This Act may be cited as the Respecting Families of Murdered and Brutalized Persons Act .",
+      "targetActs": [
+        "Respecting Families of Murdered and Brutalized Persons Act"
+      ],
+      "hasAmendedText": false
+    },
+    {
+      "label": "2",
+      "type": "amending",
+      "marginalNote": "",
+      "text": "2 Section 745 of the Criminal Code is amended by adding the following after paragraph (a): (a.1) in respect of an accused who has been convicted — in respect of the same victim and the same event or series of events — of an offence under section 151 to 153.1 or 271 to 273, an offence under section 279 or 280 to 283, and murder, that the accused be sentenced to imprisonment for life without eligibility for parole until the accused has served at least twenty-five years of the sentence or until the period referred to under section 745.52 has expired;",
+      "targetActs": [
+        "Criminal Code"
+      ],
+      "hasAmendedText": true
+    },
+    {
+      "label": "3",
+      "type": "amending",
+      "marginalNote": "Recommendation by jury",
+      "text": "3 The Act is amended by adding the following after section 745.21: Recommendation by jury 745.22 When a jury finds an accused referred to in paragraph 745(a.1) guilty, the judge presiding at the trial shall, before discharging the jury, put to them the following question: You have found the accused guilty of ( state offences ) and the law requires that I now pronounce a sentence of imprisonment for life against the accused. Do you wish to make any recommendation with respect to the number of years that the accused must serve before the accused is eligible for release on parole? You are not required to make any recommendation but if you do, your recommendation will be considered by me when I am determining whether I should substitute for the twenty-five year period, which the law would otherwise require the accused to serve before the accused is eligible to be considered for release on parole, a number of years that is more than twenty -five but not more than forty.",
+      "targetActs": [],
+      "hasAmendedText": true
+    },
+    {
+      "label": "4",
+      "type": "amending",
+      "marginalNote": "Ineligibility for parole",
+      "text": "4 The Act is amended by adding the following after section 745.51: Ineligibility for parole 745.52 At the time of the sentencing under section 745 of an accused referred to in paragraph 745(a.1), the judge who presided at the trial of the accused or, if that judge is unable to do so, any judge of the same court may, having regard to the character of the accused, the nature of the offences and the circumstances surrounding their commission, and to the recommendation, if any, made under section 745.22, by order, substitute for twenty-five years a number of years of imprisonment that is more than twenty-five but not more than forty without eligibility for parole, as the judge deems fit in the circumstances.",
+      "targetActs": [],
+      "hasAmendedText": true
+    }
+  ]
+}

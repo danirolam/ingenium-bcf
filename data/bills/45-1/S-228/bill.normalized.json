@@ -1,0 +1,24 @@
+{
+  "session": "45-1",
+  "number": "S-228",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/S-228/S-228_3/S-228_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13624375",
+  "publicationType": "As passed by the Senate",
+  "stage": "As passed by the Senate",
+  "title": "An Act to amend the Criminal Code (sterilization procedures)",
+  "shortTitle": "",
+  "sponsor": "",
+  "fullText": "S-228 1 45 3-4 Charles III 2025 An Act to amend the Criminal Code (sterilization procedures) An Act to amend the Criminal Code (sterilization procedures) 2025 10 2 4512137 SUMMARY This enactment amends the Criminal Code to clarify that a sterilization procedure is an act that wounds or maims a person for the purposes of subsection 268(1). Preamble Whereas the sterilization of persons without their consent is a legacy of systemic discrimination, colonization and racism that disproportionally, but not exclusively, affects Indigenous and racialized persons; Now, therefore, His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: R.S., c. C-46 Criminal Code 1 The Criminal Code is amended by adding the following after section 268: Sterilization 268.1 (1) For greater certainty, a sterilization procedure is an act that wounds or maims a person for the purposes of subsection 268(1). Definition of sterilization procedure (2) In this section, sterilization procedure means the severing, clipping, tying or cauterizing, in whole or in part, of the Fallopian tubes, ovaries or uterus of a person or any other procedure performed on a person that results in the permanent prevention of reproduction, regardless of whether the procedure is reversible through a subsequent surgical procedure.",
+  "sections": [
+    {
+      "label": "1",
+      "type": "amending",
+      "marginalNote": "Sterilization",
+      "text": "1 The Criminal Code is amended by adding the following after section 268: Sterilization 268.1 (1) For greater certainty, a sterilization procedure is an act that wounds or maims a person for the purposes of subsection 268(1). Definition of sterilization procedure (2) In this section, sterilization procedure means the severing, clipping, tying or cauterizing, in whole or in part, of the Fallopian tubes, ovaries or uterus of a person or any other procedure performed on a person that results in the permanent prevention of reproduction, regardless of whether the procedure is reversible through a subsequent surgical procedure.",
+      "targetActs": [
+        "Criminal Code"
+      ],
+      "hasAmendedText": true
+    }
+  ]
+}

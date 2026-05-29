@@ -1,0 +1,25 @@
+{
+  "session": "45-1",
+  "number": "S-240",
+  "sourceUrl": "https://www.parl.ca/Content/Bills/451/Private/S-240/S-240_1/S-240_E.xml",
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/13726742",
+  "publicationType": "First Reading",
+  "stage": "First Reading",
+  "title": "An Act to amend the Criminal Code (declaration of exception pursuant to subsection 33(1) of the Charter for mandatory minimum sentences for child sexual abuse and exploitation material offences)",
+  "shortTitle": "",
+  "sponsor": "Senator HOUSAKOS",
+  "fullText": "S-240 1 45 3-4 Charles III 2025 An Act to amend the Criminal Code (declaration of exception pursuant to subsection 33(1) of the Charter for mandatory minimum sentences for child sexual abuse and exploitation material offences) An Act to amend the Criminal Code (declaration of exception pursuant to subsection 33(1) of the Charter for mandatory minimum sentences for child sexual abuse and exploitation material offences) 2025 11 5 Senator HOUSAKOS 4512523 SUMMARY This enactment amends section 163.1 of the Criminal Code to declare that paragraphs 163.1(4)(a) and 163.1(4.1)(a) — which include mandatory minimum sentences for the offences of possession of child sexual abuse and exploitation material and accessing child sexual abuse and exploitation material, respectively — operate notwithstanding section 12 of the Canadian Charter of Rights and Freedoms . His Majesty, by and with the advice and consent of the Senate and House of Commons of Canada, enacts as follows: R.S., c. C-46 Criminal Code 1 Section 163.1 of the Criminal Code is amended by adding the following after subsection (4.1): Declaration of exception (4.11) Pursuant to subsection 33(1) of the Canadian Charter of Rights and Freedoms , paragraphs 163.1(4)(a) and 163.1(4.1)(a) of this Act are declared to operate notwithstanding section 12 of the Canadian Charter of Rights and Freedoms .",
+  "sections": [
+    {
+      "label": "1",
+      "type": "amending",
+      "marginalNote": "Declaration of exception",
+      "text": "1 Section 163.1 of the Criminal Code is amended by adding the following after subsection (4.1): Declaration of exception (4.11) Pursuant to subsection 33(1) of the Canadian Charter of Rights and Freedoms , paragraphs 163.1(4)(a) and 163.1(4.1)(a) of this Act are declared to operate notwithstanding section 12 of the Canadian Charter of Rights and Freedoms .",
+      "targetActs": [
+        "Criminal Code",
+        "Canadian Charter of Rights and Freedoms"
+      ],
+      "hasAmendedText": true
+    }
+  ]
+}
