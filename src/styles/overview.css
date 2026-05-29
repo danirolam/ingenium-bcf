@@ -1,0 +1,368 @@
+/* Workspace overview — the command center. A dense map of the four-stage
+   pipeline with live counts and one-click entry, plus an actionable mover list
+   and a portfolio breakdown. This is the answer to "what does it do and where
+   do I start". */
+
+.ov-body {
+  padding-bottom: 48px;
+}
+.ov-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 2px 0 26px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.ov-meta-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--border-2);
+}
+
+.ov-sec {
+  margin-bottom: 30px;
+}
+.ov-sec-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.ov-sec-head h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.ov-sec-note {
+  margin-left: auto;
+  font-size: 11.5px;
+  color: var(--ink-4);
+}
+.ov-seeall {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: var(--accent-warm);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ov-seeall:hover {
+  text-decoration: underline;
+}
+.ov-seeall svg {
+  font-size: 10px;
+}
+
+/* ── Pipeline map ── */
+.ov-pipe {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+.ov-pipe-arrow {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  color: var(--border-2);
+  font-size: 13px;
+}
+.ov-stage {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  text-align: left;
+  padding: 16px 16px 14px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+.ov-stage:hover {
+  border-color: var(--accent-warm);
+  background: var(--panel-2);
+}
+.ov-stage:focus-visible {
+  outline: 2px solid var(--accent-warm);
+  outline-offset: 2px;
+}
+.ov-stage-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.ov-stage-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-4);
+  border: 1px solid var(--border-2);
+  border-radius: 6px;
+  padding: 2px 7px;
+}
+.ov-stage-icon {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--accent-warm-soft);
+  color: var(--accent-warm);
+  font-size: 13px;
+}
+.ov-stage-metric {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin-bottom: 10px;
+}
+.ov-stage-value {
+  font-size: 30px;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  line-height: 1;
+}
+.ov-stage-unit {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.ov-stage-name {
+  font-size: 14px;
+  font-weight: 680;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.ov-stage-purpose {
+  margin-top: 3px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink-3);
+}
+.ov-stage-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.ov-stage-sub {
+  font-size: 11px;
+  color: var(--ink-4);
+}
+.ov-stage-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--accent-warm);
+}
+.ov-stage-cta svg {
+  font-size: 10px;
+  transition: transform 0.15s ease;
+}
+.ov-stage:hover .ov-stage-cta svg {
+  transform: translateX(3px);
+}
+
+/* ── Secondary panels ── */
+.ov-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 16px;
+}
+.ov-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px 18px;
+}
+.ov-panel .ov-sec-head {
+  margin-bottom: 14px;
+}
+
+.ov-loading {
+  padding: 24px 0;
+  text-align: center;
+  color: var(--ink-4);
+  font-size: 13px;
+}
+
+/* Movers table */
+.ov-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.ov-table tr {
+  cursor: pointer;
+  border-top: 1px solid var(--border-3);
+}
+.ov-table tr:first-child {
+  border-top: none;
+}
+.ov-table tr:hover {
+  background: var(--panel-2);
+}
+.ov-table td {
+  padding: 10px 8px;
+  font-size: 13px;
+  vertical-align: middle;
+}
+.ov-t-bill {
+  width: 64px;
+  font-weight: 600;
+  color: var(--accent-warm);
+}
+.ov-t-title {
+  color: var(--ink-2);
+  max-width: 0;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ov-t-mom {
+  width: 1%;
+  white-space: nowrap;
+}
+.ov-t-arrow {
+  width: 22px;
+  color: var(--ink-4);
+  text-align: right;
+  font-size: 11px;
+}
+.ov-table tr:hover .ov-t-arrow {
+  color: var(--ink-2);
+}
+
+/* Portfolio bars */
+.ov-block-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin: 4px 0 10px;
+}
+.ov-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-bottom: 18px;
+}
+.ov-bar-row {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) 28px;
+  align-items: center;
+  gap: 10px;
+}
+.ov-bar-label {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.ov-bar-track {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--panel-3);
+  overflow: hidden;
+}
+.ov-bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: var(--ink-4);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.ov-bar-fill.momentum-early {
+  background: var(--low);
+}
+.ov-bar-fill.momentum-active {
+  background: var(--med);
+}
+.ov-bar-fill.momentum-advanced {
+  background: var(--high);
+}
+.ov-bar-fill.momentum-passed {
+  background: var(--ok);
+}
+.ov-bar-fill.momentum-in_force {
+  background: var(--accent-2);
+}
+.ov-bar-count {
+  font-size: 12px;
+  color: var(--ink-2);
+  text-align: right;
+}
+
+/* Practice groups */
+.ov-prac {
+  display: flex;
+  flex-direction: column;
+}
+.ov-prac-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 0;
+  border-top: 1px solid var(--border-3);
+  background: transparent;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  cursor: pointer;
+  text-align: left;
+}
+.ov-prac-row:first-child {
+  border-top: none;
+}
+.ov-prac-name {
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+.ov-prac-row:hover .ov-prac-name {
+  color: var(--ink);
+}
+.ov-prac-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-4);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1080px) {
+  .ov-pipe {
+    flex-direction: column;
+  }
+  .ov-pipe-arrow {
+    width: auto;
+    height: 28px;
+    transform: rotate(90deg);
+  }
+  .ov-cols {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .ov-meta {
+    flex-wrap: wrap;
+  }
+}

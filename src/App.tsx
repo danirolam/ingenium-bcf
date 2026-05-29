@@ -2,13 +2,20 @@ import { useCallback, useState } from "react";
 import { Layout } from "./components/Layout";
 import { Toast } from "./components/Toast";
 import { Landing } from "./pages/Landing";
+import { Overview } from "./pages/Overview";
 import { BillMonitor } from "./pages/BillMonitor";
 import { BillDetail } from "./pages/BillDetail";
 import { ClientImpactAnalysisPage } from "./pages/ClientImpactAnalysis";
 import { ClientLawScanner } from "./pages/ClientLawScanner";
 import { DeltaWorkspace } from "./pages/DeltaWorkspace";
 
-export type PageId = "monitor" | "bill" | "delta" | "scanner" | "impact";
+export type PageId =
+  | "overview"
+  | "monitor"
+  | "bill"
+  | "delta"
+  | "scanner"
+  | "impact";
 type Surface = "landing" | "app";
 
 export type Nav = {
@@ -25,12 +32,14 @@ export default function App() {
       ? "app"
       : "landing",
   );
-  const [page, setPage] = useState<PageId>("monitor");
+  const [page, setPage] = useState<PageId>("overview");
   const [params, setParams] = useState<Record<string, string>>({});
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
   const enterApp = useCallback(() => {
     setSurface("app");
+    setPage("overview");
+    setParams({});
     if (typeof window !== "undefined") window.location.hash = "#/app";
   }, []);
 
@@ -59,7 +68,8 @@ export default function App() {
   const nav: Nav = { go, page, params, toast: setToastMsg };
 
   let view;
-  if (page === "monitor") view = <BillMonitor nav={nav} />;
+  if (page === "overview") view = <Overview nav={nav} />;
+  else if (page === "monitor") view = <BillMonitor nav={nav} />;
   else if (page === "bill") view = <BillDetail nav={nav} />;
   else if (page === "delta") view = <DeltaWorkspace nav={nav} />;
   else if (page === "scanner") view = <ClientLawScanner nav={nav} />;
