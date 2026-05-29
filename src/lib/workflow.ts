@@ -75,6 +75,8 @@ export function activeStepId(page: string): StepId {
 }
 
 export function activeStepIndex(page: string): number {
+  // The overview is the workspace home, not a pipeline stage, so nothing lights.
+  if (page === "overview") return -1;
   const id = activeStepId(page);
   return WORKFLOW_STEPS.findIndex((s) => s.id === id);
 }

@@ -59,7 +59,20 @@ export function WorkflowNav({
           className="shell-crumb-sep"
           aria-hidden="true"
         />
-        <span className="shell-crumb">Legislative workspace</span>
+        <Tooltip
+          title="Workspace overview"
+          body="The command center — pipeline status and where to start."
+          placement="bottom"
+        >
+          <button
+            type="button"
+            className={`shell-crumb${page === "overview" ? " is-current" : ""}`}
+            onClick={() => setPage("overview")}
+            aria-current={page === "overview" ? "page" : undefined}
+          >
+            Legislative workspace
+          </button>
+        </Tooltip>
       </div>
 
       <nav className="shell-flow" aria-label="Workflow stages">
