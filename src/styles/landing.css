@@ -45,33 +45,30 @@
   }
 }
 
-/* Staggered blur reveal (hero lines) */
+/* Staggered reveal (hero lines) — transform/blur ONLY, no opacity, so content
+   is never left invisible if the animation is paused or disabled. */
 @keyframes blur-reveal {
   from {
-    opacity: 0;
-    transform: translateY(12px);
-    filter: blur(8px);
+    transform: translateY(14px);
+    filter: blur(7px);
   }
   to {
-    opacity: 1;
     transform: translateY(0);
     filter: blur(0);
   }
 }
 .stagger-reveal {
-  animation: blur-reveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  opacity: 0;
+  animation: blur-reveal 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Per-character reveal (replaces terra's framer-motion AnimatedText) */
+/* Per-character reveal (CSS replacement for terra's framer-motion text) —
+   transform/blur only, never opacity. */
 @keyframes char-in {
   from {
-    opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(18px);
     filter: blur(8px);
   }
   to {
-    opacity: 1;
     transform: translateY(0);
     filter: blur(0);
   }
@@ -141,4 +138,17 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* If motion is reduced, everything is shown immediately — never hidden. */
+@media (prefers-reduced-motion: reduce) {
+  .lp .stagger-reveal,
+  .lp .lp-char,
+  .lp .animate-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
 }

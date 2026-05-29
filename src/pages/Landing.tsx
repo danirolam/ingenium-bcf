@@ -128,9 +128,16 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
       { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
     );
     document.querySelectorAll(".animate-on-scroll").forEach((el) => obsRef.current?.observe(el));
+    // Safety net: never leave a section hidden if the observer doesn't fire.
+    const safety = window.setTimeout(() => {
+      document
+        .querySelectorAll(".animate-on-scroll")
+        .forEach((el) => el.classList.add("animate-in"));
+    }, 1800);
     return () => {
       window.removeEventListener("scroll", onScroll);
       clearInterval(t);
+      clearTimeout(safety);
       obsRef.current?.disconnect();
     };
   }, []);
@@ -204,8 +211,8 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
 
       {/* HERO */}
       <section
-        className={`hero-section relative min-h-screen flex flex-col items-center justify-center px-4 pt-28 pb-16 transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${
-          isLoaded ? "scale-100 opacity-100" : "scale-[1.03] opacity-0"
+        className={`hero-section relative min-h-screen flex flex-col items-center justify-center px-4 pt-28 pb-16 transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${
+          isLoaded ? "scale-100" : "scale-[1.02]"
         }`}
         style={{
           backgroundImage: "url('/hero-landscape.png')",
