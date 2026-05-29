@@ -416,11 +416,11 @@
         "ChamberOrganizationId": 1,
         "ParliamentNumber": 45,
         "SessionNumber": 1,
-        "State": 2,
-        "StateNameEn": "No activity",
-        "StateNameFr": "Aucune activité",
+        "State": 3,
+        "StateNameEn": "In progress",
+        "StateNameFr": "En cours",
         "StateAsOfDate": null,
-        "StateName": "No activity",
+        "StateName": "In progress",
         "Committee": {
           "BillDocumentId": 0,
           "CommitteeOrganizationId": 30576,
@@ -438,11 +438,30 @@
         },
         "Sittings": [],
         "Decisions": [],
-        "CommitteeMeetings": [],
+        "CommitteeMeetings": [
+          {
+            "CommitteeOrganizationId": 30576,
+            "CommitteeNameEn": "Standing Committee on Public Safety and National Security",
+            "CommitteeNameFr": "Comité permanent de la sécurité publique et nationale",
+            "CommitteeAcronym": "SECU",
+            "Number": "36",
+            "Date": "2026-05-05T00:00:00",
+            "CommitteeName": "Standing Committee on Public Safety and National Security"
+          },
+          {
+            "CommitteeOrganizationId": 30576,
+            "CommitteeNameEn": "Standing Committee on Public Safety and National Security",
+            "CommitteeNameFr": "Comité permanent de la sécurité publique et nationale",
+            "CommitteeAcronym": "SECU",
+            "Number": "37",
+            "Date": "2026-05-07T00:00:00",
+            "CommitteeName": "Standing Committee on Public Safety and National Security"
+          }
+        ],
         "SignificantEvents": [],
         "EndOfStageEvent": null,
-        "StageEventCount": 0,
-        "LastStageEventStartDateTime": null,
+        "StageEventCount": 1,
+        "LastStageEventStartDateTime": "2026-05-07T15:35:03",
         "Speeches": null,
         "ContainsReferralToCommitteeEvent": false,
         "ContainsRecommittalOfBillEvent": false

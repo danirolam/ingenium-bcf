@@ -1,0 +1,313 @@
+/* ───────── Workspace shell: top workflow rail ─────────
+   Replaces the old left sidebar. The product is a four-stage pipeline
+   (Monitor → Legal delta → Client scan → Client brief); the rail makes that
+   sequence the primary navigation so the workspace reads as a process, not a
+   set of interchangeable menu items. */
+
+.shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.shell-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  height: 68px;
+  padding: 0 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0)),
+    var(--sidebar);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 0 rgba(1, 4, 9, 0.5), 0 10px 30px -24px rgba(1, 4, 9, 0.9);
+}
+
+/* ── Brand (clickable: returns to the overview) ── */
+.shell-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  padding: 0;
+  flex: none;
+}
+.shell-mark {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, var(--accent-2), var(--accent-warm));
+  position: relative;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  flex: none;
+}
+.shell-mark::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 3px;
+  background: var(--sidebar);
+}
+.shell-brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.12;
+  text-align: left;
+}
+.shell-name {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+.shell-sub {
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--ink-3);
+}
+
+/* ── The pipeline ── */
+.shell-flow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+  padding: 0 20px;
+}
+.shell-flow::before,
+.shell-flow::after {
+  content: "";
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  width: 1px;
+  background: var(--border);
+}
+.shell-flow::before {
+  left: 0;
+}
+.shell-flow::after {
+  right: 0;
+}
+
+.shell-step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 14px 11px;
+  border-radius: 9px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: var(--ink-3);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.shell-step:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.shell-step:focus-visible {
+  outline: 2px solid var(--accent-warm);
+  outline-offset: 1px;
+}
+
+.shell-step-num {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  border: 1px solid var(--border-2);
+  background: var(--panel);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-3);
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.shell-step-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.shell-step-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.shell-step-label svg {
+  font-size: 11px;
+  color: var(--ink-4);
+  transition: color 0.18s ease;
+}
+.shell-step-desc {
+  font-size: 11px;
+  color: var(--ink-4);
+  white-space: nowrap;
+}
+
+/* Completed stages: accent numerals, the connector reads as travelled. */
+.shell-step.is-done .shell-step-num {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent-2);
+}
+.shell-step.is-done .shell-step-label {
+  color: var(--ink-2);
+}
+
+/* Active stage: filled chip + bright label + underline. */
+.shell-step.is-active {
+  color: var(--ink);
+}
+.shell-step.is-active .shell-step-num {
+  background: var(--accent);
+  border-color: var(--accent-2);
+  color: #fff;
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+.shell-step.is-active .shell-step-label {
+  color: var(--ink);
+}
+.shell-step.is-active .shell-step-label svg {
+  color: var(--accent-2);
+}
+.shell-step.is-active::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 3px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+
+/* ── Identity ── */
+.shell-id {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: none;
+}
+.shell-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.shell-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  background: linear-gradient(135deg, var(--panel-2), var(--panel-3));
+  border: 1px solid var(--border-2);
+  flex: none;
+}
+.shell-user-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.shell-user-name {
+  font-size: 12.5px;
+  font-weight: 650;
+  color: var(--ink-2);
+}
+.shell-user-role {
+  font-size: 10.5px;
+  color: var(--ink-4);
+}
+.shell-exit {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--ink-3);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  flex: none;
+}
+.shell-exit:hover {
+  background: var(--panel-2);
+  border-color: var(--border-2);
+  color: var(--ink);
+}
+
+/* ── Main surface ── */
+.shell-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1280px) {
+  .shell-step-desc {
+    display: none;
+  }
+  .shell-step {
+    padding: 9px 12px;
+  }
+}
+@media (max-width: 1040px) {
+  .shell-sub {
+    display: none;
+  }
+  .shell-user-text {
+    display: none;
+  }
+  .shell-bar {
+    gap: 14px;
+  }
+  .shell-flow {
+    padding: 0 14px;
+    gap: 2px;
+  }
+}
+@media (max-width: 760px) {
+  .shell-flow::before,
+  .shell-flow::after {
+    display: none;
+  }
+  .shell-flow {
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 0 8px;
+  }
+  .shell-flow::-webkit-scrollbar {
+    display: none;
+  }
+  .shell-step-label {
+    font-size: 12px;
+  }
+}

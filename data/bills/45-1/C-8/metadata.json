@@ -957,12 +957,21 @@
             "Number": "19",
             "Date": "2026-05-04T00:00:00",
             "CommitteeName": "Standing Senate Committee on National Security, Defence and Veterans Affairs"
+          },
+          {
+            "CommitteeOrganizationId": 16087,
+            "CommitteeNameEn": "Standing Senate Committee on National Security, Defence and Veterans Affairs",
+            "CommitteeNameFr": "Comité sénatorial permanent de la sécurité nationale, de la défense et des anciens combattants",
+            "CommitteeAcronym": "SECD",
+            "Number": "20",
+            "Date": "2026-05-25T00:00:00",
+            "CommitteeName": "Standing Senate Committee on National Security, Defence and Veterans Affairs"
           }
         ],
         "SignificantEvents": [],
         "EndOfStageEvent": null,
         "StageEventCount": 1,
-        "LastStageEventStartDateTime": "2026-05-04T16:00:00",
+        "LastStageEventStartDateTime": "2026-05-25T16:00:00",
         "Speeches": null,
         "ContainsReferralToCommitteeEvent": false,
         "ContainsRecommittalOfBillEvent": false

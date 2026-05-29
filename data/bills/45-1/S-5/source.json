@@ -2,8 +2,8 @@
   "session": "45-1",
   "number": "S-5",
   "detailUrl": "https://www.parl.ca/legisinfo/en/bill/45-1/s-5/json",
-  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-5/first-reading",
-  "xmlUrl": "https://www.parl.ca/Content/Bills/451/Government/S-5/S-5_1/S-5_E.xml",
-  "stage": "first-reading",
-  "fetchedAt": "2026-05-09T16:15:22.718Z"
+  "documentViewerUrl": "https://www.parl.ca/DocumentViewer/en/45-1/bill/S-5/third-reading",
+  "xmlUrl": "https://www.parl.ca/Content/Bills/451/Government/S-5/S-5_3/S-5_E.xml",
+  "stage": "third-reading",
+  "fetchedAt": "2026-05-29T02:53:21.086Z"
 }

@@ -441,12 +441,21 @@
             "Number": "32",
             "Date": "2026-05-07T00:00:00",
             "CommitteeName": "Standing Committee on Indigenous and Northern Affairs"
+          },
+          {
+            "CommitteeOrganizationId": 30566,
+            "CommitteeNameEn": "Standing Committee on Indigenous and Northern Affairs",
+            "CommitteeNameFr": "Comité permanent des affaires autochtones et du Nord",
+            "CommitteeAcronym": "INAN",
+            "Number": "34",
+            "Date": "2026-05-28T00:00:00",
+            "CommitteeName": "Standing Committee on Indigenous and Northern Affairs"
           }
         ],
         "SignificantEvents": [],
         "EndOfStageEvent": null,
         "StageEventCount": 1,
-        "LastStageEventStartDateTime": "2026-05-07T08:12:42",
+        "LastStageEventStartDateTime": "2026-05-28T08:25:33",
         "Speeches": null,
         "ContainsReferralToCommitteeEvent": false,
         "ContainsRecommittalOfBillEvent": false

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { PageId } from "../App";
-import { Sidebar } from "./Sidebar";
+import { WorkflowNav } from "./WorkflowNav";
 
 export function Layout({
   page,
@@ -14,9 +14,9 @@ export function Layout({
   children: ReactNode;
 }) {
   return (
-    <div className="app">
-      <Sidebar page={page} setPage={setPage} onExit={onExit} />
-      <main className="main">{children}</main>
+    <div className="shell">
+      <WorkflowNav page={page} setPage={setPage} onExit={onExit} />
+      <main className="shell-main">{children}</main>
     </div>
   );
 }

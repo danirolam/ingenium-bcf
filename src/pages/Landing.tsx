@@ -3,47 +3,88 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,
   faBars,
-  faBriefcase,
+  faBinoculars,
   faCircleCheck,
   faCodeCompare,
-  faFileLines,
+  faFileSignature,
+  faMagnifyingGlassChart,
+  faScaleBalanced,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
-const WORKFLOW: { title: string; text: string; icon: IconDefinition }[] = [
+// The four-stage pipeline, stated plainly. This is the answer to "what does it
+// actually do" — it mirrors the in-app workflow rail one to one.
+const PIPELINE: { num: string; name: string; text: string; icon: IconDefinition }[] = [
   {
-    title: "Retrieve the bill",
-    text: "Start from Parliament and Justice source data, normalize the record, and keep the bill text beside the source law.",
-    icon: faFileLines,
+    num: "01",
+    name: "Monitor",
+    text: "Every federal bill, tracked by practice area and legislative momentum.",
+    icon: faBinoculars,
   },
   {
-    title: "Review the legal delta",
-    text: "Compare every affected Act against the current consolidated law before approving it for client analysis.",
+    num: "02",
+    name: "Legal delta",
+    text: "See exactly which sections of which Acts a bill amends, repeals, or adds.",
     icon: faCodeCompare,
   },
   {
-    title: "Match client exposure",
-    text: "Turn lawyer-approved deltas into client-specific exposure, recommendations, and next actions.",
-    icon: faBriefcase,
+    num: "03",
+    name: "Client scan",
+    text: "Match each change against a client's operations, policies, and contracts.",
+    icon: faMagnifyingGlassChart,
+  },
+  {
+    num: "04",
+    name: "Client brief",
+    text: "Produce a counsel-approved exposure memo, ready to send.",
+    icon: faFileSignature,
   },
 ];
 
-const PRACTICES = [
-  { num: "01", name: "Business & M&A", note: "Corporate statutes, competition review, and trade agreements" },
-  { num: "02", name: "Banking & Securities", note: "Financial institutions, securities, and payments oversight" },
-  { num: "03", name: "Taxation", note: "Income and excise measures, tariffs, and fiscal updates" },
-  { num: "04", name: "Labour & Employment", note: "Workplace standards, pay equity, and the Canada Labour Code" },
-  { num: "05", name: "Privacy & Technology", note: "Personal information, telecom, and online obligations" },
-  { num: "06", name: "Litigation & Regulatory", note: "Criminal Code, evidence, and regulatory offences" },
+const PRACTICES: { name: string; note: string }[] = [
+  { name: "Business & M&A", note: "CBCA, Competition Act, foreign investment, and trade agreements." },
+  { name: "Banking & Securities", note: "Bank Act, securities, payments, and anti-money-laundering." },
+  { name: "Taxation", note: "Income and excise measures, tariffs, and fiscal updates." },
+  { name: "Intellectual Property", note: "Copyright, patent, trademark, and industrial design." },
+  { name: "Labour & Employment", note: "Canada Labour Code, pay equity, and workplace standards." },
+  { name: "Privacy & Technology", note: "Personal information, telecom, and online obligations." },
+  { name: "Immigration", note: "Citizenship, foreign nationals, and permanent residency." },
+  { name: "Health & Life Sciences", note: "Food and Drugs Act, therapeutic products, and cannabis." },
+  { name: "Litigation & Regulatory", note: "Criminal Code, evidence, and regulatory offences." },
 ];
 
-const PREVIEW_ROWS: { id: string; title: string; tag: string; level: string }[] = [
-  { id: "C-27", title: "Digital Charter Implementation Act", tag: "Privacy", level: "crit" },
-  { id: "C-59", title: "Fall Economic Statement Implementation Act", tag: "Tax", level: "high" },
-  { id: "C-56", title: "Affordable Housing and Groceries Act", tag: "Business", level: "med" },
-  { id: "S-202", title: "Food and Drugs Act amendment", tag: "Health", level: "ok" },
+type JState = "done" | "active" | "pending";
+type JStage = {
+  name: string;
+  state: JState;
+  date?: string;
+  division?: { yeas: number; nays: number };
+};
+
+// The hero signature: a bill's path through Parliament, the same shape the Bill
+// Detail view renders from live LEGISinfo data. Illustrative figures.
+const JOURNEY: { chamber: string; stages: JStage[] }[] = [
+  {
+    chamber: "House of Commons",
+    stages: [
+      { name: "First reading", state: "done", date: "Jun 16, 2022" },
+      {
+        name: "Second reading",
+        state: "done",
+        date: "Apr 24, 2023",
+        division: { yeas: 177, nays: 142 },
+      },
+      { name: "Committee — INDU", state: "done", date: "Apr 18, 2024" },
+      { name: "Report stage", state: "active", date: "In progress" },
+      { name: "Third reading", state: "pending" },
+    ],
+  },
+  {
+    chamber: "Senate",
+    stages: [{ name: "First reading", state: "pending" }],
+  },
 ];
 
 export function Landing({ onLaunch }: { onLaunch: () => void }) {
@@ -54,13 +95,21 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
       <header className="lp-nav">
         <div className="lp-nav-inner">
           <a className="lp-brand" href="#" onClick={(e) => e.preventDefault()}>
-            <span className="lp-brand-dot" aria-hidden="true" />
+            <span className="lp-mark" aria-hidden="true" />
             <span className="lp-brand-text">BCF</span>
+            <span className="lp-brand-div" aria-hidden="true" />
+            <span className="lp-brand-sub">Ingenium</span>
           </a>
+
+          <nav className="lp-nav-mid" aria-label="Sections">
+            <a href="#how">How it works</a>
+            <a href="#practices">Practice focus</a>
+            <a href="#standard">Review standard</a>
+          </nav>
 
           <div className="lp-nav-actions">
             <button className="lp-nav-link" onClick={onLaunch}>
-              Workspace
+              Open workspace
               <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
             </button>
             <button
@@ -79,13 +128,13 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
         <div className="lp-drawer" role="dialog" aria-label="Navigation">
           <div className="lp-drawer-inner">
             <nav>
-              <a href="#workflow" onClick={() => setMenuOpen(false)}>
-                Workflow
+              <a href="#how" onClick={() => setMenuOpen(false)}>
+                How it works
               </a>
               <a href="#practices" onClick={() => setMenuOpen(false)}>
                 Practice focus
               </a>
-              <a href="#review" onClick={() => setMenuOpen(false)}>
+              <a href="#standard" onClick={() => setMenuOpen(false)}>
                 Review standard
               </a>
               <a
@@ -96,7 +145,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
                   onLaunch();
                 }}
               >
-                Workspace
+                Open workspace
               </a>
             </nav>
           </div>
@@ -104,111 +153,164 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
       )}
 
       <section className="lp-hero">
-        <div className="lp-hero-glow" aria-hidden="true" />
-        <div className="lp-hero-inner">
+        <div className="lp-hero-meta">
+          <span>45th Parliament · 1st Session</span>
+          <span className="lp-hero-meta-r">162 bills tracked · updated from LEGISinfo</span>
+        </div>
+
+        <div className="lp-hero-grid">
           <div className="lp-hero-text">
-            <div className="lp-eyebrow">Built for BCF by Ingenium</div>
+            <div className="lp-eyebrow">Legislative intelligence for BCF</div>
             <h1 className="lp-h1">
-              Bill change intelligence, ready for client work.
+              Track every federal bill.
+              <span className="lp-h1-2">Brief every client it touches.</span>
             </h1>
             <p className="lp-hero-copy">
-              A premium review workspace for retrieving bills, comparing affected
-              federal Acts, approving legal deltas, and turning them into clear
-              client impact analysis.
+              Ingenium follows each bill through Parliament, pinpoints the exact
+              statutory change, and turns it into clear, client-specific exposure
+              — reviewed and approved by counsel before it leaves the building.
             </p>
             <div className="lp-hero-actions">
               <button className="lp-primary" onClick={onLaunch}>
                 Open workspace
                 <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
               </button>
-              <a className="lp-secondary" href="#workflow">
-                See workflow
-                <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
+              <a className="lp-secondary" href="#how">
+                How it works
               </a>
+            </div>
+            <div className="lp-hero-foot">
+              Built for business-law practice · Federal &amp; Québec law
             </div>
           </div>
 
-          <div className="lp-hero-preview" aria-hidden="true">
-            <div className="lp-pv-frame">
-              <div className="lp-pv-bar">
-                <span className="lp-pv-dot" />
-                <span className="lp-pv-dot" />
-                <span className="lp-pv-dot" />
-                <span className="lp-pv-tab">Bill Monitor · 162 bills</span>
-              </div>
-              <div className="lp-pv-body">
-                <div className="lp-pv-row lp-pv-head">
-                  <span>Bill</span>
-                  <span>Title</span>
-                  <span>Practice</span>
-                </div>
-                {PREVIEW_ROWS.map((r) => (
-                  <div className="lp-pv-row" key={r.id}>
-                    <span className="lp-pv-id">{r.id}</span>
-                    <span className="lp-pv-title">{r.title}</span>
-                    <span className="lp-pv-tagcell">
-                      <span className={`lp-pv-dotlvl lvl-${r.level}`} />
-                      {r.tag}
-                    </span>
-                  </div>
-                ))}
-              </div>
+          <aside className="lp-journey" aria-hidden="true">
+            <div className="lp-journey-head">
+              <span className="lp-journey-bill">C-27</span>
+              <span className="lp-journey-heading">
+                <span className="lp-journey-name">
+                  Digital Charter Implementation Act
+                </span>
+                <span className="lp-journey-tag">Privacy &amp; Technology</span>
+              </span>
             </div>
-          </div>
+            <div className="lp-journey-body">
+              {JOURNEY.map((group) => (
+                <div className="lp-jgroup" key={group.chamber}>
+                  <div className="lp-jchamber">{group.chamber}</div>
+                  <div className="lp-jstages">
+                    {group.stages.map((s) => {
+                      const total = s.division
+                        ? s.division.yeas + s.division.nays
+                        : 0;
+                      const yeaPct = total
+                        ? Math.round((s.division!.yeas / total) * 100)
+                        : 0;
+                      return (
+                        <div className={`lp-jstage is-${s.state}`} key={s.name}>
+                          <span className="lp-jdot" />
+                          <span className="lp-jstage-name">{s.name}</span>
+                          {s.date && (
+                            <span className="lp-jstage-date">{s.date}</span>
+                          )}
+                          {s.division && (
+                            <div className="lp-jvote">
+                              <div className="lp-jvote-bar">
+                                <span style={{ width: `${yeaPct}%` }} />
+                              </div>
+                              <span className="lp-jvote-nums">
+                                <b>{s.division.yeas}</b> Yeas
+                                <i>{s.division.nays}</i> Nays
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="lp-journey-foot">
+              <FontAwesomeIcon icon={faScaleBalanced} aria-hidden="true" />
+              Legislative path · House &amp; Senate stages with recorded divisions
+            </div>
+          </aside>
         </div>
       </section>
 
-      <section id="workflow" className="lp-workflow">
+      <section id="how" className="lp-how">
         <div className="lp-section-inner">
-          <div className="lp-section-eyebrow">Workflow</div>
-          <h2 className="lp-h2">Built around source-backed legal review.</h2>
-          <div className="lp-workflow-grid">
-            {WORKFLOW.map((item) => (
-              <article className="lp-workflow-card" key={item.title}>
-                <div className="lp-workflow-icon">
-                  <FontAwesomeIcon icon={item.icon} aria-hidden="true" />
+          <div className="lp-section-head">
+            <div className="lp-section-eyebrow">How it works</div>
+            <h2 className="lp-h2">
+              One line of work, from a bill to a client memo.
+            </h2>
+          </div>
+          <ol className="lp-pipe">
+            {PIPELINE.map((step) => (
+              <li className="lp-pipe-step" key={step.num}>
+                <div className="lp-pipe-node">
+                  <span className="lp-pipe-num">{step.num}</span>
                 </div>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
+                <div className="lp-pipe-body">
+                  <h3>
+                    <FontAwesomeIcon icon={step.icon} aria-hidden="true" />
+                    {step.name}
+                  </h3>
+                  <p>{step.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section id="practices" className="lp-practices">
+        <div className="lp-section-inner">
+          <div className="lp-section-head">
+            <div className="lp-section-eyebrow">Practice focus</div>
+            <h2 className="lp-h2">
+              Tuned to the work BCF actually does.
+            </h2>
+          </div>
+          <div className="lp-practice-grid">
+            {PRACTICES.map((p, i) => (
+              <article className="lp-practice" key={p.name}>
+                <span className="lp-practice-num">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="lp-practice-name">{p.name}</h3>
+                <p className="lp-practice-note">{p.note}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="practices" className="lp-practices">
-        <div className="lp-section-inner">
-          <div className="lp-section-eyebrow">Practice focus</div>
-          <h2 className="lp-h2">Useful where statutory change meets client operations.</h2>
-          <ul className="lp-practice-list">
-            {PRACTICES.map((p) => (
-              <li key={p.num}>
-                <span className="lp-practice-num">{p.num}</span>
-                <span className="lp-practice-name">{p.name}</span>
-                <span className="lp-practice-note">{p.note}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section id="review" className="lp-review">
-        <div className="lp-review-inner">
-          <div className="lp-review-mark">
+      <section id="standard" className="lp-standard">
+        <div className="lp-standard-inner">
+          <div className="lp-standard-mark">
             <FontAwesomeIcon icon={faCircleCheck} aria-hidden="true" />
           </div>
-          <div>
+          <div className="lp-standard-text">
             <div className="lp-section-eyebrow">Review standard</div>
-            <h2 className="lp-review-title">
-              Every delta is structured for review. Counsel approves the law.
+            <h2 className="lp-standard-title">
+              Counsel approves the law. Always.
             </h2>
-            <p className="lp-review-copy">
-              The workspace is built around human approval: every updated Act is
-              reviewed and signed off by counsel before it informs a single line
-              of client impact analysis.
+            <p className="lp-standard-copy">
+              Every updated Act and every client brief is structured for review
+              and signed off by a lawyer before it informs a single piece of
+              advice. The workspace keeps the source — the bill text and the
+              consolidated Act — one click away at every step.
             </p>
+            <div className="lp-standard-points">
+              <span>Source-linked to Parliament &amp; Justice Canada</span>
+              <span>Deterministic legislative paths</span>
+              <span>Human approval gates</span>
+            </div>
             <button className="lp-primary" onClick={onLaunch}>
-              Continue to review
+              Enter the workspace
               <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
             </button>
           </div>
@@ -218,14 +320,12 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
       <footer className="lp-footer">
         <div className="lp-footer-inner">
           <div className="lp-footer-l">
-            <span className="lp-brand-dot lp-brand-dot-sm" aria-hidden="true" />
+            <span className="lp-mark lp-mark-sm" aria-hidden="true" />
             <span>
               Built for <b>BCF</b> by <b>Ingenium</b>
             </span>
           </div>
-          <div className="lp-footer-c">
-            Source-linked to Parliament &amp; Justice Canada
-          </div>
+          <div className="lp-footer-c">Montréal · Québec City</div>
           <div className="lp-footer-r">
             <a href="https://github.com/Lil-Chen05/project-injenium">
               <FontAwesomeIcon icon={faGithub} aria-hidden="true" /> GitHub
