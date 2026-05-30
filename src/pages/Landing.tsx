@@ -196,7 +196,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
           isLoaded ? "scale-100" : "scale-[1.02]"
         }`}
         style={{
-          backgroundImage: "url('/hero-landscape.png')",
+          backgroundImage: "url('/montreal-view.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

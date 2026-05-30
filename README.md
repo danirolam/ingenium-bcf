@@ -168,36 +168,39 @@ There are two GitHub repositories:
   it is just another GitHub repo; your repo relates to it the way a fork relates to its
   upstream.
 
-The remotes are already configured:
+Your default branch is **`master`**. The remotes are already configured:
 
 ```bash
 git remote -v
-# origin  https://github.com/danirolam/ingenium-bcf.git
-# team    https://github.com/Lil-Chen05/project-injenium.git
+# origin  https://github.com/danirolam/ingenium-bcf.git   (yours — branch: master)
+# team    https://github.com/Lil-Chen05/project-injenium.git  (shared — branch: main)
 ```
+
+> Your repo uses `master`; the team repo uses `main`. That difference is fine — git
+> maps them explicitly in the sync commands below.
 
 ### Day to day — work on your repo
 
 ```bash
 git add -A
 git commit -m "…"
-git push origin main      # your history; this is what deploys
+git push origin master      # your history; this is what deploys
 ```
 
 ### Pull in what the team did on the shared repo
 
 ```bash
 git fetch team
-git merge team/main       # or: git rebase team/main
+git merge team/main         # or: git rebase team/main — merges their main into your master
 # resolve any conflicts, then
-git push origin main
+git push origin master
 ```
 
 ### Push your work up to the shared team repo
 
 ```bash
-git push team main                      # if you have push access, or
-git push team main:feature/your-change  # then open a Pull Request on the team repo
+git push team master:main                      # push your master onto the team's main, or
+git push team master:feature/your-change       # then open a Pull Request on the team repo
 ```
 
 This keeps a clean separation: you always work and deploy from your own repo with your own

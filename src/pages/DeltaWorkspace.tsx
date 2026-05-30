@@ -10,12 +10,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import type { Nav } from "../App";
 import { MomentumBadge, ReviewBadge } from "../components/badges";
-import { ConfidenceMeter } from "../components/ConfidenceMeter";
 import {
   buildDiffBlocks,
   countMaterialChanges,
   DiffViewer,
 } from "../components/DiffViewer";
+import { InfoHint } from "../components/InfoHint";
 import { LegislativeJourney } from "../components/LegislativeJourney";
 import { PageHeader } from "../components/PageHeader";
 import {
@@ -306,6 +306,10 @@ function FilesChangedRail({
         <div className="card-title-row">
           <FontAwesomeIcon icon={faFileLines} aria-hidden="true" />
           <div className="card-title">Acts changed</div>
+          <InfoHint
+            title="Acts this bill changes"
+            body="One row per Act the bill amends. The coloured dot is the review status — green approved, red needs review, amber in review. The counts are the sections this bill adds (+), removes (−), and changes (~). Click a row to compare it on the right; the highlighted row is the one shown."
+          />
         </div>
         <span className="badge outline dim">{lvs.length}</span>
       </div>
@@ -342,6 +346,7 @@ function FileRow({
     <button
       type="button"
       className={`file-row ${active ? "active" : ""}`}
+      aria-current={active ? "true" : undefined}
       onClick={() => onSelect(lv.id)}
     >
       <span className="file-row-name">{actDisplayName(lv.baseLawTitle)}</span>
@@ -349,10 +354,17 @@ function FileRow({
         <ReviewBadge required={lv.humanReviewRequired} approved={lv.humanApproved} />
       </span>
       <span className="file-row-stats">
-        <span className="add">+{counts.added}</span>
-        <span className="del">-{counts.removed}</span>
-        <span className="chg">~{counts.changed}</span>
-        {stub && <span className="stub">stub</span>}
+        <span className="add" title="Sections added">+{counts.added}</span>
+        <span className="del" title="Sections removed">-{counts.removed}</span>
+        <span className="chg" title="Sections changed">~{counts.changed}</span>
+        {stub && (
+          <span
+            className="stub"
+            title="The current consolidated text of this Act isn't registered yet, so only the proposed wording is shown."
+          >
+            stub
+          </span>
+        )}
       </span>
     </button>
   );
@@ -372,11 +384,6 @@ function DeltaSection({
   refSet: (el: HTMLDivElement | null) => void;
 }) {
   const stub = isStub(lv);
-  const safeConfidence = Math.max(
-    0,
-    Math.min(1, Number.isFinite(lv.confidence) ? lv.confidence : 0),
-  );
-  const confidencePct = Math.round(safeConfidence * 100);
 
   return (
     <section className="delta-section" ref={refSet} data-lv-id={lv.id} id={lv.id}>
@@ -452,9 +459,6 @@ function DeltaSection({
 
       <div className="sec-foot">
         <div className="delta-summary-text">{lv.deltaSummary}</div>
-        <div className="dw-stable">
-          Extraction confidence · <span className="tnum">{confidencePct}%</span>
-        </div>
       </div>
     </section>
   );
@@ -578,12 +582,6 @@ function DeltaRightRail({
         </button>
         {techOpen && (
           <div className="dw-tech-body">
-            {lvs.map((lv) => (
-              <div key={lv.id}>
-                <div className="dw-detail-label">{actDisplayName(lv.baseLawTitle)}</div>
-                <ConfidenceMeter value={lv.confidence} label="Extraction confidence" />
-              </div>
-            ))}
             <div className="dw-detail-text">
               Bill clauses: {bill?.clauses?.length ?? "—"}. Distinct target Acts: {lvs.length}.
               {bill?.sourceUrl && (
