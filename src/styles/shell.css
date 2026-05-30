@@ -481,9 +481,11 @@
    it to compact numbered pills. The active step stays highlighted; full stage
    names are in the "?" help popover and on each page's header. */
 @media (max-width: 640px) {
+  /* Logo-only home button frees the width the four pills need. */
   .shell-step-label,
   .shell-step-desc,
-  .shell-flow-sep {
+  .shell-flow-sep,
+  .shell-brand-name {
     display: none;
   }
   .shell-step {
@@ -494,10 +496,17 @@
   .shell-step-text {
     display: none;
   }
+  /* Pills keep their size and the strip scrolls if a narrow phone still can't
+     fit all four — never overlap. */
   .shell-flow {
     gap: 5px;
     padding: 0 4px;
-    overflow: visible;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .shell-flow::-webkit-scrollbar {
+    display: none;
   }
   .shell-bar {
     gap: 10px;
