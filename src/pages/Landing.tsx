@@ -14,18 +14,6 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-// Per-character blur reveal (CSS reimplementation of terra's framer-motion text).
-function AnimatedText({ text }: { text: string }) {
-  return (
-    <span key={text}>
-      {text.split("").map((char, i) => (
-        <span key={i} className="lp-char" style={{ animationDelay: `${i * 0.03}s` }}>
-          {char === " " ? " " : char}
-        </span>
-      ))}
-    </span>
-  );
-}
 
 function AnimatedCounter({ value }: { value: string }) {
   const [shown, setShown] = useState("0");
@@ -55,8 +43,6 @@ function AnimatedCounter({ value }: { value: string }) {
   }, [value]);
   return <div ref={ref}>{shown}</div>;
 }
-
-const ROTATE = ["client advice", "legal deltas", "exposure memos", "clear action"];
 
 const NAV = [
   { id: "impact", label: "Impact" },
@@ -112,29 +98,13 @@ const FAQS = [
 export function Landing({ onLaunch }: { onLaunch: () => void }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [wi, setWi] = useState(0);
   const [faq, setFaq] = useState<number | null>(0);
   const obsRef = useRef<IntersectionObserver | null>(null);
-  // Parallax targets — mutated directly in a rAF-throttled scroll handler so the
-  // page never re-renders on scroll (that was the source of the lag).
-  const heroRef = useRef<HTMLDivElement>(null);
-  const mockRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsLoaded(true);
-    let raf = 0;
-    const onScroll = () => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = 0;
-        const y = window.scrollY;
-        if (heroRef.current) heroRef.current.style.transform = `translateY(${(y * 0.18).toFixed(1)}px)`;
-        if (mockRef.current)
-          mockRef.current.style.transform = `rotateX(${Math.max(0, 8 - y * 0.02).toFixed(2)}deg)`;
-      });
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    const t = setInterval(() => setWi((i) => (i + 1) % ROTATE.length), 3200);
+    // Sections reveal once as they enter the viewport — no per-scroll-frame work,
+    // so scrolling stays smooth.
     obsRef.current = new IntersectionObserver(
       (entries) =>
         entries.forEach((e) => e.isIntersecting && e.target.classList.add("animate-in")),
@@ -148,9 +118,6 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
         .forEach((el) => el.classList.add("animate-in"));
     }, 1800);
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(raf);
-      clearInterval(t);
       clearTimeout(safety);
       obsRef.current?.disconnect();
     };
@@ -235,7 +202,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-[#0B0C0F] via-[#0B0C0F]/75 to-[#0B0C0F]/30 pointer-events-none" />
-        <div ref={heroRef} className="max-w-[1120px] w-full mx-auto relative z-10">
+        <div className="max-w-[1120px] w-full mx-auto relative z-10">
           <div className="text-center mb-10">
             <div
               className="inline-flex items-center gap-2 glass-pill px-4 py-2 rounded-full mb-7 text-xs md:text-sm text-[#A7ABB3] stagger-reveal"
@@ -255,10 +222,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
                 className="block text-6xl md:text-8xl stagger-reveal"
                 style={{ animationDelay: "150ms" }}
               >
-                translated to{" "}
-                <span className="terra-grad">
-                  <AnimatedText key={wi} text={ROTATE[wi]} />
-                </span>
+                translated to client-ready advice.
               </span>
             </h1>
             <p
@@ -290,7 +254,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
 
           <div className="mt-10 md:mt-16" style={{ perspective: "1200px" }}>
             <div className="dashboard-image" style={{ animationDelay: "420ms" }}>
-              <div ref={mockRef} style={{ transform: "rotateX(8deg)", transformStyle: "preserve-3d" }}>
+              <div style={{ transform: "rotateX(6deg)", transformStyle: "preserve-3d" }}>
                 <DashboardMock />
               </div>
             </div>
@@ -463,7 +427,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
           </div>
           <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-[#A7ABB3]">
             <div>© 2026 Ingenium · Built for BCF</div>
-            <div>Montréal · Québec City</div>
+            <div>Montréal</div>
           </div>
         </div>
       </footer>

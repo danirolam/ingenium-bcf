@@ -58,23 +58,6 @@
   animation: blur-reveal 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Per-character reveal (CSS replacement for terra's framer-motion text) —
-   transform/blur only, never opacity. */
-@keyframes char-in {
-  from {
-    transform: translateY(18px);
-    filter: blur(8px);
-  }
-  to {
-    transform: translateY(0);
-    filter: blur(0);
-  }
-}
-.lp-char {
-  display: inline-block;
-  animation: char-in 0.5s cubic-bezier(0.21, 0.47, 0.32, 0.98) both;
-}
-
 /* Dashboard image slide-up */
 @keyframes slide-up-from-bottom {
   from {
@@ -140,22 +123,9 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* The rotating hero word is split into per-character spans for the reveal. A
-   parent-only background-clip:text leaves those inline-block children with no
-   background of their own (transparent → the "missing word"), so each character
-   carries its own clipped gradient. */
-.terra-grad .lp-char {
-  background: linear-gradient(135deg, #d9a7c7 0%, #fffcdc 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: #eec9d6;
-  -webkit-text-fill-color: transparent;
-}
-
 /* If motion is reduced, everything is shown immediately — never hidden. */
 @media (prefers-reduced-motion: reduce) {
   .lp .stagger-reveal,
-  .lp .lp-char,
   .lp .animate-on-scroll {
     opacity: 1 !important;
     transform: none !important;

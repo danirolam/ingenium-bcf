@@ -96,9 +96,8 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
     api.lawVersions
       .list()
       .then(async (all) => {
-        const demoMatch = all.find((item) => item.sourceBillNumber === "C-273") ??
-          all.find((item) => item.sourceBillNumber === "C-273") ??
-          all[0];
+        const demoMatch =
+          all.find((item) => item.sourceBillNumber === "C-273") ?? all[0];
         if (!demoMatch) return;
         const bills = await api.bills.list();
         const matchedBill = bills.find((b) => b.id === demoMatch.sourceBillId) ?? null;
@@ -416,7 +415,7 @@ function DeltaSection({
           <AlertContent>
             <AlertTitle>Current consolidated law not yet registered</AlertTitle>
             <AlertDescription>
-              Showing proposed C-273 text for this Act. Add the current Act to{" "}
+              Showing the proposed text from this bill. Add the current Act to{" "}
               <code className="inline-code">data/laws/registry.json</code> and rerun the
               law retrieval script to enable a full before-and-after diff.
             </AlertDescription>
