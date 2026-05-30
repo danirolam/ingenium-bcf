@@ -9,6 +9,17 @@ const STAGES = [
   "Royal assent",
 ] as const;
 
+// Plain-language explanation of each stage in the Canadian federal process,
+// surfaced on hover.
+const STAGE_INFO: Record<string, string> = {
+  "First reading": "The bill is introduced and printed. No debate yet — this is the formal start.",
+  "Second reading": "The chamber debates and votes on the bill's principle and purpose, not yet its details.",
+  "Committee stage": "A committee studies the bill clause by clause, hears witnesses, and may propose amendments.",
+  "Report stage": "The chamber considers the committee's report and any further amendments to the bill.",
+  "Third reading": "Final debate and vote on the bill as amended. If it passes, it goes to the other chamber.",
+  "Royal assent": "Once the House and the Senate have both passed it, the Crown's representative assents and it becomes law.",
+};
+
 // Map momentum → highest-completed stage index (0-based, inclusive).
 function highestCompleted(momentum: LegislativeMomentum): number {
   switch (momentum) {
@@ -83,7 +94,9 @@ export function LegislativeJourney({
             <div className="lj-row" key={name}>
               <span className={pipCls} aria-hidden />
               <div>
-                <div className={nameCls}>{name}</div>
+                <div className={nameCls} title={STAGE_INFO[name]}>
+                  {name}
+                </div>
                 <div className="lj-date">{date ?? "—"}</div>
               </div>
               {isCurrent ? <span className="lj-pill">Current</span> : <span />}

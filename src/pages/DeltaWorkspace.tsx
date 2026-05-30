@@ -16,6 +16,7 @@ import {
   DiffViewer,
 } from "../components/DiffViewer";
 import { InfoHint } from "../components/InfoHint";
+import { Tooltip } from "../components/Tooltip";
 import { LegislativeJourney } from "../components/LegislativeJourney";
 import { PageHeader } from "../components/PageHeader";
 import {
@@ -34,6 +35,16 @@ function isStub(lv: LawVersion): boolean {
 
 function actDisplayName(title: string): string {
   return title.replace(/\s*\([^)]*\)\s*$/, "");
+}
+
+// Always give counsel a route to the Act as it stands today, even when its
+// consolidated text isn't loaded into the comparator — a search scoped to the
+// official Justice Laws Canada consolidation lands on the current Act.
+function justiceLawsUrl(actTitle: string): string {
+  const act = actDisplayName(actTitle).trim();
+  return `https://www.google.com/search?q=${encodeURIComponent(
+    `${act} site:laws-lois.justice.gc.ca`,
+  )}`;
 }
 
 export function DeltaWorkspace({ nav }: { nav: Nav }) {
@@ -313,6 +324,12 @@ function FilesChangedRail({
         </div>
         <span className="badge outline dim">{lvs.length}</span>
       </div>
+      <div className="files-legend">
+        <span className="add">+ added</span>
+        <span className="del">− removed</span>
+        <span className="chg">~ changed</span>
+        <span className="files-legend-unit">sections</span>
+      </div>
       <div className="files-list">
         {lvs.map((lv) => (
           <FileRow
@@ -399,18 +416,30 @@ function DeltaSection({
         <div className="sec-actions">
           <ReviewBadge required={lv.humanReviewRequired} approved={lv.humanApproved} />
           {stub && <span className="badge outline dim">unregistered Act</span>}
-          <button className="btn sm review-action" disabled={busy} onClick={onFlag}>
-            <FontAwesomeIcon icon={faTriangleExclamation} aria-hidden="true" />
-            Needs review
-          </button>
-          <button
-            className="btn sm primary delta-section-approve"
-            disabled={busy || lv.humanApproved}
-            onClick={onApprove}
+          <Tooltip
+            title="Needs review"
+            body="Flag this Act for a closer look. It stays out of the client scan until a lawyer signs off on the change."
+            placement="top"
           >
-            <FontAwesomeIcon icon={faCircleCheck} aria-hidden="true" />
-            {lv.humanApproved ? "Approved" : "Approve"}
-          </button>
+            <button className="btn sm review-action" disabled={busy} onClick={onFlag}>
+              <FontAwesomeIcon icon={faTriangleExclamation} aria-hidden="true" />
+              Needs review
+            </button>
+          </Tooltip>
+          <Tooltip
+            title="Approve"
+            body="Confirm a lawyer has checked this bill's change against the Act. Approving marks it reviewed and makes it available to the client scan and the client brief."
+            placement="top"
+          >
+            <button
+              className="btn sm primary delta-section-approve"
+              disabled={busy || lv.humanApproved}
+              onClick={onApprove}
+            >
+              <FontAwesomeIcon icon={faCircleCheck} aria-hidden="true" />
+              {lv.humanApproved ? "Approved" : "Approve"}
+            </button>
+          </Tooltip>
         </div>
       </div>
 
@@ -420,11 +449,20 @@ function DeltaSection({
             <FontAwesomeIcon icon={faTriangleExclamation} aria-hidden="true" />
           </AlertIcon>
           <AlertContent>
-            <AlertTitle>Current consolidated law not yet registered</AlertTitle>
+            <AlertTitle>Current consolidated text not loaded for this Act</AlertTitle>
             <AlertDescription>
-              Showing the proposed text from this bill. Add the current Act to{" "}
-              <code className="inline-code">data/laws/registry.json</code> and rerun the
-              law retrieval script to enable a full before-and-after diff.
+              This shows only the bill's proposed wording — the current
+              consolidated text of the {actDisplayName(lv.baseLawTitle)} isn't in
+              the side-by-side comparator yet. Read the Act as it stands today on{" "}
+              <a
+                href={justiceLawsUrl(lv.baseLawTitle)}
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: "inherit", textDecoration: "underline", fontWeight: 600 }}
+              >
+                Justice Laws Canada
+              </a>
+              .
             </AlertDescription>
           </AlertContent>
         </Alert>

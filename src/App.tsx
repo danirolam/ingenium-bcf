@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Layout } from "./components/Layout";
 import { Toast } from "./components/Toast";
 import { Landing } from "./pages/Landing";
@@ -35,6 +35,12 @@ export default function App() {
   const [page, setPage] = useState<PageId>("overview");
   const [params, setParams] = useState<Record<string, string>>({});
   const [toastMsg, setToastMsg] = useState<string | null>(null);
+
+  // Every page (and entering the app) opens at the top — never inherit the
+  // previous view's scroll position.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page, surface]);
 
   const enterApp = useCallback(() => {
     setSurface("app");

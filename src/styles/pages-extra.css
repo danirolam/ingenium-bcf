@@ -348,6 +348,32 @@
   border-radius: 999px;
   padding: 0 6px;
 }
+/* Always-visible key for the +/-/~ counts in each row. */
+.files-legend {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px 11px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.files-legend .add {
+  color: var(--ok);
+}
+.files-legend .del {
+  color: var(--crit);
+}
+.files-legend .chg {
+  color: var(--accent-warm-2);
+}
+.files-legend-unit {
+  margin-left: auto;
+  color: var(--ink-4);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 10px;
+}
 .delta-stack {
   min-width: 0;
   display: flex;
