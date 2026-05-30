@@ -100,9 +100,27 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [faq, setFaq] = useState<number | null>(0);
   const obsRef = useRef<IntersectionObserver | null>(null);
+  // Parallax targets — written to directly in a rAF-throttled scroll handler so
+  // the hero drifts and the mock tilts with the scroll, with no React re-render.
+  const heroRef = useRef<HTMLDivElement>(null);
+  const mockRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsLoaded(true);
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const y = window.scrollY;
+        if (heroRef.current)
+          heroRef.current.style.transform = `translateY(${(y * 0.16).toFixed(1)}px)`;
+        if (mockRef.current)
+          mockRef.current.style.transform = `rotateX(${Math.max(0, 8 - y * 0.025).toFixed(2)}deg)`;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
     // Sections reveal once as they enter the viewport — no per-scroll-frame work,
     // so scrolling stays smooth.
     obsRef.current = new IntersectionObserver(
@@ -118,6 +136,8 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
         .forEach((el) => el.classList.add("animate-in"));
     }, 1800);
     return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
       clearTimeout(safety);
       obsRef.current?.disconnect();
     };
@@ -202,7 +222,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-[#0B0C0F] via-[#0B0C0F]/75 to-[#0B0C0F]/30 pointer-events-none" />
-        <div className="max-w-[1120px] w-full mx-auto relative z-10">
+        <div ref={heroRef} className="max-w-[1120px] w-full mx-auto relative z-10">
           <div className="text-center mb-10">
             <div
               className="inline-flex items-center gap-2 glass-pill px-4 py-2 rounded-full mb-7 text-xs md:text-sm text-[#A7ABB3] stagger-reveal"
@@ -254,7 +274,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
 
           <div className="mt-10 md:mt-16" style={{ perspective: "1200px" }}>
             <div className="dashboard-image" style={{ animationDelay: "420ms" }}>
-              <div style={{ transform: "rotateX(6deg)", transformStyle: "preserve-3d" }}>
+              <div ref={mockRef} style={{ transform: "rotateX(8deg)", transformStyle: "preserve-3d" }}>
                 <DashboardMock />
               </div>
             </div>
