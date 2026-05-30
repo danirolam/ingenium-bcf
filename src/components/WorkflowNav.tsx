@@ -178,14 +178,18 @@ export function WorkflowNav({
 
         <span className="shell-divider" aria-hidden="true" />
 
-        <Tooltip title="Maude Tremblay" body="Senior Counsel · BCF" placement="bottom">
+        <Tooltip
+          title="user001"
+          body="Signed-in workspace session · BCF"
+          placement="bottom"
+        >
           <div className="shell-user" tabIndex={0}>
             <span className="shell-avatar" aria-hidden="true">
-              MT
+              U1
             </span>
             <span className="shell-user-text">
-              <span className="shell-user-name">Maude Tremblay</span>
-              <span className="shell-user-role">Senior Counsel</span>
+              <span className="shell-user-name">user001</span>
+              <span className="shell-user-role">BCF workspace</span>
             </span>
           </div>
         </Tooltip>

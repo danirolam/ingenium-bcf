@@ -1122,6 +1122,20 @@ table.tbl tbody td:last-child {
 .diff-body > div:nth-child(2n) {
   /* right column already separated by the left column's right border */
 }
+/* Mobile: stack before/after so statute text isn't crushed into two narrow
+   columns; the vertical divider becomes a horizontal rule under each "before". */
+@media (max-width: 600px) {
+  .diff-body {
+    grid-template-columns: 1fr;
+  }
+  .diff-col + .diff-col {
+    border-left: none;
+  }
+  .diff-body > div:nth-child(2n + 1) {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
 
 .diff-act-head {
   text-align: center;

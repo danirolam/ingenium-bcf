@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import type { Bill } from "../types";
+import { Tooltip } from "./Tooltip";
 
 function daysSince(iso: string | undefined): number | null {
   if (!iso) return null;
@@ -38,27 +39,47 @@ export function StatsRibbon({ bills }: { bills: Bill[] }) {
 
   return (
     <div className="bm-ribbon">
-      <div className="bm-cell">
+      <Tooltip
+        className="bm-cell"
+        title="Bills in view"
+        body="Every bill matching the current session and the filters above."
+        placement="bottom"
+      >
         <div className="stat-l">Tracked</div>
-        <div className="stat-v tnum">{stats.total}</div>
-      </div>
+        <div className="stat-v tnum">{stats.total.toLocaleString("en-US")}</div>
+      </Tooltip>
 
-      <div className="bm-cell">
+      <Tooltip
+        className="bm-cell"
+        title="Active"
+        body="Bills currently moving through readings or committee study."
+        placement="bottom"
+      >
         <div className="stat-l">Active</div>
-        <div className="stat-v tnum">{stats.activeLate}</div>
-      </div>
+        <div className="stat-v tnum">{stats.activeLate.toLocaleString("en-US")}</div>
+      </Tooltip>
 
-      <div className="bm-cell">
+      <Tooltip
+        className="bm-cell"
+        title="Royal assent"
+        body="Bills that have received royal assent — now in force as law."
+        placement="bottom"
+      >
         <div className="stat-l">Royal assent</div>
-        <div className="stat-v tnum">{stats.highImpact}</div>
-      </div>
+        <div className="stat-v tnum">{stats.highImpact.toLocaleString("en-US")}</div>
+      </Tooltip>
 
-      <div className="bm-cell">
+      <Tooltip
+        className="bm-cell"
+        title="Last ingest"
+        body="Days since the most recent bill record was fetched from Parliament's LEGISinfo."
+        placement="bottom"
+      >
         <div className="stat-l">Last ingest</div>
         <div className="stat-v tnum">
           {stats.recencyDays === null ? "—" : `${stats.recencyDays}d`}
         </div>
-      </div>
+      </Tooltip>
     </div>
   );
 }

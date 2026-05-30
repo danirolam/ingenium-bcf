@@ -291,6 +291,11 @@ export function BillMonitor({ nav }: { nav: Nav }) {
 
         <div className="bm-toolbar">
           <div className="bm-toolbar-left">
+            <Tooltip
+              title="Session of Parliament"
+              body="Pick which session to browse — 45-1 is the current one. Choose ‘All sessions’ to search the full historical docket."
+              placement="bottom"
+            >
             <label
               style={{
                 display: "inline-flex",
@@ -332,6 +337,7 @@ export function BillMonitor({ nav }: { nav: Nav }) {
                 ))}
               </select>
             </label>
+            </Tooltip>
             <SegmentedTabs
               items={tabItems}
               value={filter}

@@ -8,7 +8,9 @@ import type {
   LawVersion,
 } from "../../src/types.js";
 
-const MODEL = "gemini-2.5-flash";
+// Overridable via env (documented in .env.example); falls back to a fast,
+// inexpensive default so the app works the moment a key is added.
+const MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 
 function getModel() {
   const key = process.env.GEMINI_API_KEY;

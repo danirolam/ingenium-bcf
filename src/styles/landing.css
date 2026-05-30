@@ -35,14 +35,11 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Hero fixed background */
+/* Hero background. `fixed` forces a full-viewport repaint on every scroll frame
+   (badly janky on mobile and trackpads), so we keep it scrolling normally — the
+   subtle JS parallax gives the depth without the cost. */
 .hero-section {
-  background-attachment: fixed;
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-section {
-    background-attachment: scroll;
-  }
+  background-attachment: scroll;
 }
 
 /* Staggered reveal (hero lines) — transform/blur ONLY, no opacity, so content
@@ -132,11 +129,26 @@
   transform: translateY(0);
 }
 
-/* Gradient accent text (terra) */
+/* Gradient accent text (terra). `color` is the visible fallback; the clipped
+   gradient + transparent fill only take effect where supported, so the text is
+   never invisible. */
 .terra-grad {
   background: linear-gradient(135deg, #d9a7c7 0%, #fffcdc 100%);
   -webkit-background-clip: text;
   background-clip: text;
+  color: #eec9d6;
+  -webkit-text-fill-color: transparent;
+}
+
+/* The rotating hero word is split into per-character spans for the reveal. A
+   parent-only background-clip:text leaves those inline-block children with no
+   background of their own (transparent → the "missing word"), so each character
+   carries its own clipped gradient. */
+.terra-grad .lp-char {
+  background: linear-gradient(135deg, #d9a7c7 0%, #fffcdc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: #eec9d6;
   -webkit-text-fill-color: transparent;
 }
 

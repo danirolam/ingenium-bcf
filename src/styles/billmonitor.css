@@ -92,6 +92,38 @@
   padding-bottom: 8px;
 }
 
+/* ── Mobile: stack the toolbar; the filter strip scrolls instead of overflowing ── */
+@media (max-width: 640px) {
+  .bm-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+  .bm-toolbar-left {
+    width: 100%;
+  }
+  .bm-toolbar-right {
+    flex: 1 1 auto;
+    width: 100%;
+    padding-bottom: 0;
+  }
+  .bm-toolbar-right .search {
+    width: 100%;
+  }
+  .seg {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .seg::-webkit-scrollbar {
+    display: none;
+  }
+  .seg-list {
+    flex-wrap: nowrap;
+    width: max-content;
+  }
+}
+
 /* ───────── Segmented tabs ───────── */
 .seg {
   border-bottom: 1px solid var(--border);

@@ -43,7 +43,7 @@ function AnimatedCounter({ value }: { value: string }) {
         const tick = (now: number) => {
           const p = Math.min(1, (now - start) / 1100);
           const eased = 1 - Math.pow(1 - p, 3);
-          setShown(Math.round(target * eased).toString() + suffix);
+          setShown(Math.round(target * eased).toLocaleString("en-US") + suffix);
           if (p < 1) requestAnimationFrame(tick);
         };
         requestAnimationFrame(tick);
@@ -77,10 +77,10 @@ const PRACTICES = [
 ];
 
 const METRICS = [
-  { label: "BILLS TRACKED", value: "162", desc: "45th Parliament, 1st Session", c: "pink" },
-  { label: "WITH FULL TEXT", value: "160", desc: "parsed clause by clause", c: "purple" },
+  { label: "BILLS TRACKED", value: "5694", desc: "across 16 sessions of Parliament", c: "pink" },
+  { label: "WITH FULL TEXT", value: "160", desc: "current session, clause by clause", c: "purple" },
   { label: "PRACTICE GROUPS", value: "9", desc: "mapped automatically", c: "pink" },
-  { label: "STAGES TRACED", value: "6", desc: "first reading to assent", c: "purple" },
+  { label: "STAGES TRACED", value: "6", desc: "first reading to royal assent", c: "purple" },
 ];
 
 const CAPS: { title: string; desc: string; icon: LucideIcon }[] = [
@@ -112,16 +112,29 @@ const FAQS = [
 export function Landing({ onLaunch }: { onLaunch: () => void }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
   const [wi, setWi] = useState(0);
   const [faq, setFaq] = useState<number | null>(0);
   const obsRef = useRef<IntersectionObserver | null>(null);
+  // Parallax targets — mutated directly in a rAF-throttled scroll handler so the
+  // page never re-renders on scroll (that was the source of the lag).
+  const heroRef = useRef<HTMLDivElement>(null);
+  const mockRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsLoaded(true);
-    const onScroll = () => setScrollY(window.scrollY);
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const y = window.scrollY;
+        if (heroRef.current) heroRef.current.style.transform = `translateY(${(y * 0.18).toFixed(1)}px)`;
+        if (mockRef.current)
+          mockRef.current.style.transform = `rotateX(${Math.max(0, 8 - y * 0.02).toFixed(2)}deg)`;
+      });
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
-    const t = setInterval(() => setWi((i) => (i + 1) % ROTATE.length), 3000);
+    const t = setInterval(() => setWi((i) => (i + 1) % ROTATE.length), 3200);
     obsRef.current = new IntersectionObserver(
       (entries) =>
         entries.forEach((e) => e.isIntersecting && e.target.classList.add("animate-in")),
@@ -136,6 +149,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
     }, 1800);
     return () => {
       window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
       clearInterval(t);
       clearTimeout(safety);
       obsRef.current?.disconnect();
@@ -221,10 +235,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-[#0B0C0F] via-[#0B0C0F]/75 to-[#0B0C0F]/30 pointer-events-none" />
-        <div
-          className="max-w-[1120px] w-full mx-auto relative z-10"
-          style={{ transform: `translateY(${scrollY * 0.18}px)` }}
-        >
+        <div ref={heroRef} className="max-w-[1120px] w-full mx-auto relative z-10">
           <div className="text-center mb-10">
             <div
               className="inline-flex items-center gap-2 glass-pill px-4 py-2 rounded-full mb-7 text-xs md:text-sm text-[#A7ABB3] stagger-reveal"
@@ -278,11 +289,10 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
           </div>
 
           <div className="mt-10 md:mt-16" style={{ perspective: "1200px" }}>
-            <div
-              className="dashboard-image"
-              style={{ animationDelay: "420ms", transform: `rotateX(${Math.max(0, 8 - scrollY * 0.02)}deg)`, transformStyle: "preserve-3d" }}
-            >
-              <DashboardMock />
+            <div className="dashboard-image" style={{ animationDelay: "420ms" }}>
+              <div ref={mockRef} style={{ transform: "rotateX(8deg)", transformStyle: "preserve-3d" }}>
+                <DashboardMock />
+              </div>
             </div>
           </div>
         </div>
@@ -480,15 +490,15 @@ function DashboardMock() {
             </span>
           ))}
         </div>
-        <span className="ml-auto w-[26px] h-[26px] rounded-md bg-gradient-to-br from-[#21262d] to-[#30363d] border border-[#30363d] grid place-items-center text-[10px] font-bold">MT</span>
+        <span className="ml-auto w-[26px] h-[26px] rounded-md bg-gradient-to-br from-[#21262d] to-[#30363d] border border-[#30363d] grid place-items-center text-[10px] font-bold">U1</span>
       </div>
       <div className="p-4 bg-[#0d1117]">
         <div className="font-mono text-[10px] tracking-[0.08em] uppercase text-[#6e7681] mb-3">
-          45th Parliament · 1st Session · 162 bills tracked
+          Federal docket · 5,694 bills · 16 sessions
         </div>
         <div className="grid grid-cols-4 gap-2.5 mb-3">
           {[
-            { n: "01", v: "162", l: "Bills tracked", on: true },
+            { n: "01", v: "5,694", l: "Bills tracked", on: true },
             { n: "02", v: "10", l: "Legal deltas", on: false },
             { n: "03", v: "3", l: "Clients", on: false },
             { n: "04", v: "5", l: "Ready", on: false },
