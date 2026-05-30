@@ -476,3 +476,32 @@
     right: 12px;
   }
 }
+
+/* Phones: the 4-stage rail can't show full labels without clustering, so collapse
+   it to compact numbered pills. The active step stays highlighted; full stage
+   names are in the "?" help popover and on each page's header. */
+@media (max-width: 640px) {
+  .shell-step-label,
+  .shell-step-desc,
+  .shell-flow-sep {
+    display: none;
+  }
+  .shell-step {
+    flex: none;
+    gap: 0;
+    padding: 5px;
+  }
+  .shell-step-text {
+    display: none;
+  }
+  .shell-flow {
+    gap: 5px;
+    padding: 0 4px;
+    overflow: visible;
+  }
+  .shell-bar {
+    gap: 10px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
