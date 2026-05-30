@@ -5,7 +5,7 @@ into clear, client‑specific advice. It follows every federal bill through Parl
 pinpoints the exact statutory change a bill makes, matches that change against a
 client's operations, and produces a counsel‑reviewed exposure memo.
 
-**Live:** https://project-injenium.vercel.app
+**Live:** https://ingenium-bcf.vercel.app
 
 The workspace is one continuous flow:
 
