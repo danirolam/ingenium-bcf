@@ -50,6 +50,10 @@ npm run server   # run only the API (tsx watch)
 without them, Ingenium falls back to deterministic, real‑looking output, so the only
 remaining step to "turn on" AI is adding the key.
 
+> **Wiring the AI? See [`AI_INTEGRATION.md`](AI_INTEGRATION.md)** — the full handoff
+> guide: where the key goes, how to verify it took (`npm run verify:gemini`,
+> `/api/health`), the three AI touchpoints, and how to expand registered Acts.
+
 Copy the template and fill in what you want:
 
 ```bash
