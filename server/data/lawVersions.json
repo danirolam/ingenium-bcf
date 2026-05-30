@@ -138,7 +138,7 @@
     "comingIntoForceText": "On a day fixed by order of the Governor in Council.",
     "confidence": 0.69,
     "humanReviewRequired": true,
-    "humanReviewReason": "Confidence below 0.75; 'principal authorized use' is undefined and needs lawyer interpretation.",
+    "humanReviewReason": "'Principal authorized use' is undefined and needs lawyer interpretation.",
     "createdAt": "2026-05-09T19:59:42.928Z"
   },
   {
@@ -289,6 +289,6 @@
     "detailedDelta": "Eligibility criteria gain (e) palliative-care information disclosure and (f) a 30-day reflection-period requirement subject to a reasonably-foreseeable-death exception.",
     "confidence": 0.74,
     "humanReviewRequired": true,
-    "humanReviewReason": "Confidence below 0.75; the reflection-period carve-out wording will need lawyer interpretation against the existing reasonably-foreseeable-death jurisprudence."
+    "humanReviewReason": "The reflection-period carve-out wording will need lawyer interpretation against the existing reasonably-foreseeable-death jurisprudence."
   }
 ]

@@ -8,7 +8,8 @@ export function flagAmendmentReview(a: AmendmentExtraction): {
   reason: string | null;
 } {
   const reasons: string[] = [];
-  if (a.confidence < 0.75) reasons.push("Confidence below 0.75");
+  if (a.confidence < 0.75)
+    reasons.push("Automated extraction — lawyer verification required");
   if (!a.affectedSections || a.affectedSections.length === 0)
     reasons.push("No affected section identified");
   if (!a.effectiveDate && !a.comingIntoForceText)
@@ -31,7 +32,8 @@ export function flagImpactReview(c: ClientImpactAnalysis): {
 } {
   const reasons: string[] = [];
   if (c.affected === "unclear") reasons.push("Affected status is unclear");
-  if (c.confidence < 0.75) reasons.push("Confidence below 0.75");
+  if (c.confidence < 0.75)
+    reasons.push("Automated analysis — lawyer verification required");
   if (c.relevantClientText.some((r) => /conflict|inconsist/i.test(r.issue)))
     reasons.push("Relevant client text conflicts with recommendation");
   if (

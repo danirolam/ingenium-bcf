@@ -338,7 +338,7 @@ export function buildSeedLawVersion(args: {
     confidence: 0.74,
     humanReviewRequired: true,
     humanReviewReason:
-      "Confidence below 0.75; prescribed form/manner of the label awaits regulations; coming-into-force depends on Royal Assent date.",
+      "Prescribed form/manner of the label awaits regulations; coming-into-force depends on the Royal Assent date.",
     createdAt: new Date().toISOString(),
   };
 }
