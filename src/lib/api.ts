@@ -39,13 +39,20 @@ export const api = {
   lawVersions: {
     list: () => j<LawVersion[]>("/api/law-versions"),
     get: (id: string) => j<LawVersion>(`/api/law-versions/${id}`),
-    approve: (id: string) =>
-      j<LawVersion>(`/api/law-versions/${id}/approve`, { method: "POST" }),
-    needsReview: (id: string, reason?: string) =>
-      j<LawVersion>(`/api/law-versions/${id}/needs-review`, {
+    // Pass the full record so the mutation works even if this serverless
+    // instance's ephemeral store doesn't have it yet.
+    approve: (lv: LawVersion) =>
+      j<LawVersion>(`/api/law-versions/${lv.id}/approve`, {
         method: "POST",
-        body: JSON.stringify({ reason }),
+        body: JSON.stringify({ lawVersion: lv }),
       }),
+    needsReview: (lv: LawVersion, reason?: string) =>
+      j<LawVersion>(`/api/law-versions/${lv.id}/needs-review`, {
+        method: "POST",
+        body: JSON.stringify({ reason, lawVersion: lv }),
+      }),
+    remove: (id: string) =>
+      j<{ ok: boolean }>(`/api/law-versions/${id}`, { method: "DELETE" }),
   },
   clients: {
     list: () => j<Client[]>("/api/clients"),

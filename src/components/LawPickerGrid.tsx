@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRotateLeft, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import type { LawVersion } from "../types";
 import { MomentumBadge } from "./badges";
 
@@ -19,10 +21,14 @@ export function LawPickerGrid({
   lawVersions,
   activeId,
   onSelect,
+  onRevert,
+  onDelete,
 }: {
   lawVersions: LawVersion[];
   activeId: string;
   onSelect: (id: string) => void;
+  onRevert?: (lv: LawVersion) => void;
+  onDelete?: (lv: LawVersion) => void;
 }) {
   if (lawVersions.length === 0) {
     return (
@@ -61,9 +67,39 @@ export function LawPickerGrid({
                 {(lv.affectedSections ?? []).join(", ")}
               </div>
             )}
-            <div className="lpg-foot">
-              Approved · {shortDate(lv.createdAt)}
-            </div>
+            <div className="lpg-foot">Approved · {shortDate(lv.createdAt)}</div>
+            {(onRevert || onDelete) && (
+              <div className="lpg-actions">
+                {onRevert && (
+                  <button
+                    type="button"
+                    className="lpg-action"
+                    title="Send this back to Needs review"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onRevert(lv);
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faRotateLeft} aria-hidden="true" />
+                    Revert
+                  </button>
+                )}
+                {onDelete && (
+                  <button
+                    type="button"
+                    className="lpg-action danger"
+                    title="Remove this approved law"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete(lv);
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faTrashCan} aria-hidden="true" />
+                    Delete
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         );
       })}

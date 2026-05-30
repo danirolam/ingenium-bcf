@@ -142,25 +142,33 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
   }, [lvs]);
 
   async function approve(id: string) {
+    const lv = lvs.find((x) => x.id === id);
+    if (!lv) return;
     setBusy(id);
     try {
-      const updated = await api.lawVersions.approve(id);
+      const updated = await api.lawVersions.approve(lv);
       setLvs((arr) => arr.map((x) => (x.id === id ? updated : x)));
       nav.toast(`Approved: ${updated.baseLawTitle}`);
+    } catch (err: any) {
+      nav.toast(`Could not approve: ${err?.message ?? err}`);
     } finally {
       setBusy(null);
     }
   }
 
   async function flag(id: string) {
+    const lv = lvs.find((x) => x.id === id);
+    if (!lv) return;
     setBusy(id);
     try {
       const updated = await api.lawVersions.needsReview(
-        id,
+        lv,
         "Flagged for manual review by counsel.",
       );
       setLvs((arr) => arr.map((x) => (x.id === id ? updated : x)));
       nav.toast(`Flagged: ${updated.baseLawTitle}`);
+    } catch (err: any) {
+      nav.toast(`Could not flag: ${err?.message ?? err}`);
     } finally {
       setBusy(null);
     }

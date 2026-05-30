@@ -27,9 +27,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
         setClients(cs);
         setLvs(ls);
         if (!activeClient && cs.length > 0) setActiveClient(cs[0]);
-        const approved = ls.filter(
-          (lv) => lv.humanApproved && !lv.baseLawId.startsWith("unregistered:"),
-        );
+        const approved = ls.filter((lv) => lv.humanApproved);
         if (!activeLvId && approved.length > 0) setActiveLvId(approved[0].id);
       })
       .catch((err) => {
@@ -40,10 +38,34 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
   }, []);
 
   const approvedLvs = useMemo(
-    () => lvs.filter((lv) => lv.humanApproved && !lv.baseLawId.startsWith("unregistered:")),
+    () => lvs.filter((lv) => lv.humanApproved),
     [lvs],
   );
   const activeLv = approvedLvs.find((lv) => lv.id === activeLvId) ?? null;
+
+  async function revert(lv: LawVersion) {
+    try {
+      await api.lawVersions.needsReview(lv);
+      setLvs((arr) =>
+        arr.map((x) => (x.id === lv.id ? { ...x, humanApproved: false } : x)),
+      );
+      if (activeLvId === lv.id) setActiveLvId("");
+      nav.toast(`Sent back to review: ${lv.baseLawTitle}`);
+    } catch (err: any) {
+      nav.toast(`Could not revert: ${err?.message ?? err}`);
+    }
+  }
+
+  async function removeLv(lv: LawVersion) {
+    try {
+      await api.lawVersions.remove(lv.id);
+      setLvs((arr) => arr.filter((x) => x.id !== lv.id));
+      if (activeLvId === lv.id) setActiveLvId("");
+      nav.toast(`Removed: ${lv.baseLawTitle}`);
+    } catch (err: any) {
+      nav.toast(`Could not remove: ${err?.message ?? err}`);
+    }
+  }
 
   async function analyze() {
     if (!activeClient || !activeLv) return;
@@ -101,6 +123,8 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                   lawVersions={approvedLvs}
                   activeId={activeLvId}
                   onSelect={setActiveLvId}
+                  onRevert={revert}
+                  onDelete={removeLv}
                 />
               </div>
             </div>

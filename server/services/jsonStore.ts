@@ -56,6 +56,17 @@ export async function findById<T extends { id: string }>(
   return items.find((it) => it.id === id);
 }
 
+export async function removeById<T extends { id: string }>(
+  file: string,
+  id: string,
+): Promise<boolean> {
+  const items = await readAll<T>(file);
+  const next = items.filter((it) => it.id !== id);
+  if (next.length === items.length) return false;
+  await writeAll(file, next);
+  return true;
+}
+
 export const FILES = {
   bills: "bills.json",
   lawVersions: "lawVersions.json",
