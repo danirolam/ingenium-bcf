@@ -1,11 +1,11 @@
 import { Router } from "express";
 import type {
+  Bill,
   Client,
   ClientImpactAnalysis,
-  LawVersion,
 } from "../../src/types.js";
 import { sendClientImpactCompleteEmail } from "../services/email.js";
-import { analyzeClientImpact } from "../services/gemini.js";
+import { analyzeClientImpact, billAffectedActs } from "../services/gemini.js";
 import { flagImpactReview } from "../services/humanReview.js";
 import { FILES, findById, readAll, upsert } from "../services/jsonStore.js";
 import { findCannedImpact } from "../seed/seedDemo.js";
@@ -13,50 +13,44 @@ import { findCannedImpact } from "../seed/seedDemo.js";
 export const clientImpactRouter = Router();
 
 clientImpactRouter.post("/analyze", async (req, res) => {
-  const { clientId, lawVersionId } = req.body ?? {};
-  if (!clientId || !lawVersionId) {
-    return res
-      .status(400)
-      .json({ error: "clientId and lawVersionId required" });
+  const { clientId, billId } = req.body ?? {};
+  if (!clientId || !billId) {
+    return res.status(400).json({ error: "clientId and billId required" });
   }
   const client = await findById<Client>(FILES.clients, clientId);
-  const lv = await findById<LawVersion>(FILES.lawVersions, lawVersionId);
+  const bill = await findById<Bill>(FILES.bills, billId);
   if (!client) return res.status(404).json({ error: "client not_found" });
-  if (!lv) return res.status(404).json({ error: "lawVersion not_found" });
-  if (!lv.humanApproved) {
-    return res
-      .status(400)
-      .json({ error: "lawVersion is not human-approved" });
-  }
+  if (!bill) return res.status(404).json({ error: "bill not_found" });
 
-  let result = await analyzeClientImpact({ lawVersion: lv, client });
+  let result = await analyzeClientImpact({ bill, client });
   if (!result) {
-    const canned = findCannedImpact({ clientId: client.id, lawVersion: lv });
+    const canned = findCannedImpact({ clientId: client.id, bill });
     if (canned) {
       console.log("[gemini] using canned impact for cold demo path");
       result = {
         ...canned,
         id: "",
         clientId: client.id,
-        lawVersionId: lv.id,
+        billId: bill.id,
         saved: false,
         createdAt: new Date().toISOString(),
       };
     } else {
       // Generic synthesized fallback — keeps the app usable without
-      // GEMINI_API_KEY for any (client, law) pair.
+      // GEMINI_API_KEY for any (client, bill) pair.
       console.log("[gemini] using synthesized generic impact fallback");
-      const actName = lv.baseLawTitle.replace(/\s*\([^)]*\)\s*$/, "");
-      const sections = (lv.affectedSections ?? []).join(", ") || "the affected provisions";
+      const acts = billAffectedActs(bill);
+      const actName = acts[0] ?? "the affected legislation";
+      const actList = acts.join(", ") || "the affected provisions";
       result = {
         id: "",
         clientId: client.id,
-        lawVersionId: lv.id,
+        billId: bill.id,
         affected: "unclear",
         impactLevel: "medium",
         urgency: "medium",
-        timing: `${lv.sourceBillNumber} is at ${lv.sourceBillStatus}. ${lv.comingIntoForceText ?? "Coming-into-force timing is unspecified — assume a 6–12 month transition window from royal assent."}`,
-        whyItAffectsClient: `${client.name} operates in ${client.industry} across ${client.jurisdictions.join(", ")}. The proposed amendments to ${actName} (${sections}) plausibly touch the client's operations; counsel verification is required to confirm scope and magnitude.`,
+        timing: `${bill.billNumber} is at ${bill.status}. Coming-into-force timing is unspecified — assume a 6–12 month transition window from royal assent.`,
+        whyItAffectsClient: `${client.name} operates in ${client.industry} across ${client.jurisdictions.join(", ")}. ${bill.billNumber} (amending ${actList}) plausibly touches the client's operations; counsel verification is required to confirm scope and magnitude.`,
         affectedClientAreas: [
           "Contractual terms",
           "Operational compliance",
@@ -65,9 +59,9 @@ clientImpactRouter.post("/analyze", async (req, res) => {
         requiredAdaptations: [
           {
             area: `${actName} compliance review`,
-            currentIssue: `Existing client posture has not been mapped against the proposed ${sections} amendments.`,
-            recommendation: `Pull the client's current obligations under ${actName} and walk each affected section against today's practice to identify gaps.`,
-            reason: `${lv.deltaSummary}`,
+            currentIssue: `Existing client posture has not been mapped against the changes proposed by ${bill.billNumber}.`,
+            recommendation: `Pull the client's current obligations under ${actName} and walk each affected provision against today's practice to identify gaps.`,
+            reason: bill.summary ?? `${bill.billNumber} — ${bill.title}`,
           },
         ],
         relevantClientText: client.termsAndConditions
@@ -75,18 +69,18 @@ clientImpactRouter.post("/analyze", async (req, res) => {
               {
                 source: "Terms & Conditions",
                 excerpt: (client.termsAndConditions ?? "").slice(0, 240),
-                issue: `Verify these terms remain consistent with the revised ${actName}.`,
+                issue: `Verify these terms remain consistent with ${bill.billNumber}'s amendments to ${actName}.`,
               },
             ]
           : [],
         lawyerVerificationQuestions: [
-          `Does ${client.name} currently rely on any provision modified by ${lv.sourceBillNumber}?`,
+          `Does ${client.name} currently rely on any provision modified by ${bill.billNumber}?`,
           `What is the cost and lead time of bringing operations into compliance with the revised ${actName}?`,
           `Are there client communications (T&Cs, policies, product labels) that need to be re-papered?`,
         ],
         emailDraft: {
-          subject: `${lv.sourceBillNumber} — preliminary impact note for ${client.name}`,
-          body: `Hi team,\n\nPreliminary impact note on ${lv.sourceBillNumber} (${lv.sourceBillTitle}) for ${client.name}:\n\nThe bill amends ${actName} at ${sections}. Based on the client's profile (${client.industry}, ${(client.jurisdictions ?? []).join(", ")}), the changes likely touch contractual terms, operational compliance, and disclosure / labelling.\n\nNext step: a lawyer-led mapping of the client's current obligations under ${actName} against the proposed amendments.\n\n— Ingenium`,
+          subject: `${bill.billNumber} — preliminary impact note for ${client.name}`,
+          body: `Hi team,\n\nPreliminary impact note on ${bill.billNumber} (${bill.title}) for ${client.name}:\n\nThe bill amends ${actList}. Based on the client's profile (${client.industry}, ${(client.jurisdictions ?? []).join(", ")}), the changes likely touch contractual terms, operational compliance, and disclosure / labelling.\n\nNext step: a lawyer-led mapping of the client's current obligations under ${actName} against the proposed amendments.\n\n— Ingenium`,
         },
         confidence: 0.55,
         humanReviewRequired: true,
@@ -103,20 +97,35 @@ clientImpactRouter.post("/analyze", async (req, res) => {
     ...result,
     id: `cia-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     clientId: client.id,
-    lawVersionId: lv.id,
+    billId: bill.id,
     saved: false,
     createdAt: new Date().toISOString(),
-    humanReviewRequired:
-      result.humanReviewRequired || review.required,
+    humanReviewRequired: result.humanReviewRequired || review.required,
     humanReviewReason: result.humanReviewReason ?? review.reason,
   };
   await upsert(FILES.impacts, analysis);
   const email = await sendClientImpactCompleteEmail({
     analysis,
     client,
-    lawVersion: lv,
+    bill,
   });
   res.json({ analysis, email });
+});
+
+// The brief is identified by (client, bill). Returns the most recent analysis
+// for that pair so deep links like /clients/:clientId/bills/:billId resolve.
+clientImpactRouter.get("/by-pair", async (req, res) => {
+  const clientId = String(req.query.clientId ?? "");
+  const billId = String(req.query.billId ?? "");
+  if (!clientId || !billId) {
+    return res.status(400).json({ error: "clientId and billId required" });
+  }
+  const all = await readAll<ClientImpactAnalysis>(FILES.impacts);
+  const match = all
+    .filter((a) => a.clientId === clientId && a.billId === billId)
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0];
+  if (!match) return res.status(404).json({ error: "not_found" });
+  res.json(match);
 });
 
 clientImpactRouter.get("/:id", async (req, res) => {
@@ -137,12 +146,12 @@ clientImpactRouter.post("/:id/email-lawyer", async (req, res) => {
   const a = await findById<ClientImpactAnalysis>(FILES.impacts, req.params.id);
   if (!a) return res.status(404).json({ error: "not_found" });
   const client = await findById<Client>(FILES.clients, a.clientId);
-  const lv = await findById<LawVersion>(FILES.lawVersions, a.lawVersionId);
-  if (!client || !lv) return res.status(404).json({ error: "linked records missing" });
+  const bill = await findById<Bill>(FILES.bills, a.billId);
+  if (!client || !bill) return res.status(404).json({ error: "linked records missing" });
   const email = await sendClientImpactCompleteEmail({
     analysis: a,
     client,
-    lawVersion: lv,
+    bill,
   });
   res.json({ email });
 });

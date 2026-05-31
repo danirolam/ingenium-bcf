@@ -8,6 +8,7 @@ import { BillDetail } from "./pages/BillDetail";
 import { ClientImpactAnalysisPage } from "./pages/ClientImpactAnalysis";
 import { ClientLawScanner } from "./pages/ClientLawScanner";
 import { DeltaWorkspace } from "./pages/DeltaWorkspace";
+import { buildPath, parsePath, type Route } from "./lib/routes";
 
 export type PageId =
   | "overview"
@@ -16,7 +17,6 @@ export type PageId =
   | "delta"
   | "scanner"
   | "impact";
-type Surface = "landing" | "app";
 
 export type Nav = {
   go: (page: PageId, params?: Record<string, string>) => void;
@@ -25,16 +25,27 @@ export type Nav = {
   toast: (msg: string) => void;
 };
 
+function currentRoute(): Route {
+  if (typeof window === "undefined") {
+    return { surface: "landing", page: "overview", params: {} };
+  }
+  return parsePath(window.location.pathname, window.location.search);
+}
+
 export default function App() {
-  // Read initial surface from URL hash so deep links work (#/app etc.)
-  const [surface, setSurface] = useState<Surface>(() =>
-    typeof window !== "undefined" && window.location.hash.startsWith("#/app")
-      ? "app"
-      : "landing",
-  );
-  const [page, setPage] = useState<PageId>("overview");
-  const [params, setParams] = useState<Record<string, string>>({});
+  // The URL is the single source of truth for navigation. `go` pushes a new
+  // history entry; the popstate listener re-reads the URL when the user hits
+  // the browser back/forward arrows — so the arrows step through the workflow.
+  const [route, setRoute] = useState<Route>(() => currentRoute());
   const [toastMsg, setToastMsg] = useState<string | null>(null);
+
+  useEffect(() => {
+    const onPopState = () => setRoute(currentRoute());
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
+  const { surface, page, params } = route;
 
   // Every page (and entering the app) opens at the top — never inherit the
   // previous view's scroll position.
@@ -42,30 +53,34 @@ export default function App() {
     window.scrollTo(0, 0);
   }, [page, surface]);
 
-  const enterApp = useCallback(() => {
-    setSurface("app");
-    setPage("overview");
-    setParams({});
-    if (typeof window !== "undefined") window.location.hash = "#/app";
+  // Push a new URL and sync state. pushState doesn't fire popstate, so we
+  // update `route` ourselves; back/forward go through the listener above.
+  const navigate = useCallback((path: string) => {
+    window.history.pushState(null, "", path);
+    setRoute(currentRoute());
   }, []);
+
+  const enterApp = useCallback(() => {
+    navigate(buildPath("overview"));
+  }, [navigate]);
 
   const exitToLanding = useCallback(() => {
-    setSurface("landing");
-    if (typeof window !== "undefined") {
-      // Clear the hash so the landing matches a fresh visit
-      history.replaceState(null, "", window.location.pathname);
-    }
-  }, []);
+    navigate("/");
+  }, [navigate]);
 
-  const go = useCallback((p: PageId, ps: Record<string, string> = {}) => {
-    setPage(p);
-    setParams(ps);
-  }, []);
+  const go = useCallback(
+    (p: PageId, ps: Record<string, string> = {}) => {
+      navigate(buildPath(p, ps));
+    },
+    [navigate],
+  );
 
-  const setPageOnly = useCallback((p: PageId) => {
-    setPage(p);
-    setParams({});
-  }, []);
+  const setPageOnly = useCallback(
+    (p: PageId) => {
+      navigate(buildPath(p));
+    },
+    [navigate],
+  );
 
   if (surface === "landing") {
     return <Landing onLaunch={enterApp} />;

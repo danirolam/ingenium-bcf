@@ -1,5 +1,263 @@
 [
   {
+    "id": "lv-bill-13590170-unregistered:budget-2025-implementation-act-no-1",
+    "baseLawId": "unregistered:budget-2025-implementation-act-no-1",
+    "baseLawTitle": "Budget 2025 Implementation Act, No. 1",
+    "sourceBillId": "bill-13590170",
+    "sourceBillNumber": "C-230",
+    "sourceBillTitle": "An Act to amend the Financial Administration Act and to make consequential amendments to other Acts (debt forgiveness registry)",
+    "sourceBillStatus": "At second reading in the Senate",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "8 — Bill C-15\nBill C-15 8 (1) Subsections (2) and (3) apply if Bill C-15, introduced in the 1st session of the 45th Parliament and entitled Budget 2025 Implementation Act, No. 1 (in this section referred to as the “other Act”), receives royal assent. (2) If subsection 126(2) of the other Act comes into force before section 6 of this Act, then that section 6 is deemed never to have come into force and is repealed. (3) If subsection 126(2) of the other Act comes into force on the same day as section 6 of this Act, then that section 6 is deemed never to have come into force and is repealed.",
+    "affectedSections": [
+      "8"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-230 introduces 1 clause that target the Budget 2025 Implementation Act, No. 1. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-230 introduces 1 clause that target the Budget 2025 Implementation Act, No. 1. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-30T23:58:22.902Z"
+  },
+  {
+    "id": "lv-bill-13590170-unregistered:global-minimum-tax-act",
+    "baseLawId": "unregistered:global-minimum-tax-act",
+    "baseLawTitle": "Global Minimum Tax Act",
+    "sourceBillId": "bill-13590170",
+    "sourceBillNumber": "C-230",
+    "sourceBillTitle": "An Act to amend the Financial Administration Act and to make consequential amendments to other Acts (debt forgiveness registry)",
+    "sourceBillStatus": "At second reading in the Senate",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "7\n7 Paragraph 123(6)(f) of the Global Minimum Tax Act is replaced by the following: (f) provide confidential information solely for the purposes of sections 23 to 25.1 of the Financial Administration Act ;",
+    "affectedSections": [
+      "7"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-230 introduces 1 clause that target the Global Minimum Tax Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-230 introduces 1 clause that target the Global Minimum Tax Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-30T23:58:22.902Z"
+  },
+  {
+    "id": "lv-bill-13590170-unregistered:digital-services-tax-act",
+    "baseLawId": "unregistered:digital-services-tax-act",
+    "baseLawTitle": "Digital Services Tax Act",
+    "sourceBillId": "bill-13590170",
+    "sourceBillNumber": "C-230",
+    "sourceBillTitle": "An Act to amend the Financial Administration Act and to make consequential amendments to other Acts (debt forgiveness registry)",
+    "sourceBillStatus": "At second reading in the Senate",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "6\n6 Paragraph 108(6)(f) of the Digital Services Tax Act is replaced by the following: (f) provide confidential information solely for the purposes of sections 23 to 25.1 of the Financial Administration Act ;",
+    "affectedSections": [
+      "6"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-230 introduces 1 clause that target the Digital Services Tax Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-230 introduces 1 clause that target the Digital Services Tax Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-30T23:58:22.901Z"
+  },
+  {
+    "id": "lv-bill-13590170-unregistered:softwood-lumber-products-export-charge-act-2006",
+    "baseLawId": "unregistered:softwood-lumber-products-export-charge-act-2006",
+    "baseLawTitle": "Softwood Lumber Products Export Charge Act, 2006",
+    "sourceBillId": "bill-13590170",
+    "sourceBillNumber": "C-230",
+    "sourceBillTitle": "An Act to amend the Financial Administration Act and to make consequential amendments to other Acts (debt forgiveness registry)",
+    "sourceBillStatus": "At second reading in the Senate",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "5\n5 Paragraph 84(6)(f) of the Softwood Lumber Products Export Charge Act, 2006 is replaced by the following: (f) provide confidential information solely for the purposes of sections 23 to 25.1 of the Financial Administration Act ;",
+    "affectedSections": [
+      "5"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-230 introduces 1 clause that target the Softwood Lumber Products Export Charge Act, 2006. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-230 introduces 1 clause that target the Softwood Lumber Products Export Charge Act, 2006. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-30T23:58:22.901Z"
+  },
+  {
+    "id": "lv-bill-13590170-unregistered:excise-act-2001",
+    "baseLawId": "unregistered:excise-act-2001",
+    "baseLawTitle": "Excise Act, 2001",
+    "sourceBillId": "bill-13590170",
+    "sourceBillNumber": "C-230",
+    "sourceBillTitle": "An Act to amend the Financial Administration Act and to make consequential amendments to other Acts (debt forgiveness registry)",
+    "sourceBillStatus": "At second reading in the Senate",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "4\n4 Paragraph 211(6)(f) of the Excise Act, 2001 is replaced by the following: (f) provide confidential information solely for the purposes of sections 23 to 25.1 of the Financial Administration Act ;",
+    "affectedSections": [
+      "4"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-230 introduces 1 clause that target the Excise Act, 2001. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-230 introduces 1 clause that target the Excise Act, 2001. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-30T23:58:22.900Z"
+  },
+  {
+    "id": "lv-bill-13590170-unregistered:excise-tax-act",
+    "baseLawId": "unregistered:excise-tax-act",
+    "baseLawTitle": "Excise Tax Act",
+    "sourceBillId": "bill-13590170",
+    "sourceBillNumber": "C-230",
+    "sourceBillTitle": "An Act to amend the Financial Administration Act and to make consequential amendments to other Acts (debt forgiveness registry)",
+    "sourceBillStatus": "At second reading in the Senate",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "3\n3 Paragraph 295(5)(e) of the Excise Tax Act is replaced by the following: (e) provide confidential information solely for the purposes of sections 23 to 25.1 of the Financial Administration Act ;",
+    "affectedSections": [
+      "3"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-230 introduces 1 clause that target the Excise Tax Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-230 introduces 1 clause that target the Excise Tax Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-30T23:58:22.900Z"
+  },
+  {
+    "id": "lv-bill-13590170-unregistered:income-tax-act",
+    "baseLawId": "unregistered:income-tax-act",
+    "baseLawTitle": "Income Tax Act",
+    "sourceBillId": "bill-13590170",
+    "sourceBillNumber": "C-230",
+    "sourceBillTitle": "An Act to amend the Financial Administration Act and to make consequential amendments to other Acts (debt forgiveness registry)",
+    "sourceBillStatus": "At second reading in the Senate",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": true,
+    "oldText": "",
+    "updatedText": "2\n2 Paragraph 241(4)(f) of the Income Tax Act is replaced by the following: (f) provide taxpayer information solely for the purposes of sections 23 to 25.1 of the Financial Administration Act ;",
+    "affectedSections": [
+      "2"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-230 introduces 1 clause that target the Income Tax Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-230 introduces 1 clause that target the Income Tax Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": false,
+    "humanReviewReason": null,
+    "createdAt": "2026-05-30T23:58:22.899Z"
+  },
+  {
+    "id": "lv-bill-13590170-unregistered:financial-administration-act",
+    "baseLawId": "unregistered:financial-administration-act",
+    "baseLawTitle": "Financial Administration Act",
+    "sourceBillId": "bill-13590170",
+    "sourceBillNumber": "C-230",
+    "sourceBillTitle": "An Act to amend the Financial Administration Act and to make consequential amendments to other Acts (debt forgiveness registry)",
+    "sourceBillStatus": "At second reading in the Senate",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": true,
+    "oldText": "",
+    "updatedText": "1 — Public registry\n1 The Financial Administration Act is amended by adding the following after section 25: Public registry 25.1 (1) The President of the Treasury Board must establish and maintain a public registry in the form of an online, searchable database containing information relating to any debt or obligation owed by a corporation, trust company or partnership to His Majesty — and to any claim by His Majesty against a corporation, trust company or partnership — that was, in whole or in part, remitted, forgiven, written off or waived, under this or any other Act of Parliament, in an amount of $2,000,000 or more. Contents of registry (2) The registry must include the following information in relation to each debt, obligation or claim: (a) the name, as well as any business name, of the corporation, trust company or partnership; (b) the amount that was remitted, forgiven, written off or waived; (c) an indication of whether the debt, obligation or claim was remitted, forgiven, written off or waived; (d) the fiscal year in which the debt, obligation or claim was remitted, forgiven, written off or waived; (e) the Act of Parliament or agreement, arrangement, contract or other instrument or act under which the debt, obligation or claim arose; (f) the Act of Parliament under which the debt, obligation or claim was remitted, forgiven, written off or waived; and (g) any other information that the President of the Treasury Board considers appropriate. Exception (3) Despite subsection (2), the President of the Treasury Board may exclude from the registry any information that, in their opinion, would be inappropriate to make publicly accessible for reasons related to the protection of confidential, personal or sensitive information. Reasons for exclusion (3.1) If any information is excluded from the registry under subsection (3), the President of the Treasury Board must identify in the registry whether the information was excluded for reasons relating to the protection of confidential information, personal information or sensitive information. Establishment of registry (4) The registry must be established within 18 months after the day on which this section comes into force and, on the day that it is established, must include information relating to each debt, obligation or claim referred to in subsection (1) that was remitted, forgiven, written off or waived — after the day on which this section comes into force — during the fiscal year to which the Public Accounts most recently tabled in the House of Commons relate. Maintenance of registry (5) Within 90 days after the day on which the Public Accounts are tabled in the House of Commons, the President of the Treasury Board must update the registry to include information relating to each debt, obligation or claim referred to in subsection (1) that was remitted, forgiven, written off or waived during the fiscal year to which the tabled Public Accounts relate. For greater certainty (6) For greater certainty, for the purposes of this section, a debt or obligation owed to a Crown corporation is not a debt or obligation owed to His Majesty and a claim by a Crown corporation is not a claim by His Majesty.\n\n2\n2 Paragraph 241(4)(f) of the Income Tax Act is replaced by the following: (f) provide taxpayer information solely for the purposes of sections 23 to 25.1 of the Financial Administration Act ;\n\n3\n3 Paragraph 295(5)(e) of the Excise Tax Act is replaced by the following: (e) provide confidential information solely for the purposes of sections 23 to 25.1 of the Financial Administration Act ;\n\n4\n4 Paragraph 211(6)(f) of the Excise Act, 2001 is replaced by the following: (f) provide confidential information solely for the purposes of sections 23 to 25.1 of the Financial Administration Act ;\n\n5\n5 Paragraph 84(6)(f) of the Softwood Lumber Products Export Charge Act, 2006 is replaced by the following: (f) provide confidential information solely for the purposes of sections 23 to 25.1 of the Financial Administration Act ;\n\n6\n6 Paragraph 108(6)(f) of the Digital Services Tax Act is replaced by the following: (f) provide confidential information solely for the purposes of sections 23 to 25.1 of the Financial Administration Act ;\n\n7\n7 Paragraph 123(6)(f) of the Global Minimum Tax Act is replaced by the following: (f) provide confidential information solely for the purposes of sections 23 to 25.1 of the Financial Administration Act ;",
+    "affectedSections": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-230 introduces 7 clauses that target the Financial Administration Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-230 introduces 7 clauses that target the Financial Administration Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": false,
+    "humanReviewReason": null,
+    "createdAt": "2026-05-30T23:58:22.898Z"
+  },
+  {
+    "id": "lv-bill-13953578-food-and-drugs-act",
+    "baseLawId": "food-and-drugs-act",
+    "baseLawTitle": "Food and Drugs Act",
+    "sourceBillId": "bill-13953578",
+    "sourceBillNumber": "C-265",
+    "sourceBillTitle": "An Act to amend the Food and Drugs Act (List of Therapeutic Products Pre-approved for Special Access)",
+    "sourceBillStatus": "At second reading in the House of Commons",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "1 — Clinical judgment\n1 The Food and Drugs Act is amended by adding the following after section 2.4: Clinical judgment 2.5 For greater certainty, nothing in this Act or the regulations is to be interpreted as preventing, in an emergency situation, a person who is entitled to practise medicine under the laws of a province from temporarily administering to a person under their care any therapeutic product that was lawfully manufactured in or imported into Canada and that is available to them if doing so is the best available treatment based on their clinical judgment.",
+    "affectedSections": [
+      "1"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-265 introduces 1 clause that target the Food and Drugs Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-265 introduces 1 clause that target the Food and Drugs Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-30T22:35:01.285Z"
+  },
+  {
     "id": "lv-bill-13953578-unregistered:food-and-drugs-act",
     "baseLawId": "unregistered:food-and-drugs-act",
     "baseLawTitle": "Food and Drugs Act",

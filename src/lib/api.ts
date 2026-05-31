@@ -64,13 +64,18 @@ export const api = {
       }),
   },
   clientImpact: {
-    analyze: (clientId: string, lawVersionId: string) =>
+    analyze: (clientId: string, billId: string) =>
       j<{ analysis: ClientImpactAnalysis; email: EmailResult }>(
         "/api/client-impact/analyze",
         {
           method: "POST",
-          body: JSON.stringify({ clientId, lawVersionId }),
+          body: JSON.stringify({ clientId, billId }),
         },
+      ),
+    // The brief is keyed by (client, bill); returns the latest one or 404.
+    byPair: (clientId: string, billId: string) =>
+      j<ClientImpactAnalysis>(
+        `/api/client-impact/by-pair?clientId=${encodeURIComponent(clientId)}&billId=${encodeURIComponent(billId)}`,
       ),
     get: (id: string) => j<ClientImpactAnalysis>(`/api/client-impact/${id}`),
     save: (id: string) =>

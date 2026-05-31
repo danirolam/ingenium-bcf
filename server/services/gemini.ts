@@ -5,7 +5,6 @@ import type {
   Bill,
   Client,
   ClientImpactAnalysis,
-  LawVersion,
 } from "../../src/types.js";
 
 // Overridable via env (documented in .env.example); falls back to a fast,
@@ -102,11 +101,36 @@ Apply the amendment to the base law. Preserve unchanged sentences verbatim. Outp
   return r?.updatedText ?? null;
 }
 
+/** The Acts a bill touches, gathered from clause-level tags + the statute citation. */
+export function billAffectedActs(bill: Bill): string[] {
+  const acts = new Set<string>();
+  for (const clause of bill.clauses ?? []) {
+    for (const act of clause.targetActs ?? []) {
+      if (act?.trim()) acts.add(act.trim());
+    }
+  }
+  if (bill.statuteCitation?.trim()) acts.add(bill.statuteCitation.trim());
+  return [...acts];
+}
+
+/** A compact, prompt-friendly digest of a bill's clause-by-clause changes. */
+function billClauseDigest(bill: Bill, maxClauses = 40): string {
+  const clauses = bill.clauses ?? [];
+  const digest = clauses
+    .slice(0, maxClauses)
+    .map((c) => `${c.number ?? ""} ${c.heading ?? ""}\n${c.text}`.trim())
+    .join("\n\n");
+  const omitted = clauses.length - Math.min(clauses.length, maxClauses);
+  return omitted > 0 ? `${digest}\n\n…(+${omitted} more clauses)` : digest;
+}
+
 export async function analyzeClientImpact(args: {
-  lawVersion: LawVersion;
+  bill: Bill;
   client: Client;
 }): Promise<ClientImpactAnalysis | null> {
-  const { lawVersion, client } = args;
+  const { bill, client } = args;
+  const affectedActs = billAffectedActs(bill);
+  const clauseDigest = billClauseDigest(bill);
 
   const prompt = `You are a senior Canadian regulatory and business lawyer based in Montreal working for a big firm and advising a sophisticated corporate client. Assume the audience is an in-house legal department and senior executives familiar with their industrie's regulations. Use short analytical paragraphs and business-oriented headings. Prioritize precision, commercial relevance, and regulatory analysis over general explanation.
     Return STRICT JSON with exactly these keys:
@@ -143,13 +167,14 @@ Include in the response:
 
 Write in a concise, professional legal-business style suitable for an internal client memorandum or partner briefing note. Avoid generic political commentary and focus on practical corporate implications.
 
-LAW CHANGE:
-Source: ${lawVersion.sourceBillNumber} — ${lawVersion.sourceBillTitle}
-Status: ${lawVersion.sourceBillStatus} (momentum: ${lawVersion.legislativeMomentum})
-Effective: ${lawVersion.effectiveDate ?? "unspecified"} (${lawVersion.comingIntoForceText ?? ""})
-Affected sections: ${lawVersion.affectedSections.join(", ")}
-Delta summary: ${lawVersion.deltaSummary}
-Detailed delta: ${lawVersion.detailedDelta}
+LAW CHANGE (the whole bill):
+Source: ${bill.billNumber} — ${bill.title}
+Status: ${bill.status} (momentum: ${bill.legislativeMomentum})
+Acts amended: ${affectedActs.join(", ") || "(not yet tagged — infer from the clauses below)"}
+Summary: ${bill.summary ?? "(no summary provided)"}
+
+Clause-by-clause changes:
+${clauseDigest || "(full text not available — reason from the title, status, and Acts amended)"}
 
 CLIENT: ${client.name}
 Industry: ${client.industry}

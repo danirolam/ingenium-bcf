@@ -3,7 +3,10 @@
   "framework": "vite",
   "buildCommand": "vite build",
   "outputDirectory": "dist",
-  "rewrites": [{ "source": "/api/(.*)", "destination": "/api/index" }],
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index" },
+    { "source": "/:path*", "destination": "/index.html" }
+  ],
   "functions": {
     "api/index.ts": {
       "includeFiles": "{data,server/data}/**"

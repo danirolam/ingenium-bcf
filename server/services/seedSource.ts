@@ -345,7 +345,7 @@ export function buildSeedLawVersion(args: {
 
 type CannedImpact = Omit<
   ClientImpactAnalysis,
-  "id" | "clientId" | "lawVersionId" | "saved" | "createdAt"
+  "id" | "clientId" | "billId" | "saved" | "createdAt"
 >;
 
 export const CANNED_IMPACTS: Record<string, CannedImpact> = {

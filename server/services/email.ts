@@ -3,7 +3,6 @@ import type {
   Bill,
   ClientImpactAnalysis,
   Client,
-  LawVersion,
 } from "../../src/types.js";
 
 export type EmailResult = { sent: boolean; simulated: boolean; info?: string };
@@ -66,12 +65,12 @@ export async function sendBillPassedEmail(bill: Bill): Promise<EmailResult> {
 export async function sendClientImpactCompleteEmail(args: {
   analysis: ClientImpactAnalysis;
   client: Client;
-  lawVersion: LawVersion;
+  bill: Bill;
 }): Promise<EmailResult> {
-  const { analysis: a, client, lawVersion: lv } = args;
+  const { analysis: a, client, bill } = args;
   return send({
-    subject: `[Client Impact Ready] ${client.name} analysis completed for ${lv.sourceBillNumber}`,
-    html: `<p><b>${client.name}</b> analysis for <b>${lv.sourceBillNumber}</b> — ${lv.sourceBillTitle}</p>
+    subject: `[Client Impact Ready] ${client.name} analysis completed for ${bill.billNumber}`,
+    html: `<p><b>${client.name}</b> analysis for <b>${bill.billNumber}</b> — ${bill.title}</p>
       <ul>
         <li>Affected: <b>${a.affected}</b></li>
         <li>Impact level: <b>${a.impactLevel}</b></li>

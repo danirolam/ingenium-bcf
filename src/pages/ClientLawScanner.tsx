@@ -1,34 +1,32 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,
-  faFileCircleCheck,
+  faScroll,
   faPlus,
   faScaleBalanced,
 } from "@fortawesome/free-solid-svg-icons";
 import type { Nav } from "../App";
 import { ClientSelector } from "../components/ClientSelector";
-import { LawPickerGrid } from "../components/LawPickerGrid";
+import { BillPickerGrid } from "../components/BillPickerGrid";
 import { PageHeader } from "../components/PageHeader";
 import { api } from "../lib/api";
-import type { Client, LawVersion } from "../types";
+import type { Bill, Client } from "../types";
 
 export function ClientLawScanner({ nav }: { nav: Nav }) {
   const [clients, setClients] = useState<Client[]>([]);
-  const [lvs, setLvs] = useState<LawVersion[]>([]);
+  const [bills, setBills] = useState<Bill[]>([]);
   const [activeClient, setActiveClient] = useState<Client | null>(null);
-  const [activeLvId, setActiveLvId] = useState<string>("");
+  const [activeBillId, setActiveBillId] = useState<string>("");
   const [busy, setBusy] = useState(false);
   const [showNew, setShowNew] = useState(false);
 
   useEffect(() => {
-    Promise.all([api.clients.list(), api.lawVersions.list()])
-      .then(([cs, ls]) => {
+    Promise.all([api.clients.list(), api.bills.list()])
+      .then(([cs, bs]) => {
         setClients(cs);
-        setLvs(ls);
+        setBills(bs);
         if (!activeClient && cs.length > 0) setActiveClient(cs[0]);
-        const approved = ls.filter((lv) => lv.humanApproved);
-        if (!activeLvId && approved.length > 0) setActiveLvId(approved[0].id);
       })
       .catch((err) => {
         console.error(err);
@@ -37,50 +35,22 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const approvedLvs = useMemo(
-    () => lvs.filter((lv) => lv.humanApproved),
-    [lvs],
-  );
-  const activeLv = approvedLvs.find((lv) => lv.id === activeLvId) ?? null;
-
-  async function revert(lv: LawVersion) {
-    try {
-      await api.lawVersions.needsReview(lv);
-      setLvs((arr) =>
-        arr.map((x) => (x.id === lv.id ? { ...x, humanApproved: false } : x)),
-      );
-      if (activeLvId === lv.id) setActiveLvId("");
-      nav.toast(`Sent back to review: ${lv.baseLawTitle}`);
-    } catch (err: any) {
-      nav.toast(`Could not revert: ${err?.message ?? err}`);
-    }
-  }
-
-  async function removeLv(lv: LawVersion) {
-    try {
-      await api.lawVersions.remove(lv.id);
-      setLvs((arr) => arr.filter((x) => x.id !== lv.id));
-      if (activeLvId === lv.id) setActiveLvId("");
-      nav.toast(`Removed: ${lv.baseLawTitle}`);
-    } catch (err: any) {
-      nav.toast(`Could not remove: ${err?.message ?? err}`);
-    }
-  }
+  const activeBill = bills.find((b) => b.id === activeBillId) ?? null;
 
   async function analyze() {
-    if (!activeClient || !activeLv) return;
+    if (!activeClient || !activeBill) return;
     setBusy(true);
     try {
-      const { analysis, email } = await api.clientImpact.analyze(
+      const { email } = await api.clientImpact.analyze(
         activeClient.id,
-        activeLv.id,
+        activeBill.id,
       );
       nav.toast(
         email.simulated
           ? "Analysis ready · Email simulated."
           : "Analysis ready · Email sent.",
       );
-      nav.go("impact", { id: analysis.id });
+      nav.go("impact", { clientId: activeClient.id, billId: activeBill.id });
     } catch (err: any) {
       nav.toast(`Analysis failed: ${err.message ?? err}`);
     } finally {
@@ -91,9 +61,9 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
   return (
     <>
       <PageHeader
-        crumbs={["Workspace", "Client-Law Scanner"]}
-        title="Client-Law Scanner"
-        sub="Pair an approved updated law with a client to generate a client-specific impact analysis."
+        crumbs={["Workspace", "Client Scan"]}
+        title="Client Scan"
+        sub="Pair a bill with a client to generate a client-specific impact brief."
         actions={
           <button className="btn primary" onClick={() => setShowNew(true)}>
             <FontAwesomeIcon icon={faPlus} aria-hidden="true" />
@@ -113,18 +83,16 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
             <div className="card">
               <div className="card-h">
                 <div className="card-title-row">
-                  <FontAwesomeIcon icon={faFileCircleCheck} aria-hidden="true" />
-                  <div className="card-title">Approved laws ready for matching</div>
+                  <FontAwesomeIcon icon={faScroll} aria-hidden="true" />
+                  <div className="card-title">Pick a bill to match</div>
                 </div>
-                <span className="cs-count">({approvedLvs.length})</span>
+                <span className="cs-count">({bills.length})</span>
               </div>
               <div className="card-pad">
-                <LawPickerGrid
-                  lawVersions={approvedLvs}
-                  activeId={activeLvId}
-                  onSelect={setActiveLvId}
-                  onRevert={revert}
-                  onDelete={removeLv}
+                <BillPickerGrid
+                  bills={bills}
+                  activeId={activeBillId}
+                  onSelect={setActiveBillId}
                 />
               </div>
             </div>
@@ -165,10 +133,21 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
 
                 <div className="hr" />
 
+                <div className="kv kv-compact">
+                  <div className="k">Bill</div>
+                  <div className="v">
+                    {activeBill
+                      ? `${activeBill.billNumber} — ${activeBill.title}`
+                      : "Select a bill above."}
+                  </div>
+                </div>
+
+                <div className="hr" />
+
                 <div className="actions-row">
                   <button
                     className="btn primary"
-                    disabled={busy || !activeClient || !activeLv}
+                    disabled={busy || !activeClient || !activeBill}
                     onClick={analyze}
                   >
                     {busy ? "Analyzing..." : "Analyze client impact"}

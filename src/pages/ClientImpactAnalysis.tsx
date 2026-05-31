@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown,
@@ -27,12 +27,12 @@ import {
 } from "../components/ui/alert-1";
 import { api } from "../lib/api";
 import { downloadDoc, esc } from "../lib/export";
-import type { Client, ClientImpactAnalysis, LawVersion } from "../types";
+import type { Bill, Client, ClientImpactAnalysis } from "../types";
 
 export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
   const [analysis, setAnalysis] = useState<ClientImpactAnalysis | null>(null);
   const [client, setClient] = useState<Client | null>(null);
-  const [lv, setLv] = useState<LawVersion | null>(null);
+  const [bill, setBill] = useState<Bill | null>(null);
   const [busy, setBusy] = useState(false);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     why: true,
@@ -43,39 +43,102 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     source: false,
   });
 
+  const { clientId, billId } = nav.params;
+
   useEffect(() => {
-    const id = nav.params.id;
-    if (!id) return;
-    api.clientImpact
-      .get(id)
-      .then(async (a) => {
-        setAnalysis(a);
-        const [c, l] = await Promise.all([
-          api.clients.get(a.clientId).catch(() => null),
-          api.lawVersions.get(a.lawVersionId).catch(() => null),
-        ]);
-        setClient(c);
-        setLv(l);
-      })
-      .catch((err) => {
-        console.error(err);
-        nav.toast(`Could not load analysis: ${err.message ?? err}`);
-      });
+    if (!clientId || !billId) return;
+    let cancelled = false;
+    (async () => {
+      const [c, b, a] = await Promise.all([
+        api.clients.get(clientId).catch(() => null),
+        api.bills.get(billId).catch(() => null),
+        api.clientImpact.byPair(clientId, billId).catch(() => null),
+      ]);
+      if (cancelled) return;
+      setClient(c);
+      setBill(b);
+      setAnalysis(a);
+    })().catch((err) => {
+      console.error(err);
+      nav.toast(`Could not load brief: ${err.message ?? err}`);
+    });
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nav.params.id]);
+  }, [clientId, billId]);
+
+  // Acts the bill touches — used in place of the old law-version's baseLawTitle.
+  const affectedActs = useMemo(() => {
+    if (!bill) return [] as string[];
+    const acts = new Set<string>();
+    for (const clause of bill.clauses ?? []) {
+      for (const act of clause.targetActs ?? []) {
+        if (act?.trim()) acts.add(act.trim());
+      }
+    }
+    if (bill.statuteCitation?.trim()) acts.add(bill.statuteCitation.trim());
+    return [...acts];
+  }, [bill]);
+
+  async function generate() {
+    if (!clientId || !billId) return;
+    setBusy(true);
+    try {
+      const { analysis: a, email } = await api.clientImpact.analyze(
+        clientId,
+        billId,
+      );
+      setAnalysis(a);
+      nav.toast(
+        email.simulated
+          ? "Brief generated · Email simulated."
+          : "Brief generated · Email sent.",
+      );
+    } catch (err: any) {
+      nav.toast(`Could not generate brief: ${err.message ?? err}`);
+    } finally {
+      setBusy(false);
+    }
+  }
 
   if (!analysis) {
+    // A client+bill pair is addressed but no brief exists yet → offer to generate
+    // it here, so the URL is directly actionable. No pair → point back to scan.
+    const hasPair = Boolean(clientId && billId);
     return (
       <>
         <PageHeader
-          crumbs={["Workspace", "Client Impact Analysis"]}
-          title="Client Impact Analysis"
-          sub="Run an analysis from the Client-Law Scanner to see results here."
+          crumbs={["Workspace", "Client Brief"]}
+          title="Client Brief"
+          sub={
+            hasPair
+              ? `No brief yet for ${client?.name ?? "this client"} on ${bill?.billNumber ?? "this bill"}.`
+              : "Pick a client and a bill in Client Scan to generate a brief."
+          }
+          actions={
+            hasPair ? (
+              <button className="btn primary" disabled={busy} onClick={generate}>
+                {busy ? "Generating…" : "Generate brief"}
+              </button>
+            ) : undefined
+          }
         />
         <div className="body">
           <div className="rd-empty">
-            No analysis loaded. Open the Client-Law Scanner and click <b>Analyze
-            client impact</b>.
+            {hasPair ? (
+              <>
+                No brief has been generated for{" "}
+                <b>{client?.name ?? "this client"}</b> on{" "}
+                <b>{bill?.billNumber ?? "this bill"}</b> yet. Click{" "}
+                <b>Generate brief</b> to create one.
+              </>
+            ) : (
+              <>
+                No brief loaded. Open <b>Client Scan</b>, pick a client and a
+                bill, and click <b>Analyze client impact</b>.
+              </>
+            )}
           </div>
         </div>
       </>
@@ -120,8 +183,8 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     const body = `
       <div class="doc-label">Privileged &amp; confidential · Counsel work product</div>
       <h1>Client exposure brief — ${esc(client?.name ?? "Client")}</h1>
-      <p class="doc-meta">${esc(lv?.sourceBillNumber ?? "")} — ${esc(lv?.sourceBillTitle ?? "")}${
-        lv?.baseLawTitle ? ` · affecting the ${esc(lv.baseLawTitle)}` : ""
+      <p class="doc-meta">${esc(bill?.billNumber ?? "")} — ${esc(bill?.title ?? "")}${
+        affectedActs.length ? ` · affecting ${esc(affectedActs.join(", "))}` : ""
       }</p>
       <h2>Assessment</h2>
       <p><b>Affected:</b> ${esc(a.affected)} &nbsp;·&nbsp; <b>Impact:</b> ${esc(a.impactLevel)} &nbsp;·&nbsp; <b>Urgency:</b> ${esc(a.urgency)} &nbsp;·&nbsp; <b>Timing:</b> ${esc(a.timing)}</p>
@@ -136,7 +199,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
       <div class="doc-foot">Prepared with Ingenium for BCF. Counsel review required before sending.</div>`;
     const slug = (client?.name ?? "client").replace(/\W+/g, "-").toLowerCase();
     downloadDoc(
-      `brief-${slug}-${(lv?.sourceBillNumber ?? "bill").toLowerCase()}.doc`,
+      `brief-${slug}-${(bill?.billNumber ?? "bill").toLowerCase()}.doc`,
       `Client brief — ${client?.name ?? "Client"}`,
       body,
     );
@@ -158,13 +221,13 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
       <PageHeader
         crumbs={[
           "Workspace",
-          "Client Impact Analysis",
-          client?.name ?? "Analysis",
+          "Client Brief",
+          client?.name ?? "Brief",
         ]}
-        title={`Client Impact — ${client?.name ?? "…"}`}
+        title={`Client Brief — ${client?.name ?? "…"}`}
         sub={
-          lv
-            ? `Updated law from ${lv.sourceBillNumber} — ${lv.sourceBillTitle}.`
+          bill
+            ? `Brief for ${bill.billNumber} — ${bill.title}.`
             : undefined
         }
         actions={
@@ -199,7 +262,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
                 </div>
               </div>
               <div className="card-sub">
-                {client?.name ?? "-"} · {lv?.sourceBillNumber ?? "-"}
+                {client?.name ?? "-"} · {bill?.billNumber ?? "-"}
               </div>
             </div>
             <ReviewBadge required={analysis.humanReviewRequired} />
@@ -358,16 +421,16 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
               open={openSections.source}
               onToggle={toggleSection}
               icon={<FontAwesomeIcon icon={faFileLines} aria-hidden="true" />}
-              title="Source law version"
-              summary={`${lv?.sourceBillNumber ?? "Bill"} · ${(lv?.affectedSections ?? []).join(", ") || "sections pending"}`}
+              title="Source bill"
+              summary={`${bill?.billNumber ?? "Bill"} · ${affectedActs.join(", ") || "Acts pending"}`}
             >
               <div className="kv kv-card">
                 <div className="k">Bill</div>
-                <div className="v">{lv?.sourceBillNumber} — {lv?.sourceBillTitle}</div>
+                <div className="v">{bill?.billNumber} — {bill?.title}</div>
                 <div className="k">Status</div>
-                <div className="v">{lv?.sourceBillStatus}</div>
-                <div className="k">Sections</div>
-                <div className="v">{(lv?.affectedSections ?? []).join(", ") || "—"}</div>
+                <div className="v">{bill?.status}</div>
+                <div className="k">Acts amended</div>
+                <div className="v">{affectedActs.join(", ") || "—"}</div>
               </div>
             </InsightSection>
           </div>

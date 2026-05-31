@@ -149,7 +149,7 @@ export interface Client {
 export interface ClientImpactAnalysis {
   id: string;
   clientId: string;
-  lawVersionId: string;
+  billId: string;
 
   affected: "yes" | "no" | "unclear";
   impactLevel: "low" | "medium" | "high" | "critical";

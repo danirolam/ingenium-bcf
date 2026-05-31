@@ -71,22 +71,19 @@ export async function seedDemo() {
 }
 
 /**
- * Look up a canned impact analysis for the (clientId, lawVersionId) pair.
- * The cold demo is seeded for S-202 + Food and Drugs Act × the three demo
+ * Look up a canned impact analysis for the (clientId, bill) pair.
+ * The cold demo is seeded for the S-202 headlining bill × the three demo
  * clients. Anything else returns null and the route should fall through to
  * the live Gemini call (or surface that GEMINI_API_KEY is required).
  */
 export function findCannedImpact(args: {
   clientId: string;
-  lawVersion: LawVersion;
+  bill: Bill;
 }): Omit<
   ClientImpactAnalysis,
-  "id" | "clientId" | "lawVersionId" | "saved" | "createdAt"
+  "id" | "clientId" | "billId" | "saved" | "createdAt"
 > | null {
-  if (
-    args.lawVersion.sourceBillNumber !== HEADLINING_BILL_NUMBER ||
-    args.lawVersion.baseLawId !== HEADLINING_LAW_SLUG
-  ) {
+  if (args.bill.billNumber !== HEADLINING_BILL_NUMBER) {
     return null;
   }
   return CANNED_IMPACTS[args.clientId] ?? null;
