@@ -1,5 +1,540 @@
 [
   {
+    "id": "lv-bill-13957880-unregistered:communications-security-establishment-act",
+    "baseLawId": "unregistered:communications-security-establishment-act",
+    "baseLawTitle": "Communications Security Establishment Act",
+    "sourceBillId": "bill-13957880",
+    "sourceBillNumber": "C-22",
+    "sourceBillTitle": "Lawful Access Act, 2026",
+    "sourceBillStatus": "At consideration in committee in the House of Commons",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "42\n42 Paragraphs 12(a) and (b) of the Intelligence Commissioner Act are replaced by the following: (a) reviewing the conclusions on the basis of which certain authorizations are issued or amended, and certain determinations are made, under the Communications Security Establishment Act and the Canadian Security Intelligence Service Act and on the basis of which certain orders are made under the Supporting Authorized Access to Information Act ; and (b) if those conclusions are reasonable, approving those authorizations, amendments, determinations and orders .",
+    "affectedSections": [
+      "42"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-22 introduces 1 clause that target the Communications Security Establishment Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-22 introduces 1 clause that target the Communications Security Establishment Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-31T19:36:45.971Z"
+  },
+  {
+    "id": "lv-bill-13957880-unregistered:canada-evidence-act",
+    "baseLawId": "unregistered:canada-evidence-act",
+    "baseLawTitle": "Canada Evidence Act",
+    "sourceBillId": "bill-13957880",
+    "sourceBillNumber": "C-22",
+    "sourceBillTitle": "Lawful Access Act, 2026",
+    "sourceBillStatus": "At consideration in committee in the House of Commons",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "15 — Prohibition on disclosure\nProhibition on disclosure 15 An electronic service provider and any person acting on its behalf must not disclose any of the following information except as permitted under this Act or the Canada Evidence Act : (a) information contained in an order made under subsection 6 (1) or 7 (1); (b) information on which the Minister relied in making the order; (c) the fact that the electronic service provider is subject to the order; (d) information provided in the course of representations made under section 8 or in any response given by the Minister and the fact that the Minister has invited the representations; (e) information contained in an application referred to in subsection 6 (1) or in a decision made under subsection 6 (4); (f) information submitted under subsection 11 (2) and any information received from the Minister in response; (g) any prescribed information.",
+    "affectedSections": [
+      "15"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-22 introduces 1 clause that target the Canada Evidence Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-22 introduces 1 clause that target the Canada Evidence Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-31T19:36:45.970Z"
+  },
+  {
+    "id": "lv-bill-13957880-unregistered:royal-canadian-mounted-police-act",
+    "baseLawId": "unregistered:royal-canadian-mounted-police-act",
+    "baseLawTitle": "Royal Canadian Mounted Police Act",
+    "sourceBillId": "bill-13957880",
+    "sourceBillNumber": "C-22",
+    "sourceBillTitle": "Lawful Access Act, 2026",
+    "sourceBillStatus": "At consideration in committee in the House of Commons",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "14 — Obligation to assist\nObligation to assist 14 (1) On request made by the Minister, an electronic service provider must provide all reasonable assistance to a person or class of persons specified in the request to permit the assessment or testing of any device, equipment or other thing that may enable an authorized person to access information. Persons to be assisted (2) Only the following persons or classes of persons may receive assistance: (a) the Minister; (b) an employee of the Canadian Security Intelligence Service; (c) a person appointed or employed under Part I of the Royal Canadian Mounted Police Act or a civilian employee referred to in section 10 of that Act; (d) a civilian employee of another police force; (e) a peace officer , as defined in section 2 of the Criminal Code . Request (3) The request must be in writing and set out the purpose of the assessment or testing and any limits and conditions that the Minister considers appropriate. For greater certainty (4) For greater certainty, the assessment or testing must not have the effect of granting access to personal information.",
+    "affectedSections": [
+      "14"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-22 introduces 1 clause that target the Royal Canadian Mounted Police Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-22 introduces 1 clause that target the Royal Canadian Mounted Police Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-31T19:36:45.969Z"
+  },
+  {
+    "id": "lv-bill-13957880-unregistered:intelligence-commissioner-act",
+    "baseLawId": "unregistered:intelligence-commissioner-act",
+    "baseLawTitle": "Intelligence Commissioner Act",
+    "sourceBillId": "bill-13957880",
+    "sourceBillNumber": "C-22",
+    "sourceBillTitle": "Lawful Access Act, 2026",
+    "sourceBillStatus": "At consideration in committee in the House of Commons",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "7 — Order\nOrder 7 (1) Subject to section 8 , the Minister may make an order with respect to an electronic service provider and the order may contain any provision that may be contained in a regulation made under subsection 5 (2), whether or not the provider is a core provider. The order must specify the period during which it has effect. Approval of Intelligence Commissioner (2) The order is valid when — if it is approved by the Intelligence Commissioner under paragraph 20(1)(a) of the Intelligence Commissioner Act — the Intelligence Commissioner provides the Minister with the written decision approving the order. Factors (3) In making the order, the Minister must take into account the following factors: (a) the benefits of the order to the administration of justice, in particular to investigations under the Criminal Code , and to the exercise of powers and the performance of duties and functions under the Canadian Security Intelligence Service Act ; (b) the feasibility of compliance with the order for the electronic service provider; (c) the costs to be incurred by the electronic service provider to ensure compliance with the order; (d) the potential impact of the order on the persons to whom the electronic service provider provides services; (e) the potential impact of the order on privacy protection and cybersecurity; and (f) any other factor that the Minister considers relevant. Discretionary compensation (4) For the purpose of offsetting all or part of the costs referred to in paragraph (3)(c), in the order, the Minister may provide for compensation to be paid to the electronic service provider in an amount that the Minister considers appropriate and may include provisions with respect to the time and manner of payment. Systemic vulnerability (5) The electronic service provider is not required to comply with a provision of the order, with respect to an electronic service, if compliance with that provision would require the provider to introduce a systemic vulnerability related to that service or prevent the provider from rectifying such a vulnerability. Statutory Instruments Act (6) The Statutory Instruments Act does not apply to an order made under subsection (1).\n\n9 — Intelligence Commissioner\nIntelligence Commissioner 9 (1) The Minister must provide a copy of any order made under subsection 7 (1) to the Intelligence Commissioner for the purposes of the Intelligence Commissioner’s review and approval under the Intelligence Commissioner Act . Notice (2) The copy of the order constitutes notice of the order for the purposes of calculating the time limit referred to in paragraph 20(3)(b) of the Intelligence Commissioner Act .\n\n42\n42 Paragraphs 12(a) and (b) of the Intelligence Commissioner Act are replaced by the following: (a) reviewing the conclusions on the basis of which certain authorizations are issued or amended, and certain determinations are made, under the Communications Security Establishment Act and the Canadian Security Intelligence Service Act and on the basis of which certain orders are made under the Supporting Authorized Access to Information Act ; and (b) if those conclusions are reasonable, approving those authorizations, amendments, determinations and orders .",
+    "affectedSections": [
+      "7",
+      "9",
+      "42"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-22 introduces 3 clauses that target the Intelligence Commissioner Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-22 introduces 3 clauses that target the Intelligence Commissioner Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-31T19:36:45.968Z"
+  },
+  {
+    "id": "lv-bill-13957880-unregistered:statutory-instruments-act",
+    "baseLawId": "unregistered:statutory-instruments-act",
+    "baseLawTitle": "Statutory Instruments Act",
+    "sourceBillId": "bill-13957880",
+    "sourceBillNumber": "C-22",
+    "sourceBillTitle": "Lawful Access Act, 2026",
+    "sourceBillStatus": "At consideration in committee in the House of Commons",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "6 — Temporary exemption\nTemporary exemption 6 (1) On application by a core provider, the Minister may, by order and on any terms that the Minister considers necessary, exempt the core provider, for a specified period, from the application of any provision of a regulation made under subsection 5 (2). Application (2) The application must be submitted in the form and manner specified by the Minister and must contain (a) the provision with respect to which the exemption is sought; (b) a proposed period for the exemption; (c) a rationale explaining why the core provider requires the exemption; (d) a plan setting out the measures that the core provider intends to take to comply with the provision within the period referred to in paragraph (b); and (e) any other information specified by the Minister. Pending application (3) The provision with respect to which the exemption is sought does not apply to the core provider pending the determination of the application. Decision (4) As soon as feasible after the application is submitted, the Minister must make a decision in respect of it and give written notice of the decision to the core provider. Denial of application (5) In a decision to deny the application, the Minister may specify the day by which the core provider must comply with the provision with respect to which the application was denied. Statutory Instruments Act (6) The Statutory Instruments Act does not apply to an order made under subsection (1).\n\n7 — Order\nOrder 7 (1) Subject to section 8 , the Minister may make an order with respect to an electronic service provider and the order may contain any provision that may be contained in a regulation made under subsection 5 (2), whether or not the provider is a core provider. The order must specify the period during which it has effect. Approval of Intelligence Commissioner (2) The order is valid when — if it is approved by the Intelligence Commissioner under paragraph 20(1)(a) of the Intelligence Commissioner Act — the Intelligence Commissioner provides the Minister with the written decision approving the order. Factors (3) In making the order, the Minister must take into account the following factors: (a) the benefits of the order to the administration of justice, in particular to investigations under the Criminal Code , and to the exercise of powers and the performance of duties and functions under the Canadian Security Intelligence Service Act ; (b) the feasibility of compliance with the order for the electronic service provider; (c) the costs to be incurred by the electronic service provider to ensure compliance with the order; (d) the potential impact of the order on the persons to whom the electronic service provider provides services; (e) the potential impact of the order on privacy protection and cybersecurity; and (f) any other factor that the Minister considers relevant. Discretionary compensation (4) For the purpose of offsetting all or part of the costs referred to in paragraph (3)(c), in the order, the Minister may provide for compensation to be paid to the electronic service provider in an amount that the Minister considers appropriate and may include provisions with respect to the time and manner of payment. Systemic vulnerability (5) The electronic service provider is not required to comply with a provision of the order, with respect to an electronic service, if compliance with that provision would require the provider to introduce a systemic vulnerability related to that service or prevent the provider from rectifying such a vulnerability. Statutory Instruments Act (6) The Statutory Instruments Act does not apply to an order made under subsection (1).\n\n22 — Audit order\nAudit order 22 (1) Subject to the regulations, a designated person may, for a purpose related to verifying compliance or preventing non-compliance with this Act, make an order in writing requiring an electronic service provider to conduct, within the time and in the manner specified in the order, an internal audit of its practices, documents and electronic data to determine whether it is in compliance with any provision of this Act or the regulations. Statutory Instruments Act (2) The Statutory Instruments Act does not apply to an order made under subsection (1).\n\n24 — Power to order termination of contravention\nPower to order termination of contravention 24 (1) If a designated person believes on reasonable grounds that there is or is likely to be a contravention of any provision of this Act or the regulations, they may make an order in writing requiring an electronic service provider to (a) stop doing something that is or is likely to be in contravention of that provision or cause it to be stopped; or (b) take any measure that is necessary to comply with the requirements of that provision or mitigate the effects of non-compliance. Time and manner for review (2) The order must specify the time within which and the manner in which the electronic service provider may request a review of the order by the Minister. Statutory Instruments Act (3) The Statutory Instruments Act does not apply to an order made under subsection (1).",
+    "affectedSections": [
+      "6",
+      "7",
+      "22",
+      "24"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-22 introduces 4 clauses that target the Statutory Instruments Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-22 introduces 4 clauses that target the Statutory Instruments Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-31T19:36:45.967Z"
+  },
+  {
+    "id": "lv-bill-13957880-unregistered:supporting-authorized-access-to-information-act",
+    "baseLawId": "unregistered:supporting-authorized-access-to-information-act",
+    "baseLawTitle": "Supporting Authorized Access to Information Act",
+    "sourceBillId": "bill-13957880",
+    "sourceBillNumber": "C-22",
+    "sourceBillTitle": "Lawful Access Act, 2026",
+    "sourceBillStatus": "At consideration in committee in the House of Commons",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "41 — Enactment\nEnactment 41 The Supporting Authorized Access to Information Act , whose text is as follows and whose schedule is set out in the schedule to this Act, is enacted: An Act respecting the obligations of electronic service providers in relation to authorized access to information Short Title Short title 1 This Act may be cited as the Supporting Authorized Access to Information Act .\n\n42\n42 Paragraphs 12(a) and (b) of the Intelligence Commissioner Act are replaced by the following: (a) reviewing the conclusions on the basis of which certain authorizations are issued or amended, and certain determinations are made, under the Communications Security Establishment Act and the Canadian Security Intelligence Service Act and on the basis of which certain orders are made under the Supporting Authorized Access to Information Act ; and (b) if those conclusions are reasonable, approving those authorizations, amendments, determinations and orders .\n\n43 — Ministerial orders\n43 The Act is amended by adding the following after section 19: Ministerial orders 19.1 The Commissioner must review whether the conclusions — made under subsection 7(3) of the Supporting Authorized Access to Information Act and on the basis of which an order was made under subsection 7(1) of that Act — are reasonable.",
+    "affectedSections": [
+      "41",
+      "42",
+      "43"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-22 introduces 3 clauses that target the Supporting Authorized Access to Information Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-22 introduces 3 clauses that target the Supporting Authorized Access to Information Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-31T19:36:45.966Z"
+  },
+  {
+    "id": "lv-bill-13957880-unregistered:protecting-victims-act",
+    "baseLawId": "unregistered:protecting-victims-act",
+    "baseLawTitle": "Protecting Victims Act",
+    "sourceBillId": "bill-13957880",
+    "sourceBillNumber": "C-22",
+    "sourceBillTitle": "Lawful Access Act, 2026",
+    "sourceBillStatus": "At consideration in committee in the House of Commons",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "39 — Bill C-16\nBill C-16 39 (1) Subsections (2) to (4) apply if Bill C-16, introduced in the 1st session of the 45th Parliament and entitled the Protecting Victims Act (in this section referred to as the “other Act”), receives royal assent. (2) If section 43 of the other Act comes into force before section 17 of this Act, then that section 17 is repealed. (3) If section 17 of this Act comes into force before section 43 of the other Act, then that section 43 is repealed. (4) If section 43 of the other Act and section 17 of this Act come into force on the same day, then that section 17 is deemed never to have come into force and is repealed.",
+    "affectedSections": [
+      "39"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-22 introduces 1 clause that target the Protecting Victims Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-22 introduces 1 clause that target the Protecting Victims Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-31T19:36:45.965Z"
+  },
+  {
+    "id": "lv-bill-13957880-unregistered:cannabis-act",
+    "baseLawId": "unregistered:cannabis-act",
+    "baseLawTitle": "Cannabis Act",
+    "sourceBillId": "bill-13957880",
+    "sourceBillNumber": "C-22",
+    "sourceBillTitle": "Lawful Access Act, 2026",
+    "sourceBillStatus": "At consideration in committee in the House of Commons",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "38 — Computer data\n38 Section 87 of the Cannabis Act is amended by adding the following after subsection (3): Computer data (3.1) Subsections 487(2.1) to (2.3) and (2.5) to (2.9) of the Criminal Code apply, with any modifications that the circumstances require, with respect to a warrant issued under subsection (1).",
+    "affectedSections": [
+      "38"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-22 introduces 1 clause that target the Cannabis Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-22 introduces 1 clause that target the Cannabis Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-31T19:36:45.964Z"
+  },
+  {
+    "id": "lv-bill-13957880-unregistered:controlled-drugs-and-substances-act",
+    "baseLawId": "unregistered:controlled-drugs-and-substances-act",
+    "baseLawTitle": "Controlled Drugs and Substances Act",
+    "sourceBillId": "bill-13957880",
+    "sourceBillNumber": "C-22",
+    "sourceBillTitle": "Lawful Access Act, 2026",
+    "sourceBillStatus": "At consideration in committee in the House of Commons",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "37 — Computer data\n37 Section 11 of the Controlled Drugs and Substances Act is amended by adding the following after subsection (3): Computer data (3.1) Subsections 487(2.1) to (2.3) and (2.5) to (2.9) of the Criminal Code apply, with any modifications that the circumstances require, with respect to a warrant issued under subsection (1).",
+    "affectedSections": [
+      "37"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-22 introduces 1 clause that target the Controlled Drugs and Substances Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-22 introduces 1 clause that target the Controlled Drugs and Substances Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-31T19:36:45.963Z"
+  },
+  {
+    "id": "lv-bill-13957880-unregistered:canadian-security-intelligence-service-act",
+    "baseLawId": "unregistered:canadian-security-intelligence-service-act",
+    "baseLawTitle": "Canadian Security Intelligence Service Act",
+    "sourceBillId": "bill-13957880",
+    "sourceBillNumber": "C-22",
+    "sourceBillTitle": "Lawful Access Act, 2026",
+    "sourceBillStatus": "At consideration in committee in the House of Commons",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "30\n30 The heading of Part II of the Canadian Security Intelligence Service Act is replaced by the following: Confirmation of Service Demand and Judicial Control\n\n35\n35 Schedule 2 to the Act is amended by adding the following before Form 1: FORM 0.1 (Subsection 20.22(1)) Confirmation of Service Demand To ( name of person or entity ), of : You are required under section 20.22 of the Canadian Security Intelligence Service Act to confirm, as soon as possible, but not later than ( specify time by which the confirmation is to be provided ), whether or not you provide or have provided telecommunication services to ( specify subscriber or client, or account or identifier ), unless this demand is revoked. The confirmation must be provided ( specify the form and manner ). This demand is subject to the following conditions: ( specify conditions, if any ) You have the right to apply to revoke or vary this confirmation of service demand in accordance with section 20.23 of the Canadian Security Intelligence Service Act . FORM 0.2 (Subsection 20.23(2)) Notice — Application for Revocation or Variation of a Confirmation of Service Demand FEDERAL COURT IN THE MATTER OF an application by ( Name ) for the revocation or variation of a confirmation of service demand under section 20.23 of the Canadian Security Intelligence Service Act , R.S.C. 1985, c. C-23 NOTICE This is a notice that ( name of telecommunications service provider named in the confirmation of service demand ) (“the applicant”) intends to apply to the Federal Court for the revocation or variation of the confirmation of service demand made on ( date ). Notice of the applicant’s intention has been provided to an employee of the Canadian Security Intelligence Service on ( date ). The applicant intends to file the application for revocation or variation on or before ( date ). Dated ( date ), at ( place ). ( Signature of applicant )\n\n36\n36 Form 5 of Schedule 2 to the Act is replaced by the following: FORM 5 (Subsection 20.5(2)) Notice — Application for Revocation or Variation of an Order Under Section 20.24 or a Production Order (Court File No. — to match order under section 20.24 or production order) FEDERAL COURT IN THE MATTER OF an application by ( Name ) for the revocation or variation of an order under section 20.24 or a production order under section 20.5 of the Canadian Security Intelligence Service Act , R.S.C. 1985, c. C-23 NOTICE This is a notice that ( name of telecommunications service provider , person or entity named in the order ) (“the applicant”) intends to apply to the Federal Court for the revocation or variation of the ( specify: order under section 20.24 or production order) made on ( date ) and received by the applicant on ( date ). A copy of this notice has been provided to an employee of the Canadian Security Intelligence Service on ( date ). The applicant intends to file the application for revocation or variation on or before ( date ). Dated ( date ), at ( place ). ( Signature of applicant )\n\n2 — Definitions\nDefinitions 2 (1) The following definitions apply in this Act. access , in relation to information, includes obtaining a document containing information and, with respect to information related to a communication, intercepting the communication within the meaning of section 183 of the Criminal Code . ( accès ) authorized person means a person having authority under the Criminal Code or the Canadian Security Intelligence Service Act to access information. ( personne autorisée ) core provider means an electronic service provider belonging to a class of electronic service providers set out in the schedule. ( fournisseur principal ) electronic protection means authentication, encryption and any other prescribed type of data protection. ( protection électronique ) electronic service means a service, or a feature of a service, that involves the creation, recording, storage, processing, transmission, reception, emission or making available of information in electronic, digital or any other intangible form by an electronic, digital, magnetic, optical, biometric, acoustic or other technological means, or a combination of any such means. ( service électronique ) electronic service provider means a person that, individually or as part of a group, provides an electronic service, including for the purpose of enabling communications, and that (a) provides the service to persons in Canada; or (b) carries on all or part of its business activities in Canada. ( fournisseur de services électroniques ) information includes any information, intelligence or data to which access may be authorized under the Criminal Code or the Canadian Security Intelligence Service Act . ( information ) Minister means the Minister of Public Safety and Emergency Preparedness. ( ministre ) person includes a corporation, a trust, a partnership, a fund, a joint venture, a government, a government agency, an unincorporated association or organization and any other legal entity . ( personne ) prescribed means prescribed by the regulations. ( Version anglaise seulement ) systemic vulnerability means a vulnerability in the electronic protections of an electronic service that creates a substantial risk that secure information could be accessed by a person who does not have any right or authority to do so. ( vulnérabilité systémique ) Preservation of existing authorities (2) Nothing in this Act derogates from any authority to access information conferred under the Criminal Code or the Canadian Security Intelligence Service Act — or from any similar authority conferred under another Act of Parliament — or from any corresponding obligation imposed on an electronic service provider to assist in a person’s exercise of such an authority. Preservation of agreements and arrangements (3) Nothing in this Act derogates from any agreement or arrangement between an electronic service provider and a national security or law enforcement agency with respect to assistance to be provided to an authorized person in the exercise of the person’s authority to access information, nor prevents entry into such an agreement or arrangement.\n\n5 — Core providers — classes\nCore providers — classes 5 (1) The Governor in Council may, by regulation, amend the schedule by adding, amending or deleting a class of electronic service providers. Core providers — obligations (2) The Governor in Council may make regulations respecting the obligations of core providers, including regulations respecting (a) the development, implementation, assessment, testing and maintenance of operational and technical capabilities, including capabilities related to extracting and organizing information that is authorized to be accessed and to providing access to such information to authorized persons; (b) the installation, use, operation, management, assessment, testing and maintenance of any device, equipment or other thing that may enable an authorized person to access information; (c) notices to be given to the Minister or other persons, including with respect to any capability referred to in paragraph (a) and any device, equipment or other thing referred to in paragraph (b); and (d) the retention of categories of metadata — including transmission data , as defined in section 487.011 of the Criminal Code — for reasonable periods of time not exceeding one year. Factors (3) In making a regulation under subsection (2), the Governor in Council must take into account the following factors: (a) the benefits of the regulation to the administration of justice, in particular to investigations under the Criminal Code , and to the exercise of powers and the performance of duties and functions under the Canadian Security Intelligence Service Act ; (b) the feasibility of compliance with the regulation for the core providers; (c) the costs to be incurred by the core providers to ensure compliance with the regulation; (d) the potential impact of the regulation on the persons to whom the core providers provide services; (e) the potential impact of the regulation on privacy protection and cybersecurity; and (f) any other factor that the Governor in Council considers relevant. Restrictions (4) Paragraph (2)(d) does not authorize the making of regulations that require core providers to retain information that would reveal (a) the content — that is to say the substance, meaning or purpose — of information transmitted in the course of an electronic service; (b) a person’s web browsing history; or (c) a person’s social media activities. Systemic vulnerability (5) A core provider is not required to comply with a provision of a regulation made under subsection (2), with respect to an electronic service, if compliance with that provision would require the provider to introduce a systemic vulnerability related to that service or prevent the provider from rectifying such a vulnerability.\n\n7 — Order\nOrder 7 (1) Subject to section 8 , the Minister may make an order with respect to an electronic service provider and the order may contain any provision that may be contained in a regulation made under subsection 5 (2), whether or not the provider is a core provider. The order must specify the period during which it has effect. Approval of Intelligence Commissioner (2) The order is valid when — if it is approved by the Intelligence Commissioner under paragraph 20(1)(a) of the Intelligence Commissioner Act — the Intelligence Commissioner provides the Minister with the written decision approving the order. Factors (3) In making the order, the Minister must take into account the following factors: (a) the benefits of the order to the administration of justice, in particular to investigations under the Criminal Code , and to the exercise of powers and the performance of duties and functions under the Canadian Security Intelligence Service Act ; (b) the feasibility of compliance with the order for the electronic service provider; (c) the costs to be incurred by the electronic service provider to ensure compliance with the order; (d) the potential impact of the order on the persons to whom the electronic service provider provides services; (e) the potential impact of the order on privacy protection and cybersecurity; and (f) any other factor that the Minister considers relevant. Discretionary compensation (4) For the purpose of offsetting all or part of the costs referred to in paragraph (3)(c), in the order, the Minister may provide for compensation to be paid to the electronic service provider in an amount that the Minister considers appropriate and may include provisions with respect to the time and manner of payment. Systemic vulnerability (5) The electronic service provider is not required to comply with a provision of the order, with respect to an electronic service, if compliance with that provision would require the provider to introduce a systemic vulnerability related to that service or prevent the provider from rectifying such a vulnerability. Statutory Instruments Act (6) The Statutory Instruments Act does not apply to an order made under subsection (1).\n\n18 — Regulations — confidentiality and security\nRegulations — confidentiality and security 18 The Governor in Council may make regulations respecting confidentiality and security requirements with which electronic service providers and persons acting on their behalf must comply, including regulations (a) respecting the disclosure of information referred to in section 15 or 16 ; (b) establishing rules of procedure for the protection of information referred to in section 15 or 16 in administrative or judicial proceedings; (c) respecting requirements related to employees of electronic service providers and other persons whose services may be engaged by electronic service providers — who participate in activities in relation to requests for access to information that is authorized under the Criminal Code or the Canadian Security Intelligence Service Act or in relation to compliance with this Act — including with respect to their security clearance and location; and (d) respecting security requirements with respect to the facilities and premises of electronic service providers that are used for storing, processing or transmitting information that is related to — or that may be the subject of — requests for access to information that is authorized under the Criminal Code or the Canadian Security Intelligence Service Act .\n\n42\n42 Paragraphs 12(a) and (b) of the Intelligence Commissioner Act are replaced by the following: (a) reviewing the conclusions on the basis of which certain authorizations are issued or amended, and certain determinations are made, under the Communications Security Establishment Act and the Canadian Security Intelligence Service Act and on the basis of which certain orders are made under the Supporting Authorized Access to Information Act ; and (b) if those conclusions are reasonable, approving those authorizations, amendments, determinations and orders .",
+    "affectedSections": [
+      "30",
+      "35",
+      "36",
+      "2",
+      "5",
+      "7",
+      "18",
+      "42"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-22 introduces 8 clauses that target the Canadian Security Intelligence Service Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-22 introduces 8 clauses that target the Canadian Security Intelligence Service Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-31T19:36:45.962Z"
+  },
+  {
+    "id": "lv-bill-13957880-unregistered:mutual-legal-assistance-in-criminal-matters-act",
+    "baseLawId": "unregistered:mutual-legal-assistance-in-criminal-matters-act",
+    "baseLawTitle": "Mutual Legal Assistance in Criminal Matters Act",
+    "sourceBillId": "bill-13957880",
+    "sourceBillNumber": "C-22",
+    "sourceBillTitle": "Lawful Access Act, 2026",
+    "sourceBillStatus": "At consideration in committee in the House of Commons",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "29 — Request to Minister\n29 The Mutual Legal Assistance in Criminal Matters Act is amended by adding the following after section 22.06: Enforcement of Foreign Decisions for Production Request to Minister 22.07 (1) When a written request is presented to the Minister by a state or entity for the enforcement in Canada of a decision made by an authority of that state or entity that is empowered to compel the production of transmission data or subscriber information that is in the possession or control of a person in Canada, the Minister may authorize a competent authority to make arrangements for the enforcement of the decision. Application for enforcement (2) The competent authority must apply ex parte for the enforcement of the decision to a justice , as defined in section 2 of the Criminal Code , a judge of a superior court of criminal jurisdiction , as defined in that section, or a judge of the Court of Quebec. Enforcement (3) The justice or judge to whom the application is made may make the decision enforceable if they are satisfied that (a) in the case of transmission data, the conditions set out in subsection 487.016(2) of the Criminal Code , with any necessary modifications, are met; or (b) in the case of subscriber information, the conditions set out in subsection 487.0142(2) of the Criminal Code, with any necessary modifications, are met. A decision that is made enforceable is deemed to be a judgment of the court to which the judge or justice belongs and may be executed anywhere in Canada. Designated person (4) The justice or judge who makes the decision enforceable under subsection (3) must designate a person to whom a record containing the transmission data or the subscriber information must be produced by the person in Canada referred to in the decision. Timing (5) The justice or judge must order that the person in Canada referred to in the decision produce the record containing the transmission data or the subscriber information to the designated person (a) no later than 45 days after the day on which the decision is served, in the case of transmission data; or (b) no later than 20 days after the day on which the decision is served, in the case of subscriber information. Order prohibiting disclosure (6) Section 487.0191 of the Criminal Code applies, with any necessary modifications, in respect of a decision made enforceable under subsection (3) and an order made under subsection (5). Sending abroad (7) The justice or judge must also order (a) that the designated person send the record containing the transmission data or the subscriber information directly to the state or entity referred to in subsection (1) that made the request; or (b) that sections 20 and 21 apply to the sending of the record containing the transmission data or the subscriber information, with any necessary modifications. Report (8) The designated person must (a) make a report concerning the execution of the decision to the justice or judge who made it enforceable — or to another justice for the same territorial division or another judge in the judicial district where the decision was made enforceable — accompanied by a general description of the transmission data or the subscriber information contained in the record and, if the justice or judge requires it, the record containing the transmission data or the subscriber information; and (b) send a copy of the report to the Minister without delay. Timing of report and sending abroad (9) If the justice or judge makes an order under paragraph (7)(a), the designated person must make the report to the justice or judge and send the record containing the transmission data or the subscriber information to the state or entity that made the request no later than five days after the day on which the record was produced under subsection (5). Offence (10) Section 487.0198 of the Criminal Code applies with respect to an order made under subsection (5). Definitions (11) In this section, transmission data and subscriber information have the same meaning as in section 487.011 of the Criminal Code .",
+    "affectedSections": [
+      "29"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-22 introduces 1 clause that target the Mutual Legal Assistance in Criminal Matters Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-22 introduces 1 clause that target the Mutual Legal Assistance in Criminal Matters Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-31T19:36:45.961Z"
+  },
+  {
+    "id": "lv-bill-13957880-unregistered:foreign-publishers-advertising-services-act",
+    "baseLawId": "unregistered:foreign-publishers-advertising-services-act",
+    "baseLawTitle": "Foreign Publishers Advertising Services Act",
+    "sourceBillId": "bill-13957880",
+    "sourceBillNumber": "C-22",
+    "sourceBillTitle": "Lawful Access Act, 2026",
+    "sourceBillStatus": "At consideration in committee in the House of Commons",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "28\n28 Subsection 5(1) of the Foreign Publishers Advertising Services Act is amended by replacing “section 487” with “subsection 487(1)”.",
+    "affectedSections": [
+      "28"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-22 introduces 1 clause that target the Foreign Publishers Advertising Services Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-22 introduces 1 clause that target the Foreign Publishers Advertising Services Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-31T19:36:45.960Z"
+  },
+  {
+    "id": "lv-bill-13957880-unregistered:proceeds-of-crime-money-laundering-and-terrorist-financing-act",
+    "baseLawId": "unregistered:proceeds-of-crime-money-laundering-and-terrorist-financing-act",
+    "baseLawTitle": "Proceeds of Crime (Money Laundering) and Terrorist Financing Act",
+    "sourceBillId": "bill-13957880",
+    "sourceBillNumber": "C-22",
+    "sourceBillTitle": "Lawful Access Act, 2026",
+    "sourceBillStatus": "At consideration in committee in the House of Commons",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "24\n24 Form 5.004 of Part XXVIII of the Act is replaced by the following: FORM 5.004 (Subsections 487.014(2), 487.0141(2), (5) and (10), 487.0142(2) , 487.015(2), 487.016(2), 487.017(2) and 487.018(3)) Information to Obtain a Production Order Canada, Province of ( territorial division ) This is the information of ( name of peace officer or public officer ), of (“the informant”). The informant says that they have reasonable grounds to suspect ( or, if the application is for an order under section 487.014 or 487.0141 of the Criminal Code , reasonable grounds to believe) (a) that an offence has been or will be committed under ( specify the provision of the Criminal Code or other Act of Parliament ); and (b) ( if the application is for an order under section 487.014 of the Criminal Code ) that ( specify the document or data ) is in the possession or control of ( name of the person ) and will afford evidence respecting the commission of the offence. (or) (b) ( if the application is for an order under section 487.0141 of the Criminal Code ) that ( specify the document or data ), if it is in the possession or control of ( name of the person ) on ( specify the dates to be specified in the order ), will afford evidence respecting the commission of the offence ( and if applicable , and that the information contained in all reports made under any of sections 7, 7.1 and 9 of the Proceeds of Crime (Money Laundering) and Terrorist Financing Act during the period the order is to be in effect will afford evidence respecting the commission of the offence). (or) (b) ( if the application is for an order under section 487.0142 of the Criminal Code ) that subscriber information is in the possession or control of ( name of the person ) and will assist in the investigation of the offence. (or) (b) ( if the application is for an order under section 487.015 of the Criminal Code ) that the identification of a device or person involved in the transmission of ( specify the communication ) will assist in the investigation of the offence and that ( specify the transmission data ) that is in the possession or control of one or more persons whose identity is unknown will enable that identification. (or) (b) ( if the application is for an order under section 487.016 of the Criminal Code ) that ( specify the transmission data ) is in the possession or control of ( name of the person ) and will assist in the investigation of the offence. (or) (b) ( if the application is for an order under section 487.017 of the Criminal Code ) that ( specify the tracking data ) is in the possession or control of ( name of the person ) and will assist in the investigation of the offence. (or) (b) ( if the application is for an order under section 487.018 of the Criminal Code ) that ( specify the data ) is in the possession or control of ( name of the financial institution, person or entity ) and will assist in the investigation of the offence. The reasonable grounds are: The informant therefore requests ( if the application is for an order under section 487.014 of the Criminal Code ) that ( name of the person ) be ordered to produce a document that is a copy of ( specify the document ) that is in their possession or control when they receive the order ( and/or to prepare and produce a document containing ( specify the data ) that is in their possession or control when they receive the order). (or) ( if the application is for an order under section 487.0141 of the Criminal Code ) that ( name of the person ) be ordered to produce a document that is a copy of ( specify the document ) that is in their possession or control on ( specify the dates to be specified in the order ) ( and/or to prepare and produce a document containing ( specify the data ) that is in their possession or control on ( specify the dates to be specified in the order )) ( and if applicable , and that the person be ordered to produce a copy of all reports made under any of sections 7, 7.1 and 9 of the Proceeds of Crime (Money Laundering) and Terrorist Financing Act during the period the order is to be in effect). (or) ( if the application is for an order under section 487.0142 of the Criminal Code ) that ( name of the person ) be ordered to prepare and produce a document containing all the subscriber information that is in their possession or control when they receive the order that relates to ( specify information ). (or) ( if the application is for an order under section 487.015 of the Criminal Code ) that a person who is served with the order in accordance with subsection 487.015(4) of the Criminal Code be ordered to prepare and produce a document containing ( specify the transmission data ) that is in their possession or control when they are served with the order. (or) ( if the application is for an order under section 487.016 of the Criminal Code ) that ( name of the person ) be ordered to prepare and produce a document containing ( specify the transmission data ) that is in their possession or control when they receive the order. (or) ( if the application is for an order under section 487.017 of the Criminal Code ) that ( name of the person ) be ordered to prepare and produce a document containing ( specify the tracking data ) that is in their possession or control when they receive the order. (or) ( if the application is for an order under section 487.018 of the Criminal Code ) that ( name of the financial institution, person or entity ) be ordered to prepare and produce a document setting out ( specify the data ) that is in their possession or control when they receive the order. Sworn before me on ( date ), at ( place ). ( Signature of informant ) ( Signature of justice or judge )",
+    "affectedSections": [
+      "24"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-22 introduces 1 clause that target the Proceeds of Crime (Money Laundering) and Terrorist Financing Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-22 introduces 1 clause that target the Proceeds of Crime (Money Laundering) and Terrorist Financing Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-31T19:36:45.959Z"
+  },
+  {
+    "id": "lv-bill-13957880-unregistered:telecommunications-act",
+    "baseLawId": "unregistered:telecommunications-act",
+    "baseLawTitle": "Telecommunications Act",
+    "sourceBillId": "bill-13957880",
+    "sourceBillNumber": "C-22",
+    "sourceBillTitle": "Lawful Access Act, 2026",
+    "sourceBillStatus": "At consideration in committee in the House of Commons",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "5 — Confirmation of service demand\n5 The Act is amended by adding the following after section 487.012: Confirmation of service demand 487.0121 (1) A peace officer or public officer may make a demand in Form 5.0011 to a telecommunications service provider requiring them to confirm, within the time and in the manner specified in the demand, whether or not they provide or have provided telecommunication services to any subscriber or client, or to any account or identifier, specified in the demand. Conditions for making demand (2) The peace officer or public officer may make the demand only if they have reasonable grounds to suspect that (a) an offence has been or will be committed under this Act or any other Act of Parliament; and (b) the confirmation that is demanded will assist in the investigation of the offence. Medical and privileged information (3) For greater certainty, a demand must not be made if the confirmation would disclose medical information or information that is subject to solicitor-client privilege or the professional secrecy of advocates and notaries. Limitation (4) A demand must not be made to a telecommunications service provider that is under investigation for the offence referred to in subsection (2). Time (5) The time specified in the demand is to be not less than 24 hours. Non-disclosure (6) The peace officer or public officer who makes the demand may impose conditions in the demand prohibiting the disclosure of its existence or some or all of its contents for a period not greater than one year after the day on which the demand is made. The peace officer or public officer may impose the conditions only if they have reasonable grounds to believe that the disclosure during that period would jeopardize the conduct of the investigation of the offence to which the demand relates. Revocation (7) A peace officer or public officer may, at any time, revoke the demand or a condition by notice given to the telecommunications service provider. Application for review (8) The telecommunications service provider may, within five business days after the day on which they receive the demand, apply in writing, to a judge in the judicial district where the demand was received, to revoke or vary the demand. Notice to apply for review (9) The telecommunications service provider may make an application under subsection (8) only if, before the confirmation is required to be provided, they give notice to the peace officer or public officer who made the demand of the telecommunications service provider’s intention to make the application. No obligation to provide confirmation (10) The telecommunications service provider is not required to provide the confirmation until a final decision is made with respect to the application. Revocation or variation of demand (11) The judge in the judicial district where the demand was received may revoke or vary the demand if satisfied that (a) it is unreasonable in the circumstances to require the applicant to provide the confirmation; or (b) provision of the confirmation would disclose information that is privileged or otherwise protected from disclosure by law. Request for confirmation (12) Despite subsection (1), no demand under that subsection is necessary for a peace officer or public officer to ask a telecommunications service provider to voluntarily provide the confirmation referred to in that subsection if the telecommunications service provider is not prohibited by law from providing it. A telecommunications service provider that provides a confirmation in those circumstances does not incur any criminal or civil liability for doing so. Definition of telecommunications service provider (13) In this section, telecommunications service provider has the same meaning as in subsection 2(1) of the Telecommunications Act .\n\n31 — Definition of telecommunications service provider\n31 The Act is amended by adding the following before section 20.3: Definition of telecommunications service provider 20.21 In sections 20.22 to 20.26 and 20.5, telecommunications service provider has the same meaning as in subsection 2(1) of the Telecommunications Act .",
+    "affectedSections": [
+      "5",
+      "31"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-22 introduces 2 clauses that target the Telecommunications Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-22 introduces 2 clauses that target the Telecommunications Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-31T19:36:45.958Z"
+  },
+  {
+    "id": "lv-bill-13957880-unregistered:criminal-code",
+    "baseLawId": "unregistered:criminal-code",
+    "baseLawTitle": "Criminal Code",
+    "sourceBillId": "bill-13957880",
+    "sourceBillNumber": "C-22",
+    "sourceBillTitle": "Lawful Access Act, 2026",
+    "sourceBillStatus": "At consideration in committee in the House of Commons",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "2 — Other provisions to apply\n2 Subsection 462.32(3) of the Criminal Code is replaced by the following: Other provisions to apply (3) Subsections 487(2.1) to (2.3) and (2.5) to (3) and section 488 apply, with any modifications that the circumstances require, to a warrant issued under this section.\n\n21\n21 Form 1 of Part XXVIII of the Act is replaced by the following: FORM 1 (Sections 320.29, 462.32, 462.321 and 487) Information to Obtain a Search Warrant Canada, Province of , ( territorial division ). This is the information of A.B., of in the ( territorial division ), ( occupation ), in this information called the informant, taken before me. The informant says that ( describe things or computer data to be searched for and offence in respect of which search is to be made ), and that they believe on reasonable grounds that those things, or some part of them, ( or that computer data ) are in the ( dwelling-house, etc. or computer system ) of C.D., of , in ( territorial division ). ( Here add the grounds of belief, whatever they may be .) The informant therefore requests that a search warrant be granted to search the ( dwelling-house, etc. or computer system ) for those things ( or that computer data ) . ( or ) The informant says that they believe on reasonable grounds that an offence has been or will be committed under ( specify the provision of the Criminal Code or other Act of Parliament ) and that computer data contained in or available to ( specify computer system in the possession of a peace officer or public officer ) will afford evidence with respect to the commission of the offence. ( Here add the grounds of belief, whatever they may be .) The informant therefore requests that a warrant be granted to examine that computer data. Sworn before me on ( date ) , at ( place ) . ( Signature of Informant ) A ( judge or justice ) in and for\n\n22\n22 Form 5 of Part XXVIII of the Act is replaced by the following: FORM 5 (Sections 320.29 and 487) Warrant to Search Canada, Province of , ( territorial division ). To the peace officers in the ( territorial division ) or to the public officers whose duties include the enforcement of ( specify an Act of Parliament ) : Whereas it appears on the oath of A.B., of that there are reasonable grounds for believing that ( describe things or computer data to be searched for and offence in respect of which search is to be made ) are in at , in this warrant called the premises; This warrant authorizes and requires you between the hours of ( as the judge or justice may direct ) to enter into the premises and to search for the things referred to in this warrant and to bring them before a justice. ( and, if applicable ) This warrant also authorizes the examination of computer data contained in or available to a computer system seized under this warrant or of computer data seized under this warrant. ( Specify any conditions to which the examination is subject. ) ( or ) Whereas it appears on the oath of A.B., of , that they have reasonable grounds to believe that an offence has been or will be committed under ( specify the provision of the Criminal Code or other Act of Parliament ) and to believe that computer data contained in or available to ( specify computer system in the possession of a peace officer or public officer ) will afford evidence with respect to the commission of the offence; This warrant authorizes the examination of that computer data. ( Specify any conditions to which the examination is subject. ) Dated ( date ) at ( place ) . A ( judge or justice ) in and for\n\n23\n23 Part XXVIII of the Act is amended by adding the following after Form 5.001: FORM 5.0011 (Subsection 487.0121(1)) Confirmation of Service Demand Canada, Province of , ( territorial division ) To ( name of the telecommunications service provider ), of : Because I have reasonable grounds to suspect that an offence has been or will be committed under ( specify the provision of the Criminal Code or other Act of Parliament ) and that the confirmation specified below will assist in the investigation of that offence, you are required to confirm, as soon as possible but not later than ( specify time by which the confirmation is to be provided ) whether or not you provide or have provided telecommunication services to ( specify subscriber or client, or account or identifier ), unless this demand is revoked. The confirmation must be provided to ( name of peace officer or public officer ), ( specify the form and manner ). This demand is subject to the following conditions: ( specify any conditions to which the demand is subject ). You have the right to apply to revoke or vary this demand. If you contravene this demand without lawful excuse, you may be subject to a fine. ( Signature of peace officer or public officer )\n\n24\n24 Form 5.004 of Part XXVIII of the Act is replaced by the following: FORM 5.004 (Subsections 487.014(2), 487.0141(2), (5) and (10), 487.0142(2) , 487.015(2), 487.016(2), 487.017(2) and 487.018(3)) Information to Obtain a Production Order Canada, Province of ( territorial division ) This is the information of ( name of peace officer or public officer ), of (“the informant”). The informant says that they have reasonable grounds to suspect ( or, if the application is for an order under section 487.014 or 487.0141 of the Criminal Code , reasonable grounds to believe) (a) that an offence has been or will be committed under ( specify the provision of the Criminal Code or other Act of Parliament ); and (b) ( if the application is for an order under section 487.014 of the Criminal Code ) that ( specify the document or data ) is in the possession or control of ( name of the person ) and will afford evidence respecting the commission of the offence. (or) (b) ( if the application is for an order under section 487.0141 of the Criminal Code ) that ( specify the document or data ), if it is in the possession or control of ( name of the person ) on ( specify the dates to be specified in the order ), will afford evidence respecting the commission of the offence ( and if applicable , and that the information contained in all reports made under any of sections 7, 7.1 and 9 of the Proceeds of Crime (Money Laundering) and Terrorist Financing Act during the period the order is to be in effect will afford evidence respecting the commission of the offence). (or) (b) ( if the application is for an order under section 487.0142 of the Criminal Code ) that subscriber information is in the possession or control of ( name of the person ) and will assist in the investigation of the offence. (or) (b) ( if the application is for an order under section 487.015 of the Criminal Code ) that the identification of a device or person involved in the transmission of ( specify the communication ) will assist in the investigation of the offence and that ( specify the transmission data ) that is in the possession or control of one or more persons whose identity is unknown will enable that identification. (or) (b) ( if the application is for an order under section 487.016 of the Criminal Code ) that ( specify the transmission data ) is in the possession or control of ( name of the person ) and will assist in the investigation of the offence. (or) (b) ( if the application is for an order under section 487.017 of the Criminal Code ) that ( specify the tracking data ) is in the possession or control of ( name of the person ) and will assist in the investigation of the offence. (or) (b) ( if the application is for an order under section 487.018 of the Criminal Code ) that ( specify the data ) is in the possession or control of ( name of the financial institution, person or entity ) and will assist in the investigation of the offence. The reasonable grounds are: The informant therefore requests ( if the application is for an order under section 487.014 of the Criminal Code ) that ( name of the person ) be ordered to produce a document that is a copy of ( specify the document ) that is in their possession or control when they receive the order ( and/or to prepare and produce a document containing ( specify the data ) that is in their possession or control when they receive the order). (or) ( if the application is for an order under section 487.0141 of the Criminal Code ) that ( name of the person ) be ordered to produce a document that is a copy of ( specify the document ) that is in their possession or control on ( specify the dates to be specified in the order ) ( and/or to prepare and produce a document containing ( specify the data ) that is in their possession or control on ( specify the dates to be specified in the order )) ( and if applicable , and that the person be ordered to produce a copy of all reports made under any of sections 7, 7.1 and 9 of the Proceeds of Crime (Money Laundering) and Terrorist Financing Act during the period the order is to be in effect). (or) ( if the application is for an order under section 487.0142 of the Criminal Code ) that ( name of the person ) be ordered to prepare and produce a document containing all the subscriber information that is in their possession or control when they receive the order that relates to ( specify information ). (or) ( if the application is for an order under section 487.015 of the Criminal Code ) that a person who is served with the order in accordance with subsection 487.015(4) of the Criminal Code be ordered to prepare and produce a document containing ( specify the transmission data ) that is in their possession or control when they are served with the order. (or) ( if the application is for an order under section 487.016 of the Criminal Code ) that ( name of the person ) be ordered to prepare and produce a document containing ( specify the transmission data ) that is in their possession or control when they receive the order. (or) ( if the application is for an order under section 487.017 of the Criminal Code ) that ( name of the person ) be ordered to prepare and produce a document containing ( specify the tracking data ) that is in their possession or control when they receive the order. (or) ( if the application is for an order under section 487.018 of the Criminal Code ) that ( name of the financial institution, person or entity ) be ordered to prepare and produce a document setting out ( specify the data ) that is in their possession or control when they receive the order. Sworn before me on ( date ), at ( place ). ( Signature of informant ) ( Signature of justice or judge )\n\n25\n25 Part XXVIII of the Act is amended by adding the following after Form 5.0051: FORM 5.0052 (Subsection 487.0142(3)) Production Order — Subscriber Information Canada, Province of ( territorial division ) To ( name of person ), of : Whereas I am satisfied by information on oath of ( name of peace officer or public officer ), of , that there are reasonable grounds to suspect that an offence has been or will be committed under ( specify the provision of the Criminal Code or other Act of Parliament ) and that subscriber information is in your possession or control and will assist in the investigation of the offence; Therefore, you are ordered to produce a document that is a copy of ( specify the document ) that is in your possession or control when you receive this order ( and/or ) prepare and produce a document containing all the subscriber information that is in your possession or control when you receive this order and that relates to ( specify information ). The document must be produced to ( name of peace officer or public officer ) within ( time ) at ( place ) in ( form ). This order is subject to the following conditions: ( specify any conditions to which the demand is subject ). You have the right to apply to revoke or vary this order. If you contravene this order without lawful excuse, you may be subject to a fine, to imprisonment or to both. Dated ( date ), at ( place ). ( Signature of justice or judge )\n\n26\n26 Part XXVIII of the Act is amended by adding the following after Form 5.008: FORM 5.00801 (Subsection 487.0181(2)) Information to Obtain an Authorization Canada, Province of ( territorial division ) This is the information of ( name of peace officer or public officer ), of (“the informant”). The informant says that they have reasonable grounds to suspect (a) that an offence has been or will be committed under ( specify the provision of the Criminal Code or other Act of Parliament ); and (b) that ( specify the transmission data or the subscriber information ) is in the possession or control of ( name of the foreign entity that provides telecommunications services — or that provides services by a means of telecommunication — to the public ) and will assist in the investigation of the offence. The reasonable grounds are: The informant therefore requests that a peace officer or public officer be authorized to request that ( name of the foreign entity that provides telecommunications services — or that provides services by a means of telecommunication — to the public ) prepare and produce a document containing ( specify the transmission data or the subscriber information ) that is in its possession or control when it receives the request. Sworn before me on ( date ), at ( place ). ( Signature of informant ) ( Signature of justice or judge ) FORM 5.00802 (Subsection 487.0181(3)) Authorization to Request Production of Transmission Data or Subscriber Information Canada, Province of ( territorial division ) Whereas I am satisfied by information on oath of ( name of peace officer or public officer ), of , that there are reasonable grounds to suspect (a) that an offence has been or will be committed under ( specify the provision of the Criminal Code or other Act of Parliament ); and (b) that ( specify the transmission data or the subscriber information ) is in the possession or control of ( name of the foreign entity that provides telecommunications services — or that provides services by a means of telecommunication — to the public ) and the data or information will assist in the investigation of the offence. Therefore, a peace officer or public officer is authorized to request that ( name of the foreign entity that provides telecommunications services — or that provides services by a means of telecommunication — to the public ) prepare and produce a document containing ( specify the transmission data or the subscriber information ) that is in its possession or control when it receives the request. A peace officer or public officer must not send the production request more than 30 days after the day on which this authorization is granted. Dated ( date ), at ( place ). ( Signature of justice or judge ) FORM 5.00803 (Subsection 487.0181(4)) Production Request for Transmission Data or Subscriber Information Canada, Province of To ( name of foreign entity that provides telecommunications services — or that provides services by a means of telecommunication — to the public ), of : This is a production request of ( name of peace officer or public officer ), of . Whereas I am authorized to make this request by a justice or judge under section 487.0181 of the Criminal Code ( attach authorization ). Therefore, I request that you prepare and produce a document containing ( specify the transmission data or the subscriber information ) that is in your possession or control when you receive this request. I request that you produce this document to ( recipient ) in ( form ). ( Specify any information that may be included under subsection 487.0181(4) of the Criminal Code , if applicable .) Dated ( date ), at ( place ). ( Signature of peace officer or public officer )\n\n27\n27 Forms 5.009 and 5.0091 of Part XXVIII of the Act are replaced by the following: FORM 5.009 (Subsection 487.0191(2)) Information to Obtain a Non-Disclosure Order Canada, Province of ( territorial division ) This is the information of ( name of peace officer or public officer ), of (“the informant”). The informant says that they have reasonable grounds to believe that the disclosure of the existence (or any of the contents or any of the following portion or portions) of ( identify the preservation demand made under section 487.012 of the Criminal Code , the confirmation of service demand made under section 487.0121 of that Act or the order made under any of sections 487.013 to 487.018 of that Act, as the case may be ) during ( identify the period ) would jeopardize the conduct of the investigation of the offence to which it relates: ( specify portion or portions ) The reasonable grounds are: The informant therefore requests an order prohibiting ( name of the person, financial institution or entity ) from disclosing the existence (or any of the contents or any of the specified portion or portions) of the demand (or the order) during a period of ( identify the period ) after the day on which the order is made. Sworn before me on ( date ), at ( place ). ( Signature of informant ) ( Signature of justice or judge ) FORM 5.0091 (Subsection 487.0191(3)) Non-Disclosure Order Canada, Province of ( territorial division ) To ( name of person, financial institution or entity ), of : Whereas I am satisfied by information on oath of ( name of peace officer or public officer ), of , that there are reasonable grounds to believe that the disclosure of the existence (or any of the contents or any of the portion or portions, specified in the information,) of ( identify the preservation demand made under section 487.012 of the Criminal Code , the confirmation of service demand made under section 487.0121 of that Act or the order made under any of sections 487.013 to 487.018 of that Act, as the case may be ) during ( identify the period ) would jeopardize the conduct of the investigation of the offence to which it relates; Therefore, you are prohibited from disclosing the existence (or any of the contents or any of the following portion or portions) of the demand (or the order) during a period of ( identify the period ) after the day on which this order is made. ( specify portion or portions ) You have the right to apply to revoke or vary this order. If you contravene this order without lawful excuse, you may be subject to a fine, to imprisonment or to both. Dated ( date ), at ( place ). ( Signature of justice or judge )\n\n29 — Request to Minister\n29 The Mutual Legal Assistance in Criminal Matters Act is amended by adding the following after section 22.06: Enforcement of Foreign Decisions for Production Request to Minister 22.07 (1) When a written request is presented to the Minister by a state or entity for the enforcement in Canada of a decision made by an authority of that state or entity that is empowered to compel the production of transmission data or subscriber information that is in the possession or control of a person in Canada, the Minister may authorize a competent authority to make arrangements for the enforcement of the decision. Application for enforcement (2) The competent authority must apply ex parte for the enforcement of the decision to a justice , as defined in section 2 of the Criminal Code , a judge of a superior court of criminal jurisdiction , as defined in that section, or a judge of the Court of Quebec. Enforcement (3) The justice or judge to whom the application is made may make the decision enforceable if they are satisfied that (a) in the case of transmission data, the conditions set out in subsection 487.016(2) of the Criminal Code , with any necessary modifications, are met; or (b) in the case of subscriber information, the conditions set out in subsection 487.0142(2) of the Criminal Code, with any necessary modifications, are met. A decision that is made enforceable is deemed to be a judgment of the court to which the judge or justice belongs and may be executed anywhere in Canada. Designated person (4) The justice or judge who makes the decision enforceable under subsection (3) must designate a person to whom a record containing the transmission data or the subscriber information must be produced by the person in Canada referred to in the decision. Timing (5) The justice or judge must order that the person in Canada referred to in the decision produce the record containing the transmission data or the subscriber information to the designated person (a) no later than 45 days after the day on which the decision is served, in the case of transmission data; or (b) no later than 20 days after the day on which the decision is served, in the case of subscriber information. Order prohibiting disclosure (6) Section 487.0191 of the Criminal Code applies, with any necessary modifications, in respect of a decision made enforceable under subsection (3) and an order made under subsection (5). Sending abroad (7) The justice or judge must also order (a) that the designated person send the record containing the transmission data or the subscriber information directly to the state or entity referred to in subsection (1) that made the request; or (b) that sections 20 and 21 apply to the sending of the record containing the transmission data or the subscriber information, with any necessary modifications. Report (8) The designated person must (a) make a report concerning the execution of the decision to the justice or judge who made it enforceable — or to another justice for the same territorial division or another judge in the judicial district where the decision was made enforceable — accompanied by a general description of the transmission data or the subscriber information contained in the record and, if the justice or judge requires it, the record containing the transmission data or the subscriber information; and (b) send a copy of the report to the Minister without delay. Timing of report and sending abroad (9) If the justice or judge makes an order under paragraph (7)(a), the designated person must make the report to the justice or judge and send the record containing the transmission data or the subscriber information to the state or entity that made the request no later than five days after the day on which the record was produced under subsection (5). Offence (10) Section 487.0198 of the Criminal Code applies with respect to an order made under subsection (5). Definitions (11) In this section, transmission data and subscriber information have the same meaning as in section 487.011 of the Criminal Code .\n\n20.22 — Confirmation of service demand\nConfirmation of service demand 20.22 (1) For the purpose of performing its duties and functions under section 12 or 16, the Service may make a demand in Form 0.1 of Schedule 2 to a telecommunications service provider requiring them to confirm, within the time and in the manner specified in the demand, whether or not they provide or have provided services to any subscriber or client, or to any account or identifier, specified in the demand. Medical and privileged information (2) For greater certainty, a demand must not be made if the confirmation would disclose medical information or information that is subject to solicitor-client privilege or the professional secrecy of advocates and notaries. Time (3) The time specified in the demand is to be not less than 24 hours. Non-disclosure (4) The Service may impose conditions in the demand prohibiting the disclosure of its existence or some or all of its contents. Obligation to comply (5) The telecommunications service provider must comply with the demand. Section 126 of the Criminal Code does not apply in respect of a contravention of this subsection. Revocation of demand (6) The Service may, at any time, revoke the demand or a condition by notice given to the telecommunications service provider.\n\n37 — Computer data\n37 Section 11 of the Controlled Drugs and Substances Act is amended by adding the following after subsection (3): Computer data (3.1) Subsections 487(2.1) to (2.3) and (2.5) to (2.9) of the Criminal Code apply, with any modifications that the circumstances require, with respect to a warrant issued under subsection (1).\n\n38 — Computer data\n38 Section 87 of the Cannabis Act is amended by adding the following after subsection (3): Computer data (3.1) Subsections 487(2.1) to (2.3) and (2.5) to (2.9) of the Criminal Code apply, with any modifications that the circumstances require, with respect to a warrant issued under subsection (1).\n\n2 — Definitions\nDefinitions 2 (1) The following definitions apply in this Act. access , in relation to information, includes obtaining a document containing information and, with respect to information related to a communication, intercepting the communication within the meaning of section 183 of the Criminal Code . ( accès ) authorized person means a person having authority under the Criminal Code or the Canadian Security Intelligence Service Act to access information. ( personne autorisée ) core provider means an electronic service provider belonging to a class of electronic service providers set out in the schedule. ( fournisseur principal ) electronic protection means authentication, encryption and any other prescribed type of data protection. ( protection électronique ) electronic service means a service, or a feature of a service, that involves the creation, recording, storage, processing, transmission, reception, emission or making available of information in electronic, digital or any other intangible form by an electronic, digital, magnetic, optical, biometric, acoustic or other technological means, or a combination of any such means. ( service électronique ) electronic service provider means a person that, individually or as part of a group, provides an electronic service, including for the purpose of enabling communications, and that (a) provides the service to persons in Canada; or (b) carries on all or part of its business activities in Canada. ( fournisseur de services électroniques ) information includes any information, intelligence or data to which access may be authorized under the Criminal Code or the Canadian Security Intelligence Service Act . ( information ) Minister means the Minister of Public Safety and Emergency Preparedness. ( ministre ) person includes a corporation, a trust, a partnership, a fund, a joint venture, a government, a government agency, an unincorporated association or organization and any other legal entity . ( personne ) prescribed means prescribed by the regulations. ( Version anglaise seulement ) systemic vulnerability means a vulnerability in the electronic protections of an electronic service that creates a substantial risk that secure information could be accessed by a person who does not have any right or authority to do so. ( vulnérabilité systémique ) Preservation of existing authorities (2) Nothing in this Act derogates from any authority to access information conferred under the Criminal Code or the Canadian Security Intelligence Service Act — or from any similar authority conferred under another Act of Parliament — or from any corresponding obligation imposed on an electronic service provider to assist in a person’s exercise of such an authority. Preservation of agreements and arrangements (3) Nothing in this Act derogates from any agreement or arrangement between an electronic service provider and a national security or law enforcement agency with respect to assistance to be provided to an authorized person in the exercise of the person’s authority to access information, nor prevents entry into such an agreement or arrangement.\n\n5 — Core providers — classes\nCore providers — classes 5 (1) The Governor in Council may, by regulation, amend the schedule by adding, amending or deleting a class of electronic service providers. Core providers — obligations (2) The Governor in Council may make regulations respecting the obligations of core providers, including regulations respecting (a) the development, implementation, assessment, testing and maintenance of operational and technical capabilities, including capabilities related to extracting and organizing information that is authorized to be accessed and to providing access to such information to authorized persons; (b) the installation, use, operation, management, assessment, testing and maintenance of any device, equipment or other thing that may enable an authorized person to access information; (c) notices to be given to the Minister or other persons, including with respect to any capability referred to in paragraph (a) and any device, equipment or other thing referred to in paragraph (b); and (d) the retention of categories of metadata — including transmission data , as defined in section 487.011 of the Criminal Code — for reasonable periods of time not exceeding one year. Factors (3) In making a regulation under subsection (2), the Governor in Council must take into account the following factors: (a) the benefits of the regulation to the administration of justice, in particular to investigations under the Criminal Code , and to the exercise of powers and the performance of duties and functions under the Canadian Security Intelligence Service Act ; (b) the feasibility of compliance with the regulation for the core providers; (c) the costs to be incurred by the core providers to ensure compliance with the regulation; (d) the potential impact of the regulation on the persons to whom the core providers provide services; (e) the potential impact of the regulation on privacy protection and cybersecurity; and (f) any other factor that the Governor in Council considers relevant. Restrictions (4) Paragraph (2)(d) does not authorize the making of regulations that require core providers to retain information that would reveal (a) the content — that is to say the substance, meaning or purpose — of information transmitted in the course of an electronic service; (b) a person’s web browsing history; or (c) a person’s social media activities. Systemic vulnerability (5) A core provider is not required to comply with a provision of a regulation made under subsection (2), with respect to an electronic service, if compliance with that provision would require the provider to introduce a systemic vulnerability related to that service or prevent the provider from rectifying such a vulnerability.\n\n7 — Order\nOrder 7 (1) Subject to section 8 , the Minister may make an order with respect to an electronic service provider and the order may contain any provision that may be contained in a regulation made under subsection 5 (2), whether or not the provider is a core provider. The order must specify the period during which it has effect. Approval of Intelligence Commissioner (2) The order is valid when — if it is approved by the Intelligence Commissioner under paragraph 20(1)(a) of the Intelligence Commissioner Act — the Intelligence Commissioner provides the Minister with the written decision approving the order. Factors (3) In making the order, the Minister must take into account the following factors: (a) the benefits of the order to the administration of justice, in particular to investigations under the Criminal Code , and to the exercise of powers and the performance of duties and functions under the Canadian Security Intelligence Service Act ; (b) the feasibility of compliance with the order for the electronic service provider; (c) the costs to be incurred by the electronic service provider to ensure compliance with the order; (d) the potential impact of the order on the persons to whom the electronic service provider provides services; (e) the potential impact of the order on privacy protection and cybersecurity; and (f) any other factor that the Minister considers relevant. Discretionary compensation (4) For the purpose of offsetting all or part of the costs referred to in paragraph (3)(c), in the order, the Minister may provide for compensation to be paid to the electronic service provider in an amount that the Minister considers appropriate and may include provisions with respect to the time and manner of payment. Systemic vulnerability (5) The electronic service provider is not required to comply with a provision of the order, with respect to an electronic service, if compliance with that provision would require the provider to introduce a systemic vulnerability related to that service or prevent the provider from rectifying such a vulnerability. Statutory Instruments Act (6) The Statutory Instruments Act does not apply to an order made under subsection (1).\n\n14 — Obligation to assist\nObligation to assist 14 (1) On request made by the Minister, an electronic service provider must provide all reasonable assistance to a person or class of persons specified in the request to permit the assessment or testing of any device, equipment or other thing that may enable an authorized person to access information. Persons to be assisted (2) Only the following persons or classes of persons may receive assistance: (a) the Minister; (b) an employee of the Canadian Security Intelligence Service; (c) a person appointed or employed under Part I of the Royal Canadian Mounted Police Act or a civilian employee referred to in section 10 of that Act; (d) a civilian employee of another police force; (e) a peace officer , as defined in section 2 of the Criminal Code . Request (3) The request must be in writing and set out the purpose of the assessment or testing and any limits and conditions that the Minister considers appropriate. For greater certainty (4) For greater certainty, the assessment or testing must not have the effect of granting access to personal information.\n\n18 — Regulations — confidentiality and security\nRegulations — confidentiality and security 18 The Governor in Council may make regulations respecting confidentiality and security requirements with which electronic service providers and persons acting on their behalf must comply, including regulations (a) respecting the disclosure of information referred to in section 15 or 16 ; (b) establishing rules of procedure for the protection of information referred to in section 15 or 16 in administrative or judicial proceedings; (c) respecting requirements related to employees of electronic service providers and other persons whose services may be engaged by electronic service providers — who participate in activities in relation to requests for access to information that is authorized under the Criminal Code or the Canadian Security Intelligence Service Act or in relation to compliance with this Act — including with respect to their security clearance and location; and (d) respecting security requirements with respect to the facilities and premises of electronic service providers that are used for storing, processing or transmitting information that is related to — or that may be the subject of — requests for access to information that is authorized under the Criminal Code or the Canadian Security Intelligence Service Act .",
+    "affectedSections": [
+      "2",
+      "21",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+      "29",
+      "20.22",
+      "37",
+      "38",
+      "2",
+      "5",
+      "7",
+      "14",
+      "18"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-22 introduces 17 clauses that target the Criminal Code. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-22 introduces 17 clauses that target the Criminal Code. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-31T19:36:45.957Z"
+  },
+  {
+    "id": "lv-bill-13957880-unregistered:lawful-access-act-2026",
+    "baseLawId": "unregistered:lawful-access-act-2026",
+    "baseLawTitle": "Lawful Access Act, 2026",
+    "sourceBillId": "bill-13957880",
+    "sourceBillNumber": "C-22",
+    "sourceBillTitle": "Lawful Access Act, 2026",
+    "sourceBillStatus": "At consideration in committee in the House of Commons",
+    "legislativeMomentum": "active",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "1 — Alternative title\nAlternative title 1 This Act may be cited as the Lawful Access Act, 2026 .",
+    "affectedSections": [
+      "1"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-22 introduces 1 clause that target the Lawful Access Act, 2026. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-22 introduces 1 clause that target the Lawful Access Act, 2026. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-31T19:36:45.956Z"
+  },
+  {
+    "id": "lv-bill-13541851-unregistered:seized-property-management-act",
+    "baseLawId": "unregistered:seized-property-management-act",
+    "baseLawTitle": "Seized Property Management Act",
+    "sourceBillId": "bill-13541851",
+    "sourceBillNumber": "S-214",
+    "sourceBillTitle": "An Act to amend the Special Economic Measures Act (disposal of foreign state assets)",
+    "sourceBillStatus": "Senate bill awaiting first reading in the House of Commons",
+    "legislativeMomentum": "advanced",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "5 — Payment out of Proceeds Account\n5 The portion of section 5.6 of the Act before paragraph (a) is replaced by the following: Payment out of Proceeds Account 5.6 After consulting with the Minister of Finance and the Minister of Foreign Affairs, the Minister may — at the times and in the manner, and on any terms and conditions, that the Minister considers appropriate — pay out of the Proceeds Account , as defined in section 2 of the Seized Property Management Act , amounts not exceeding the net proceeds from the disposition of property forfeited under section 5.4 or 5.41, but only for any of the following purposes:",
+    "affectedSections": [
+      "5"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill S-214 introduces 1 clause that target the Seized Property Management Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill S-214 introduces 1 clause that target the Seized Property Management Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-31T17:54:48.271Z"
+  },
+  {
+    "id": "lv-bill-13541851-unregistered:special-economic-measures-act",
+    "baseLawId": "unregistered:special-economic-measures-act",
+    "baseLawTitle": "Special Economic Measures Act",
+    "sourceBillId": "bill-13541851",
+    "sourceBillNumber": "S-214",
+    "sourceBillTitle": "An Act to amend the Special Economic Measures Act (disposal of foreign state assets)",
+    "sourceBillStatus": "Senate bill awaiting first reading in the House of Commons",
+    "legislativeMomentum": "advanced",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "1 — Costs\n1 Section 5 of the Special Economic Measures Act is replaced by the following: Costs 5 Any costs incurred by or on behalf of His Majesty in right of Canada in relation to the seizure or restraint of property under an order made under paragraph 4(1)(b) or the disposal of property forfeited under section 5.4 or 5.41 are the liability of the owner of the property and constitute a debt due to His Majesty in right of Canada that may be recovered in any court of competent jurisdiction.",
+    "affectedSections": [
+      "1"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill S-214 introduces 1 clause that target the Special Economic Measures Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill S-214 introduces 1 clause that target the Special Economic Measures Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-05-31T17:54:48.270Z"
+  },
+  {
     "id": "lv-bill-13590170-unregistered:budget-2025-implementation-act-no-1",
     "baseLawId": "unregistered:budget-2025-implementation-act-no-1",
     "baseLawTitle": "Budget 2025 Implementation Act, No. 1",

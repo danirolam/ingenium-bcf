@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import type {
   AmendmentExtraction,
   BaseLaw,
@@ -6,6 +6,7 @@ import type {
   Client,
   ClientImpactAnalysis,
 } from "../../src/types.js";
+import { normLabel, type Amendment, type Provision } from "./amendmentEngine.js";
 
 // Overridable via env (documented in .env.example); falls back to a fast,
 // inexpensive default so the app works the moment a key is added.
@@ -81,6 +82,150 @@ ${baseLaw.text}
 `;
 
   return callJson<AmendmentExtraction>(prompt);
+}
+
+// Interpret a bill's amending instructions into structured operations. The AI
+// only classifies and locates changes — it copies inserted text verbatim and
+// must anchor to a REAL provision label (we verify in applyAmendments). It does
+// NOT generate the resulting Act text.
+export async function interpretAmendments(args: {
+  bill: Bill;
+  actTitle: string;
+  actLabels: string[];
+}): Promise<{ operations: Amendment[] } | null> {
+  const clauseText = args.bill.clauses
+    .map((c) => `Clause ${c.number ?? ""}: ${(c.heading ?? "") + " " + c.text}`.trim())
+    .join("\n\n");
+  const labels = args.actLabels.slice(0, 900).join(", ");
+
+  const prompt = `You are a Canadian legislative-drafting analyst. The bill below amends an existing Act. Extract EACH discrete amending operation as structured data. Do NOT invent statutory text — copy "newText" verbatim from the bill, omitting the instruction phrasing ("The Act is amended by adding...").
+
+Return STRICT JSON: {"operations":[{
+  "clause": string,
+  "op": "add"|"replace"|"repeal"|"amend",
+  "anchor": string|null,
+  "position": "after"|"before"|"replaces"|"within"|null,
+  "newLabel": string|null,
+  "newMarginalNote": string|null,
+  "newText": string|null,
+  "note": string
+}]}
+
+Rules:
+- "anchor" MUST be an existing provision label from this list (or null only when the bill adds an entirely new Part with no in-Act anchor): ${labels}
+- "op": "add" inserts new provision(s); "replace" substitutes an existing provision's wording; "repeal" deletes a provision; "amend" makes a small in-text edit (striking/inserting words).
+- "newLabel"/"newMarginalNote"/"newText" describe the inserted or replacement provision (null for repeals).
+- Emit one operation per discrete change.
+
+ACT BEING AMENDED: ${args.actTitle}
+
+BILL CLAUSES:
+${clauseText}`;
+
+  return callJson<{ operations: Amendment[] }>(prompt);
+}
+
+// Tool-based interpreter: instead of sending the whole Act, give Gemini tools
+// to look up the specific provisions the bill references. Scales to any Act
+// size and grounds anchors against real text the model actually fetched.
+export async function interpretAmendmentsTooled(args: {
+  bill: Bill;
+  actTitle: string;
+  provisions: Provision[];
+}): Promise<{ operations: Amendment[] } | null> {
+  const key = process.env.GEMINI_API_KEY;
+  if (!key) return null;
+
+  const byLabel = new Map<string, Provision>();
+  for (const p of args.provisions) byLabel.set(normLabel(p.label), p);
+
+  const tools: any = [
+    {
+      functionDeclarations: [
+        {
+          name: "look_up_provision",
+          description:
+            "Return the current wording of a provision in the Act by its label (e.g. '30', '30(1)', '2.4'). Call this to confirm an anchor exists and to read text you must replace or amend.",
+          parameters: {
+            type: SchemaType.OBJECT,
+            properties: {
+              label: { type: SchemaType.STRING, description: "Provision label, e.g. 30(1)(a)" },
+            },
+            required: ["label"],
+          },
+        },
+        {
+          name: "search_provisions",
+          description:
+            "Find provisions whose label or marginal note contains the query. Returns up to 10 {label, marginalNote}. Use when you don't know the exact label.",
+          parameters: {
+            type: SchemaType.OBJECT,
+            properties: { query: { type: SchemaType.STRING } },
+            required: ["query"],
+          },
+        },
+      ],
+    },
+  ];
+
+  const clauseText = args.bill.clauses
+    .map((c) => `Clause ${c.number ?? ""}: ${(c.heading ?? "") + " " + c.text}`.trim())
+    .join("\n\n");
+
+  const prompt = `You extract how a bill amends an existing Act, as structured operations. Use the tools to locate and read the exact provisions the bill references — do NOT guess labels.
+
+ACT BEING AMENDED: ${args.actTitle}
+
+When finished, reply with ONLY strict JSON (no prose):
+{"operations":[{"clause":string,"op":"add"|"replace"|"repeal"|"amend","anchor":string|null,"position":"after"|"before"|"replaces"|"within"|null,"newLabel":string|null,"newMarginalNote":string|null,"newText":string|null,"note":string}]}
+Rules:
+- "anchor" must be a real provision label you confirmed via a tool (or null only for a brand-new Part with no in-Act anchor).
+- "newText" = the verbatim inserted/replacement statutory text from the bill (omit the instruction phrasing).
+- One operation per discrete change.
+
+BILL CLAUSES:
+${clauseText}`;
+
+  try {
+    const genAI = new GoogleGenerativeAI(key);
+    const model = genAI.getGenerativeModel({ model: MODEL, tools });
+    const chat = model.startChat();
+
+    let result = await chat.sendMessage(prompt);
+    for (let hop = 0; hop < 12; hop++) {
+      const calls = result.response.functionCalls() ?? [];
+      if (calls.length === 0) break;
+      const responses = calls.map((call) => {
+        const a = call.args as Record<string, unknown>;
+        let response: unknown;
+        if (call.name === "look_up_provision") {
+          const p = byLabel.get(normLabel(String(a.label ?? "")));
+          response = p
+            ? { found: true, label: p.label, marginalNote: p.marginalNote, text: p.text }
+            : { found: false };
+        } else if (call.name === "search_provisions") {
+          const q = String(a.query ?? "").toLowerCase();
+          response = {
+            matches: args.provisions
+              .filter((p) => `${p.label} ${p.marginalNote ?? ""}`.toLowerCase().includes(q))
+              .slice(0, 10)
+              .map((p) => ({ label: p.label, marginalNote: p.marginalNote })),
+          };
+        } else {
+          response = { error: "unknown tool" };
+        }
+        return { functionResponse: { name: call.name, response: response as object } };
+      });
+      result = await chat.sendMessage(responses);
+    }
+
+    const text = result.response.text();
+    const json = text.match(/\{[\s\S]*\}/);
+    return json ? (JSON.parse(json[0]) as { operations: Amendment[] }) : null;
+  } catch (err: any) {
+    console.log(`[gemini] tooled interpret failed: ${err?.message ?? err}`);
+    return null;
+  }
 }
 
 export async function generateUpdatedLawText(

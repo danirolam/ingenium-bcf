@@ -3,6 +3,7 @@ import type {
   Client,
   ClientImpactAnalysis,
   LawVersion,
+  ProvisionDelta,
 } from "../types";
 
 async function j<T>(url: string, init?: RequestInit): Promise<T> {
@@ -35,6 +36,13 @@ export const api = {
       ),
     lawVersions: (id: string) =>
       j<LawVersion[]>(`/api/bills/${id}/law-versions`),
+    // Grounded provision-level delta for registered Acts (AI-interpreted,
+    // verified against the structured Act). Pass refresh to re-run the AI.
+    provisionDelta: (id: string, refresh = false) =>
+      j<{ deltas: ProvisionDelta[]; errors: string[]; cached?: boolean; computedAt?: string }>(
+        `/api/bills/${id}/provision-delta${refresh ? "?refresh=1" : ""}`,
+        { method: "POST" },
+      ),
   },
   lawVersions: {
     list: () => j<LawVersion[]>("/api/law-versions"),

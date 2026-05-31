@@ -12,7 +12,18 @@ import { sendBillUploadedEmail } from "../services/email.js";
 import {
   extractAmendmentsFromBill,
   generateUpdatedLawText,
+  interpretAmendmentsTooled,
 } from "../services/gemini.js";
+import {
+  applyAmendments,
+  diffProvisions,
+  diffSummary,
+  findByPath,
+} from "../services/amendmentEngine.js";
+import { interpretAmendmentsClaude } from "../services/claude.js";
+import { applyGroups, parseBillAmendments } from "../services/billAmendments.js";
+import { loadActProvisions } from "../services/lawProvisions.js";
+import { resolveBatch, type ScalpelTask } from "../services/scalpel.js";
 import { flagAmendmentReview } from "../services/humanReview.js";
 import {
   FILES,
@@ -280,4 +291,151 @@ billsRouter.post("/:id/extract-delta", async (req, res) => {
   }
 
   res.json({ lawVersions: result, errors });
+});
+
+// Grounded provision-level delta: for each REGISTERED Act the bill amends, have
+// the AI interpret the amending instructions into operations, verify each anchor
+// against the real Act, apply them, and diff before/after by provision. Returns
+// only the changed provisions (a bill touches a handful), with verification.
+billsRouter.post("/:id/provision-delta", async (req, res) => {
+  const bill = await findById<Bill>(FILES.bills, req.params.id);
+  if (!bill) return res.status(404).json({ error: "bill not_found" });
+
+  // Cache: a bill's delta is interpreted once, then served instantly. Pass
+  // ?refresh=1 to recompute (e.g. after re-ingesting the Act).
+  type CachedDelta = { id: string; deltas: unknown[]; errors: string[]; createdAt: string };
+  if (req.query.refresh !== "1") {
+    const cached = await findById<CachedDelta>(FILES.provisionDeltas, bill.id);
+    if (cached) {
+      return res.json({
+        deltas: cached.deltas,
+        errors: cached.errors,
+        cached: true,
+        computedAt: cached.createdAt,
+      });
+    }
+  }
+
+  const registry = await loadActRegistry();
+  const acts = actsAffectedByBill(bill, registry).filter((a) => a.slug);
+  // Fallback: clause-level targetActs are often missing (lossy ingestion), so
+  // also pull in any registered Act whose registry entry lists this bill.
+  const have = new Set(acts.map((a) => a.slug));
+  for (const [slug, entry] of Object.entries(registry)) {
+    if (!have.has(slug) && (entry.relatedBills ?? []).includes(bill.billNumber)) {
+      acts.push({ title: entry.title, slug, clauseIds: (bill.clauses ?? []).map((c) => c.id) });
+      have.add(slug);
+    }
+  }
+  const errors: string[] = [];
+
+  // Preferred path: parse the bill's own XML — the inserted statutory text is
+  // already structured in <AmendedText>, so we read op+anchor and splice the
+  // text deterministically. Partial in-provision edits go to the AI scalpel.
+  let parsed: ReturnType<typeof parseBillAmendments> = { groups: new Map(), edits: new Map() };
+  if (bill.textSourceUrl) {
+    try {
+      const xmlRes = await fetch(bill.textSourceUrl, { headers: { "user-agent": "Ingenium-Delta/0.1" } });
+      if (xmlRes.ok) parsed = parseBillAmendments(await xmlRes.text(), registry);
+    } catch {
+      /* network/parse failure → AI fallback below */
+    }
+  }
+
+  // Render a provision list as flowing text — identical formatting on both
+  // sides so unchanged provisions are byte-identical and the diff aligns clean.
+  const joinProv = (ps: { marginalNote?: string | null; label: string; text: string }[]) =>
+    ps.map((p) => `${p.marginalNote ? p.marginalNote + "\n" : ""}${p.label} ${p.text}`).join("\n\n");
+
+  const results = await Promise.all(
+    acts.map(async (act) => {
+      const slug = act.slug as string;
+      const actData = await loadActProvisions(slug);
+      if (!actData) {
+        errors.push(`No structured text ingested for ${act.title}.`);
+        return null;
+      }
+      const groups = parsed.groups.get(slug) ?? [];
+      const edits = parsed.edits.get(slug) ?? [];
+
+      // Path A — deterministic structure (+ scalpel for partial edits).
+      if (groups.length > 0 || edits.length > 0) {
+        // 1) Whole-provision adds/replaces/repeals from <AmendedText>.
+        const { after, verified } = applyGroups(actData.provisions, groups);
+
+        // 2) Partial edits: resolve each target, batch them into ONE AI call,
+        //    then splice the edited text back in.
+        let usedAi = false;
+        if (edits.length > 0) {
+          const tasks: ScalpelTask[] = [];
+          const targets: { provIndex: number; anchorFound: boolean; instruction: string }[] = [];
+          edits.forEach((e, i) => {
+            const hit = findByPath(after, e.sectionHint);
+            if (hit.index >= 0) {
+              tasks.push({ id: `e${i}`, kind: "edit", instruction: e.instruction, currentText: after[hit.index].text });
+              targets.push({ provIndex: hit.index, anchorFound: hit.matched === "exact", instruction: e.instruction });
+            } else {
+              verified.push({ op: "amend", anchor: e.sectionHint, position: null, count: 0, anchorFound: false, note: `(target not found) ${e.instruction.slice(0, 140)}` });
+            }
+          });
+          if (tasks.length > 0) {
+            usedAi = true;
+            const res = await resolveBatch(actData.title, tasks);
+            targets.forEach((t, i) => {
+              const r = res.get(`e${i}`);
+              if (r?.newText) after[t.provIndex] = { ...after[t.provIndex], text: r.newText };
+              verified.push({
+                op: "amend", anchor: after[t.provIndex].label, position: null, count: r?.newText ? 1 : 0,
+                anchorFound: t.anchorFound, note: t.instruction.slice(0, 160),
+              });
+            });
+          }
+        }
+
+        const rows = diffProvisions(actData.provisions, after);
+        return {
+          slug: actData.slug, title: actData.title, citation: actData.citation,
+          summary: diffSummary(rows), operations: verified,
+          rows: rows.filter((r) => r.status !== "unchanged"),
+          oldText: joinProv(actData.provisions), newText: joinProv(after),
+          source: usedAi ? "ai-assisted" : "bill-xml",
+        };
+      }
+
+      // Path B — fallback: let the AI interpret the whole bill for this Act.
+      const interpret = process.env.ANTHROPIC_API_KEY
+        ? interpretAmendmentsClaude
+        : interpretAmendmentsTooled;
+      const ai = await interpret({ bill, actTitle: actData.title, provisions: actData.provisions });
+      if (!ai) {
+        errors.push(
+          process.env.ANTHROPIC_API_KEY || process.env.GEMINI_API_KEY
+            ? `AI interpretation failed for ${act.title} — try again in a moment.`
+            : `AI key missing — cannot interpret ${act.title}.`,
+        );
+        return null;
+      }
+      const { after, verified } = applyAmendments(actData.provisions, ai.operations);
+      const rows = diffProvisions(actData.provisions, after);
+      return {
+        slug: actData.slug, title: actData.title, citation: actData.citation,
+        summary: diffSummary(rows), operations: verified,
+        rows: rows.filter((r) => r.status !== "unchanged"),
+        oldText: joinProv(actData.provisions), newText: joinProv(after),
+        source: "ai",
+      };
+    }),
+  );
+
+  const deltas = results.filter(Boolean);
+  // Only cache successful interpretations, so failures retry next time.
+  if (deltas.length > 0) {
+    await upsert(FILES.provisionDeltas, {
+      id: bill.id,
+      deltas,
+      errors,
+      createdAt: new Date().toISOString(),
+    });
+  }
+  res.json({ deltas, errors, cached: false });
 });

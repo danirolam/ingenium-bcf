@@ -194,3 +194,49 @@ export interface BaseLaw {
   citation: string;
   text: string;
 }
+
+// ── Provision-level delta (the grounded bill→Act diff) ──
+export interface ActProvision {
+  id: string;
+  label: string;
+  kind: string;
+  heading?: string | null;
+  marginalNote?: string | null;
+  text: string;
+  /** Structured hierarchy path (section → subsection → paragraph → …). */
+  path?: { kind: string; label: string }[];
+}
+
+export interface ProvisionDiffRow {
+  status: "added" | "changed" | "repealed" | "unchanged";
+  label: string;
+  before?: ActProvision;
+  after?: ActProvision;
+}
+
+export interface BillAmendmentOp {
+  clause?: string;
+  op: "add" | "replace" | "repeal" | "amend";
+  anchor: string | null;
+  position?: string | null;
+  newLabel?: string | null;
+  newMarginalNote?: string | null;
+  newText?: string | null;
+  note?: string | null;
+  anchorFound: boolean;
+}
+
+export interface ProvisionDelta {
+  slug: string;
+  title: string;
+  citation: string;
+  summary: { added: number; changed: number; repealed: number; unchanged: number };
+  operations: BillAmendmentOp[];
+  rows: ProvisionDiffRow[];
+  /** Full Act text before/after the bill — the two sides of the diff. */
+  oldText?: string;
+  newText?: string;
+  /** How the delta was produced: deterministic from the bill XML, partly via the
+   *  AI scalpel (partial edits), or fully AI-interpreted. */
+  source?: "bill-xml" | "ai-assisted" | "ai";
+}

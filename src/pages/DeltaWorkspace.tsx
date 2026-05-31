@@ -19,6 +19,7 @@ import { InfoHint } from "../components/InfoHint";
 import { Tooltip } from "../components/Tooltip";
 import { LegislativeJourney } from "../components/LegislativeJourney";
 import { PageHeader } from "../components/PageHeader";
+import { ProvisionDeltaView } from "../components/ProvisionDeltaView";
 import {
   Alert,
   AlertContent,
@@ -27,7 +28,7 @@ import {
   AlertTitle,
 } from "../components/ui/alert-1";
 import { api } from "../lib/api";
-import type { Bill, LawVersion } from "../types";
+import type { Bill, LawVersion, ProvisionDelta } from "../types";
 
 function isStub(lv: LawVersion): boolean {
   return lv.baseLawId.startsWith("unregistered:") || lv.oldText.trim() === "";
@@ -50,6 +51,9 @@ function justiceLawsUrl(actTitle: string): string {
 export function DeltaWorkspace({ nav }: { nav: Nav }) {
   const [bill, setBill] = useState<Bill | null>(null);
   const [lvs, setLvs] = useState<LawVersion[]>([]);
+  const [pdeltas, setPdeltas] = useState<ProvisionDelta[] | null>(null);
+  const [pcached, setPcached] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [techOpen, setTechOpen] = useState(false);
@@ -59,34 +63,10 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
   const activeLv = lvs.find((lv) => lv.id === activeId) ?? lvs[0] ?? null;
 
   useEffect(() => {
-    const billId = nav.params.billId;
     const lawVersionId = nav.params.lawVersionId;
+    api.bills.list().then(setPickList).catch(() => {});
 
-    if (billId) {
-      // Generate AND use the delta in a single request. The serverless data
-      // store is ephemeral, so a separate GET can land on a cold instance that
-      // never saw the write — reading extract-delta's own response avoids that.
-      api.bills.list().then(setPickList).catch(() => {});
-      Promise.all([
-        api.bills.get(billId),
-        api.bills.extractDelta(billId).catch(() => null),
-      ])
-        .then(([b, res]) => {
-          setBill(b);
-          const list = (res?.lawVersions ?? []).filter(
-            (lv) => lv.sourceBillId === billId,
-          );
-          setLvs(list);
-          setActiveId(list[0]?.id ?? null);
-          if (list.length === 0 && res?.errors?.length) nav.toast(res.errors[0]);
-        })
-        .catch((err) => {
-          console.error(err);
-          nav.toast(`Failed to load delta workspace: ${err.message ?? err}`);
-        });
-      return;
-    }
-
+    // Legacy deep-link by a specific LawVersion (rare) — keep the old path.
     if (lawVersionId) {
       api.lawVersions
         .get(lawVersionId)
@@ -103,23 +83,46 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
       return;
     }
 
-    api.bills.list().then(setPickList).catch(() => {});
-    api.lawVersions
-      .list()
-      .then(async (all) => {
-        const demoMatch =
-          all.find((item) => item.sourceBillNumber === "C-273") ?? all[0];
-        if (!demoMatch) return;
+    // Unified loader: grounded provision delta first, old string-diff as the
+    // fallback only for bills that don't map to a registered Act.
+    (async () => {
+      let resolved: string | null = nav.params.billId ?? null;
+      if (!resolved) {
+        // No bill chosen → open a sensible demo (C-273 amends 5 registered Acts).
         const bills = await api.bills.list();
-        const matchedBill = bills.find((b) => b.id === demoMatch.sourceBillId) ?? null;
-        setBill(matchedBill);
-        const grouped = matchedBill
-          ? all.filter((item) => item.sourceBillId === matchedBill.id)
-          : [demoMatch];
-        setLvs(grouped.length > 0 ? grouped : [demoMatch]);
-        setActiveId((grouped[0] ?? demoMatch).id);
-      })
-      .catch(console.error);
+        resolved =
+          (bills.find((b) => b.billNumber === "C-273") ??
+            bills.find((b) => /\bamend/i.test(b.title)))?.id ?? null;
+      }
+      if (!resolved) {
+        setPdeltas([]);
+        return;
+      }
+      const billId: string = resolved;
+
+      const b = await api.bills.get(billId).catch(() => null);
+      setBill(b);
+
+      const res = await api.bills
+        .provisionDelta(billId)
+        .catch(() => ({ deltas: [], errors: [] as string[], cached: false }));
+      if (res.deltas?.length) {
+        setPdeltas(res.deltas);
+        setPcached(Boolean(res.cached));
+        if (res.errors?.length) nav.toast(res.errors[0]);
+        return;
+      }
+
+      setPdeltas([]);
+      const dres = await api.bills.extractDelta(billId).catch(() => null);
+      const list = (dres?.lawVersions ?? []).filter((lv) => lv.sourceBillId === billId);
+      setLvs(list);
+      setActiveId(list[0]?.id ?? null);
+      if (list.length === 0 && dres?.errors?.length) nav.toast(dres.errors[0]);
+    })().catch((err) => {
+      console.error(err);
+      nav.toast(`Failed to load delta workspace: ${err.message ?? err}`);
+    });
   }, [nav.params.billId, nav.params.lawVersionId]);
 
   useEffect(() => {
@@ -172,6 +175,53 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
     } finally {
       setBusy(null);
     }
+  }
+
+  // Grounded provision delta available → render the clean view.
+  if (pdeltas && pdeltas.length > 0) {
+    const refreshDelta = async () => {
+      if (!bill) return;
+      setRefreshing(true);
+      try {
+        const res = await api.bills.provisionDelta(bill.id, true);
+        if (res.deltas?.length) {
+          setPdeltas(res.deltas);
+          setPcached(false);
+          nav.toast("Re-interpreted by AI.");
+        }
+      } catch (err: any) {
+        nav.toast(`Could not re-run: ${err?.message ?? err}`);
+      } finally {
+        setRefreshing(false);
+      }
+    };
+    return (
+      <ProvisionDeltaView
+        bill={bill}
+        deltas={pdeltas}
+        cached={pcached}
+        refreshing={refreshing}
+        onRefresh={refreshDelta}
+      />
+    );
+  }
+
+  // Still interpreting the bill against the Act — don't flash the chooser.
+  if (pdeltas === null && lvs.length === 0 && !nav.params.lawVersionId) {
+    return (
+      <>
+        <PageHeader
+          crumbs={["Workspace", "Legal delta", bill?.billNumber ?? "Bill"]}
+          title={`Legal delta — ${bill?.billNumber ?? ""}`}
+          sub={bill?.title}
+        />
+        <div className="body">
+          <div className="card" style={{ padding: "22px 24px" }}>
+            <div className="rd-empty">Interpreting the bill against the Act…</div>
+          </div>
+        </div>
+      </>
+    );
   }
 
   if (lvs.length === 0) {
