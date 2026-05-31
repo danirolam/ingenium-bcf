@@ -16,22 +16,24 @@ function actDisplayName(title: string): string {
   return title.replace(/\s*\([^)]*\)\s*$/, "");
 }
 
-// The bill itself — the source of the changes — as the optional third column.
+// The bill itself — its official PDF, proxied through our backend so it embeds.
 function BillColumn({ bill }: { bill: Bill | null }) {
+  if (!bill) return null;
   return (
     <aside className="pd-bill-col">
-      <div className="pd-bill-head">{bill?.billNumber ?? "Bill"} — the amending bill</div>
-      <div className="pd-bill-clauses">
-        {(bill?.clauses ?? []).map((c) => (
-          <div className="pd-bill-clause" key={c.id}>
-            <div className="pd-bill-clause-h">
-              <span className="pd-bill-num">{c.number}</span>
-              {c.heading && <span className="pd-bill-heading">{c.heading}</span>}
-            </div>
-            <div className="pd-bill-text">{c.text}</div>
-          </div>
-        ))}
+      <div className="pd-bill-head">
+        <span>{bill.billNumber} — official bill</span>
+        {bill.sourceUrl && (
+          <a href={bill.sourceUrl} target="_blank" rel="noreferrer" className="pd-bill-ext">
+            parl.ca ↗
+          </a>
+        )}
       </div>
+      <iframe
+        className="pd-bill-pdf"
+        src={`/api/bills/${bill.id}/pdf`}
+        title={`${bill.billNumber} PDF`}
+      />
     </aside>
   );
 }

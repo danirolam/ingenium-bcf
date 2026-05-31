@@ -69,6 +69,49 @@ billsRouter.get("/:id/law-versions", async (req, res) => {
   res.json(all.filter((lv) => lv.sourceBillId === req.params.id));
 });
 
+// Proxy the bill's official PDF from parl.ca and serve it from our own origin,
+// so it can be embedded in an <iframe> (parl.ca's X-Frame-Options would block a
+// direct embed). The PDF sits next to the XML: …/<billNo>_<v>/<billNo>_<v>.PDF.
+billsRouter.get("/:id/pdf", async (req, res) => {
+  const bill = await findById<Bill>(FILES.bills, req.params.id);
+  if (!bill) return res.status(404).json({ error: "bill not_found" });
+  const UA = "Ingenium-PDF/0.1 (legislative viewer)";
+  const docViewer = (bill.rawJson as any)?.source?.documentViewer as string | undefined;
+
+  const tryFetch = async (u: string) => {
+    try {
+      const r = await fetch(u, { headers: { "user-agent": UA } });
+      if (r.ok && (r.headers.get("content-type") || "").includes("pdf")) return r;
+    } catch {
+      /* try next */
+    }
+    return null;
+  };
+
+  // 1) Derive from the XML URL: …/C-265_1/C-265_E.xml → …/C-265_1/C-265_1.PDF
+  let r: Response | null = null;
+  if (bill.textSourceUrl) {
+    r = await tryFetch(bill.textSourceUrl.replace(/\/([^/]+)\/[^/]+\.xml$/i, "/$1/$1.PDF"));
+  }
+  // 2) Fallback: scrape the DocumentViewer page for the authoritative .PDF link.
+  if (!r && docViewer) {
+    try {
+      const page = await fetch(docViewer, { headers: { "user-agent": UA } }).then((x) => x.text());
+      const m = page.match(/\/Content\/Bills\/[^"' ]+\.PDF/i);
+      if (m) r = await tryFetch(new URL(m[0], "https://www.parl.ca").href);
+    } catch {
+      /* give up below */
+    }
+  }
+  if (!r) return res.status(404).json({ error: "pdf not_found" });
+
+  const buf = Buffer.from(await r.arrayBuffer());
+  res.set("content-type", "application/pdf");
+  res.set("content-disposition", `inline; filename="${bill.billNumber}.pdf"`);
+  res.set("cache-control", "public, max-age=86400");
+  res.send(buf);
+});
+
 billsRouter.post("/upload", async (req, res) => {
   const raw = req.body;
   if (!raw || typeof raw !== "object") {

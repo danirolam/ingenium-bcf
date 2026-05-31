@@ -348,16 +348,12 @@
 .pd-bill-head {
   padding: 12px 14px; border-bottom: 1px solid var(--border-3);
   font-weight: 600; font-size: 13px; background: var(--panel-2);
-  position: sticky; top: 0;
+  position: sticky; top: 0; display: flex; align-items: center; justify-content: space-between;
 }
-.pd-bill-clauses { padding: 6px 0; }
-.pd-bill-clause { padding: 10px 14px; border-top: 1px solid var(--border-3); }
-.pd-bill-clause:first-child { border-top: none; }
-.pd-bill-clause-h { display: flex; gap: 8px; align-items: baseline; margin-bottom: 4px; }
-.pd-bill-num { font-family: var(--mono); font-weight: 600; color: var(--accent-warm, #d29922); font-size: 12.5px; }
-.pd-bill-heading { font-size: 12px; color: var(--ink-3); font-style: italic; }
-.pd-bill-text { font-size: 12.5px; line-height: 1.5; color: var(--ink-2); white-space: pre-wrap; }
-@media (max-width: 1100px) { .pd-layout { flex-direction: column; } .pd-bill-col { flex: none; width: 100%; position: static; max-height: 420px; } }
+.pd-bill-ext { font-size: 12px; font-weight: 500; color: var(--accent); text-decoration: none; }
+.pd-bill-ext:hover { text-decoration: underline; }
+.pd-bill-pdf { width: 100%; height: calc(100vh - 210px); border: 0; display: block; background: #fff; }
+@media (max-width: 1100px) { .pd-layout { flex-direction: column; } .pd-bill-col { flex: none; width: 100%; position: static; max-height: none; } .pd-bill-pdf { height: 70vh; } }
 
 .pd-source { display: flex; align-items: center; gap: 10px; }
 .pd-source-badge {
