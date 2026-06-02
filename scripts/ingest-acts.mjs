@@ -31,6 +31,20 @@ const OUT_BASE = path.join(REPO_ROOT, "data", "laws", "current", "federal");
 const UA = "Ingenium-LawIngest/0.1 (legislative diff research)";
 const BASE = "https://laws-lois.justice.gc.ca";
 
+// slug → owning Act code, so two Acts that share a short title (a current Act
+// and its repealed predecessor, e.g. Q-1 + Q-1.1 "Quarantine Act") don't
+// silently overwrite each other. Seeded from the registry in main().
+const slugOwner = new Map();
+// Cap a slug to a safe path-component length (filesystem limit is 255 bytes;
+// some Act short titles run ~280 chars, e.g. CASL E-1.6). Cut on a hyphen.
+const MAX_SLUG = 120;
+function capSlug(s) {
+  if (s.length <= MAX_SLUG) return s;
+  const cut = s.slice(0, MAX_SLUG);
+  const i = cut.lastIndexOf("-");
+  return (i > 40 ? cut.slice(0, i) : cut).replace(/-+$/, "");
+}
+
 // Structural elements that become diff units (a frame in the walk).
 const STRUCTURAL = new Set([
   "Section", "Subsection", "Paragraph", "Subparagraph", "Clause", "Definition",
@@ -58,10 +72,26 @@ const KNOWN_STRUCTURAL_CONTAINERS = new Set([
 ]);
 
 // ───────────────────────── fetch ─────────────────────────
-async function fetchText(url) {
-  const res = await fetch(url, { headers: { "user-agent": UA } });
-  if (!res.ok) throw new Error(`${res.status} ${res.statusText} for ${url}`);
-  return res.text();
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// Timeout + retry so a single hung/throttled request can't stall (or silently
+// drop an Act from) a long full-corpus run.
+async function fetchText(url, attempt = 0) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 120_000);
+  try {
+    const res = await fetch(url, { headers: { "user-agent": UA }, signal: ctrl.signal });
+    if (!res.ok) throw new Error(`${res.status} ${res.statusText} for ${url}`);
+    return await res.text();
+  } catch (e) {
+    if (attempt < 2) {
+      await sleep(1500 * (attempt + 1));
+      return fetchText(url, attempt + 1);
+    }
+    throw e;
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 // ───────────────────────── tokenizer ─────────────────────────
@@ -334,7 +364,12 @@ async function ingestCode(code, registry, opts) {
   const existingSlug = Object.entries(registry.laws ?? {})
     .find(([, e]) => codeOf(e) === code)?.[0];
   const existing = existingSlug ? registry.laws[existingSlug] : null;
-  const slug = existingSlug || slugify(parsed.title);
+  // Prefer the registry's stable slug for this code; else derive (capped) from
+  // the title, disambiguating with the Act code if another code already owns it.
+  let slug = existingSlug || capSlug(slugify(parsed.title));
+  const owner = slugOwner.get(slug);
+  if (owner && owner !== code) slug = capSlug(`${slug}-${code.toLowerCase()}`);
+  slugOwner.set(slug, code);
   // Prefer the registry's curated title/citation (e.g. "R.S.C., 1985, c. F-27").
   const title = existing?.title || parsed.title;
   const citation = existing?.citation || parsed.citation;
@@ -389,7 +424,8 @@ async function ingestCode(code, registry, opts) {
 async function listCodes(letter) {
   const html = await fetchText(`${BASE}/eng/acts/${letter}.html`);
   const codes = new Map();
-  const re = /\/eng\/acts\/([A-Z]-[\w.-]+)\/(?:index|FullText)\.html/g;
+  // Index pages link to each Act with a RELATIVE href, e.g. `I-3.3/index.html`.
+  const re = /href="([A-Z]-[\w.-]+)\/(?:index|FullText)\.html"/g;
   let m;
   while ((m = re.exec(html))) codes.set(m[1], true);
   return [...codes.keys()];
@@ -404,6 +440,10 @@ const opts = {
 const positional = args.filter((a) => !a.startsWith("--"));
 
 const registry = await loadRegistry();
+for (const [slug, entry] of Object.entries(registry.laws ?? {})) {
+  const c = codeOf(entry);
+  if (c) slugOwner.set(slug, c);
+}
 
 if (args.includes("--list")) {
   const letter = (positional[0] || "A").toUpperCase();
@@ -435,6 +475,7 @@ let ok = 0, failed = 0;
 for (const code of codes) {
   try { await ingestCode(code, registry, opts); ok++; }
   catch (e) { failed++; console.log(`✗ ${code.padEnd(8)} FAILED — ${e.message}`); }
+  if (codes.length > 20) await sleep(150); // be polite to laws-lois on a full run
 }
 
 if (opts.writeRegistry && !opts.dry) {

@@ -11,3 +11,7 @@ dev-server*.log
 # Design reference archives (not part of the app)
 *.zip
 references/
+
+# Full-corpus Act ingest (~GB). Bound for a cloud DB, not git/the Vercel bundle.
+# The 5 curated demo Acts were committed earlier and stay tracked.
+data/laws/current/federal/
