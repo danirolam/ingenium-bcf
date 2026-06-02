@@ -26,14 +26,35 @@ export async function readAll<T>(file: string): Promise<T[]> {
     return Array.isArray(parsed) ? parsed : [];
   } catch (err: any) {
     if (err.code === "ENOENT") return [];
+    // A malformed file (e.g. an interrupted legacy write) must not 500 every
+    // request. Treat it as empty so the store self-heals on the next write.
+    if (err instanceof SyntaxError) {
+      console.warn(`[jsonStore] ${file} is corrupt (${err.message}) — treating as empty.`);
+      return [];
+    }
     throw err;
   }
 }
 
+// Serialize writes per file so concurrent upserts can't interleave, and write
+// atomically (temp file + rename) so a reader never sees a half-written file
+// and an interrupted write leaves the previous version intact.
+const writeChains = new Map<string, Promise<void>>();
+
 export async function writeAll<T>(file: string, items: T[]): Promise<void> {
   await ensureDir();
   const p = path.join(DATA_DIR, file);
-  await fs.writeFile(p, JSON.stringify(items, null, 2), "utf-8");
+  const data = JSON.stringify(items, null, 2);
+  const prev = writeChains.get(file) ?? Promise.resolve();
+  const next = prev
+    .catch(() => {})
+    .then(async () => {
+      const tmp = `${p}.${process.pid}.${Math.random().toString(36).slice(2)}.tmp`;
+      await fs.writeFile(tmp, data, "utf-8");
+      await fs.rename(tmp, p); // atomic on the same filesystem
+    });
+  writeChains.set(file, next);
+  await next;
 }
 
 export async function upsert<T extends { id: string }>(
