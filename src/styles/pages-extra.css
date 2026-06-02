@@ -460,6 +460,156 @@
 .lawdiff-fold-btn:last-child { border-radius: 0 0 5px 5px; border-top-width: 0; }
 .lawdiff-fold-btn:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); z-index: 1; }
 .lawdiff-fold-count { user-select: none; display: flex; align-items: center; }
+/* ───────── Delta workflow phase nav (Verify ▸ Approve ▸ Export) ───────── */
+.dphase {
+  display: flex; align-items: center; gap: 4px;
+  padding: 6px 16px; border-bottom: 1px solid var(--border-3); background: var(--panel-2);
+}
+.dphase-step {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 12px; border-radius: 8px; border: 1px solid transparent;
+  background: transparent; color: var(--ink-3); cursor: pointer;
+  font-size: 13px; font-weight: 600; line-height: 1;
+}
+.dphase-step:hover:not(:disabled) { background: var(--panel); color: var(--ink); }
+.dphase-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; border-radius: 999px;
+  border: 1.5px solid currentColor; font-size: 11px; font-weight: 700;
+}
+.dphase-step.is-current { color: var(--accent); background: var(--accent-soft); }
+.dphase-step.is-done { color: var(--add, #3fb950); }
+.dphase-step.is-done .dphase-num { background: var(--add, #3fb950); border-color: var(--add, #3fb950); color: #fff; }
+.dphase-step.is-todo { color: var(--ink-4); }
+.dphase-step.is-locked { cursor: not-allowed; opacity: 0.5; }
+.dphase-count { font-family: var(--mono); font-size: 11.5px; color: var(--ink-4); font-weight: 600; }
+.dphase-sep { width: 18px; height: 1px; background: var(--border-2); margin: 0 2px; }
+
+/* ───────── Phase 1 — Verify (PDF × extraction) ───────── */
+.dv-verify { display: flex; gap: 16px; padding: 16px 24px; height: calc(100vh - 188px); min-height: 460px; }
+.dv-pane {
+  flex: 1 1 50%; min-width: 0; display: flex; flex-direction: column;
+  border: 1px solid var(--border-3); border-radius: 12px; overflow: hidden; background: var(--panel);
+}
+.dv-pane-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 9px 14px; border-bottom: 1px solid var(--border-3); background: var(--panel-2);
+  font-size: 12.5px; color: var(--ink-2); font-weight: 600;
+}
+.dv-ext { color: var(--accent); text-decoration: none; font-size: 12px; }
+.dv-pdf-frame { flex: 1; width: 100%; border: 0; background: #fff; }
+.dv-extract-body { overflow: auto; padding: 4px 0; }
+.dv-act { border-bottom: 1px solid var(--border-3); padding: 10px 14px; }
+.dv-act-head { display: flex; align-items: center; gap: 8px; font-size: 13.5px; margin-bottom: 8px; }
+.dv-act-count {
+  margin-left: auto; font-family: var(--mono); font-size: 11.5px; font-weight: 700;
+  color: var(--ink-3); background: var(--panel-2); border: 1px solid var(--border-2);
+  border-radius: 999px; padding: 1px 8px;
+}
+.dv-op-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.dv-op { padding: 8px 10px; border: 1px solid var(--border-3); border-radius: 8px; background: var(--panel-2); }
+.dv-op.is-flagged { border-color: var(--accent-warm, #d29922); }
+.dv-op-line { display: flex; align-items: center; gap: 8px; }
+.dv-op-anchor { font-family: var(--mono); font-weight: 600; font-size: 12.5px; color: var(--ink); }
+.dv-op-text { margin-top: 6px; font-size: 13px; line-height: 1.55; color: var(--ink-2); white-space: pre-wrap; }
+.dv-op-note { margin-top: 6px; font-size: 12.5px; color: var(--ink-3); }
+
+/* ───────── Phase 2 — Approve (focused queue) ───────── */
+.dap { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 16px; padding: 16px 24px; align-items: start; }
+.dap-rail {
+  border: 1px solid var(--border-3); border-radius: 12px; background: var(--panel);
+  overflow: hidden; position: sticky; top: 16px;
+}
+.dap-rail-head {
+  padding: 10px 12px; border-bottom: 1px solid var(--border-3);
+  font-size: 12px; font-weight: 700; color: var(--ink-2); background: var(--panel-2);
+}
+.dap-rail-list { max-height: 62vh; overflow: auto; }
+.dap-rail-item {
+  display: flex; align-items: center; gap: 7px; width: 100%; text-align: left;
+  padding: 7px 12px; border: 0; border-bottom: 1px solid var(--border-3);
+  background: transparent; cursor: pointer; font-size: 12px;
+}
+.dap-rail-item:hover { background: var(--panel-2); }
+.dap-rail-item.is-current { background: var(--accent-soft); }
+.dap-rail-dot { width: 13px; text-align: center; font-weight: 700; color: var(--add, #3fb950); }
+.dap-rail-dot.warn { color: var(--accent-warm, #d29922); }
+.dap-rail-dot:not(.ok):not(.warn) { color: var(--ink-5, var(--ink-4)); }
+.dap-rail-lbl { font-family: var(--mono); color: var(--ink); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dap-rail-export { margin: 10px; width: calc(100% - 20px); }
+.dap-focus { border: 1px solid var(--border-3); border-radius: 12px; background: var(--panel); overflow: hidden; display: flex; flex-direction: column; }
+.dap-focus-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 12px 16px; border-bottom: 1px solid var(--border-3); background: var(--panel-2);
+}
+.dap-focus-k { font-size: 11px; color: var(--ink-4); margin-right: 10px; text-transform: uppercase; letter-spacing: 0.04em; font-family: var(--mono); }
+.dap-focus-act { font-size: 14px; }
+.dap-flag { margin-left: 10px; font-size: 11.5px; color: var(--accent-warm, #d29922); font-weight: 600; }
+.dap-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); }
+.dap-col { padding: 14px 16px; min-width: 0; }
+.dap-bill { border-right: 1px solid var(--border-3); background: var(--panel-2); }
+.dap-col-h { font-size: 11px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 10px; }
+.dap-bill-op { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.dap-bill-anchor { font-family: var(--mono); font-weight: 700; color: var(--ink); }
+.dap-bill-note { font-size: 13px; line-height: 1.55; color: var(--ink); margin-bottom: 10px; }
+.dap-bill-text { font-size: 12.5px; line-height: 1.55; color: var(--ink-2); white-space: pre-wrap; border-left: 2px solid var(--border-2); padding-left: 10px; }
+.dap-diff-focus { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 6px; }
+.dap-foot { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-top: 1px solid var(--border-3); }
+.dap-foot .dap-approve, .dap-foot .dap-undo { margin: 0 auto; }
+.dap-peek {
+  position: fixed; top: 0; right: 0; width: min(46vw, 640px); height: 100vh;
+  background: var(--panel); border-left: 1px solid var(--border-2);
+  box-shadow: -8px 0 24px rgba(0,0,0,0.18); z-index: 50; display: flex; flex-direction: column;
+}
+.dap-peek-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; border-bottom: 1px solid var(--border-3); background: var(--panel-2);
+  font-size: 12.5px; font-weight: 600;
+}
+.dap-peek-frame { flex: 1; border: 0; width: 100%; background: #fff; }
+
+/* ───────── Phase 2 (combined) — PDF + approvable pair cards ───────── */
+.dap2 { display: flex; gap: 0; height: calc(100vh - 148px); min-height: 460px; }
+.dap2-pdf { flex: 1 1 46%; border: 0; border-right: 1px solid var(--border-3); border-radius: 0; }
+.dap2-list { flex: 1 1 54%; min-width: 0; display: flex; flex-direction: column; background: var(--panel); overflow: hidden; }
+.dap2-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 7px 14px; border-bottom: 1px solid var(--border-3); background: var(--panel-2); font-size: 12.5px;
+}
+.dap2-bar-actions { display: flex; gap: 8px; }
+.dap2-cards { overflow: auto; display: flex; flex-direction: column; }
+.dap2-card { border-bottom: 1px solid var(--border-3); background: var(--panel); }
+.dap2-card.is-approved { box-shadow: inset 3px 0 0 var(--add, #3fb950); }
+.dap2-card.is-approved:not(.is-open) { background: rgba(63, 185, 80, 0.05); }
+.dap2-card-head {
+  display: flex; align-items: center; gap: 9px; width: 100%; text-align: left;
+  padding: 7px 12px; border: 0; background: transparent; cursor: pointer; font-size: 13px;
+}
+.dap2-card-head:hover { background: var(--panel-2); }
+.dap2-check { width: 13px; text-align: center; color: var(--add, #3fb950); font-weight: 700; }
+.dap2-anchor { font-family: var(--mono); font-weight: 700; color: var(--ink); }
+.dap2-warn { color: var(--accent-warm, #d29922); }
+.dap2-act { color: var(--ink-3); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dap2-caret { margin-left: auto; color: var(--ink-4); font-size: 11px; }
+.dap2-card-body { padding: 0 12px 12px; }
+.dap2-sec-h { font-size: 10.5px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.04em; margin: 10px 0 6px; }
+.dap2-card-foot { margin-top: 10px; display: flex; justify-content: flex-start; }
+
+/* ───────── Phase 3 — Export ───────── */
+.dex { padding: 12px 16px; display: flex; flex-direction: column; gap: 12px; }
+.dex-card { border: 1px solid var(--border-3); border-radius: 4px; background: var(--panel); overflow: hidden; }
+.dex-card-h {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 10px 14px; border-bottom: 1px solid var(--border-3); background: var(--panel-2);
+}
+.dex-sub { font-size: 11.5px; color: var(--ink-3); margin-top: 3px; font-family: var(--mono); }
+.dex-preview {
+  padding: 6px 0; max-height: 340px; overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent);
+  mask-image: linear-gradient(to bottom, #000 72%, transparent);
+}
+.dex-more { padding: 6px 16px 14px; font-size: 12px; color: var(--ink-4); font-style: italic; }
+
 /* Partial-result banner (AI rate limit / failure mid-run) */
 .pd-incomplete {
   display: flex; align-items: center; gap: 10px;

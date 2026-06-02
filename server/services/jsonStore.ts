@@ -95,6 +95,7 @@ export const FILES = {
   impacts: "clientImpactAnalyses.json",
   baseLaws: "baseLaws.json",
   provisionDeltas: "provisionDeltas.json",
+  approvals: "approvals.json",
 };
 
 /**

@@ -1,4 +1,4 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useRef, useState, type ReactNode } from "react";
 import { PageHeader } from "./PageHeader";
 import type { ActProvision, Bill, BillAmendmentOp, ProvisionDelta, ProvisionDiffRow } from "../types";
 
@@ -20,7 +20,7 @@ const keyOf = (slug: string, i: number) => `${slug}#${i}`;
 // One provision, formatted readably: marginal note as a heading, then body text
 // prefixed by only its OWN label segment (the parent ids are implied by the
 // indentation). Colour alone signals add/remove/change — no +/−/~ needed.
-function ProvBlock({
+export function ProvBlock({
   prov,
   variant,
 }: {
@@ -216,6 +216,7 @@ export function ProvisionDeltaView({
   incomplete = null,
   refreshing = false,
   onRefresh,
+  beforeBody,
 }: {
   bill: Bill | null;
   deltas: ProvisionDelta[];
@@ -224,6 +225,8 @@ export function ProvisionDeltaView({
   incomplete?: "rate-limit" | "ai-error" | true | null;
   refreshing?: boolean;
   onRefresh?: () => void;
+  /** Rendered between the page header and the body (e.g. the phase nav). */
+  beforeBody?: ReactNode;
 }) {
   const [showBill, setShowBill] = useState(false);
   const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
@@ -271,6 +274,7 @@ export function ProvisionDeltaView({
           </div>
         }
       />
+      {beforeBody}
       {incomplete && (
         <div className="pd-incomplete" role="alert">
           <span className="pd-incomplete-icon">⚠</span>

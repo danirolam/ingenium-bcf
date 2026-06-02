@@ -19,7 +19,10 @@ import { InfoHint } from "../components/InfoHint";
 import { Tooltip } from "../components/Tooltip";
 import { LegislativeJourney } from "../components/LegislativeJourney";
 import { PageHeader } from "../components/PageHeader";
-import { ProvisionDeltaView } from "../components/ProvisionDeltaView";
+import { DeltaPhaseNav, type DeltaPhase } from "../components/DeltaPhaseNav";
+import { DeltaApprove } from "./delta/DeltaApprove";
+import { DeltaExport } from "./delta/DeltaExport";
+import { useApprovals } from "../lib/useApprovals";
 import {
   Alert,
   AlertContent,
@@ -60,6 +63,9 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
   const [techOpen, setTechOpen] = useState(false);
   const [pickList, setPickList] = useState<Bill[]>([]);
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  // Server-backed approvals for the phase-2 gate (keyed by "<slug>#<opIndex>").
+  const approvals = useApprovals(bill?.id ?? nav.params.billId ?? null);
 
   const activeLv = lvs.find((lv) => lv.id === activeId) ?? lvs[0] ?? null;
 
@@ -196,8 +202,11 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
     }
   }
 
-  // Grounded provision delta available → render the clean view.
+  // Grounded provision delta available → the focused 3-phase flow.
   if (pdeltas && pdeltas.length > 0) {
+    const billId = bill?.id ?? nav.params.billId ?? "";
+    const phase: DeltaPhase = nav.params.phase === "export" ? "export" : "approve";
+    const goPhase = (p: DeltaPhase) => nav.go("delta", { billId, phase: p });
     const refreshDelta = async () => {
       if (!bill) return;
       setRefreshing(true);
@@ -215,15 +224,73 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
         setRefreshing(false);
       }
     };
-    return (
-      <ProvisionDeltaView
-        bill={bill}
-        deltas={pdeltas}
-        cached={pcached}
-        incomplete={pincomplete}
-        refreshing={refreshing}
-        onRefresh={refreshDelta}
+    const total = pdeltas.reduce((n, d) => n + (d.operations?.length ?? 0), 0);
+    const done = approvals.approved.size;
+    const allApproved = total > 0 && done >= total;
+    const phaseNav = (
+      <DeltaPhaseNav
+        phase={phase}
+        onGo={goPhase}
+        approved={{ done, total }}
+        exportEnabled={allApproved}
       />
+    );
+
+    const badge = pcached
+      ? "⚡ Cached"
+      : pdeltas.some((d) => d.source === "ai" || d.source === "ai-assisted")
+        ? "✨ AI-assisted"
+        : "📄 From bill text";
+
+    return (
+      <>
+        <PageHeader
+          crumbs={["Workspace", "Legal delta", bill?.billNumber ?? "Bill"]}
+          title={`Legal delta — ${bill?.billNumber ?? ""}`}
+          sub={bill?.title}
+          actions={
+            <div className="pd-source">
+              <span className="pd-source-badge">{badge}</span>
+              <button className="btn ghost sm" disabled={refreshing} onClick={refreshDelta}>
+                {refreshing ? "Recomputing…" : "Recompute"}
+              </button>
+            </div>
+          }
+        />
+        {phaseNav}
+        {pincomplete && (
+          <div className="pd-incomplete" role="alert">
+            <span className="pd-incomplete-icon">⚠</span>
+            <span>
+              {pincomplete === "rate-limit"
+                ? "Analysis incomplete — hit the AI rate limit. Showing what we have; "
+                : "Analysis incomplete — an AI call failed. Showing what we have; "}
+              re-run in a minute for the full delta.
+            </span>
+            <button className="btn ghost sm" disabled={refreshing} onClick={refreshDelta}>
+              {refreshing ? "Retrying…" : "Retry"}
+            </button>
+          </div>
+        )}
+
+        {phase === "approve" && (
+          <DeltaApprove
+            bill={bill}
+            deltas={pdeltas}
+            approved={approvals.approved}
+            onSet={approvals.set}
+            onDone={() => goPhase("export")}
+          />
+        )}
+        {phase === "export" && (
+          <DeltaExport
+            bill={bill}
+            deltas={pdeltas}
+            allApproved={allApproved}
+            onBack={() => goPhase("approve")}
+          />
+        )}
+      </>
     );
   }
 

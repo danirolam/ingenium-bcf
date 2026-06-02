@@ -50,6 +50,16 @@ export const api = {
         `/api/bills/${id}/provision-delta${refresh ? "?refresh=1" : ""}`,
         { method: "POST", signal },
       ),
+    // Per-amendment approvals (the phase-2 gate). Keys are "<actSlug>#<opIndex>".
+    approvals: {
+      get: (id: string, signal?: AbortSignal) =>
+        j<{ keys: string[] }>(`/api/bills/${id}/approvals`, { signal }),
+      set: (id: string, body: { key?: string; keys?: string[]; approved: boolean }) =>
+        j<{ keys: string[] }>(`/api/bills/${id}/approvals`, {
+          method: "POST",
+          body: JSON.stringify(body),
+        }),
+    },
   },
   lawVersions: {
     list: () => j<LawVersion[]>("/api/law-versions"),

@@ -492,3 +492,34 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
   }
   res.json({ deltas, errors, cached: false, aiIncomplete, aiIncompleteReason });
 });
+
+// ── Per-amendment approvals (the phase-2 gate) ──────────────────────────────
+// One record per bill holding the set of approved amendment keys ("<slug>#<i>").
+// Counsel approves each placement; export is gated on all keys being approved.
+type ApprovalRecord = { id: string; keys: string[] };
+
+billsRouter.get("/:id/approvals", async (req, res) => {
+  const rec = await findById<ApprovalRecord>(FILES.approvals, req.params.id);
+  res.json({ keys: rec?.keys ?? [] });
+});
+
+// Toggle one key, or set many at once (approve-all-for-Act passes that Act's keys).
+billsRouter.post("/:id/approvals", async (req, res) => {
+  const { key, keys, approved } = (req.body ?? {}) as {
+    key?: string;
+    keys?: string[];
+    approved?: boolean;
+  };
+  const incoming = (keys ?? (key ? [key] : [])).filter(Boolean);
+  if (incoming.length === 0) return res.status(400).json({ error: "key or keys required" });
+
+  const rec = (await findById<ApprovalRecord>(FILES.approvals, req.params.id)) ?? {
+    id: req.params.id,
+    keys: [],
+  };
+  const set = new Set(rec.keys);
+  for (const k of incoming) (approved === false ? set.delete(k) : set.add(k));
+  rec.keys = [...set];
+  await upsert(FILES.approvals, rec);
+  res.json({ keys: rec.keys });
+});
