@@ -24,6 +24,7 @@ import { interpretAmendmentsClaude } from "../services/claude.js";
 import { applyGroups, parseBillAmendments } from "../services/billAmendments.js";
 import { loadActProvisions } from "../services/lawProvisions.js";
 import { resolveBatch, type ScalpelTask } from "../services/scalpel.js";
+import { createAiBudget } from "../services/aiBudget.js";
 import { flagAmendmentReview } from "../services/humanReview.js";
 import {
   FILES,
@@ -385,10 +386,11 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
     }
   }
 
-  // Render a provision list as flowing text — identical formatting on both
-  // sides so unchanged provisions are byte-identical and the diff aligns clean.
-  const joinProv = (ps: { marginalNote?: string | null; label: string; text: string }[]) =>
-    ps.map((p) => `${p.marginalNote ? p.marginalNote + "\n" : ""}${p.label} ${p.text}`).join("\n\n");
+  // One shared budget for every Anthropic call this request makes: the first
+  // rate-limit/failure trips it, aborting in-flight sibling calls and skipping
+  // pending ones, so we degrade to a partial result instead of hammering the
+  // 50k-token/min limit.
+  const aiBudget = createAiBudget();
 
   const results = await Promise.all(
     acts.map(async (act) => {
@@ -406,9 +408,10 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
         // 1) Whole-provision adds/replaces/repeals from <AmendedText>.
         const { after, verified } = applyGroups(actData.provisions, groups);
 
-        // 2) Partial edits: resolve each target, batch them into ONE AI call,
+        // 2) Partial edits: resolve each target, batch them into AI calls,
         //    then splice the edited text back in.
         let usedAi = false;
+        let incomplete = false;
         if (edits.length > 0) {
           const tasks: ScalpelTask[] = [];
           const targets: { provIndex: number; anchorFound: boolean; instruction: string }[] = [];
@@ -423,7 +426,8 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
           });
           if (tasks.length > 0) {
             usedAi = true;
-            const res = await resolveBatch(actData.title, tasks);
+            const { results: res, incomplete: scalpelIncomplete } = await resolveBatch(actData.title, tasks, aiBudget);
+            incomplete = scalpelIncomplete;
             targets.forEach((t, i) => {
               const r = res.get(`e${i}`);
               if (r?.newText) after[t.provIndex] = { ...after[t.provIndex], text: r.newText };
@@ -439,17 +443,19 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
         return {
           slug: actData.slug, title: actData.title, citation: actData.citation,
           summary: diffSummary(rows), operations: verified,
-          rows: rows.filter((r) => r.status !== "unchanged"),
-          oldText: joinProv(actData.provisions), newText: joinProv(after),
+          rows,
           source: usedAi ? "ai-assisted" : "bill-xml",
+          incomplete,
         };
       }
 
       // Path B — fallback: let the AI interpret the whole bill for this Act.
-      const interpret = process.env.ANTHROPIC_API_KEY
-        ? interpretAmendmentsClaude
-        : interpretAmendmentsTooled;
-      const ai = await interpret({ bill, actTitle: actData.title, provisions: actData.provisions });
+      // The Claude path shares the rate-limit budget; the Gemini fallback
+      // (used only when no Anthropic key is set) doesn't need it.
+      const args = { bill, actTitle: actData.title, provisions: actData.provisions };
+      const ai = process.env.ANTHROPIC_API_KEY
+        ? await interpretAmendmentsClaude(args, aiBudget)
+        : await interpretAmendmentsTooled(args);
       if (!ai) {
         errors.push(
           process.env.ANTHROPIC_API_KEY || process.env.GEMINI_API_KEY
@@ -463,16 +469,20 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
       return {
         slug: actData.slug, title: actData.title, citation: actData.citation,
         summary: diffSummary(rows), operations: verified,
-        rows: rows.filter((r) => r.status !== "unchanged"),
-        oldText: joinProv(actData.provisions), newText: joinProv(after),
+        rows,
         source: "ai",
+        incomplete: "incomplete" in ai ? ai.incomplete : false,
       };
     }),
   );
 
   const deltas = results.filter(Boolean);
-  // Only cache successful interpretations, so failures retry next time.
-  if (deltas.length > 0) {
+  // If an AI call was rate-limited/failed mid-run, the result is partial.
+  const aiIncomplete = aiBudget.reason !== null || deltas.some((d) => d && (d as { incomplete?: boolean }).incomplete);
+  const aiIncompleteReason = aiBudget.reason;
+  // Only cache COMPLETE interpretations, so a rate-limited/partial run retries
+  // next time (e.g. once the per-minute limit resets) instead of sticking.
+  if (deltas.length > 0 && !aiIncomplete) {
     await upsert(FILES.provisionDeltas, {
       id: bill.id,
       deltas,
@@ -480,5 +490,5 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
       createdAt: new Date().toISOString(),
     });
   }
-  res.json({ deltas, errors, cached: false });
+  res.json({ deltas, errors, cached: false, aiIncomplete, aiIncompleteReason });
 });

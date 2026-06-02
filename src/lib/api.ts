@@ -22,26 +22,33 @@ export type EmailResult = { sent: boolean; simulated: boolean; info?: string };
 
 export const api = {
   bills: {
-    list: () => j<Bill[]>("/api/bills"),
-    get: (id: string) => j<Bill>(`/api/bills/${id}`),
+    list: (signal?: AbortSignal) => j<Bill[]>("/api/bills", { signal }),
+    get: (id: string, signal?: AbortSignal) => j<Bill>(`/api/bills/${id}`, { signal }),
     upload: (raw: unknown) =>
       j<{ bill: Bill; email: EmailResult }>("/api/bills/upload", {
         method: "POST",
         body: JSON.stringify(raw),
       }),
-    extractDelta: (id: string) =>
+    extractDelta: (id: string, signal?: AbortSignal) =>
       j<{ lawVersions: LawVersion[]; errors: string[] }>(
         `/api/bills/${id}/extract-delta`,
-        { method: "POST" },
+        { method: "POST", signal },
       ),
     lawVersions: (id: string) =>
       j<LawVersion[]>(`/api/bills/${id}/law-versions`),
     // Grounded provision-level delta for registered Acts (AI-interpreted,
     // verified against the structured Act). Pass refresh to re-run the AI.
-    provisionDelta: (id: string, refresh = false) =>
-      j<{ deltas: ProvisionDelta[]; errors: string[]; cached?: boolean; computedAt?: string }>(
+    provisionDelta: (id: string, refresh = false, signal?: AbortSignal) =>
+      j<{
+        deltas: ProvisionDelta[];
+        errors: string[];
+        cached?: boolean;
+        computedAt?: string;
+        aiIncomplete?: boolean;
+        aiIncompleteReason?: "rate-limit" | "ai-error" | null;
+      }>(
         `/api/bills/${id}/provision-delta${refresh ? "?refresh=1" : ""}`,
-        { method: "POST" },
+        { method: "POST", signal },
       ),
   },
   lawVersions: {

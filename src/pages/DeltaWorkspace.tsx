@@ -53,6 +53,7 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
   const [lvs, setLvs] = useState<LawVersion[]>([]);
   const [pdeltas, setPdeltas] = useState<ProvisionDelta[] | null>(null);
   const [pcached, setPcached] = useState(false);
+  const [pincomplete, setPincomplete] = useState<"rate-limit" | "ai-error" | true | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
@@ -63,24 +64,32 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
   const activeLv = lvs.find((lv) => lv.id === activeId) ?? lvs[0] ?? null;
 
   useEffect(() => {
+    // Cancel in-flight work when the effect re-runs (React StrictMode fires it
+    // twice in dev) or you navigate to another bill — so we don't fire duplicate
+    // requests or set state from a stale response.
+    const ac = new AbortController();
+    const { signal } = ac;
     const lawVersionId = nav.params.lawVersionId;
-    api.bills.list().then(setPickList).catch(() => {});
+    api.bills.list(signal).then(setPickList).catch(() => {});
 
     // Legacy deep-link by a specific LawVersion (rare) — keep the old path.
     if (lawVersionId) {
       api.lawVersions
         .get(lawVersionId)
         .then(async (lv) => {
+          if (signal.aborted) return;
           setLvs([lv]);
           setActiveId(lv.id);
-          const bills = await api.bills.list();
+          const bills = await api.bills.list(signal);
+          if (signal.aborted) return;
           setBill(bills.find((b) => b.id === lv.sourceBillId) ?? null);
         })
         .catch((err) => {
+          if (err?.name === "AbortError") return;
           console.error(err);
           nav.toast(`Failed to load law version: ${err.message ?? err}`);
         });
-      return;
+      return () => ac.abort();
     }
 
     // Unified loader: grounded provision delta first, old string-diff as the
@@ -89,40 +98,50 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
       let resolved: string | null = nav.params.billId ?? null;
       if (!resolved) {
         // No bill chosen → open a sensible demo (C-273 amends 5 registered Acts).
-        const bills = await api.bills.list();
+        const bills = await api.bills.list(signal);
         resolved =
           (bills.find((b) => b.billNumber === "C-273") ??
             bills.find((b) => /\bamend/i.test(b.title)))?.id ?? null;
       }
       if (!resolved) {
-        setPdeltas([]);
+        if (!signal.aborted) setPdeltas([]);
         return;
       }
       const billId: string = resolved;
 
-      const b = await api.bills.get(billId).catch(() => null);
+      const b = await api.bills.get(billId, signal).catch(() => null);
+      if (signal.aborted) return;
       setBill(b);
 
       const res = await api.bills
-        .provisionDelta(billId)
-        .catch(() => ({ deltas: [], errors: [] as string[], cached: false }));
+        .provisionDelta(billId, false, signal)
+        .catch(() => ({
+          deltas: [] as ProvisionDelta[], errors: [] as string[], cached: false,
+          aiIncomplete: false, aiIncompleteReason: null as "rate-limit" | "ai-error" | null,
+        }));
+      if (signal.aborted) return;
       if (res.deltas?.length) {
         setPdeltas(res.deltas);
         setPcached(Boolean(res.cached));
+        setPincomplete(res.aiIncomplete ? (res.aiIncompleteReason ?? true) : null);
         if (res.errors?.length) nav.toast(res.errors[0]);
         return;
       }
 
       setPdeltas([]);
-      const dres = await api.bills.extractDelta(billId).catch(() => null);
+      const dres = await api.bills.extractDelta(billId, signal).catch(() => null);
+      if (signal.aborted) return;
       const list = (dres?.lawVersions ?? []).filter((lv) => lv.sourceBillId === billId);
       setLvs(list);
       setActiveId(list[0]?.id ?? null);
       if (list.length === 0 && dres?.errors?.length) nav.toast(dres.errors[0]);
     })().catch((err) => {
+      if (err?.name === "AbortError") return;
       console.error(err);
       nav.toast(`Failed to load delta workspace: ${err.message ?? err}`);
     });
+
+    return () => ac.abort();
   }, [nav.params.billId, nav.params.lawVersionId]);
 
   useEffect(() => {
@@ -187,7 +206,8 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
         if (res.deltas?.length) {
           setPdeltas(res.deltas);
           setPcached(false);
-          nav.toast("Re-interpreted by AI.");
+          setPincomplete(res.aiIncomplete ? (res.aiIncompleteReason ?? true) : null);
+          nav.toast(res.aiIncomplete ? "Re-ran, but hit the AI rate limit — partial." : "Re-interpreted by AI.");
         }
       } catch (err: any) {
         nav.toast(`Could not re-run: ${err?.message ?? err}`);
@@ -200,6 +220,7 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
         bill={bill}
         deltas={pdeltas}
         cached={pcached}
+        incomplete={pincomplete}
         refreshing={refreshing}
         onRefresh={refreshDelta}
       />

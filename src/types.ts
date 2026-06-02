@@ -239,4 +239,7 @@ export interface ProvisionDelta {
   /** How the delta was produced: deterministic from the bill XML, partly via the
    *  AI scalpel (partial edits), or fully AI-interpreted. */
   source?: "bill-xml" | "ai-assisted" | "ai";
+  /** True when an AI call was cut short (rate limit / failure) so this Act's
+   *  changes may be partial. */
+  incomplete?: boolean;
 }

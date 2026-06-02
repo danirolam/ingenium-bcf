@@ -67,8 +67,10 @@ export function parseProvisions(xml: string): Provision[] {
   function emit(f: any) {
     const text = squishText(f.textBuf.join(""));
     if (!text) return;
+    // emit() is called with the just-popped frame, so `frames` holds only the
+    // ancestors — include `f` to get this provision's own label segment too.
     const label =
-      f.kind === "definition" ? f.label : frames.map((x) => x.label).filter(Boolean).join("");
+      f.kind === "definition" ? f.label : [...frames, f].map((x) => x.label).filter(Boolean).join("");
     const finalLabel = label || f.marginalNote || `¶${out.length + 1}`;
     out.push({
       id: f.id || `ins:${out.length}`,

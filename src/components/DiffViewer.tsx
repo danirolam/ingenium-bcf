@@ -401,15 +401,11 @@ export function DiffViewer({
       <div className="diff-versions">
         <div className="diff-version">
           <div className="vlabel">From</div>
-          <select defaultValue={versionALabel}>
-            <option>{versionALabel}</option>
-          </select>
+          <div className="vvalue">{versionALabel}</div>
         </div>
         <div className="diff-version">
           <div className="vlabel">To</div>
-          <select defaultValue={versionBLabel}>
-            <option>{versionBLabel}</option>
-          </select>
+          <div className="vvalue">{versionBLabel}</div>
         </div>
       </div>
 
