@@ -142,7 +142,7 @@ async function runInterpretLoop(
       const hopStart = Date.now();
       // On the final hop, disable tools so the model MUST produce the JSON
       // instead of looking up yet another provision and running out of budget.
-      const body: any = { model: MODEL, max_tokens: 16000, system: SYSTEM, tools: TOOLS, messages };
+      const body: any = { model: MODEL, max_tokens: 16000, temperature: 0, system: SYSTEM, tools: TOOLS, messages };
       if (hop === MAX_HOPS) body.tool_choice = { type: "none" };
       const res = await fetch(API, {
         method: "POST",

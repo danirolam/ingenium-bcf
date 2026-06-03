@@ -81,6 +81,7 @@ async function sendBatch(
   const body = {
     model: MODEL,
     max_tokens: MAX_OUTPUT_TOKENS,
+    temperature: 0, // deterministic: locating anchors / applying edits must be consistent
     system: [{ type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } }],
     messages: [{ role: "user", content: `ACT: ${actTitle}\n\nTASKS (JSON):\n${JSON.stringify(tasks)}` }],
   };

@@ -386,6 +386,17 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
     }
   }
 
+  // Also diff any Act the bill's own XML amends (resolved from <XRefExternal>),
+  // not just the tagged ones — clause `targetActs` is only ~23% populated, so
+  // this rescues untagged amending bills (e.g. C-25 → Canada Elections Act)
+  // that would otherwise show no delta.
+  for (const slug of new Set([...parsed.groups.keys(), ...parsed.edits.keys()])) {
+    if (!have.has(slug) && registry[slug]) {
+      acts.push({ title: registry[slug].title, slug, clauseIds: (bill.clauses ?? []).map((c) => c.id) });
+      have.add(slug);
+    }
+  }
+
   // One shared budget for every Anthropic call this request makes: the first
   // rate-limit/failure trips it, aborting in-flight sibling calls and skipping
   // pending ones, so we degrade to a partial result instead of hammering the
