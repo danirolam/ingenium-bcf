@@ -1223,19 +1223,6 @@
       },
       "relatedBills": []
     },
-    "canada-agricultural-products-act": {
-      "title": "Canada Agricultural Products Act",
-      "citation": "C-0.4 20 (4th Supp.) 1985",
-      "jurisdiction": "Canada",
-      "level": "federal",
-      "currentPath": "data/laws/current/federal/canada-agricultural-products-act",
-      "source": {
-        "publisher": "Justice Laws Website",
-        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/C-0.4/index.html",
-        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/C-0.4.xml"
-      },
-      "relatedBills": []
-    },
     "canada-and-taiwan-territories-tax-arrangement-act-2016": {
       "title": "Canada and Taiwan Territories Tax Arrangement Act, 2016",
       "citation": "C-0.5 13, s. 3 2016",
@@ -2484,19 +2471,6 @@
       },
       "relatedBills": []
     },
-    "canada-ukraine-free-trade-agreement-implementation-act": {
-      "title": "Canada–Ukraine Free Trade Agreement Implementation Act",
-      "citation": "C-10.54 8 2017",
-      "jurisdiction": "Canada",
-      "level": "federal",
-      "currentPath": "data/laws/current/federal/canada-ukraine-free-trade-agreement-implementation-act",
-      "source": {
-        "publisher": "Justice Laws Website",
-        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/C-10.54/index.html",
-        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/C-10.54.xml"
-      },
-      "relatedBills": []
-    },
     "canada-ukraine-free-trade-agreement-implementation-act-2023": {
       "title": "Canada–Ukraine Free Trade Agreement Implementation Act, 2023",
       "citation": "C-10.541 3 2024",
@@ -2780,19 +2754,6 @@
         "publisher": "Justice Laws Website",
         "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/C-15.2/index.html",
         "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/C-15.2.xml"
-      },
-      "relatedBills": []
-    },
-    "canadian-environmental-assessment-act-2012": {
-      "title": "Canadian Environmental Assessment Act, 2012",
-      "citation": "C-15.21 19, s. 52 2012",
-      "jurisdiction": "Canada",
-      "level": "federal",
-      "currentPath": "data/laws/current/federal/canadian-environmental-assessment-act-2012",
-      "source": {
-        "publisher": "Justice Laws Website",
-        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/C-15.21/index.html",
-        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/C-15.21.xml"
       },
       "relatedBills": []
     },
@@ -3472,19 +3433,6 @@
       },
       "relatedBills": []
     },
-    "claim-settlements-alberta-and-saskatchewan-implementation-act": {
-      "title": "Claim Settlements (Alberta and Saskatchewan) Implementation Act",
-      "citation": "C-31.7 3 2002",
-      "jurisdiction": "Canada",
-      "level": "federal",
-      "currentPath": "data/laws/current/federal/claim-settlements-alberta-and-saskatchewan-implementation-act",
-      "source": {
-        "publisher": "Justice Laws Website",
-        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/C-31.7/index.html",
-        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/C-31.7.xml"
-      },
-      "relatedBills": []
-    },
     "clarity-act": {
       "title": "Clarity Act",
       "citation": "C-31.8 26 2000",
@@ -3729,19 +3677,6 @@
         "publisher": "Justice Laws Website",
         "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/C-36.78/index.html",
         "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/C-36.78.xml"
-      },
-      "relatedBills": []
-    },
-    "consumer-driven-banking-act-c-36.75": {
-      "title": "Consumer-Driven Banking Act",
-      "citation": "C-36.75 17, s. 198 2024",
-      "jurisdiction": "Canada",
-      "level": "federal",
-      "currentPath": "data/laws/current/federal/consumer-driven-banking-act-c-36.75",
-      "source": {
-        "publisher": "Justice Laws Website",
-        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/C-36.75/index.html",
-        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/C-36.75.xml"
       },
       "relatedBills": []
     },
@@ -4265,19 +4200,6 @@
       },
       "relatedBills": []
     },
-    "department-of-indian-affairs-and-northern-development-act": {
-      "title": "Department of Indian Affairs and Northern Development Act",
-      "citation": "I-6",
-      "jurisdiction": "Canada",
-      "level": "federal",
-      "currentPath": "data/laws/current/federal/department-of-indian-affairs-and-northern-development-act",
-      "source": {
-        "publisher": "Justice Laws Website",
-        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/I-6/index.html",
-        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/I-6.xml"
-      },
-      "relatedBills": []
-    },
     "department-of-indigenous-services-act": {
       "title": "Department of Indigenous Services Act",
       "citation": "I-7.88 29, s. 336 2019",
@@ -4431,19 +4353,6 @@
         "publisher": "Justice Laws Website",
         "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/D-1.6/index.html",
         "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/D-1.6.xml"
-      },
-      "relatedBills": []
-    },
-    "digital-services-tax-act": {
-      "title": "Digital Services Tax Act",
-      "citation": "D-1.65 15, s. 96 2024",
-      "jurisdiction": "Canada",
-      "level": "federal",
-      "currentPath": "data/laws/current/federal/digital-services-tax-act",
-      "source": {
-        "publisher": "Justice Laws Website",
-        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/D-1.65/index.html",
-        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/D-1.65.xml"
       },
       "relatedBills": []
     },
@@ -5643,19 +5552,6 @@
       },
       "relatedBills": []
     },
-    "first-nations-land-management-act": {
-      "title": "First Nations Land Management Act",
-      "citation": "F-11.8 24 1999",
-      "jurisdiction": "Canada",
-      "level": "federal",
-      "currentPath": "data/laws/current/federal/first-nations-land-management-act",
-      "source": {
-        "publisher": "Justice Laws Website",
-        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/F-11.8/index.html",
-        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/F-11.8.xml"
-      },
-      "relatedBills": []
-    },
     "first-nations-oil-and-gas-and-moneys-management-act": {
       "title": "First Nations Oil and Gas and Moneys Management Act",
       "citation": "F-11.9 48 2005",
@@ -5679,19 +5575,6 @@
         "publisher": "Justice Laws Website",
         "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/F-11.73/index.html",
         "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/F-11.73.xml"
-      },
-      "relatedBills": []
-    },
-    "fish-inspection-act": {
-      "title": "Fish Inspection Act",
-      "citation": "F-12",
-      "jurisdiction": "Canada",
-      "level": "federal",
-      "currentPath": "data/laws/current/federal/fish-inspection-act",
-      "source": {
-        "publisher": "Justice Laws Website",
-        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/F-12/index.html",
-        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/F-12.xml"
       },
       "relatedBills": []
     },
@@ -7801,19 +7684,6 @@
       },
       "relatedBills": []
     },
-    "meat-inspection-act": {
-      "title": "Meat Inspection Act",
-      "citation": "M-3.2 25 (1st Supp.) 1985",
-      "jurisdiction": "Canada",
-      "level": "federal",
-      "currentPath": "data/laws/current/federal/meat-inspection-act",
-      "source": {
-        "publisher": "Justice Laws Website",
-        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/M-3.2/index.html",
-        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/M-3.2.xml"
-      },
-      "relatedBills": []
-    },
     "members-of-parliament-retiring-allowances-act": {
       "title": "Members of Parliament Retiring Allowances Act",
       "citation": "M-5",
@@ -8162,19 +8032,6 @@
         "publisher": "Justice Laws Website",
         "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/N-5/index.html",
         "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/N-5.xml"
-      },
-      "relatedBills": []
-    },
-    "national-energy-board-act": {
-      "title": "National Energy Board Act",
-      "citation": "N-7",
-      "jurisdiction": "Canada",
-      "level": "federal",
-      "currentPath": "data/laws/current/federal/national-energy-board-act",
-      "source": {
-        "publisher": "Justice Laws Website",
-        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/N-7/index.html",
-        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/N-7.xml"
       },
       "relatedBills": []
     },
@@ -9361,19 +9218,6 @@
       },
       "relatedBills": []
     },
-    "perfluorooctane-sulfonate-virtual-elimination-act": {
-      "title": "Perfluorooctane Sulfonate Virtual Elimination Act",
-      "citation": "P-8.3 13 2008",
-      "jurisdiction": "Canada",
-      "level": "federal",
-      "currentPath": "data/laws/current/federal/perfluorooctane-sulfonate-virtual-elimination-act",
-      "source": {
-        "publisher": "Justice Laws Website",
-        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/P-8.3/index.html",
-        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/P-8.3.xml"
-      },
-      "relatedBills": []
-    },
     "personal-information-protection-and-electronic-documents-act": {
       "title": "Personal Information Protection and Electronic Documents Act",
       "citation": "P-8.6 5 2000",
@@ -9660,19 +9504,6 @@
       },
       "relatedBills": []
     },
-    "poverty-reduction-act-p-16.8": {
-      "title": "Poverty Reduction Act",
-      "citation": "P-16.8 27, s. 687 2018",
-      "jurisdiction": "Canada",
-      "level": "federal",
-      "currentPath": "data/laws/current/federal/poverty-reduction-act-p-16.8",
-      "source": {
-        "publisher": "Justice Laws Website",
-        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/P-16.8/index.html",
-        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/P-16.8.xml"
-      },
-      "relatedBills": []
-    },
     "prairie-farm-rehabilitation-act": {
       "title": "Prairie Farm Rehabilitation Act",
       "citation": "P-17",
@@ -9709,19 +9540,6 @@
         "publisher": "Justice Laws Website",
         "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/P-19/index.html",
         "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/P-19.xml"
-      },
-      "relatedBills": []
-    },
-    "preclearance-act": {
-      "title": "Preclearance Act",
-      "citation": "P-19.3 20 1999",
-      "jurisdiction": "Canada",
-      "level": "federal",
-      "currentPath": "data/laws/current/federal/preclearance-act",
-      "source": {
-        "publisher": "Justice Laws Website",
-        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/P-19.3/index.html",
-        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/P-19.3.xml"
       },
       "relatedBills": []
     },
@@ -9930,32 +9748,6 @@
         "publisher": "Justice Laws Website",
         "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/P-29.5/index.html",
         "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/P-29.5.xml"
-      },
-      "relatedBills": []
-    },
-    "public-health-events-of-national-concern-payments-act": {
-      "title": "Public Health Events of National Concern Payments Act",
-      "citation": "P-29.71 12, s. 10 2020",
-      "jurisdiction": "Canada",
-      "level": "federal",
-      "currentPath": "data/laws/current/federal/public-health-events-of-national-concern-payments-act",
-      "source": {
-        "publisher": "Justice Laws Website",
-        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/P-29.71/index.html",
-        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/P-29.71.xml"
-      },
-      "relatedBills": []
-    },
-    "public-health-events-of-national-concern-payments-act-p-29.7": {
-      "title": "Public Health Events of National Concern Payments Act",
-      "citation": "P-29.7 5, s. 9 2020",
-      "jurisdiction": "Canada",
-      "level": "federal",
-      "currentPath": "data/laws/current/federal/public-health-events-of-national-concern-payments-act-p-29.7",
-      "source": {
-        "publisher": "Justice Laws Website",
-        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/P-29.7/index.html",
-        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/P-29.7.xml"
       },
       "relatedBills": []
     },
@@ -10723,19 +10515,6 @@
         "publisher": "Justice Laws Website",
         "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/S-1/index.html",
         "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/S-1.xml"
-      },
-      "relatedBills": []
-    },
-    "safe-drinking-water-for-first-nations-act": {
-      "title": "Safe Drinking Water for First Nations Act",
-      "citation": "S-1.04 21 2013",
-      "jurisdiction": "Canada",
-      "level": "federal",
-      "currentPath": "data/laws/current/federal/safe-drinking-water-for-first-nations-act",
-      "source": {
-        "publisher": "Justice Laws Website",
-        "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/S-1.04/index.html",
-        "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/S-1.04.xml"
       },
       "relatedBills": []
     },
