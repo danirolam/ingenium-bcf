@@ -156,9 +156,12 @@ function parseAct(xml, code) {
     const text = squish(frame.textBuf.join(""));
     if (!text) return; // no own operative text (e.g. a Section whose text lives in subsections)
     // Definitions are addressed by their term, not the section-number chain.
+    // emit() is called with the just-popped frame, so `frames` holds only the
+    // ancestors — include `frame` itself or every provision loses its own leaf
+    // label (e.g. all paragraphs of 30(1) collapse to "30(1)").
     const labelChain = frame.kind === "definition"
       ? frame.label
-      : frames.map((f) => f.label).filter(Boolean).join("");
+      : [...frames, frame].map((f) => f.label).filter(Boolean).join("");
     if (!frame.label) missingLabel++;
     provisions.push({
       id: frame.limsId || `${code}:${provisions.length}`,
@@ -293,15 +296,16 @@ function parseAct(xml, code) {
 // ───────────────────────── coverage validator ─────────────────────────
 // Body <Text> chars (operative) vs what we captured. High ratio + no unknowns = trust.
 function coverage(xml, provisions) {
-  const bodyStart = xml.indexOf("<Body");
-  const bodyEnd = xml.lastIndexOf("</Body>");
-  const body = bodyStart >= 0 && bodyEnd > bodyStart ? xml.slice(bodyStart, bodyEnd) : xml;
-  // Strip HistoricalNote subtrees so we compare against operative text only.
-  const operative = body.replace(/<HistoricalNote[\s\S]*?<\/HistoricalNote>/g, "");
+  // Denominator = all operative text the doc carries (body + schedules), so the
+  // ratio reflects schedule capture too. Strip HistoricalNote subtrees first.
+  const operative = xml.replace(/<HistoricalNote[\s\S]*?<\/HistoricalNote>/g, "");
   let rawTextChars = 0;
-  const re = /<Text\b[^>]*>([\s\S]*?)<\/Text>/g;
   let m;
-  while ((m = re.exec(operative))) rawTextChars += squish(m[1]).length;
+  const tre = /<Text\b[^>]*>([\s\S]*?)<\/Text>/g;
+  while ((m = tre.exec(operative))) rawTextChars += squish(m[1]).length;
+  // Table cell text lives directly in <entry>, not in <Text>.
+  const ere = /<entry\b[^>]*>([\s\S]*?)<\/entry>/g;
+  while ((m = ere.exec(operative))) rawTextChars += squish(m[1].replace(/<[^>]+>/g, " ")).length;
   const capturedChars = provisions.reduce((n, p) => n + p.text.length, 0);
   const scheduleHasText = /<Schedule[\s\S]*?<Text\b/.test(xml);
   return {
@@ -310,6 +314,78 @@ function coverage(xml, provisions) {
     ratio: rawTextChars ? capturedChars / rawTextChars : 0,
     scheduleHasText,
   };
+}
+
+// ───────────────────────── schedules ─────────────────────────
+// Schedules (forms, tables, treaty text, designated-item lists) sit after the
+// Body and the main walk skips them. Parse them here into provisions: prose
+// units (Provision/Section/…) keep their <Text>, table rows join their <entry>
+// cells. Labelled by schedule + a counter so they stay unique and identifiable.
+const SCHED_UNIT = new Set([
+  "Provision", "Section", "Subsection", "Paragraph", "Subparagraph", "Clause", "Definition", "Item",
+]);
+
+function parseSchedules(xml, code, startCount = 0) {
+  if (!xml.includes("<Schedule")) return [];
+  const out = [];
+  let counter = startCount;
+  let schedDepth = 0, schedLabel = "", group = "";
+  let headKind = null, hLabel = "", hTitle = "";
+  let cap = null, capBuf = "";
+  const units = [];                 // open Provision/Section/… text frames
+  let inEntry = false, entryBuf = "", rowCells = null;
+
+  const push = (text, kind) => {
+    const t = squish(text);
+    if (!t) return;
+    counter++;
+    out.push({
+      id: `${code}:sch:${counter}`,
+      label: `${schedLabel || "SCHEDULE"} ${kind === "row" ? "row " : "¶"}${counter}`,
+      kind: "schedule",
+      heading: schedLabel || null,
+      marginalNote: group || null,
+      text: t,
+    });
+  };
+
+  for (const t of tokens(xml)) {
+    if (t.type === "text") {
+      if (cap) capBuf += t.value;
+      else if (inEntry) entryBuf += t.value;
+      else if (schedDepth > 0 && units.length) units[units.length - 1].buf += t.value;
+      continue;
+    }
+    if (t.type === "open") {
+      if (t.name === "Schedule") { schedDepth++; if (schedDepth === 1) { schedLabel = ""; group = ""; } continue; }
+      if (schedDepth === 0) continue;
+      if (t.name === "ScheduleFormHeading") { headKind = "sched"; hLabel = ""; hTitle = ""; continue; }
+      if (t.name === "GroupHeading") { headKind = "group"; hLabel = ""; hTitle = ""; continue; }
+      if (!t.selfClose && (t.name === "Label" || t.name === "TitleText" || t.name === "Text")) { cap = t.name; capBuf = ""; continue; }
+      if (t.name === "row") { rowCells = []; continue; }
+      if (t.name === "entry") { if (!t.selfClose) { inEntry = true; entryBuf = ""; } continue; }
+      if (!t.selfClose && SCHED_UNIT.has(t.name)) units.push({ buf: "" });
+      continue;
+    }
+    // close
+    if (cap === "Text" && t.name === "Text") {
+      if (units.length) units[units.length - 1].buf += " " + capBuf + " ";
+      else push(capBuf);
+      cap = null; capBuf = ""; continue;
+    }
+    if (cap && (t.name === "Label" || t.name === "TitleText")) {
+      if (headKind && t.name === "Label") hLabel = squish(capBuf);
+      else if (headKind && t.name === "TitleText") hTitle = squish(capBuf);
+      cap = null; capBuf = ""; continue;
+    }
+    if (t.name === "ScheduleFormHeading") { schedLabel = hLabel || schedLabel; headKind = null; continue; }
+    if (t.name === "GroupHeading") { group = [hLabel, hTitle].filter(Boolean).join(" — "); headKind = null; continue; }
+    if (t.name === "entry" && inEntry) { rowCells && rowCells.push(squish(entryBuf)); inEntry = false; entryBuf = ""; continue; }
+    if (t.name === "row") { if (rowCells) push(rowCells.filter(Boolean).join(" · "), "row"); rowCells = null; continue; }
+    if (SCHED_UNIT.has(t.name) && units.length) { push(units.pop().buf); continue; }
+    if (t.name === "Schedule" && schedDepth > 0) schedDepth--;
+  }
+  return out;
 }
 
 // ───────────────────────── identification ─────────────────────────
@@ -356,7 +432,8 @@ function codeOf(entry) {
 
 async function ingestCode(code, registry, opts) {
   const xml = await fetchText(`${BASE}/eng/XML/${code}.xml`);
-  const { provisions, unknown, missingLabel } = parseAct(xml, code);
+  const { provisions: body, unknown, missingLabel } = parseAct(xml, code);
+  const provisions = body.concat(parseSchedules(xml, code, body.length));
   const cov = coverage(xml, provisions);
   const parsed = ident(xml, code);
 
@@ -375,10 +452,9 @@ async function ingestCode(code, registry, opts) {
   const citation = existing?.citation || parsed.citation;
 
   const warn = [];
-  if (cov.ratio < 0.9) warn.push(`LOW COVERAGE ${(cov.ratio * 100).toFixed(1)}% of Body <Text>`);
+  if (cov.ratio < 0.9) warn.push(`LOW COVERAGE ${(cov.ratio * 100).toFixed(1)}% of operative text`);
   if (unknown.size) warn.push(`unhandled: ${[...unknown].map(([k, n]) => `${k}×${n}`).join(", ")}`);
   if (missingLabel) warn.push(`${missingLabel} provisions missing a Label`);
-  if (cov.scheduleHasText) warn.push("has Schedule text (not parsed in v1)");
 
   const flag = warn.length ? "⚠" : "✓";
   console.log(

@@ -10,16 +10,16 @@
     "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/F-9.xml",
     "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/F-9/index.html"
   },
-  "normalizedAt": "2026-05-31T17:34:48.655Z",
+  "normalizedAt": "2026-06-03T03:27:31.958Z",
   "coverage": {
-    "ratio": 0.9285,
-    "provisions": 164,
+    "ratio": 0.9296,
+    "provisions": 166,
     "scheduleHasText": true
   },
   "provisions": [
     {
       "id": "242254",
-      "label": "Short title",
+      "label": "1",
       "kind": "section",
       "heading": "Short Title",
       "marginalNote": "Short title",
@@ -51,7 +51,7 @@
     },
     {
       "id": "242265",
-      "label": "2“environment”",
+      "label": "2“environment”(a)",
       "kind": "paragraph",
       "heading": "Interpretation",
       "marginalNote": null,
@@ -59,7 +59,7 @@
     },
     {
       "id": "242266",
-      "label": "2“environment”",
+      "label": "2“environment”(b)",
       "kind": "paragraph",
       "heading": "Interpretation",
       "marginalNote": null,
@@ -67,7 +67,7 @@
     },
     {
       "id": "242267",
-      "label": "2“environment”",
+      "label": "2“environment”(c)",
       "kind": "paragraph",
       "heading": "Interpretation",
       "marginalNote": null,
@@ -75,7 +75,7 @@
     },
     {
       "id": "242268",
-      "label": "2“environment”",
+      "label": "2“environment”(d)",
       "kind": "paragraph",
       "heading": "Interpretation",
       "marginalNote": null,
@@ -99,7 +99,7 @@
     },
     {
       "id": "242271",
-      "label": "2“feed”",
+      "label": "2“feed”(a)",
       "kind": "paragraph",
       "heading": "Interpretation",
       "marginalNote": null,
@@ -107,7 +107,7 @@
     },
     {
       "id": "242272",
-      "label": "2“feed”",
+      "label": "2“feed”(b)",
       "kind": "paragraph",
       "heading": "Interpretation",
       "marginalNote": null,
@@ -115,7 +115,7 @@
     },
     {
       "id": "242273",
-      "label": "2“feed”",
+      "label": "2“feed”(c)",
       "kind": "paragraph",
       "heading": "Interpretation",
       "marginalNote": null,
@@ -147,7 +147,7 @@
     },
     {
       "id": "242278",
-      "label": "2“item to which this Act applies”",
+      "label": "2“item to which this Act applies”(a)",
       "kind": "paragraph",
       "heading": "Interpretation",
       "marginalNote": null,
@@ -155,7 +155,7 @@
     },
     {
       "id": "242279",
-      "label": "2“item to which this Act applies”",
+      "label": "2“item to which this Act applies”(b)",
       "kind": "paragraph",
       "heading": "Interpretation",
       "marginalNote": null,
@@ -163,7 +163,7 @@
     },
     {
       "id": "242280",
-      "label": "2“item to which this Act applies”",
+      "label": "2“item to which this Act applies”(c)",
       "kind": "paragraph",
       "heading": "Interpretation",
       "marginalNote": null,
@@ -251,7 +251,7 @@
     },
     {
       "id": "242259",
-      "label": "Definitions",
+      "label": "2",
       "kind": "section",
       "heading": "Interpretation",
       "marginalNote": "Definitions",
@@ -259,7 +259,7 @@
     },
     {
       "id": "242296",
-      "label": "3(1)",
+      "label": "3(1)(a)",
       "kind": "paragraph",
       "heading": "Prohibitions",
       "marginalNote": null,
@@ -267,7 +267,7 @@
     },
     {
       "id": "242297",
-      "label": "3(1)",
+      "label": "3(1)(b)",
       "kind": "paragraph",
       "heading": "Prohibitions",
       "marginalNote": null,
@@ -275,7 +275,7 @@
     },
     {
       "id": "242298",
-      "label": "3(1)",
+      "label": "3(1)(c)",
       "kind": "paragraph",
       "heading": "Prohibitions",
       "marginalNote": null,
@@ -283,7 +283,7 @@
     },
     {
       "id": "242295",
-      "label": "3",
+      "label": "3(1)",
       "kind": "subsection",
       "heading": "Prohibitions",
       "marginalNote": null,
@@ -291,7 +291,7 @@
     },
     {
       "id": "242299",
-      "label": "3",
+      "label": "3(2)",
       "kind": "subsection",
       "heading": "Prohibitions",
       "marginalNote": "Exception",
@@ -299,7 +299,7 @@
     },
     {
       "id": "242301",
-      "label": "3",
+      "label": "3(3)",
       "kind": "subsection",
       "heading": "Prohibitions",
       "marginalNote": "Feed presenting risk of harm",
@@ -307,7 +307,7 @@
     },
     {
       "id": "242305",
-      "label": "Prescribed activity with licence or registration",
+      "label": "3.1",
       "kind": "section",
       "heading": "Prohibitions",
       "marginalNote": "Prescribed activity with licence or registration",
@@ -315,7 +315,7 @@
     },
     {
       "id": "242309",
-      "label": "Prescribed activity in registered establishment",
+      "label": "3.2",
       "kind": "section",
       "heading": "Prohibitions",
       "marginalNote": "Prescribed activity in registered establishment",
@@ -323,7 +323,7 @@
     },
     {
       "id": "242316",
-      "label": "3.3(1)",
+      "label": "3.3(1)(a)",
       "kind": "paragraph",
       "heading": "Prohibitions",
       "marginalNote": null,
@@ -331,7 +331,7 @@
     },
     {
       "id": "242317",
-      "label": "3.3(1)",
+      "label": "3.3(1)(b)",
       "kind": "paragraph",
       "heading": "Prohibitions",
       "marginalNote": null,
@@ -339,7 +339,7 @@
     },
     {
       "id": "242315",
-      "label": "3.3",
+      "label": "3.3(1)",
       "kind": "subsection",
       "heading": "Prohibitions",
       "marginalNote": null,
@@ -347,7 +347,7 @@
     },
     {
       "id": "242320",
-      "label": "3.3(2)",
+      "label": "3.3(2)(a)",
       "kind": "paragraph",
       "heading": "Prohibitions",
       "marginalNote": null,
@@ -355,7 +355,7 @@
     },
     {
       "id": "242321",
-      "label": "3.3(2)",
+      "label": "3.3(2)(b)",
       "kind": "paragraph",
       "heading": "Prohibitions",
       "marginalNote": null,
@@ -363,7 +363,7 @@
     },
     {
       "id": "242318",
-      "label": "3.3",
+      "label": "3.3(2)",
       "kind": "subsection",
       "heading": "Prohibitions",
       "marginalNote": "Use of similar mark",
@@ -371,7 +371,7 @@
     },
     {
       "id": "242322",
-      "label": "3.3",
+      "label": "3.3(3)",
       "kind": "subsection",
       "heading": "Prohibitions",
       "marginalNote": "Presumption",
@@ -379,7 +379,7 @@
     },
     {
       "id": "242326",
-      "label": "Recall order — Canadian Food Inspection Agency Act",
+      "label": "3.4",
       "kind": "section",
       "heading": "Prohibitions",
       "marginalNote": "Recall order — Canadian Food Inspection Agency Act",
@@ -387,7 +387,7 @@
     },
     {
       "id": "242330",
-      "label": "Exemption",
+      "label": "4",
       "kind": "section",
       "heading": "Prohibitions",
       "marginalNote": "Exemption",
@@ -395,7 +395,7 @@
     },
     {
       "id": "242338",
-      "label": "5(1)",
+      "label": "5(1)(a)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -403,7 +403,7 @@
     },
     {
       "id": "242339",
-      "label": "5(1)",
+      "label": "5(1)(b)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -411,7 +411,7 @@
     },
     {
       "id": "242340",
-      "label": "5(1)",
+      "label": "5(1)(b.1)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -419,7 +419,7 @@
     },
     {
       "id": "242341",
-      "label": "5(1)",
+      "label": "5(1)(c)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -427,7 +427,7 @@
     },
     {
       "id": "242342",
-      "label": "5(1)",
+      "label": "5(1)(c.1)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -435,7 +435,7 @@
     },
     {
       "id": "242343",
-      "label": "5(1)",
+      "label": "5(1)(c.2)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -443,7 +443,7 @@
     },
     {
       "id": "242344",
-      "label": "5(1)",
+      "label": "5(1)(c.3)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -451,7 +451,7 @@
     },
     {
       "id": "242345",
-      "label": "5(1)",
+      "label": "5(1)(c.4)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -459,7 +459,7 @@
     },
     {
       "id": "242346",
-      "label": "5(1)",
+      "label": "5(1)(d)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -467,7 +467,7 @@
     },
     {
       "id": "242347",
-      "label": "5(1)",
+      "label": "5(1)(e)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -475,7 +475,7 @@
     },
     {
       "id": "242348",
-      "label": "5(1)",
+      "label": "5(1)(e.1)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -483,7 +483,7 @@
     },
     {
       "id": "242349",
-      "label": "5(1)",
+      "label": "5(1)(e.2)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -491,7 +491,7 @@
     },
     {
       "id": "242350",
-      "label": "5(1)",
+      "label": "5(1)(f)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -499,7 +499,7 @@
     },
     {
       "id": "242351",
-      "label": "5(1)",
+      "label": "5(1)(g)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -507,7 +507,7 @@
     },
     {
       "id": "242352",
-      "label": "5(1)",
+      "label": "5(1)(g.1)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -515,7 +515,7 @@
     },
     {
       "id": "242353",
-      "label": "5(1)",
+      "label": "5(1)(h)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -523,7 +523,7 @@
     },
     {
       "id": "242355",
-      "label": "5(1)(h.1)",
+      "label": "5(1)(h.1)(i)",
       "kind": "subparagraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -531,7 +531,7 @@
     },
     {
       "id": "242356",
-      "label": "5(1)(h.1)",
+      "label": "5(1)(h.1)(ii)",
       "kind": "subparagraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -539,7 +539,7 @@
     },
     {
       "id": "242357",
-      "label": "5(1)(h.1)",
+      "label": "5(1)(h.1)(iii)",
       "kind": "subparagraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -547,7 +547,7 @@
     },
     {
       "id": "242354",
-      "label": "5(1)",
+      "label": "5(1)(h.1)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -555,7 +555,7 @@
     },
     {
       "id": "242358",
-      "label": "5(1)",
+      "label": "5(1)(h.2)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -563,7 +563,7 @@
     },
     {
       "id": "242359",
-      "label": "5(1)",
+      "label": "5(1)(i)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -571,7 +571,7 @@
     },
     {
       "id": "242360",
-      "label": "5(1)",
+      "label": "5(1)(j)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -579,7 +579,7 @@
     },
     {
       "id": "242361",
-      "label": "5(1)",
+      "label": "5(1)(k)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -587,7 +587,7 @@
     },
     {
       "id": "242363",
-      "label": "5(1)(k.1)",
+      "label": "5(1)(k.1)(i)",
       "kind": "subparagraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -595,7 +595,7 @@
     },
     {
       "id": "242365",
-      "label": "5(1)(k.1)(ii)",
+      "label": "5(1)(k.1)(ii)(A)",
       "kind": "clause",
       "heading": "Regulations",
       "marginalNote": null,
@@ -603,7 +603,7 @@
     },
     {
       "id": "242366",
-      "label": "5(1)(k.1)(ii)",
+      "label": "5(1)(k.1)(ii)(B)",
       "kind": "clause",
       "heading": "Regulations",
       "marginalNote": null,
@@ -611,7 +611,7 @@
     },
     {
       "id": "242364",
-      "label": "5(1)(k.1)",
+      "label": "5(1)(k.1)(ii)",
       "kind": "subparagraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -619,7 +619,7 @@
     },
     {
       "id": "242367",
-      "label": "5(1)(k.1)",
+      "label": "5(1)(k.1)(iii)",
       "kind": "subparagraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -627,7 +627,7 @@
     },
     {
       "id": "242362",
-      "label": "5(1)",
+      "label": "5(1)(k.1)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -635,7 +635,7 @@
     },
     {
       "id": "242369",
-      "label": "5(1)(k.2)",
+      "label": "5(1)(k.2)(i)",
       "kind": "subparagraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -643,7 +643,7 @@
     },
     {
       "id": "242370",
-      "label": "5(1)(k.2)",
+      "label": "5(1)(k.2)(ii)",
       "kind": "subparagraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -651,7 +651,7 @@
     },
     {
       "id": "242371",
-      "label": "5(1)(k.2)",
+      "label": "5(1)(k.2)(iii)",
       "kind": "subparagraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -659,7 +659,7 @@
     },
     {
       "id": "242372",
-      "label": "5(1)(k.2)",
+      "label": "5(1)(k.2)(iv)",
       "kind": "subparagraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -667,7 +667,7 @@
     },
     {
       "id": "242368",
-      "label": "5(1)",
+      "label": "5(1)(k.2)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -675,7 +675,7 @@
     },
     {
       "id": "242373",
-      "label": "5(1)",
+      "label": "5(1)(k.3)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -683,7 +683,7 @@
     },
     {
       "id": "242374",
-      "label": "5(1)",
+      "label": "5(1)(l)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -691,7 +691,7 @@
     },
     {
       "id": "242375",
-      "label": "5(1)",
+      "label": "5(1)(m)",
       "kind": "paragraph",
       "heading": "Regulations",
       "marginalNote": null,
@@ -699,7 +699,7 @@
     },
     {
       "id": "242337",
-      "label": "5",
+      "label": "5(1)",
       "kind": "subsection",
       "heading": "Regulations",
       "marginalNote": null,
@@ -707,7 +707,7 @@
     },
     {
       "id": "242376",
-      "label": "5",
+      "label": "5(2)",
       "kind": "subsection",
       "heading": "Regulations",
       "marginalNote": "Paragraphs (1)(c.1) and (c.2)",
@@ -715,7 +715,7 @@
     },
     {
       "id": "242378",
-      "label": "5",
+      "label": "5(3)",
       "kind": "subsection",
       "heading": "Regulations",
       "marginalNote": "Paragraph (1)(k.2)",
@@ -723,7 +723,7 @@
     },
     {
       "id": "242385",
-      "label": "5.1",
+      "label": "5.1(1)",
       "kind": "subsection",
       "heading": "Incorporation by Reference",
       "marginalNote": null,
@@ -731,7 +731,7 @@
     },
     {
       "id": "242386",
-      "label": "5.1",
+      "label": "5.1(2)",
       "kind": "subsection",
       "heading": "Incorporation by Reference",
       "marginalNote": "Accessibility",
@@ -739,7 +739,7 @@
     },
     {
       "id": "242388",
-      "label": "5.1",
+      "label": "5.1(3)",
       "kind": "subsection",
       "heading": "Incorporation by Reference",
       "marginalNote": "Defence",
@@ -747,7 +747,7 @@
     },
     {
       "id": "242390",
-      "label": "5.1",
+      "label": "5.1(4)",
       "kind": "subsection",
       "heading": "Incorporation by Reference",
       "marginalNote": "No registration or publication",
@@ -755,7 +755,7 @@
     },
     {
       "id": "242397",
-      "label": "5.2",
+      "label": "5.2(1)",
       "kind": "subsection",
       "heading": "Registrations and Licences",
       "marginalNote": null,
@@ -763,7 +763,7 @@
     },
     {
       "id": "242398",
-      "label": "5.2",
+      "label": "5.2(2)",
       "kind": "subsection",
       "heading": "Registrations and Licences",
       "marginalNote": "Conditions — regulations",
@@ -771,7 +771,7 @@
     },
     {
       "id": "242400",
-      "label": "5.2",
+      "label": "5.2(3)",
       "kind": "subsection",
       "heading": "Registrations and Licences",
       "marginalNote": "Conditions — Minister",
@@ -779,7 +779,7 @@
     },
     {
       "id": "242402",
-      "label": "5.2",
+      "label": "5.2(4)",
       "kind": "subsection",
       "heading": "Registrations and Licences",
       "marginalNote": "Obligation to comply",
@@ -787,7 +787,7 @@
     },
     {
       "id": "242404",
-      "label": "5.2",
+      "label": "5.2(5)",
       "kind": "subsection",
       "heading": "Registrations and Licences",
       "marginalNote": "No transfer",
@@ -795,7 +795,7 @@
     },
     {
       "id": "242410",
-      "label": "5.3",
+      "label": "5.3(1)",
       "kind": "subsection",
       "heading": "Registrations and Licences",
       "marginalNote": null,
@@ -803,7 +803,7 @@
     },
     {
       "id": "242411",
-      "label": "5.3",
+      "label": "5.3(2)",
       "kind": "subsection",
       "heading": "Registrations and Licences",
       "marginalNote": "Holder",
@@ -811,7 +811,7 @@
     },
     {
       "id": "242413",
-      "label": "5.3",
+      "label": "5.3(3)",
       "kind": "subsection",
       "heading": "Registrations and Licences",
       "marginalNote": "Conditions — regulations",
@@ -819,7 +819,7 @@
     },
     {
       "id": "242415",
-      "label": "5.3",
+      "label": "5.3(4)",
       "kind": "subsection",
       "heading": "Registrations and Licences",
       "marginalNote": "Conditions — Minister",
@@ -827,7 +827,7 @@
     },
     {
       "id": "242417",
-      "label": "5.3",
+      "label": "5.3(5)",
       "kind": "subsection",
       "heading": "Registrations and Licences",
       "marginalNote": "Obligation to comply",
@@ -835,7 +835,7 @@
     },
     {
       "id": "242419",
-      "label": "5.3",
+      "label": "5.3(6)",
       "kind": "subsection",
       "heading": "Registrations and Licences",
       "marginalNote": "No transfer",
@@ -843,7 +843,7 @@
     },
     {
       "id": "242423",
-      "label": "Amendment, suspension, cancellation and renewal",
+      "label": "5.4",
       "kind": "section",
       "heading": "Registrations and Licences",
       "marginalNote": "Amendment, suspension, cancellation and renewal",
@@ -851,7 +851,7 @@
     },
     {
       "id": "242428",
-      "label": "Export certificates",
+      "label": "5.5",
       "kind": "section",
       "heading": "General",
       "marginalNote": "Export certificates",
@@ -859,7 +859,7 @@
     },
     {
       "id": "242432",
-      "label": "Disposition of samples",
+      "label": "5.6",
       "kind": "section",
       "heading": "General",
       "marginalNote": "Disposition of samples",
@@ -867,7 +867,7 @@
     },
     {
       "id": "242436",
-      "label": "Inspection marks",
+      "label": "5.7",
       "kind": "section",
       "heading": "General",
       "marginalNote": "Inspection marks",
@@ -875,7 +875,7 @@
     },
     {
       "id": "242440",
-      "label": "Consideration of information",
+      "label": "5.8",
       "kind": "section",
       "heading": "General",
       "marginalNote": "Consideration of information",
@@ -883,7 +883,7 @@
     },
     {
       "id": "242447",
-      "label": "6",
+      "label": "6(1)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -891,7 +891,7 @@
     },
     {
       "id": "242448",
-      "label": "6",
+      "label": "6(1.1)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": "Designation",
@@ -899,7 +899,7 @@
     },
     {
       "id": "242450",
-      "label": "6",
+      "label": "6(2)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": "Certificate to be produced",
@@ -907,7 +907,7 @@
     },
     {
       "id": "242457",
-      "label": "7(1)",
+      "label": "7(1)(a)",
       "kind": "paragraph",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -915,7 +915,7 @@
     },
     {
       "id": "242458",
-      "label": "7(1)",
+      "label": "7(1)(b)",
       "kind": "paragraph",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -923,7 +923,7 @@
     },
     {
       "id": "242459",
-      "label": "7(1)",
+      "label": "7(1)(c)",
       "kind": "paragraph",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -931,7 +931,7 @@
     },
     {
       "id": "242460",
-      "label": "7(1)",
+      "label": "7(1)(d)",
       "kind": "paragraph",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -939,7 +939,7 @@
     },
     {
       "id": "242461",
-      "label": "7(1)",
+      "label": "7(1)(e)",
       "kind": "paragraph",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -947,7 +947,7 @@
     },
     {
       "id": "242456",
-      "label": "7",
+      "label": "7(1)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -955,7 +955,7 @@
     },
     {
       "id": "242462",
-      "label": "7",
+      "label": "7(1.1)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": "Warrant required to enter dwelling-house",
@@ -963,7 +963,7 @@
     },
     {
       "id": "242466",
-      "label": "7(1.2)",
+      "label": "7(1.2)(a)",
       "kind": "paragraph",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -971,7 +971,7 @@
     },
     {
       "id": "242467",
-      "label": "7(1.2)",
+      "label": "7(1.2)(b)",
       "kind": "paragraph",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -979,7 +979,7 @@
     },
     {
       "id": "242468",
-      "label": "7(1.2)",
+      "label": "7(1.2)(c)",
       "kind": "paragraph",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -987,7 +987,7 @@
     },
     {
       "id": "242464",
-      "label": "7",
+      "label": "7(1.2)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": "Authority to issue warrant",
@@ -995,7 +995,7 @@
     },
     {
       "id": "242470",
-      "label": "7",
+      "label": "7(1.3)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": "Use of force",
@@ -1003,7 +1003,7 @@
     },
     {
       "id": "242472",
-      "label": "7",
+      "label": "7(2)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": "Assistance to inspectors",
@@ -1011,7 +1011,7 @@
     },
     {
       "id": "242474",
-      "label": "7",
+      "label": "7(3)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": "Provision of documents, information or samples",
@@ -1019,7 +1019,7 @@
     },
     {
       "id": "242480",
-      "label": "8",
+      "label": "8(1)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -1027,7 +1027,7 @@
     },
     {
       "id": "242481",
-      "label": "8",
+      "label": "8(2)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": "False statements",
@@ -1035,7 +1035,7 @@
     },
     {
       "id": "242487",
-      "label": "9",
+      "label": "9(1)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -1043,7 +1043,7 @@
     },
     {
       "id": "242488",
-      "label": "9",
+      "label": "9(2)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": "Release of seized article",
@@ -1051,7 +1051,7 @@
     },
     {
       "id": "242490",
-      "label": "9",
+      "label": "9(3)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": "Forfeiture",
@@ -1059,7 +1059,7 @@
     },
     {
       "id": "242496",
-      "label": "9.1",
+      "label": "9.1(1)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -1067,7 +1067,7 @@
     },
     {
       "id": "242497",
-      "label": "9.1",
+      "label": "9.1(2)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": "Notice",
@@ -1075,7 +1075,7 @@
     },
     {
       "id": "242499",
-      "label": "9.1",
+      "label": "9.1(3)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": "Forfeiture",
@@ -1083,7 +1083,7 @@
     },
     {
       "id": "242503",
-      "label": "9.1(4)",
+      "label": "9.1(4)(a)",
       "kind": "paragraph",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -1091,7 +1091,7 @@
     },
     {
       "id": "242504",
-      "label": "9.1(4)",
+      "label": "9.1(4)(b)",
       "kind": "paragraph",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -1099,7 +1099,7 @@
     },
     {
       "id": "242505",
-      "label": "9.1(4)",
+      "label": "9.1(4)(c)",
       "kind": "paragraph",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -1107,7 +1107,7 @@
     },
     {
       "id": "242506",
-      "label": "9.1(4)",
+      "label": "9.1(4)(d)",
       "kind": "paragraph",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -1115,7 +1115,7 @@
     },
     {
       "id": "242501",
-      "label": "9.1",
+      "label": "9.1(4)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": "Suspension of application of subsection (3)",
@@ -1123,7 +1123,7 @@
     },
     {
       "id": "242509",
-      "label": "9.1(5)",
+      "label": "9.1(5)(a)",
       "kind": "paragraph",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -1131,7 +1131,7 @@
     },
     {
       "id": "242510",
-      "label": "9.1(5)",
+      "label": "9.1(5)(b)",
       "kind": "paragraph",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -1139,7 +1139,7 @@
     },
     {
       "id": "242511",
-      "label": "9.1(5)",
+      "label": "9.1(5)(c)",
       "kind": "paragraph",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -1147,7 +1147,7 @@
     },
     {
       "id": "242512",
-      "label": "9.1(5)",
+      "label": "9.1(5)(d)",
       "kind": "paragraph",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -1155,7 +1155,7 @@
     },
     {
       "id": "242507",
-      "label": "9.1",
+      "label": "9.1(5)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": "Cancellation",
@@ -1163,7 +1163,7 @@
     },
     {
       "id": "242515",
-      "label": "9.1(6)",
+      "label": "9.1(6)(a)",
       "kind": "paragraph",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -1171,7 +1171,7 @@
     },
     {
       "id": "242516",
-      "label": "9.1(6)",
+      "label": "9.1(6)(b)",
       "kind": "paragraph",
       "heading": "Enforcement",
       "marginalNote": null,
@@ -1179,7 +1179,7 @@
     },
     {
       "id": "242513",
-      "label": "9.1",
+      "label": "9.1(6)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": "Period",
@@ -1187,7 +1187,7 @@
     },
     {
       "id": "242517",
-      "label": "9.1",
+      "label": "9.1(7)",
       "kind": "subsection",
       "heading": "Enforcement",
       "marginalNote": "Non-application of Statutory Instruments Act",
@@ -1195,7 +1195,7 @@
     },
     {
       "id": "242524",
-      "label": "9.2",
+      "label": "9.2(a)",
       "kind": "paragraph",
       "heading": "Analysis",
       "marginalNote": null,
@@ -1203,7 +1203,7 @@
     },
     {
       "id": "242525",
-      "label": "9.2",
+      "label": "9.2(b)",
       "kind": "paragraph",
       "heading": "Analysis",
       "marginalNote": null,
@@ -1211,7 +1211,7 @@
     },
     {
       "id": "242522",
-      "label": "Analysis and examination",
+      "label": "9.2",
       "kind": "section",
       "heading": "Analysis",
       "marginalNote": "Analysis and examination",
@@ -1219,7 +1219,7 @@
     },
     {
       "id": "242531",
-      "label": "9.3",
+      "label": "9.3(a)",
       "kind": "paragraph",
       "heading": "Limitation on Liability",
       "marginalNote": null,
@@ -1227,7 +1227,7 @@
     },
     {
       "id": "242532",
-      "label": "9.3",
+      "label": "9.3(b)",
       "kind": "paragraph",
       "heading": "Limitation on Liability",
       "marginalNote": null,
@@ -1235,7 +1235,7 @@
     },
     {
       "id": "242529",
-      "label": "Her Majesty not liable",
+      "label": "9.3",
       "kind": "section",
       "heading": "Limitation on Liability",
       "marginalNote": "Her Majesty not liable",
@@ -1243,7 +1243,7 @@
     },
     {
       "id": "242535",
-      "label": "No liability",
+      "label": "9.4",
       "kind": "section",
       "heading": "Limitation on Liability",
       "marginalNote": "No liability",
@@ -1251,7 +1251,7 @@
     },
     {
       "id": "242543",
-      "label": "10(1)",
+      "label": "10(1)(a)",
       "kind": "paragraph",
       "heading": "Offences and Punishment",
       "marginalNote": null,
@@ -1259,7 +1259,7 @@
     },
     {
       "id": "242544",
-      "label": "10(1)",
+      "label": "10(1)(b)",
       "kind": "paragraph",
       "heading": "Offences and Punishment",
       "marginalNote": null,
@@ -1267,7 +1267,7 @@
     },
     {
       "id": "242542",
-      "label": "10",
+      "label": "10(1)",
       "kind": "subsection",
       "heading": "Offences and Punishment",
       "marginalNote": null,
@@ -1275,7 +1275,7 @@
     },
     {
       "id": "242545",
-      "label": "10",
+      "label": "10(2)",
       "kind": "subsection",
       "heading": "Offences and Punishment",
       "marginalNote": "Parties to offence",
@@ -1283,7 +1283,7 @@
     },
     {
       "id": "242547",
-      "label": "10",
+      "label": "10(3)",
       "kind": "subsection",
       "heading": "Offences and Punishment",
       "marginalNote": "Proof of offence",
@@ -1291,7 +1291,7 @@
     },
     {
       "id": "242549",
-      "label": "10",
+      "label": "10(4)",
       "kind": "subsection",
       "heading": "Offences and Punishment",
       "marginalNote": "Limitation period",
@@ -1299,7 +1299,7 @@
     },
     {
       "id": "242551",
-      "label": "10",
+      "label": "10(5)",
       "kind": "subsection",
       "heading": "Offences and Punishment",
       "marginalNote": null,
@@ -1307,7 +1307,7 @@
     },
     {
       "id": "242556",
-      "label": "11",
+      "label": "11(1)",
       "kind": "subsection",
       "heading": "Offences and Punishment",
       "marginalNote": null,
@@ -1315,7 +1315,7 @@
     },
     {
       "id": "242557",
-      "label": "11",
+      "label": "11(2)",
       "kind": "subsection",
       "heading": "Offences and Punishment",
       "marginalNote": "Admissibility",
@@ -1323,18 +1323,34 @@
     },
     {
       "id": "242561",
-      "label": "Venue",
+      "label": "12",
       "kind": "section",
       "heading": "Offences and Punishment",
       "marginalNote": "Venue",
       "text": "A complaint or information in respect of an offence under this Act may be heard, tried or determined by a provincial court judge or a justice if the accused is resident or carrying on business within the territorial jurisdiction of the provincial court judge or justice, although the matter of the complaint or information did not arise in that territorial jurisdiction."
+    },
+    {
+      "id": "F-9:sch:165",
+      "label": "SCHEDULE ¶165",
+      "kind": "schedule",
+      "heading": null,
+      "marginalNote": null,
+      "text": "For greater certainty, the two year limitation period provided for in subsection 10(4) of the Act, as amended by subsection (1), only applies in respect of offences committed after the coming into force of that subsection."
+    },
+    {
+      "id": "F-9:sch:166",
+      "label": "SCHEDULE ¶166",
+      "kind": "schedule",
+      "heading": null,
+      "marginalNote": null,
+      "text": "Transitional"
     }
   ],
   "sections": [
     {
-      "label": "Short title",
+      "label": "1",
       "marginalNote": "Short title",
-      "text": "Short title This Act may be cited as the Feeds Act."
+      "text": "1 This Act may be cited as the Feeds Act."
     },
     {
       "label": "“analyst”",
@@ -1354,7 +1370,7 @@
     {
       "label": "2“environment”",
       "marginalNote": "",
-      "text": "2“environment” air, land and water, 2“environment” all layers of the atmosphere, 2“environment” all organic and inorganic matter and living organisms, and 2“environment” the interacting natural systems that include components referred to in paragraphs (a) to (c); (environnement)"
+      "text": "2“environment”(a) air, land and water, 2“environment”(b) all layers of the atmosphere, 2“environment”(c) all organic and inorganic matter and living organisms, and 2“environment”(d) the interacting natural systems that include components referred to in paragraphs (a) to (c); (environnement)"
     },
     {
       "label": "“environment”",
@@ -1369,7 +1385,7 @@
     {
       "label": "2“feed”",
       "marginalNote": "",
-      "text": "2“feed” for consumption by livestock, 2“feed” for providing the nutritional requirements of livestock, or 2“feed” for the purpose of preventing or correcting nutritional disorders of livestock,"
+      "text": "2“feed”(a) for consumption by livestock, 2“feed”(b) for providing the nutritional requirements of livestock, or 2“feed”(c) for the purpose of preventing or correcting nutritional disorders of livestock,"
     },
     {
       "label": "“feed”",
@@ -1389,7 +1405,7 @@
     {
       "label": "2“item to which this Act applies”",
       "marginalNote": "",
-      "text": "2“item to which this Act applies” a feed, 2“item to which this Act applies” anything used in an activity regulated under this Act, and 2“item to which this Act applies” a document that is related to a feed or to any activity regulated under this Act; (chose visée par la présente loi)"
+      "text": "2“item to which this Act applies”(a) a feed, 2“item to which this Act applies”(b) anything used in an activity regulated under this Act, and 2“item to which this Act applies”(c) a document that is related to a feed or to any activity regulated under this Act; (chose visée par la présente loi)"
     },
     {
       "label": "“item to which this Act applies”",
@@ -1442,150 +1458,150 @@
       "text": "“violation” violation means any contravention of this Act or the regulations that may be proceeded with in accordance with the Agriculture and Agri-Food Administrative Monetary Penalties Act. (violation)"
     },
     {
-      "label": "Definitions",
+      "label": "2",
       "marginalNote": "Definitions",
-      "text": "Definitions In this Act,"
+      "text": "2 In this Act,"
     },
     {
       "label": "3",
       "marginalNote": "Exception",
-      "text": "3(1) has, in accordance with the regulations, been approved by the Minister or registered; 3(1) conforms to prescribed standards; and 3(1) is packaged and labelled in accordance with the regulations. 3 No person shall manufacture, sell or import into Canada any feed unless the feed 3 Paragraphs (1)(a) and (b) do not apply to any feed consisting of whole seeds or grains of cultivated farm crops if it is free from prescribed deleterious substances. 3 No person shall manufacture, sell, import or export in contravention of the regulations any feed that presents a risk of harm to human or animal health or the environment."
+      "text": "3(1)(a) has, in accordance with the regulations, been approved by the Minister or registered; 3(1)(b) conforms to prescribed standards; and 3(1)(c) is packaged and labelled in accordance with the regulations. 3(1) No person shall manufacture, sell or import into Canada any feed unless the feed 3(2) Paragraphs (1)(a) and (b) do not apply to any feed consisting of whole seeds or grains of cultivated farm crops if it is free from prescribed deleterious substances. 3(3) No person shall manufacture, sell, import or export in contravention of the regulations any feed that presents a risk of harm to human or animal health or the environment."
     },
     {
-      "label": "Prescribed activity with licence or registration",
+      "label": "3.1",
       "marginalNote": "Prescribed activity with licence or registration",
-      "text": "Prescribed activity with licence or registration No person shall conduct a prescribed activity in respect of a prescribed feed that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — unless the person is authorized to do so by a registration made under subsection 5.2(1), by a licence issued under that subsection or by both such a registration and licence, as provided for in the regulations."
+      "text": "3.1 No person shall conduct a prescribed activity in respect of a prescribed feed that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — unless the person is authorized to do so by a registration made under subsection 5.2(1), by a licence issued under that subsection or by both such a registration and licence, as provided for in the regulations."
     },
     {
-      "label": "Prescribed activity in registered establishment",
+      "label": "3.2",
       "marginalNote": "Prescribed activity in registered establishment",
-      "text": "Prescribed activity in registered establishment No person shall conduct a prescribed activity in respect of a prescribed feed that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — unless the activity is conducted in an establishment registered under subsection 5.3(1) in accordance with the regulations."
+      "text": "3.2 No person shall conduct a prescribed activity in respect of a prescribed feed that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — unless the activity is conducted in an establishment registered under subsection 5.3(1) in accordance with the regulations."
     },
     {
       "label": "3.3",
       "marginalNote": "Use of similar mark",
-      "text": "3.3(1) apply or use an inspection mark; or 3.3(1) advertise or sell anything if the thing has an inspection mark on it or an inspection mark is used in connection with the thing. 3.3 Unless authorized by the regulations, no person shall 3.3(2) apply or use a thing that so resembles an inspection mark that it is likely to be mistaken for it; or 3.3(2) advertise or sell anything that has on it a thing referred to in paragraph (a) or that has a thing referred to in that paragraph used in connection with it. 3.3 No person shall 3.3 A person found in possession of anything referred to in paragraph (1)(b) or (2)(b) is considered, in the absence of evidence to the contrary, to be in possession of it for the purpose of advertising or selling."
+      "text": "3.3(1)(a) apply or use an inspection mark; or 3.3(1)(b) advertise or sell anything if the thing has an inspection mark on it or an inspection mark is used in connection with the thing. 3.3(1) Unless authorized by the regulations, no person shall 3.3(2)(a) apply or use a thing that so resembles an inspection mark that it is likely to be mistaken for it; or 3.3(2)(b) advertise or sell anything that has on it a thing referred to in paragraph (a) or that has a thing referred to in that paragraph used in connection with it. 3.3(2) No person shall 3.3(3) A person found in possession of anything referred to in paragraph (1)(b) or (2)(b) is considered, in the absence of evidence to the contrary, to be in possession of it for the purpose of advertising or selling."
     },
     {
-      "label": "Recall order — Canadian Food Inspection Agency Act",
+      "label": "3.4",
       "marginalNote": "Recall order — Canadian Food Inspection Agency Act",
-      "text": "Recall order — Canadian Food Inspection Agency Act No person shall sell a feed that is the subject of a recall order referred to in subsection 19(1) of the Canadian Food Inspection Agency Act."
+      "text": "3.4 No person shall sell a feed that is the subject of a recall order referred to in subsection 19(1) of the Canadian Food Inspection Agency Act."
     },
     {
-      "label": "Exemption",
+      "label": "4",
       "marginalNote": "Exemption",
-      "text": "Exemption This Act does not apply in respect of a feed that is manufactured by a livestock producer if it is not sold and has not had incorporated into it any drug or other substance that presents a risk of harm to human or animal health or the environment."
+      "text": "4 This Act does not apply in respect of a feed that is manufactured by a livestock producer if it is not sold and has not had incorporated into it any drug or other substance that presents a risk of harm to human or animal health or the environment."
     },
     {
       "label": "5",
       "marginalNote": "Paragraphs (1)(c.1) and (c.2)",
-      "text": "5(1) respecting applications for registration or for approval of feeds and the information to be furnished with the applications; 5(1) respecting the registration of feeds and prescribing fees for registration; 5(1) respecting the approval of feeds; 5(1) respecting the duration and cancellation of the registration or approval of feeds; 5(1) respecting the manufacturing, sale, importation or exportation of any feed that presents a risk of harm to human or animal health or the environment; 5(1) respecting the sending or conveying from one province to another or the importation or exportation of any feed; 5(1) respecting the manufacturing or sale of any feed that is to be exported or to be sent or conveyed from one province to another; 5(1) respecting the sale of any feed that has been imported; 5(1) exempting, with or without conditions, any item to which this Act applies, or a person or activity in respect of a feed, from the application of this Act or the regulations or a provision of this Act or the regulations; 5(1) prescribing the form, composition and other standards for feeds; 5(1) prescribing standards for the manufacturing or the safety of feeds; 5(1) prescribing inspection marks in respect of any feeds and regulating their application or use; 5(1) respecting the packaging and labelling of feeds and packages thereof; 5(1) respecting the taking of samples and the making of analyses for the purposes of this Act; 5(1) requiring persons to take or keep samples of any feed, or its package or label, and to provide the Minister or an inspector with, or with access to, those samples, and respecting the manner in which those samples are to be taken or kept and the manner in which they are to be provided or access to them is to be provided; 5(1) providing that feeds registered under this Act and containing a pest control product as defined in subsection 2(1) of the Pest Control Products Act are, in prescribed circumstances and subject to prescribed conditions, deemed to be registered under that Act; 5(1)(h.1) the registration of persons or the issuing of licences to persons under section 5.2 or the registration of establishments under section 5.3, 5(1)(h.1) the suspension, cancellation and renewal of those licences and registrations, and 5(1)(h.1) the amendment of those licences and registrations or of any of the conditions to which they are subject by reason of subsection 5.2(3) or 5.3(4); 5(1) respecting 5(1) respecting quality management programs, quality control programs, safety programs, preventive control plans or any other similar programs or plans to be implemented by persons who conduct any activity regulated under this Act; 5(1) designating specific animals, including birds, as livestock for the purposes of this Act; 5(1) respecting the detention, preservation and safeguarding of anything seized under section 9; 5(1) respecting the disposition of anything forfeited under section 9; 5(1)(k.1) the provision of samples of the feed, 5(1)(k.1)(ii) permits the feed to be distinguished from other feeds, and 5(1)(k.1)(ii) is required for evaluating the potential impact of the feed on, and the risk of harm posed by the feed to, human and animal health and the environment, and 5(1)(k.1) the provision of information in respect of the feed, including information that 5(1)(k.1) the evaluation of the potential impact of the feed on, and the risk of harm posed by the feed to, human and animal health and the environment; 5(1) respecting the evaluation of a feed, including regulations respecting 5(1)(k.2) the information in those documents, 5(1)(k.2) the manner in which they are to be prepared, kept or maintained, 5(1)(k.2) the place where they are to be kept or maintained, and 5(1)(k.2) the manner in which they are to be provided or access to them is to be provided; 5(1) requiring persons to prepare, keep or maintain documents and to provide the Minister or an inspector with, or with access to, those documents, and respecting 5(1) respecting the issuance of certificates or other documents for the purpose of section 5.5; 5(1) prescribing anything else that by this Act is required to be prescribed; and 5(1) generally, for carrying out the purposes and provisions of this Act. 5 The Governor in Council may make regulations 5 Regulations made under paragraph (1)(c.1) or (c.2) may, among other things, establish preclearance or in-transit requirements for any imported feed or anything imported with it. 5 Regulations made under paragraph (1)(k.2) may, among other things, require persons who conduct any activity regulated under this Act and who become aware that a feed presents a risk of harm to human or animal health or the environment or does not meet the requirements of the regulations to provide written notice to that effect to the Minister or an inspector."
+      "text": "5(1)(a) respecting applications for registration or for approval of feeds and the information to be furnished with the applications; 5(1)(b) respecting the registration of feeds and prescribing fees for registration; 5(1)(b.1) respecting the approval of feeds; 5(1)(c) respecting the duration and cancellation of the registration or approval of feeds; 5(1)(c.1) respecting the manufacturing, sale, importation or exportation of any feed that presents a risk of harm to human or animal health or the environment; 5(1)(c.2) respecting the sending or conveying from one province to another or the importation or exportation of any feed; 5(1)(c.3) respecting the manufacturing or sale of any feed that is to be exported or to be sent or conveyed from one province to another; 5(1)(c.4) respecting the sale of any feed that has been imported; 5(1)(d) exempting, with or without conditions, any item to which this Act applies, or a person or activity in respect of a feed, from the application of this Act or the regulations or a provision of this Act or the regulations; 5(1)(e) prescribing the form, composition and other standards for feeds; 5(1)(e.1) prescribing standards for the manufacturing or the safety of feeds; 5(1)(e.2) prescribing inspection marks in respect of any feeds and regulating their application or use; 5(1)(f) respecting the packaging and labelling of feeds and packages thereof; 5(1)(g) respecting the taking of samples and the making of analyses for the purposes of this Act; 5(1)(g.1) requiring persons to take or keep samples of any feed, or its package or label, and to provide the Minister or an inspector with, or with access to, those samples, and respecting the manner in which those samples are to be taken or kept and the manner in which they are to be provided or access to them is to be provided; 5(1)(h) providing that feeds registered under this Act and containing a pest control product as defined in subsection 2(1) of the Pest Control Products Act are, in prescribed circumstances and subject to prescribed conditions, deemed to be registered under that Act; 5(1)(h.1)(i) the registration of persons or the issuing of licences to persons under section 5.2 or the registration of establishments under section 5.3, 5(1)(h.1)(ii) the suspension, cancellation and renewal of those licences and registrations, and 5(1)(h.1)(iii) the amendment of those licences and registrations or of any of the conditions to which they are subject by reason of subsection 5.2(3) or 5.3(4); 5(1)(h.1) respecting 5(1)(h.2) respecting quality management programs, quality control programs, safety programs, preventive control plans or any other similar programs or plans to be implemented by persons who conduct any activity regulated under this Act; 5(1)(i) designating specific animals, including birds, as livestock for the purposes of this Act; 5(1)(j) respecting the detention, preservation and safeguarding of anything seized under section 9; 5(1)(k) respecting the disposition of anything forfeited under section 9; 5(1)(k.1)(i) the provision of samples of the feed, 5(1)(k.1)(ii)(A) permits the feed to be distinguished from other feeds, and 5(1)(k.1)(ii)(B) is required for evaluating the potential impact of the feed on, and the risk of harm posed by the feed to, human and animal health and the environment, and 5(1)(k.1)(ii) the provision of information in respect of the feed, including information that 5(1)(k.1)(iii) the evaluation of the potential impact of the feed on, and the risk of harm posed by the feed to, human and animal health and the environment; 5(1)(k.1) respecting the evaluation of a feed, including regulations respecting 5(1)(k.2)(i) the information in those documents, 5(1)(k.2)(ii) the manner in which they are to be prepared, kept or maintained, 5(1)(k.2)(iii) the place where they are to be kept or maintained, and 5(1)(k.2)(iv) the manner in which they are to be provided or access to them is to be provided; 5(1)(k.2) requiring persons to prepare, keep or maintain documents and to provide the Minister or an inspector with, or with access to, those documents, and respecting 5(1)(k.3) respecting the issuance of certificates or other documents for the purpose of section 5.5; 5(1)(l) prescribing anything else that by this Act is required to be prescribed; and 5(1)(m) generally, for carrying out the purposes and provisions of this Act. 5(1) The Governor in Council may make regulations 5(2) Regulations made under paragraph (1)(c.1) or (c.2) may, among other things, establish preclearance or in-transit requirements for any imported feed or anything imported with it. 5(3) Regulations made under paragraph (1)(k.2) may, among other things, require persons who conduct any activity regulated under this Act and who become aware that a feed presents a risk of harm to human or animal health or the environment or does not meet the requirements of the regulations to provide written notice to that effect to the Minister or an inspector."
     },
     {
       "label": "5.1",
       "marginalNote": "Accessibility",
-      "text": "5.1 A regulation made under subsection 5(1) may incorporate by reference any document, regardless of its source, either as it exists on a particular date or as it is amended from time to time. 5.1 The Minister must ensure that any document that is incorporated by reference in a regulation made under subsection 5(1), including any amendments to the document, is accessible. 5.1 A person is not liable to be found guilty of an offence or subjected to an administrative sanction for any contravention in respect of which a document that is incorporated by reference in a regulation made under subsection 5(1) is relevant unless, at the time of the alleged contravention, the document was accessible as required by subsection (2) or it was otherwise accessible to the person. 5.1 For greater certainty, a document that is incorporated by reference in a regulation made under subsection 5(1) is not required to be transmitted for registration or published in the Canada Gazette by reason only that it is incorporated by reference."
+      "text": "5.1(1) A regulation made under subsection 5(1) may incorporate by reference any document, regardless of its source, either as it exists on a particular date or as it is amended from time to time. 5.1(2) The Minister must ensure that any document that is incorporated by reference in a regulation made under subsection 5(1), including any amendments to the document, is accessible. 5.1(3) A person is not liable to be found guilty of an offence or subjected to an administrative sanction for any contravention in respect of which a document that is incorporated by reference in a regulation made under subsection 5(1) is relevant unless, at the time of the alleged contravention, the document was accessible as required by subsection (2) or it was otherwise accessible to the person. 5.1(4) For greater certainty, a document that is incorporated by reference in a regulation made under subsection 5(1) is not required to be transmitted for registration or published in the Canada Gazette by reason only that it is incorporated by reference."
     },
     {
       "label": "5.2",
       "marginalNote": "Conditions — regulations",
-      "text": "5.2 The Minister may, on application, register a person, or issue a licence to a person, authorizing them to conduct a prescribed activity in respect of a prescribed feed that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — or both register a person and issue them a licence. 5.2 The registration and the licence are subject to the prescribed conditions. 5.2 The Minister may make a registration or licence subject to any additional conditions that he or she considers appropriate. 5.2 The holder of the registration or licence must comply with all the conditions to which the registration or licence is subject. 5.2 The registration or licence is not transferable."
+      "text": "5.2(1) The Minister may, on application, register a person, or issue a licence to a person, authorizing them to conduct a prescribed activity in respect of a prescribed feed that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — or both register a person and issue them a licence. 5.2(2) The registration and the licence are subject to the prescribed conditions. 5.2(3) The Minister may make a registration or licence subject to any additional conditions that he or she considers appropriate. 5.2(4) The holder of the registration or licence must comply with all the conditions to which the registration or licence is subject. 5.2(5) The registration or licence is not transferable."
     },
     {
       "label": "5.3",
       "marginalNote": "Holder",
-      "text": "5.3 The Minister may, on application, register an establishment as one where a prescribed activity may be conducted in respect of a prescribed feed that has been imported for sale or that is to be exported or to be sent or conveyed from one province to another. 5.3 The applicant in respect of an establishment is the holder of the registration. 5.3 The registration is subject to the prescribed conditions. 5.3 The Minister may make a registration subject to any additional conditions that he or she considers appropriate. 5.3 The holder of the registration must comply with all the conditions to which the registration is subject. 5.3 The registration is not transferable."
+      "text": "5.3(1) The Minister may, on application, register an establishment as one where a prescribed activity may be conducted in respect of a prescribed feed that has been imported for sale or that is to be exported or to be sent or conveyed from one province to another. 5.3(2) The applicant in respect of an establishment is the holder of the registration. 5.3(3) The registration is subject to the prescribed conditions. 5.3(4) The Minister may make a registration subject to any additional conditions that he or she considers appropriate. 5.3(5) The holder of the registration must comply with all the conditions to which the registration is subject. 5.3(6) The registration is not transferable."
     },
     {
-      "label": "Amendment, suspension, cancellation and renewal",
+      "label": "5.4",
       "marginalNote": "Amendment, suspension, cancellation and renewal",
-      "text": "Amendment, suspension, cancellation and renewal Subject to the regulations, the Minister may amend, suspend, cancel or renew a registration made under subsection 5.2(1) or 5.3(1) or a licence issued under subsection 5.2(1)."
+      "text": "5.4 Subject to the regulations, the Minister may amend, suspend, cancel or renew a registration made under subsection 5.2(1) or 5.3(1) or a licence issued under subsection 5.2(1)."
     },
     {
-      "label": "Export certificates",
+      "label": "5.5",
       "marginalNote": "Export certificates",
-      "text": "Export certificates The Minister may issue any certificate or other document setting out any information that he or she considers necessary to facilitate the export of any feed."
+      "text": "5.5 The Minister may issue any certificate or other document setting out any information that he or she considers necessary to facilitate the export of any feed."
     },
     {
-      "label": "Disposition of samples",
+      "label": "5.6",
       "marginalNote": "Disposition of samples",
-      "text": "Disposition of samples A sample taken by an inspector, or provided to the Minister or an inspector, under this Act may be disposed of in any manner that the Minister considers appropriate."
+      "text": "5.6 A sample taken by an inspector, or provided to the Minister or an inspector, under this Act may be disposed of in any manner that the Minister considers appropriate."
     },
     {
-      "label": "Inspection marks",
+      "label": "5.7",
       "marginalNote": "Inspection marks",
-      "text": "Inspection marks Every inspection mark is a trademark and the exclusive property in the trademark and, subject to this Act, the right to its use are vested in Her Majesty in right of Canada."
+      "text": "5.7 Every inspection mark is a trademark and the exclusive property in the trademark and, subject to this Act, the right to its use are vested in Her Majesty in right of Canada."
     },
     {
-      "label": "Consideration of information",
+      "label": "5.8",
       "marginalNote": "Consideration of information",
-      "text": "Consideration of information In considering an application made under the regulations in relation to a feed, the Minister may consider information that is available from a review or evaluation of a feed conducted by the government of a foreign state or of a subdivision of a foreign state or by an international organization, or association, of states."
+      "text": "5.8 In considering an application made under the regulations in relation to a feed, the Minister may consider information that is available from a review or evaluation of a feed conducted by the government of a foreign state or of a subdivision of a foreign state or by an international organization, or association, of states."
     },
     {
       "label": "6",
       "marginalNote": "Designation",
-      "text": "6 The President of the Canadian Food Inspection Agency may designate under section 13 of the Canadian Food Inspection Agency Act the inspectors and analysts necessary for the administration and enforcement of this Act. 6 The President of the Canada Border Services Agency may designate inspectors under paragraph 9(2)(b) of the Canada Border Services Agency Act for the purposes of enforcing this Act. 6 Inspectors shall be given certificates in a form established by the President of the Canadian Food Inspection Agency or the President of the Canada Border Services Agency, as the case may be, attesting to their designation and, on entering any place under subsection 7(1), an inspector shall, if so required, produce the certificate to the person in charge of that place."
+      "text": "6(1) The President of the Canadian Food Inspection Agency may designate under section 13 of the Canadian Food Inspection Agency Act the inspectors and analysts necessary for the administration and enforcement of this Act. 6(1.1) The President of the Canada Border Services Agency may designate inspectors under paragraph 9(2)(b) of the Canada Border Services Agency Act for the purposes of enforcing this Act. 6(2) Inspectors shall be given certificates in a form established by the President of the Canadian Food Inspection Agency or the President of the Canada Border Services Agency, as the case may be, attesting to their designation and, on entering any place under subsection 7(1), an inspector shall, if so required, produce the certificate to the person in charge of that place."
     },
     {
       "label": "7",
       "marginalNote": "Warrant required to enter dwelling-house",
-      "text": "7(1) enter any place in which the inspector believes on reasonable grounds there is any feed to which this Act applies; 7(1) open any package found in that place that the inspector believes on reasonable grounds contains any such feed; 7(1) examine the feed and take samples thereof; 7(1) require any person to produce for inspection or for the purpose of obtaining copies thereof or extracts therefrom any books, shipping bills, bills of lading, documents containing mixing instructions, or other documents or papers with respect to the administration of this Act or the regulations; and 7(1) remove anything from that place for the purpose of examination, conducting tests or taking samples. 7 Subject to subsection (1.1), an inspector may, for a purpose related to verifying compliance or preventing non-compliance with this Act, 7 Where any place referred to in paragraph (1)(a) is a dwelling-house, an inspector may not enter that dwelling-house without the consent of the occupant except under the authority of a warrant issued under subsection (1.2). 7(1.2) that the conditions for entry described in paragraph (1)(a) exist in relation to a dwelling-house, 7(1.2) that entry to the dwelling-house is necessary for any purpose relating to the administration or enforcement of this Act, and 7(1.2) that entry to the dwelling-house has been refused or that there are reasonable grounds for believing that entry thereto will be refused, 7 Where on ex parte application a justice of the peace is satisfied by information on oath the justice of the peace may issue a warrant under his hand authorizing the inspector named therein to enter that dwelling-house subject to such conditions as may be specified in the warrant. 7 In executing a warrant issued under subsection (1.2), the inspector named therein shall not use force unless the inspector is accompanied by a peace officer and the use of force has been specifically authorized in the warrant. 7 The owner or person in charge of any place described in subsection (1) and every person found in that place shall give an inspector all reasonable assistance to enable the inspector to carry out his duties and functions under this Act and shall furnish the inspector with any information he may reasonably require with respect to the administration of this Act and the regulations. 7 An inspector may, for a purpose related to verifying compliance or preventing non-compliance with this Act, order a person to provide, on the date, at the time and place and in the manner specified by the inspector, any document, information or sample specified by the inspector."
+      "text": "7(1)(a) enter any place in which the inspector believes on reasonable grounds there is any feed to which this Act applies; 7(1)(b) open any package found in that place that the inspector believes on reasonable grounds contains any such feed; 7(1)(c) examine the feed and take samples thereof; 7(1)(d) require any person to produce for inspection or for the purpose of obtaining copies thereof or extracts therefrom any books, shipping bills, bills of lading, documents containing mixing instructions, or other documents or papers with respect to the administration of this Act or the regulations; and 7(1)(e) remove anything from that place for the purpose of examination, conducting tests or taking samples. 7(1) Subject to subsection (1.1), an inspector may, for a purpose related to verifying compliance or preventing non-compliance with this Act, 7(1.1) Where any place referred to in paragraph (1)(a) is a dwelling-house, an inspector may not enter that dwelling-house without the consent of the occupant except under the authority of a warrant issued under subsection (1.2). 7(1.2)(a) that the conditions for entry described in paragraph (1)(a) exist in relation to a dwelling-house, 7(1.2)(b) that entry to the dwelling-house is necessary for any purpose relating to the administration or enforcement of this Act, and 7(1.2)(c) that entry to the dwelling-house has been refused or that there are reasonable grounds for believing that entry thereto will be refused, 7(1.2) Where on ex parte application a justice of the peace is satisfied by information on oath the justice of the peace may issue a warrant under his hand authorizing the inspector named therein to enter that dwelling-house subject to such conditions as may be specified in the warrant. 7(1.3) In executing a warrant issued under subsection (1.2), the inspector named therein shall not use force unless the inspector is accompanied by a peace officer and the use of force has been specifically authorized in the warrant. 7(2) The owner or person in charge of any place described in subsection (1) and every person found in that place shall give an inspector all reasonable assistance to enable the inspector to carry out his duties and functions under this Act and shall furnish the inspector with any information he may reasonably require with respect to the administration of this Act and the regulations. 7(3) An inspector may, for a purpose related to verifying compliance or preventing non-compliance with this Act, order a person to provide, on the date, at the time and place and in the manner specified by the inspector, any document, information or sample specified by the inspector."
     },
     {
       "label": "8",
       "marginalNote": "False statements",
-      "text": "8 No person shall obstruct or hinder an inspector in the carrying out of his duties or functions under this Act. 8 No person shall make a false or misleading statement either orally or in writing to an inspector or other officer engaged in carrying out his duties or functions under this Act."
+      "text": "8(1) No person shall obstruct or hinder an inspector in the carrying out of his duties or functions under this Act. 8(2) No person shall make a false or misleading statement either orally or in writing to an inspector or other officer engaged in carrying out his duties or functions under this Act."
     },
     {
       "label": "9",
       "marginalNote": "Release of seized article",
-      "text": "9 Where an inspector believes on reasonable grounds that this Act or the regulations have been contravened, the inspector may seize any article by means of or in relation to which the inspector believes on reasonable grounds the contravention was committed. 9 If an inspector is satisfied that the provisions of this Act and the regulations that apply with respect to an article seized under this Act have been complied with, the article must be released. 9 Where the Tribunal decides that a person has committed a violation, or a person is convicted of an offence under this Act, the Tribunal or the convicting court, as the case may be, may, in addition to any penalty or punishment imposed, order that any article by means of or in relation to which the violation or offence was committed, be forfeited to Her Majesty in right of Canada."
+      "text": "9(1) Where an inspector believes on reasonable grounds that this Act or the regulations have been contravened, the inspector may seize any article by means of or in relation to which the inspector believes on reasonable grounds the contravention was committed. 9(2) If an inspector is satisfied that the provisions of this Act and the regulations that apply with respect to an article seized under this Act have been complied with, the article must be released. 9(3) Where the Tribunal decides that a person has committed a violation, or a person is convicted of an offence under this Act, the Tribunal or the convicting court, as the case may be, may, in addition to any penalty or punishment imposed, order that any article by means of or in relation to which the violation or offence was committed, be forfeited to Her Majesty in right of Canada."
     },
     {
       "label": "9.1",
       "marginalNote": "Notice",
-      "text": "9.1 An inspector who has reasonable grounds to believe that an imported feed does not meet the requirements of the regulations or was imported in contravention of a provision of this Act or the regulations may, by notice, whether the feed is seized or not, order its owner or importer or the person having possession, care or control of it to remove it from Canada or, if removal is not possible, to destroy it. 9.1 The notice must either be delivered personally to the owner or importer of the feed or to the person having possession, care or control of it or be sent by registered mail to the owner’s, importer’s or person’s address in Canada. 9.1 If the feed is not removed from Canada or destroyed within the period specified in the notice — or, if no period was specified, within 90 days after the day on which the notice was delivered or sent — it is, despite subsection 9(2), forfeited to Her Majesty in right of Canada and may be disposed of as the Minister may direct. 9.1(4) harm to human or animal health or the environment is unlikely to result; 9.1(4) the feed will not be sold within that period; 9.1(4) the measures that should have been taken for the feed not to have been imported in contravention of a provision of this Act or the regulations will be taken within that period; and 9.1(4) if the feed does not meet the requirements of the regulations, it will be brought into compliance with the regulations within that period. 9.1 An inspector may, for a period that he or she specifies, suspend the application of subsection (3) if he or she is satisfied that 9.1(5) harm to human or animal health or the environment is unlikely to result; 9.1(5) the feed has not been sold within the period referred to in subsection (6); 9.1(5) the measures referred to in paragraph (4)(c) were taken within that period; and 9.1(5) if the feed did not meet the requirements of the regulations when it was imported, it was brought into compliance with the regulations within that period. 9.1 An inspector may cancel the notice if he or she is satisfied that 9.1(6) if the application of subsection (3) was suspended under subsection (4), the period of the suspension; and 9.1(6) if the application of subsection (3) was not suspended, the period specified in the notice or, if no period was specified, the period that ends 90 days after the day on which the notice was delivered or sent. 9.1 The period for the purposes of subsection (5) is 9.1 The Statutory Instruments Act does not apply in respect of the notice."
+      "text": "9.1(1) An inspector who has reasonable grounds to believe that an imported feed does not meet the requirements of the regulations or was imported in contravention of a provision of this Act or the regulations may, by notice, whether the feed is seized or not, order its owner or importer or the person having possession, care or control of it to remove it from Canada or, if removal is not possible, to destroy it. 9.1(2) The notice must either be delivered personally to the owner or importer of the feed or to the person having possession, care or control of it or be sent by registered mail to the owner’s, importer’s or person’s address in Canada. 9.1(3) If the feed is not removed from Canada or destroyed within the period specified in the notice — or, if no period was specified, within 90 days after the day on which the notice was delivered or sent — it is, despite subsection 9(2), forfeited to Her Majesty in right of Canada and may be disposed of as the Minister may direct. 9.1(4)(a) harm to human or animal health or the environment is unlikely to result; 9.1(4)(b) the feed will not be sold within that period; 9.1(4)(c) the measures that should have been taken for the feed not to have been imported in contravention of a provision of this Act or the regulations will be taken within that period; and 9.1(4)(d) if the feed does not meet the requirements of the regulations, it will be brought into compliance with the regulations within that period. 9.1(4) An inspector may, for a period that he or she specifies, suspend the application of subsection (3) if he or she is satisfied that 9.1(5)(a) harm to human or animal health or the environment is unlikely to result; 9.1(5)(b) the feed has not been sold within the period referred to in subsection (6); 9.1(5)(c) the measures referred to in paragraph (4)(c) were taken within that period; and 9.1(5)(d) if the feed did not meet the requirements of the regulations when it was imported, it was brought into compliance with the regulations within that period. 9.1(5) An inspector may cancel the notice if he or she is satisfied that 9.1(6)(a) if the application of subsection (3) was suspended under subsection (4), the period of the suspension; and 9.1(6)(b) if the application of subsection (3) was not suspended, the period specified in the notice or, if no period was specified, the period that ends 90 days after the day on which the notice was delivered or sent. 9.1(6) The period for the purposes of subsection (5) is 9.1(7) The Statutory Instruments Act does not apply in respect of the notice."
     },
     {
       "label": "9.2",
-      "marginalNote": "",
-      "text": "9.2 any sample taken by an inspector, or provided to the Minister or an inspector, under this Act; or 9.2 anything removed under paragraph 7(1)(e), any article seized under subsection 9(1) or any sample of that thing or article."
-    },
-    {
-      "label": "Analysis and examination",
       "marginalNote": "Analysis and examination",
-      "text": "Analysis and examination An inspector may submit to an analyst, for analysis or examination,"
+      "text": "9.2(a) any sample taken by an inspector, or provided to the Minister or an inspector, under this Act; or 9.2(b) anything removed under paragraph 7(1)(e), any article seized under subsection 9(1) or any sample of that thing or article. 9.2 An inspector may submit to an analyst, for analysis or examination,"
     },
     {
       "label": "9.3",
-      "marginalNote": "",
-      "text": "9.3 for any costs, loss or damage resulting from the compliance; or 9.3 to pay any fee, including any rent or charge, for what is done or permitted to be done."
-    },
-    {
-      "label": "Her Majesty not liable",
       "marginalNote": "Her Majesty not liable",
-      "text": "Her Majesty not liable If a person must, under this Act, do anything or permit an inspector to do anything, Her Majesty in right of Canada is not liable"
+      "text": "9.3(a) for any costs, loss or damage resulting from the compliance; or 9.3(b) to pay any fee, including any rent or charge, for what is done or permitted to be done. 9.3 If a person must, under this Act, do anything or permit an inspector to do anything, Her Majesty in right of Canada is not liable"
     },
     {
-      "label": "No liability",
+      "label": "9.4",
       "marginalNote": "No liability",
-      "text": "No liability No person who exercises powers or performs duties or functions under this Act is liable in respect of anything done or omitted to be done in good faith in the exercise of those powers or the performance of those duties or functions."
+      "text": "9.4 No person who exercises powers or performs duties or functions under this Act is liable in respect of anything done or omitted to be done in good faith in the exercise of those powers or the performance of those duties or functions."
     },
     {
       "label": "10",
       "marginalNote": "Parties to offence",
-      "text": "10(1) an offence punishable on summary conviction and liable to a fine not exceeding $50,000 or to imprisonment for a term not exceeding six months, or to both; or 10(1) an indictable offence and liable to a fine not exceeding $250,000 or to imprisonment for a term not exceeding two years, or to both. 10 Every person who contravenes any provision of this Act or the regulations or fails to do anything that the person is ordered to do by an inspector under this Act is guilty of 10 If a person other than an individual commits an offence under subsection (1), any of the person’s directors, officers or agents or mandataries who directs, authorizes, assents to or acquiesces or participates in the commission of the offence is a party to the offence and is liable on conviction to the punishment provided for by this Act, even if the person is not prosecuted for the offence. 10 In a prosecution for an offence under this Act, it is sufficient proof of the offence to establish that it was committed by an employee or an agent or mandatary of the accused, even if the employee or the agent or mandatary is not identified or prosecuted for the offence, unless the accused establishes that the offence was committed without the knowledge or consent of the accused and that the accused exercised all due diligence to prevent its commission. 10 Summary conviction proceedings for an offence under this Act may be instituted no later than two years after the day on which the subject matter of the proceedings arises. 10 [Repealed, 2015, c. 2, s. 61]"
+      "text": "10(1)(a) an offence punishable on summary conviction and liable to a fine not exceeding $50,000 or to imprisonment for a term not exceeding six months, or to both; or 10(1)(b) an indictable offence and liable to a fine not exceeding $250,000 or to imprisonment for a term not exceeding two years, or to both. 10(1) Every person who contravenes any provision of this Act or the regulations or fails to do anything that the person is ordered to do by an inspector under this Act is guilty of 10(2) If a person other than an individual commits an offence under subsection (1), any of the person’s directors, officers or agents or mandataries who directs, authorizes, assents to or acquiesces or participates in the commission of the offence is a party to the offence and is liable on conviction to the punishment provided for by this Act, even if the person is not prosecuted for the offence. 10(3) In a prosecution for an offence under this Act, it is sufficient proof of the offence to establish that it was committed by an employee or an agent or mandatary of the accused, even if the employee or the agent or mandatary is not identified or prosecuted for the offence, unless the accused establishes that the offence was committed without the knowledge or consent of the accused and that the accused exercised all due diligence to prevent its commission. 10(4) Summary conviction proceedings for an offence under this Act may be instituted no later than two years after the day on which the subject matter of the proceedings arises. 10(5) [Repealed, 2015, c. 2, s. 61]"
     },
     {
       "label": "11",
       "marginalNote": "Admissibility",
-      "text": "11 A certificate of an analyst stating that the analyst has examined a substance or a sample submitted to the analyst by an inspector and stating the result of the examination is admissible in evidence in any proceedings for a violation, or for an offence under this Act, and, in the absence of any evidence to the contrary, is proof of the statement of analysis contained in the certificate. 11 In any proceedings for a violation, or for an offence under this Act, a document purporting to be the certificate of an analyst shall be admitted in evidence without proof of the signature of the person by whom it purports to be signed and without proof of that person’s official position."
+      "text": "11(1) A certificate of an analyst stating that the analyst has examined a substance or a sample submitted to the analyst by an inspector and stating the result of the examination is admissible in evidence in any proceedings for a violation, or for an offence under this Act, and, in the absence of any evidence to the contrary, is proof of the statement of analysis contained in the certificate. 11(2) In any proceedings for a violation, or for an offence under this Act, a document purporting to be the certificate of an analyst shall be admitted in evidence without proof of the signature of the person by whom it purports to be signed and without proof of that person’s official position."
     },
     {
-      "label": "Venue",
+      "label": "12",
       "marginalNote": "Venue",
-      "text": "Venue A complaint or information in respect of an offence under this Act may be heard, tried or determined by a provincial court judge or a justice if the accused is resident or carrying on business within the territorial jurisdiction of the provincial court judge or justice, although the matter of the complaint or information did not arise in that territorial jurisdiction."
+      "text": "12 A complaint or information in respect of an offence under this Act may be heard, tried or determined by a provincial court judge or a justice if the accused is resident or carrying on business within the territorial jurisdiction of the provincial court judge or justice, although the matter of the complaint or information did not arise in that territorial jurisdiction."
+    },
+    {
+      "label": "SCHEDULE ¶165",
+      "marginalNote": "",
+      "text": "SCHEDULE ¶165 For greater certainty, the two year limitation period provided for in subsection 10(4) of the Act, as amended by subsection (1), only applies in respect of offences committed after the coming into force of that subsection."
+    },
+    {
+      "label": "SCHEDULE ¶166",
+      "marginalNote": "",
+      "text": "SCHEDULE ¶166 Transitional"
     }
   ],
-  "fullText": "Short title\nShort title This Act may be cited as the Feeds Act.\n\n“analyst” analyst means a person designated as an analyst pursuant to section 6; (analyste)\n\n“conveyance” conveyance means a vessel, aircraft, train, motor vehicle, trailer or other means of transportation, including a cargo container; (véhicule)\n\n“document” document means anything on which information that is capable of being understood by a person, or read by a computer or other device, is recorded or marked; (document)\n\n2“environment” air, land and water,\n\n2“environment” all layers of the atmosphere,\n\n2“environment” all organic and inorganic matter and living organisms, and\n\n2“environment” the interacting natural systems that include components referred to in paragraphs (a) to (c); (environnement)\n\n“environment” environment means the components of the Earth and includes\n\n“establishment” establishment means any place, including a conveyance, where a feed is manufactured, stored, packaged or labelled; (établissement)\n\n2“feed” for consumption by livestock,\n\n2“feed” for providing the nutritional requirements of livestock, or\n\n2“feed” for the purpose of preventing or correcting nutritional disorders of livestock,\n\n“feed” feed means any substance or mixture of substances containing amino acids, anti-oxidants, carbohydrates, condiments, enzymes, fats, minerals, non-protein nitrogen products, proteins or vitamins, or pelletizing, colouring, foaming or flavouring agents and any other substance manufactured, sold or represented for use or any substance for use in any such substance or mixture of substances; (aliments)\n\n“inspection mark” inspection mark means a prescribed mark, stamp, seal, product legend, word or design or any combination of those things; (sceau d’inspection)\n\n“inspector” inspector means a person designated as an inspector pursuant to section 6; (inspecteur)\n\n2“item to which this Act applies” a feed,\n\n2“item to which this Act applies” anything used in an activity regulated under this Act, and\n\n2“item to which this Act applies” a document that is related to a feed or to any activity regulated under this Act; (chose visée par la présente loi)\n\n“item to which this Act applies” item to which this Act applies means\n\n“label” label includes any legend, word, mark, symbol or design applied or attached to, included in, belonging to or accompanying any feed or package; (étiquette)\n\n“livestock” livestock means any animals designated by regulation as livestock for the purposes of this Act; (animaux de ferme)\n\n“Minister” Minister means the Minister of Agriculture and Agri-Food; (ministre)\n\n“package” package includes a sack, bag, barrel, case or any other container in which feeds are placed or packed; (emballage)\n\n“penalty” penalty means an administrative monetary penalty imposed under the Agriculture and Agri-Food Administrative Monetary Penalties Act for a violation; (sanction)\n\n“prescribed” prescribed means prescribed by regulation; (Version anglaise seulement)\n\n“sell” sell includes agree to sell, offer for sale, expose for sale or have in possession for sale or distribute to one or more persons; (vente)\n\n“Tribunal” Tribunal means the Review Tribunal continued by subsection 27(1) of the Agriculture and Agri-Food Administrative Monetary Penalties Act; (Commission)\n\n“violation” violation means any contravention of this Act or the regulations that may be proceeded with in accordance with the Agriculture and Agri-Food Administrative Monetary Penalties Act. (violation)\n\nDefinitions\nDefinitions In this Act,\n\n3(1) has, in accordance with the regulations, been approved by the Minister or registered;\n\n3(1) conforms to prescribed standards; and\n\n3(1) is packaged and labelled in accordance with the regulations.\n\n3 No person shall manufacture, sell or import into Canada any feed unless the feed\n\nException\n3 Paragraphs (1)(a) and (b) do not apply to any feed consisting of whole seeds or grains of cultivated farm crops if it is free from prescribed deleterious substances.\n\nFeed presenting risk of harm\n3 No person shall manufacture, sell, import or export in contravention of the regulations any feed that presents a risk of harm to human or animal health or the environment.\n\nPrescribed activity with licence or registration\nPrescribed activity with licence or registration No person shall conduct a prescribed activity in respect of a prescribed feed that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — unless the person is authorized to do so by a registration made under subsection 5.2(1), by a licence issued under that subsection or by both such a registration and licence, as provided for in the regulations.\n\nPrescribed activity in registered establishment\nPrescribed activity in registered establishment No person shall conduct a prescribed activity in respect of a prescribed feed that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — unless the activity is conducted in an establishment registered under subsection 5.3(1) in accordance with the regulations.\n\n3.3(1) apply or use an inspection mark; or\n\n3.3(1) advertise or sell anything if the thing has an inspection mark on it or an inspection mark is used in connection with the thing.\n\n3.3 Unless authorized by the regulations, no person shall\n\n3.3(2) apply or use a thing that so resembles an inspection mark that it is likely to be mistaken for it; or\n\n3.3(2) advertise or sell anything that has on it a thing referred to in paragraph (a) or that has a thing referred to in that paragraph used in connection with it.\n\nUse of similar mark\n3.3 No person shall\n\nPresumption\n3.3 A person found in possession of anything referred to in paragraph (1)(b) or (2)(b) is considered, in the absence of evidence to the contrary, to be in possession of it for the purpose of advertising or selling.\n\nRecall order — Canadian Food Inspection Agency Act\nRecall order — Canadian Food Inspection Agency Act No person shall sell a feed that is the subject of a recall order referred to in subsection 19(1) of the Canadian Food Inspection Agency Act.\n\nExemption\nExemption This Act does not apply in respect of a feed that is manufactured by a livestock producer if it is not sold and has not had incorporated into it any drug or other substance that presents a risk of harm to human or animal health or the environment.\n\n5(1) respecting applications for registration or for approval of feeds and the information to be furnished with the applications;\n\n5(1) respecting the registration of feeds and prescribing fees for registration;\n\n5(1) respecting the approval of feeds;\n\n5(1) respecting the duration and cancellation of the registration or approval of feeds;\n\n5(1) respecting the manufacturing, sale, importation or exportation of any feed that presents a risk of harm to human or animal health or the environment;\n\n5(1) respecting the sending or conveying from one province to another or the importation or exportation of any feed;\n\n5(1) respecting the manufacturing or sale of any feed that is to be exported or to be sent or conveyed from one province to another;\n\n5(1) respecting the sale of any feed that has been imported;\n\n5(1) exempting, with or without conditions, any item to which this Act applies, or a person or activity in respect of a feed, from the application of this Act or the regulations or a provision of this Act or the regulations;\n\n5(1) prescribing the form, composition and other standards for feeds;\n\n5(1) prescribing standards for the manufacturing or the safety of feeds;\n\n5(1) prescribing inspection marks in respect of any feeds and regulating their application or use;\n\n5(1) respecting the packaging and labelling of feeds and packages thereof;\n\n5(1) respecting the taking of samples and the making of analyses for the purposes of this Act;\n\n5(1) requiring persons to take or keep samples of any feed, or its package or label, and to provide the Minister or an inspector with, or with access to, those samples, and respecting the manner in which those samples are to be taken or kept and the manner in which they are to be provided or access to them is to be provided;\n\n5(1) providing that feeds registered under this Act and containing a pest control product as defined in subsection 2(1) of the Pest Control Products Act are, in prescribed circumstances and subject to prescribed conditions, deemed to be registered under that Act;\n\n5(1)(h.1) the registration of persons or the issuing of licences to persons under section 5.2 or the registration of establishments under section 5.3,\n\n5(1)(h.1) the suspension, cancellation and renewal of those licences and registrations, and\n\n5(1)(h.1) the amendment of those licences and registrations or of any of the conditions to which they are subject by reason of subsection 5.2(3) or 5.3(4);\n\n5(1) respecting\n\n5(1) respecting quality management programs, quality control programs, safety programs, preventive control plans or any other similar programs or plans to be implemented by persons who conduct any activity regulated under this Act;\n\n5(1) designating specific animals, including birds, as livestock for the purposes of this Act;\n\n5(1) respecting the detention, preservation and safeguarding of anything seized under section 9;\n\n5(1) respecting the disposition of anything forfeited under section 9;\n\n5(1)(k.1) the provision of samples of the feed,\n\n5(1)(k.1)(ii) permits the feed to be distinguished from other feeds, and\n\n5(1)(k.1)(ii) is required for evaluating the potential impact of the feed on, and the risk of harm posed by the feed to, human and animal health and the environment, and\n\n5(1)(k.1) the provision of information in respect of the feed, including information that\n\n5(1)(k.1) the evaluation of the potential impact of the feed on, and the risk of harm posed by the feed to, human and animal health and the environment;\n\n5(1) respecting the evaluation of a feed, including regulations respecting\n\n5(1)(k.2) the information in those documents,\n\n5(1)(k.2) the manner in which they are to be prepared, kept or maintained,\n\n5(1)(k.2) the place where they are to be kept or maintained, and\n\n5(1)(k.2) the manner in which they are to be provided or access to them is to be provided;\n\n5(1) requiring persons to prepare, keep or maintain documents and to provide the Minister or an inspector with, or with access to, those documents, and respecting\n\n5(1) respecting the issuance of certificates or other documents for the purpose of section 5.5;\n\n5(1) prescribing anything else that by this Act is required to be prescribed; and\n\n5(1) generally, for carrying out the purposes and provisions of this Act.\n\n5 The Governor in Council may make regulations\n\nParagraphs (1)(c.1) and (c.2)\n5 Regulations made under paragraph (1)(c.1) or (c.2) may, among other things, establish preclearance or in-transit requirements for any imported feed or anything imported with it.\n\nParagraph (1)(k.2)\n5 Regulations made under paragraph (1)(k.2) may, among other things, require persons who conduct any activity regulated under this Act and who become aware that a feed presents a risk of harm to human or animal health or the environment or does not meet the requirements of the regulations to provide written notice to that effect to the Minister or an inspector.\n\n5.1 A regulation made under subsection 5(1) may incorporate by reference any document, regardless of its source, either as it exists on a particular date or as it is amended from time to time.\n\nAccessibility\n5.1 The Minister must ensure that any document that is incorporated by reference in a regulation made under subsection 5(1), including any amendments to the document, is accessible.\n\nDefence\n5.1 A person is not liable to be found guilty of an offence or subjected to an administrative sanction for any contravention in respect of which a document that is incorporated by reference in a regulation made under subsection 5(1) is relevant unless, at the time of the alleged contravention, the document was accessible as required by subsection (2) or it was otherwise accessible to the person.\n\nNo registration or publication\n5.1 For greater certainty, a document that is incorporated by reference in a regulation made under subsection 5(1) is not required to be transmitted for registration or published in the Canada Gazette by reason only that it is incorporated by reference.\n\n5.2 The Minister may, on application, register a person, or issue a licence to a person, authorizing them to conduct a prescribed activity in respect of a prescribed feed that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — or both register a person and issue them a licence.\n\nConditions — regulations\n5.2 The registration and the licence are subject to the prescribed conditions.\n\nConditions — Minister\n5.2 The Minister may make a registration or licence subject to any additional conditions that he or she considers appropriate.\n\nObligation to comply\n5.2 The holder of the registration or licence must comply with all the conditions to which the registration or licence is subject.\n\nNo transfer\n5.2 The registration or licence is not transferable.\n\n5.3 The Minister may, on application, register an establishment as one where a prescribed activity may be conducted in respect of a prescribed feed that has been imported for sale or that is to be exported or to be sent or conveyed from one province to another.\n\nHolder\n5.3 The applicant in respect of an establishment is the holder of the registration.\n\nConditions — regulations\n5.3 The registration is subject to the prescribed conditions.\n\nConditions — Minister\n5.3 The Minister may make a registration subject to any additional conditions that he or she considers appropriate.\n\nObligation to comply\n5.3 The holder of the registration must comply with all the conditions to which the registration is subject.\n\nNo transfer\n5.3 The registration is not transferable.\n\nAmendment, suspension, cancellation and renewal\nAmendment, suspension, cancellation and renewal Subject to the regulations, the Minister may amend, suspend, cancel or renew a registration made under subsection 5.2(1) or 5.3(1) or a licence issued under subsection 5.2(1).\n\nExport certificates\nExport certificates The Minister may issue any certificate or other document setting out any information that he or she considers necessary to facilitate the export of any feed.\n\nDisposition of samples\nDisposition of samples A sample taken by an inspector, or provided to the Minister or an inspector, under this Act may be disposed of in any manner that the Minister considers appropriate.\n\nInspection marks\nInspection marks Every inspection mark is a trademark and the exclusive property in the trademark and, subject to this Act, the right to its use are vested in Her Majesty in right of Canada.\n\nConsideration of information\nConsideration of information In considering an application made under the regulations in relation to a feed, the Minister may consider information that is available from a review or evaluation of a feed conducted by the government of a foreign state or of a subdivision of a foreign state or by an international organization, or association, of states.\n\n6 The President of the Canadian Food Inspection Agency may designate under section 13 of the Canadian Food Inspection Agency Act the inspectors and analysts necessary for the administration and enforcement of this Act.\n\nDesignation\n6 The President of the Canada Border Services Agency may designate inspectors under paragraph 9(2)(b) of the Canada Border Services Agency Act for the purposes of enforcing this Act.\n\nCertificate to be produced\n6 Inspectors shall be given certificates in a form established by the President of the Canadian Food Inspection Agency or the President of the Canada Border Services Agency, as the case may be, attesting to their designation and, on entering any place under subsection 7(1), an inspector shall, if so required, produce the certificate to the person in charge of that place.\n\n7(1) enter any place in which the inspector believes on reasonable grounds there is any feed to which this Act applies;\n\n7(1) open any package found in that place that the inspector believes on reasonable grounds contains any such feed;\n\n7(1) examine the feed and take samples thereof;\n\n7(1) require any person to produce for inspection or for the purpose of obtaining copies thereof or extracts therefrom any books, shipping bills, bills of lading, documents containing mixing instructions, or other documents or papers with respect to the administration of this Act or the regulations; and\n\n7(1) remove anything from that place for the purpose of examination, conducting tests or taking samples.\n\n7 Subject to subsection (1.1), an inspector may, for a purpose related to verifying compliance or preventing non-compliance with this Act,\n\nWarrant required to enter dwelling-house\n7 Where any place referred to in paragraph (1)(a) is a dwelling-house, an inspector may not enter that dwelling-house without the consent of the occupant except under the authority of a warrant issued under subsection (1.2).\n\n7(1.2) that the conditions for entry described in paragraph (1)(a) exist in relation to a dwelling-house,\n\n7(1.2) that entry to the dwelling-house is necessary for any purpose relating to the administration or enforcement of this Act, and\n\n7(1.2) that entry to the dwelling-house has been refused or that there are reasonable grounds for believing that entry thereto will be refused,\n\nAuthority to issue warrant\n7 Where on ex parte application a justice of the peace is satisfied by information on oath the justice of the peace may issue a warrant under his hand authorizing the inspector named therein to enter that dwelling-house subject to such conditions as may be specified in the warrant.\n\nUse of force\n7 In executing a warrant issued under subsection (1.2), the inspector named therein shall not use force unless the inspector is accompanied by a peace officer and the use of force has been specifically authorized in the warrant.\n\nAssistance to inspectors\n7 The owner or person in charge of any place described in subsection (1) and every person found in that place shall give an inspector all reasonable assistance to enable the inspector to carry out his duties and functions under this Act and shall furnish the inspector with any information he may reasonably require with respect to the administration of this Act and the regulations.\n\nProvision of documents, information or samples\n7 An inspector may, for a purpose related to verifying compliance or preventing non-compliance with this Act, order a person to provide, on the date, at the time and place and in the manner specified by the inspector, any document, information or sample specified by the inspector.\n\n8 No person shall obstruct or hinder an inspector in the carrying out of his duties or functions under this Act.\n\nFalse statements\n8 No person shall make a false or misleading statement either orally or in writing to an inspector or other officer engaged in carrying out his duties or functions under this Act.\n\n9 Where an inspector believes on reasonable grounds that this Act or the regulations have been contravened, the inspector may seize any article by means of or in relation to which the inspector believes on reasonable grounds the contravention was committed.\n\nRelease of seized article\n9 If an inspector is satisfied that the provisions of this Act and the regulations that apply with respect to an article seized under this Act have been complied with, the article must be released.\n\nForfeiture\n9 Where the Tribunal decides that a person has committed a violation, or a person is convicted of an offence under this Act, the Tribunal or the convicting court, as the case may be, may, in addition to any penalty or punishment imposed, order that any article by means of or in relation to which the violation or offence was committed, be forfeited to Her Majesty in right of Canada.\n\n9.1 An inspector who has reasonable grounds to believe that an imported feed does not meet the requirements of the regulations or was imported in contravention of a provision of this Act or the regulations may, by notice, whether the feed is seized or not, order its owner or importer or the person having possession, care or control of it to remove it from Canada or, if removal is not possible, to destroy it.\n\nNotice\n9.1 The notice must either be delivered personally to the owner or importer of the feed or to the person having possession, care or control of it or be sent by registered mail to the owner’s, importer’s or person’s address in Canada.\n\nForfeiture\n9.1 If the feed is not removed from Canada or destroyed within the period specified in the notice — or, if no period was specified, within 90 days after the day on which the notice was delivered or sent — it is, despite subsection 9(2), forfeited to Her Majesty in right of Canada and may be disposed of as the Minister may direct.\n\n9.1(4) harm to human or animal health or the environment is unlikely to result;\n\n9.1(4) the feed will not be sold within that period;\n\n9.1(4) the measures that should have been taken for the feed not to have been imported in contravention of a provision of this Act or the regulations will be taken within that period; and\n\n9.1(4) if the feed does not meet the requirements of the regulations, it will be brought into compliance with the regulations within that period.\n\nSuspension of application of subsection (3)\n9.1 An inspector may, for a period that he or she specifies, suspend the application of subsection (3) if he or she is satisfied that\n\n9.1(5) harm to human or animal health or the environment is unlikely to result;\n\n9.1(5) the feed has not been sold within the period referred to in subsection (6);\n\n9.1(5) the measures referred to in paragraph (4)(c) were taken within that period; and\n\n9.1(5) if the feed did not meet the requirements of the regulations when it was imported, it was brought into compliance with the regulations within that period.\n\nCancellation\n9.1 An inspector may cancel the notice if he or she is satisfied that\n\n9.1(6) if the application of subsection (3) was suspended under subsection (4), the period of the suspension; and\n\n9.1(6) if the application of subsection (3) was not suspended, the period specified in the notice or, if no period was specified, the period that ends 90 days after the day on which the notice was delivered or sent.\n\nPeriod\n9.1 The period for the purposes of subsection (5) is\n\nNon-application of Statutory Instruments Act\n9.1 The Statutory Instruments Act does not apply in respect of the notice.\n\n9.2 any sample taken by an inspector, or provided to the Minister or an inspector, under this Act; or\n\n9.2 anything removed under paragraph 7(1)(e), any article seized under subsection 9(1) or any sample of that thing or article.\n\nAnalysis and examination\nAnalysis and examination An inspector may submit to an analyst, for analysis or examination,\n\n9.3 for any costs, loss or damage resulting from the compliance; or\n\n9.3 to pay any fee, including any rent or charge, for what is done or permitted to be done.\n\nHer Majesty not liable\nHer Majesty not liable If a person must, under this Act, do anything or permit an inspector to do anything, Her Majesty in right of Canada is not liable\n\nNo liability\nNo liability No person who exercises powers or performs duties or functions under this Act is liable in respect of anything done or omitted to be done in good faith in the exercise of those powers or the performance of those duties or functions.\n\n10(1) an offence punishable on summary conviction and liable to a fine not exceeding $50,000 or to imprisonment for a term not exceeding six months, or to both; or\n\n10(1) an indictable offence and liable to a fine not exceeding $250,000 or to imprisonment for a term not exceeding two years, or to both.\n\n10 Every person who contravenes any provision of this Act or the regulations or fails to do anything that the person is ordered to do by an inspector under this Act is guilty of\n\nParties to offence\n10 If a person other than an individual commits an offence under subsection (1), any of the person’s directors, officers or agents or mandataries who directs, authorizes, assents to or acquiesces or participates in the commission of the offence is a party to the offence and is liable on conviction to the punishment provided for by this Act, even if the person is not prosecuted for the offence.\n\nProof of offence\n10 In a prosecution for an offence under this Act, it is sufficient proof of the offence to establish that it was committed by an employee or an agent or mandatary of the accused, even if the employee or the agent or mandatary is not identified or prosecuted for the offence, unless the accused establishes that the offence was committed without the knowledge or consent of the accused and that the accused exercised all due diligence to prevent its commission.\n\nLimitation period\n10 Summary conviction proceedings for an offence under this Act may be instituted no later than two years after the day on which the subject matter of the proceedings arises.\n\n10 [Repealed, 2015, c. 2, s. 61]\n\n11 A certificate of an analyst stating that the analyst has examined a substance or a sample submitted to the analyst by an inspector and stating the result of the examination is admissible in evidence in any proceedings for a violation, or for an offence under this Act, and, in the absence of any evidence to the contrary, is proof of the statement of analysis contained in the certificate.\n\nAdmissibility\n11 In any proceedings for a violation, or for an offence under this Act, a document purporting to be the certificate of an analyst shall be admitted in evidence without proof of the signature of the person by whom it purports to be signed and without proof of that person’s official position.\n\nVenue\nVenue A complaint or information in respect of an offence under this Act may be heard, tried or determined by a provincial court judge or a justice if the accused is resident or carrying on business within the territorial jurisdiction of the provincial court judge or justice, although the matter of the complaint or information did not arise in that territorial jurisdiction."
+  "fullText": "Short title\n1 This Act may be cited as the Feeds Act.\n\n“analyst” analyst means a person designated as an analyst pursuant to section 6; (analyste)\n\n“conveyance” conveyance means a vessel, aircraft, train, motor vehicle, trailer or other means of transportation, including a cargo container; (véhicule)\n\n“document” document means anything on which information that is capable of being understood by a person, or read by a computer or other device, is recorded or marked; (document)\n\n2“environment”(a) air, land and water,\n\n2“environment”(b) all layers of the atmosphere,\n\n2“environment”(c) all organic and inorganic matter and living organisms, and\n\n2“environment”(d) the interacting natural systems that include components referred to in paragraphs (a) to (c); (environnement)\n\n“environment” environment means the components of the Earth and includes\n\n“establishment” establishment means any place, including a conveyance, where a feed is manufactured, stored, packaged or labelled; (établissement)\n\n2“feed”(a) for consumption by livestock,\n\n2“feed”(b) for providing the nutritional requirements of livestock, or\n\n2“feed”(c) for the purpose of preventing or correcting nutritional disorders of livestock,\n\n“feed” feed means any substance or mixture of substances containing amino acids, anti-oxidants, carbohydrates, condiments, enzymes, fats, minerals, non-protein nitrogen products, proteins or vitamins, or pelletizing, colouring, foaming or flavouring agents and any other substance manufactured, sold or represented for use or any substance for use in any such substance or mixture of substances; (aliments)\n\n“inspection mark” inspection mark means a prescribed mark, stamp, seal, product legend, word or design or any combination of those things; (sceau d’inspection)\n\n“inspector” inspector means a person designated as an inspector pursuant to section 6; (inspecteur)\n\n2“item to which this Act applies”(a) a feed,\n\n2“item to which this Act applies”(b) anything used in an activity regulated under this Act, and\n\n2“item to which this Act applies”(c) a document that is related to a feed or to any activity regulated under this Act; (chose visée par la présente loi)\n\n“item to which this Act applies” item to which this Act applies means\n\n“label” label includes any legend, word, mark, symbol or design applied or attached to, included in, belonging to or accompanying any feed or package; (étiquette)\n\n“livestock” livestock means any animals designated by regulation as livestock for the purposes of this Act; (animaux de ferme)\n\n“Minister” Minister means the Minister of Agriculture and Agri-Food; (ministre)\n\n“package” package includes a sack, bag, barrel, case or any other container in which feeds are placed or packed; (emballage)\n\n“penalty” penalty means an administrative monetary penalty imposed under the Agriculture and Agri-Food Administrative Monetary Penalties Act for a violation; (sanction)\n\n“prescribed” prescribed means prescribed by regulation; (Version anglaise seulement)\n\n“sell” sell includes agree to sell, offer for sale, expose for sale or have in possession for sale or distribute to one or more persons; (vente)\n\n“Tribunal” Tribunal means the Review Tribunal continued by subsection 27(1) of the Agriculture and Agri-Food Administrative Monetary Penalties Act; (Commission)\n\n“violation” violation means any contravention of this Act or the regulations that may be proceeded with in accordance with the Agriculture and Agri-Food Administrative Monetary Penalties Act. (violation)\n\nDefinitions\n2 In this Act,\n\n3(1)(a) has, in accordance with the regulations, been approved by the Minister or registered;\n\n3(1)(b) conforms to prescribed standards; and\n\n3(1)(c) is packaged and labelled in accordance with the regulations.\n\n3(1) No person shall manufacture, sell or import into Canada any feed unless the feed\n\nException\n3(2) Paragraphs (1)(a) and (b) do not apply to any feed consisting of whole seeds or grains of cultivated farm crops if it is free from prescribed deleterious substances.\n\nFeed presenting risk of harm\n3(3) No person shall manufacture, sell, import or export in contravention of the regulations any feed that presents a risk of harm to human or animal health or the environment.\n\nPrescribed activity with licence or registration\n3.1 No person shall conduct a prescribed activity in respect of a prescribed feed that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — unless the person is authorized to do so by a registration made under subsection 5.2(1), by a licence issued under that subsection or by both such a registration and licence, as provided for in the regulations.\n\nPrescribed activity in registered establishment\n3.2 No person shall conduct a prescribed activity in respect of a prescribed feed that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — unless the activity is conducted in an establishment registered under subsection 5.3(1) in accordance with the regulations.\n\n3.3(1)(a) apply or use an inspection mark; or\n\n3.3(1)(b) advertise or sell anything if the thing has an inspection mark on it or an inspection mark is used in connection with the thing.\n\n3.3(1) Unless authorized by the regulations, no person shall\n\n3.3(2)(a) apply or use a thing that so resembles an inspection mark that it is likely to be mistaken for it; or\n\n3.3(2)(b) advertise or sell anything that has on it a thing referred to in paragraph (a) or that has a thing referred to in that paragraph used in connection with it.\n\nUse of similar mark\n3.3(2) No person shall\n\nPresumption\n3.3(3) A person found in possession of anything referred to in paragraph (1)(b) or (2)(b) is considered, in the absence of evidence to the contrary, to be in possession of it for the purpose of advertising or selling.\n\nRecall order — Canadian Food Inspection Agency Act\n3.4 No person shall sell a feed that is the subject of a recall order referred to in subsection 19(1) of the Canadian Food Inspection Agency Act.\n\nExemption\n4 This Act does not apply in respect of a feed that is manufactured by a livestock producer if it is not sold and has not had incorporated into it any drug or other substance that presents a risk of harm to human or animal health or the environment.\n\n5(1)(a) respecting applications for registration or for approval of feeds and the information to be furnished with the applications;\n\n5(1)(b) respecting the registration of feeds and prescribing fees for registration;\n\n5(1)(b.1) respecting the approval of feeds;\n\n5(1)(c) respecting the duration and cancellation of the registration or approval of feeds;\n\n5(1)(c.1) respecting the manufacturing, sale, importation or exportation of any feed that presents a risk of harm to human or animal health or the environment;\n\n5(1)(c.2) respecting the sending or conveying from one province to another or the importation or exportation of any feed;\n\n5(1)(c.3) respecting the manufacturing or sale of any feed that is to be exported or to be sent or conveyed from one province to another;\n\n5(1)(c.4) respecting the sale of any feed that has been imported;\n\n5(1)(d) exempting, with or without conditions, any item to which this Act applies, or a person or activity in respect of a feed, from the application of this Act or the regulations or a provision of this Act or the regulations;\n\n5(1)(e) prescribing the form, composition and other standards for feeds;\n\n5(1)(e.1) prescribing standards for the manufacturing or the safety of feeds;\n\n5(1)(e.2) prescribing inspection marks in respect of any feeds and regulating their application or use;\n\n5(1)(f) respecting the packaging and labelling of feeds and packages thereof;\n\n5(1)(g) respecting the taking of samples and the making of analyses for the purposes of this Act;\n\n5(1)(g.1) requiring persons to take or keep samples of any feed, or its package or label, and to provide the Minister or an inspector with, or with access to, those samples, and respecting the manner in which those samples are to be taken or kept and the manner in which they are to be provided or access to them is to be provided;\n\n5(1)(h) providing that feeds registered under this Act and containing a pest control product as defined in subsection 2(1) of the Pest Control Products Act are, in prescribed circumstances and subject to prescribed conditions, deemed to be registered under that Act;\n\n5(1)(h.1)(i) the registration of persons or the issuing of licences to persons under section 5.2 or the registration of establishments under section 5.3,\n\n5(1)(h.1)(ii) the suspension, cancellation and renewal of those licences and registrations, and\n\n5(1)(h.1)(iii) the amendment of those licences and registrations or of any of the conditions to which they are subject by reason of subsection 5.2(3) or 5.3(4);\n\n5(1)(h.1) respecting\n\n5(1)(h.2) respecting quality management programs, quality control programs, safety programs, preventive control plans or any other similar programs or plans to be implemented by persons who conduct any activity regulated under this Act;\n\n5(1)(i) designating specific animals, including birds, as livestock for the purposes of this Act;\n\n5(1)(j) respecting the detention, preservation and safeguarding of anything seized under section 9;\n\n5(1)(k) respecting the disposition of anything forfeited under section 9;\n\n5(1)(k.1)(i) the provision of samples of the feed,\n\n5(1)(k.1)(ii)(A) permits the feed to be distinguished from other feeds, and\n\n5(1)(k.1)(ii)(B) is required for evaluating the potential impact of the feed on, and the risk of harm posed by the feed to, human and animal health and the environment, and\n\n5(1)(k.1)(ii) the provision of information in respect of the feed, including information that\n\n5(1)(k.1)(iii) the evaluation of the potential impact of the feed on, and the risk of harm posed by the feed to, human and animal health and the environment;\n\n5(1)(k.1) respecting the evaluation of a feed, including regulations respecting\n\n5(1)(k.2)(i) the information in those documents,\n\n5(1)(k.2)(ii) the manner in which they are to be prepared, kept or maintained,\n\n5(1)(k.2)(iii) the place where they are to be kept or maintained, and\n\n5(1)(k.2)(iv) the manner in which they are to be provided or access to them is to be provided;\n\n5(1)(k.2) requiring persons to prepare, keep or maintain documents and to provide the Minister or an inspector with, or with access to, those documents, and respecting\n\n5(1)(k.3) respecting the issuance of certificates or other documents for the purpose of section 5.5;\n\n5(1)(l) prescribing anything else that by this Act is required to be prescribed; and\n\n5(1)(m) generally, for carrying out the purposes and provisions of this Act.\n\n5(1) The Governor in Council may make regulations\n\nParagraphs (1)(c.1) and (c.2)\n5(2) Regulations made under paragraph (1)(c.1) or (c.2) may, among other things, establish preclearance or in-transit requirements for any imported feed or anything imported with it.\n\nParagraph (1)(k.2)\n5(3) Regulations made under paragraph (1)(k.2) may, among other things, require persons who conduct any activity regulated under this Act and who become aware that a feed presents a risk of harm to human or animal health or the environment or does not meet the requirements of the regulations to provide written notice to that effect to the Minister or an inspector.\n\n5.1(1) A regulation made under subsection 5(1) may incorporate by reference any document, regardless of its source, either as it exists on a particular date or as it is amended from time to time.\n\nAccessibility\n5.1(2) The Minister must ensure that any document that is incorporated by reference in a regulation made under subsection 5(1), including any amendments to the document, is accessible.\n\nDefence\n5.1(3) A person is not liable to be found guilty of an offence or subjected to an administrative sanction for any contravention in respect of which a document that is incorporated by reference in a regulation made under subsection 5(1) is relevant unless, at the time of the alleged contravention, the document was accessible as required by subsection (2) or it was otherwise accessible to the person.\n\nNo registration or publication\n5.1(4) For greater certainty, a document that is incorporated by reference in a regulation made under subsection 5(1) is not required to be transmitted for registration or published in the Canada Gazette by reason only that it is incorporated by reference.\n\n5.2(1) The Minister may, on application, register a person, or issue a licence to a person, authorizing them to conduct a prescribed activity in respect of a prescribed feed that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — or both register a person and issue them a licence.\n\nConditions — regulations\n5.2(2) The registration and the licence are subject to the prescribed conditions.\n\nConditions — Minister\n5.2(3) The Minister may make a registration or licence subject to any additional conditions that he or she considers appropriate.\n\nObligation to comply\n5.2(4) The holder of the registration or licence must comply with all the conditions to which the registration or licence is subject.\n\nNo transfer\n5.2(5) The registration or licence is not transferable.\n\n5.3(1) The Minister may, on application, register an establishment as one where a prescribed activity may be conducted in respect of a prescribed feed that has been imported for sale or that is to be exported or to be sent or conveyed from one province to another.\n\nHolder\n5.3(2) The applicant in respect of an establishment is the holder of the registration.\n\nConditions — regulations\n5.3(3) The registration is subject to the prescribed conditions.\n\nConditions — Minister\n5.3(4) The Minister may make a registration subject to any additional conditions that he or she considers appropriate.\n\nObligation to comply\n5.3(5) The holder of the registration must comply with all the conditions to which the registration is subject.\n\nNo transfer\n5.3(6) The registration is not transferable.\n\nAmendment, suspension, cancellation and renewal\n5.4 Subject to the regulations, the Minister may amend, suspend, cancel or renew a registration made under subsection 5.2(1) or 5.3(1) or a licence issued under subsection 5.2(1).\n\nExport certificates\n5.5 The Minister may issue any certificate or other document setting out any information that he or she considers necessary to facilitate the export of any feed.\n\nDisposition of samples\n5.6 A sample taken by an inspector, or provided to the Minister or an inspector, under this Act may be disposed of in any manner that the Minister considers appropriate.\n\nInspection marks\n5.7 Every inspection mark is a trademark and the exclusive property in the trademark and, subject to this Act, the right to its use are vested in Her Majesty in right of Canada.\n\nConsideration of information\n5.8 In considering an application made under the regulations in relation to a feed, the Minister may consider information that is available from a review or evaluation of a feed conducted by the government of a foreign state or of a subdivision of a foreign state or by an international organization, or association, of states.\n\n6(1) The President of the Canadian Food Inspection Agency may designate under section 13 of the Canadian Food Inspection Agency Act the inspectors and analysts necessary for the administration and enforcement of this Act.\n\nDesignation\n6(1.1) The President of the Canada Border Services Agency may designate inspectors under paragraph 9(2)(b) of the Canada Border Services Agency Act for the purposes of enforcing this Act.\n\nCertificate to be produced\n6(2) Inspectors shall be given certificates in a form established by the President of the Canadian Food Inspection Agency or the President of the Canada Border Services Agency, as the case may be, attesting to their designation and, on entering any place under subsection 7(1), an inspector shall, if so required, produce the certificate to the person in charge of that place.\n\n7(1)(a) enter any place in which the inspector believes on reasonable grounds there is any feed to which this Act applies;\n\n7(1)(b) open any package found in that place that the inspector believes on reasonable grounds contains any such feed;\n\n7(1)(c) examine the feed and take samples thereof;\n\n7(1)(d) require any person to produce for inspection or for the purpose of obtaining copies thereof or extracts therefrom any books, shipping bills, bills of lading, documents containing mixing instructions, or other documents or papers with respect to the administration of this Act or the regulations; and\n\n7(1)(e) remove anything from that place for the purpose of examination, conducting tests or taking samples.\n\n7(1) Subject to subsection (1.1), an inspector may, for a purpose related to verifying compliance or preventing non-compliance with this Act,\n\nWarrant required to enter dwelling-house\n7(1.1) Where any place referred to in paragraph (1)(a) is a dwelling-house, an inspector may not enter that dwelling-house without the consent of the occupant except under the authority of a warrant issued under subsection (1.2).\n\n7(1.2)(a) that the conditions for entry described in paragraph (1)(a) exist in relation to a dwelling-house,\n\n7(1.2)(b) that entry to the dwelling-house is necessary for any purpose relating to the administration or enforcement of this Act, and\n\n7(1.2)(c) that entry to the dwelling-house has been refused or that there are reasonable grounds for believing that entry thereto will be refused,\n\nAuthority to issue warrant\n7(1.2) Where on ex parte application a justice of the peace is satisfied by information on oath the justice of the peace may issue a warrant under his hand authorizing the inspector named therein to enter that dwelling-house subject to such conditions as may be specified in the warrant.\n\nUse of force\n7(1.3) In executing a warrant issued under subsection (1.2), the inspector named therein shall not use force unless the inspector is accompanied by a peace officer and the use of force has been specifically authorized in the warrant.\n\nAssistance to inspectors\n7(2) The owner or person in charge of any place described in subsection (1) and every person found in that place shall give an inspector all reasonable assistance to enable the inspector to carry out his duties and functions under this Act and shall furnish the inspector with any information he may reasonably require with respect to the administration of this Act and the regulations.\n\nProvision of documents, information or samples\n7(3) An inspector may, for a purpose related to verifying compliance or preventing non-compliance with this Act, order a person to provide, on the date, at the time and place and in the manner specified by the inspector, any document, information or sample specified by the inspector.\n\n8(1) No person shall obstruct or hinder an inspector in the carrying out of his duties or functions under this Act.\n\nFalse statements\n8(2) No person shall make a false or misleading statement either orally or in writing to an inspector or other officer engaged in carrying out his duties or functions under this Act.\n\n9(1) Where an inspector believes on reasonable grounds that this Act or the regulations have been contravened, the inspector may seize any article by means of or in relation to which the inspector believes on reasonable grounds the contravention was committed.\n\nRelease of seized article\n9(2) If an inspector is satisfied that the provisions of this Act and the regulations that apply with respect to an article seized under this Act have been complied with, the article must be released.\n\nForfeiture\n9(3) Where the Tribunal decides that a person has committed a violation, or a person is convicted of an offence under this Act, the Tribunal or the convicting court, as the case may be, may, in addition to any penalty or punishment imposed, order that any article by means of or in relation to which the violation or offence was committed, be forfeited to Her Majesty in right of Canada.\n\n9.1(1) An inspector who has reasonable grounds to believe that an imported feed does not meet the requirements of the regulations or was imported in contravention of a provision of this Act or the regulations may, by notice, whether the feed is seized or not, order its owner or importer or the person having possession, care or control of it to remove it from Canada or, if removal is not possible, to destroy it.\n\nNotice\n9.1(2) The notice must either be delivered personally to the owner or importer of the feed or to the person having possession, care or control of it or be sent by registered mail to the owner’s, importer’s or person’s address in Canada.\n\nForfeiture\n9.1(3) If the feed is not removed from Canada or destroyed within the period specified in the notice — or, if no period was specified, within 90 days after the day on which the notice was delivered or sent — it is, despite subsection 9(2), forfeited to Her Majesty in right of Canada and may be disposed of as the Minister may direct.\n\n9.1(4)(a) harm to human or animal health or the environment is unlikely to result;\n\n9.1(4)(b) the feed will not be sold within that period;\n\n9.1(4)(c) the measures that should have been taken for the feed not to have been imported in contravention of a provision of this Act or the regulations will be taken within that period; and\n\n9.1(4)(d) if the feed does not meet the requirements of the regulations, it will be brought into compliance with the regulations within that period.\n\nSuspension of application of subsection (3)\n9.1(4) An inspector may, for a period that he or she specifies, suspend the application of subsection (3) if he or she is satisfied that\n\n9.1(5)(a) harm to human or animal health or the environment is unlikely to result;\n\n9.1(5)(b) the feed has not been sold within the period referred to in subsection (6);\n\n9.1(5)(c) the measures referred to in paragraph (4)(c) were taken within that period; and\n\n9.1(5)(d) if the feed did not meet the requirements of the regulations when it was imported, it was brought into compliance with the regulations within that period.\n\nCancellation\n9.1(5) An inspector may cancel the notice if he or she is satisfied that\n\n9.1(6)(a) if the application of subsection (3) was suspended under subsection (4), the period of the suspension; and\n\n9.1(6)(b) if the application of subsection (3) was not suspended, the period specified in the notice or, if no period was specified, the period that ends 90 days after the day on which the notice was delivered or sent.\n\nPeriod\n9.1(6) The period for the purposes of subsection (5) is\n\nNon-application of Statutory Instruments Act\n9.1(7) The Statutory Instruments Act does not apply in respect of the notice.\n\n9.2(a) any sample taken by an inspector, or provided to the Minister or an inspector, under this Act; or\n\n9.2(b) anything removed under paragraph 7(1)(e), any article seized under subsection 9(1) or any sample of that thing or article.\n\nAnalysis and examination\n9.2 An inspector may submit to an analyst, for analysis or examination,\n\n9.3(a) for any costs, loss or damage resulting from the compliance; or\n\n9.3(b) to pay any fee, including any rent or charge, for what is done or permitted to be done.\n\nHer Majesty not liable\n9.3 If a person must, under this Act, do anything or permit an inspector to do anything, Her Majesty in right of Canada is not liable\n\nNo liability\n9.4 No person who exercises powers or performs duties or functions under this Act is liable in respect of anything done or omitted to be done in good faith in the exercise of those powers or the performance of those duties or functions.\n\n10(1)(a) an offence punishable on summary conviction and liable to a fine not exceeding $50,000 or to imprisonment for a term not exceeding six months, or to both; or\n\n10(1)(b) an indictable offence and liable to a fine not exceeding $250,000 or to imprisonment for a term not exceeding two years, or to both.\n\n10(1) Every person who contravenes any provision of this Act or the regulations or fails to do anything that the person is ordered to do by an inspector under this Act is guilty of\n\nParties to offence\n10(2) If a person other than an individual commits an offence under subsection (1), any of the person’s directors, officers or agents or mandataries who directs, authorizes, assents to or acquiesces or participates in the commission of the offence is a party to the offence and is liable on conviction to the punishment provided for by this Act, even if the person is not prosecuted for the offence.\n\nProof of offence\n10(3) In a prosecution for an offence under this Act, it is sufficient proof of the offence to establish that it was committed by an employee or an agent or mandatary of the accused, even if the employee or the agent or mandatary is not identified or prosecuted for the offence, unless the accused establishes that the offence was committed without the knowledge or consent of the accused and that the accused exercised all due diligence to prevent its commission.\n\nLimitation period\n10(4) Summary conviction proceedings for an offence under this Act may be instituted no later than two years after the day on which the subject matter of the proceedings arises.\n\n10(5) [Repealed, 2015, c. 2, s. 61]\n\n11(1) A certificate of an analyst stating that the analyst has examined a substance or a sample submitted to the analyst by an inspector and stating the result of the examination is admissible in evidence in any proceedings for a violation, or for an offence under this Act, and, in the absence of any evidence to the contrary, is proof of the statement of analysis contained in the certificate.\n\nAdmissibility\n11(2) In any proceedings for a violation, or for an offence under this Act, a document purporting to be the certificate of an analyst shall be admitted in evidence without proof of the signature of the person by whom it purports to be signed and without proof of that person’s official position.\n\nVenue\n12 A complaint or information in respect of an offence under this Act may be heard, tried or determined by a provincial court judge or a justice if the accused is resident or carrying on business within the territorial jurisdiction of the provincial court judge or justice, although the matter of the complaint or information did not arise in that territorial jurisdiction.\n\nSCHEDULE ¶165 For greater certainty, the two year limitation period provided for in subsection 10(4) of the Act, as amended by subsection (1), only applies in respect of offences committed after the coming into force of that subsection.\n\nSCHEDULE ¶166 Transitional"
 }
