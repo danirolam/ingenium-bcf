@@ -22,6 +22,7 @@ import { PageHeader } from "../components/PageHeader";
 import { DeltaPhaseNav, type DeltaPhase } from "../components/DeltaPhaseNav";
 import { DeltaApprove } from "./delta/DeltaApprove";
 import { DeltaExport } from "./delta/DeltaExport";
+import { exportActPdf } from "../lib/actExport";
 import { useApprovals } from "../lib/useApprovals";
 import {
   Alert,
@@ -207,6 +208,13 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
     const billId = bill?.id ?? nav.params.billId ?? "";
     const phase: DeltaPhase = nav.params.phase === "export" ? "export" : "approve";
     const goPhase = (p: DeltaPhase) => nav.go("delta", { billId, phase: p });
+    // Export = straight to the print dialog, no preview. One PDF per Act: a
+    // single-Act bill prints immediately; multi-Act lands on per-Act buttons.
+    const doExport = () => {
+      if (!bill) return;
+      if (pdeltas.length === 1) exportActPdf(pdeltas[0], bill.billNumber, bill.title);
+      else goPhase("export");
+    };
     const refreshDelta = async () => {
       if (!bill) return;
       setRefreshing(true);
@@ -230,7 +238,7 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
     const phaseNav = (
       <DeltaPhaseNav
         phase={phase}
-        onGo={goPhase}
+        onGo={(p) => (p === "export" ? doExport() : goPhase(p))}
         approved={{ done, total }}
         exportEnabled={allApproved}
       />
@@ -279,7 +287,7 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
             deltas={pdeltas}
             approved={approvals.approved}
             onSet={approvals.set}
-            onDone={() => goPhase("export")}
+            onExport={doExport}
           />
         )}
         {phase === "export" && (

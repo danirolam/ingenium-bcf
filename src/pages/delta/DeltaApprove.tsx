@@ -33,23 +33,59 @@ function buildQueue(deltas: ProvisionDelta[]): QueueItem[] {
   return out;
 }
 
-// The focused provision(s) in the Act for this amendment, plus a little context
-// either side — matched by the op's anchor label, with a sane fallback.
+const sectionOf = (label?: string | null) =>
+  norm(label).match(/^[0-9]+(?:\.[0-9]+)*[a-z]?/)?.[0] ?? "";
+// Pull a provision reference out of an instruction note ("Paragraph 6(1)(e.1)
+// of the Act is replaced…") when the op carries no parsed anchor.
+const refFromNote = (note?: string | null) =>
+  note?.match(/(?:sections?|subsections?|paragraphs?|subparagraphs?|clauses?)\s+([0-9A-Za-z.]+(?:\([^)]+\))*)/i)?.[1] ?? "";
+
+// The changed provision(s) for this amendment, plus a little context either
+// side. Inserted rows carry a LEAF label ("(e.1)") while the bill anchor is the
+// full chain ("6(1)(e.1)"), so after an exact try we match by suffix; failing
+// that we centre on the change's section so surrounding provisions still show.
 function focusWindow(
   delta: ProvisionDelta,
   op: BillAmendmentOp,
-  ctx = 2,
+  ctx = 5,
 ): { rows: ProvisionDiffRow[]; focusIdx: number } {
   const rows = delta.rows ?? [];
+  if (rows.length === 0) return { rows: [], focusIdx: -1 };
   const a = norm(op.anchor);
-  const match = (r: ProvisionDiffRow) =>
-    [r.label, r.after?.label, r.before?.label].some((l) => norm(l) === a);
-  let idx = a ? rows.findIndex((r) => r.status !== "unchanged" && match(r)) : -1;
-  if (idx < 0 && a) idx = rows.findIndex(match);
-  if (idx < 0) {
-    const changed = rows.filter((r) => r.status !== "unchanged").slice(0, 6);
-    return { rows: changed, focusIdx: changed.length ? 0 : -1 };
+  const labelsOf = (r: ProvisionDiffRow) =>
+    [r.label, r.after?.label, r.before?.label].map(norm).filter(Boolean);
+
+  let idx = -1;
+  // 1) exact anchor on a changed row
+  if (a) idx = rows.findIndex((r) => r.status !== "unchanged" && labelsOf(r).includes(a));
+  // 2) deep anchor → the leaf-labelled changed row (longest suffix of the anchor)
+  if (idx < 0 && a.length >= 3) {
+    let bestLen = 0;
+    rows.forEach((r, i) => {
+      if (r.status === "unchanged") return;
+      for (const rl of labelsOf(r)) {
+        if (rl.length >= 3 && rl.length > bestLen && a.endsWith(rl)) {
+          idx = i;
+          bestLen = rl.length;
+        }
+      }
+    });
   }
+  // 3) exact anchor on any (unchanged) row — the Act's existing provision
+  if (idx < 0 && a) idx = rows.findIndex((r) => labelsOf(r).includes(a));
+  // 4) by section (from the anchor or the note) — centre on a change there
+  if (idx < 0) {
+    const sec = sectionOf(op.anchor) || sectionOf(refFromNote(op.note));
+    if (sec) {
+      const inSec = (r: ProvisionDiffRow) => sectionOf((r.after ?? r.before)?.label) === sec;
+      idx = rows.findIndex((r) => r.status !== "unchanged" && inSec(r));
+      if (idx < 0) idx = rows.findIndex(inSec);
+    }
+  }
+  // 5) last resort — the first change anywhere; still windowed so context shows
+  if (idx < 0) idx = rows.findIndex((r) => r.status !== "unchanged");
+  if (idx < 0) idx = 0;
+
   const start = Math.max(0, idx - ctx);
   const end = Math.min(rows.length, idx + ctx + 1);
   return { rows: rows.slice(start, end), focusIdx: idx - start };
@@ -64,13 +100,13 @@ export function DeltaApprove({
   deltas,
   approved,
   onSet,
-  onDone,
+  onExport,
 }: {
   bill: Bill | null;
   deltas: ProvisionDelta[];
   approved: Set<string>;
   onSet: (keys: string[], value: boolean) => void;
-  onDone: () => void;
+  onExport: () => void;
 }) {
   const queue = useMemo(() => buildQueue(deltas), [deltas]);
   // Per-card expand override; default is "expanded until approved".
@@ -124,7 +160,12 @@ export function DeltaApprove({
                 Approve all
               </button>
             )}
-            <button className="btn primary sm" disabled={!allDone} onClick={onDone} title={allDone ? "" : "Approve every placement first"}>
+            <button
+              className="btn primary sm"
+              disabled={!allDone}
+              onClick={onExport}
+              title={allDone ? "Export the amended Act as PDF" : "Approve every placement first"}
+            >
               Export →
             </button>
           </div>
@@ -146,26 +187,45 @@ export function DeltaApprove({
                     {!q.op.anchorFound && <span className="dap2-warn"> ⚠</span>}
                   </span>
                   <span className="dap2-act">{actName(q.title)}</span>
+                  <span
+                    className={`dap2-method${q.delta.source === "ai" ? " is-ai" : ""}`}
+                    title={
+                      q.delta.source === "ai"
+                        ? "Location resolved by AI"
+                        : "Location matched against the Act's structure"
+                    }
+                  >
+                    {q.delta.source === "ai" ? "ai-located" : "structured"}
+                  </span>
                   <span className="dap2-caret">{open ? "▾" : "▸"}</span>
                 </button>
 
                 {open && win && (
                   <div className="dap2-card-body">
-                    <div className="dap2-sec-h">Bill says</div>
-                    {q.op.note && <div className="dap-bill-note">{q.op.note}</div>}
-                    {q.op.newText && <div className="dap-bill-text">{q.op.newText}</div>}
-
-                    <div className="dap2-sec-h">Becomes, in the {actName(q.title)}</div>
-                    <div className="dap-diff">
-                      {win.rows.length === 0 ? (
-                        <div className="rd-empty">No matching provision found.</div>
-                      ) : (
-                        win.rows.map((r, i) => (
-                          <div key={i} className={i === win.focusIdx ? "dap-diff-focus" : undefined}>
-                            <ProvBlock prov={(r.after ?? r.before)!} variant={VARIANT[r.status] ?? "plain"} />
-                          </div>
-                        ))
+                    <div className="dap2-block dap2-said">
+                      <div className="dap2-sec-h">Bill says</div>
+                      {q.op.note && <p className="dap2-instr">{q.op.note}</p>}
+                      {q.op.newText && <div className="dap2-inserted">{q.op.newText}</div>}
+                      {!q.op.note && !q.op.newText && (
+                        <p className="dap2-instr dap2-muted">
+                          {q.op.op} {q.op.anchor ?? ""}
+                        </p>
                       )}
+                    </div>
+
+                    <div className="dap2-block dap2-result">
+                      <div className="dap2-sec-h">In the {actName(q.title)}</div>
+                      <div className="dap-diff">
+                        {win.rows.length === 0 ? (
+                          <div className="rd-empty">No matching provision found.</div>
+                        ) : (
+                          win.rows.map((r, i) => (
+                            <div key={i} className={i === win.focusIdx ? "dap-diff-focus" : undefined}>
+                              <ProvBlock prov={(r.after ?? r.before)!} variant={VARIANT[r.status] ?? "plain"} />
+                            </div>
+                          ))
+                        )}
+                      </div>
                     </div>
 
                     <div className="dap2-card-foot">

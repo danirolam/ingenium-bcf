@@ -1,14 +1,13 @@
 import type { Bill, ProvisionDelta } from "../../types";
-import { ProvBlock } from "../../components/ProvisionDeltaView";
 import { exportActPdf } from "../../lib/actExport";
 
 function actName(t: string): string {
   return t.replace(/\s*\([^)]*\)\s*$/, "");
 }
 
-// Phase 3 — gated on full approval. One branded PDF per amended Act; a faded
-// preview of the updated Act (amended provisions highlighted) sits above each
-// export button.
+// Multi-Act export landing (single-Act bills print straight from the Approve
+// bar). No preview — each button goes directly to the print dialog, one PDF
+// per amended Act.
 export function DeltaExport({
   bill,
   deltas,
@@ -33,45 +32,27 @@ export function DeltaExport({
     );
   }
 
+  const exportOne = (d: ProvisionDelta) => {
+    const ok = exportActPdf(d, bill?.billNumber ?? "", bill?.title ?? "");
+    if (!ok) alert("Allow pop-ups for this site to export the PDF.");
+  };
+
   return (
     <div className="dex">
-      {deltas.map((d) => {
-        const after = (d.rows ?? []).filter((r) => r.status !== "repealed");
-        return (
-          <div className="dex-card" key={d.slug}>
-            <div className="dex-card-h">
-              <div>
-                <b>{actName(d.title)}</b> <span className="pd-cite">{d.citation}</span>
-                <div className="dex-sub">
-                  as amended by {bill?.billNumber ?? "the bill"} · +{d.summary.added} ~{d.summary.changed} −
-                  {d.summary.repealed}
-                </div>
-              </div>
-              <button
-                className="btn primary sm"
-                onClick={() => {
-                  const ok = exportActPdf(d, bill?.billNumber ?? "", bill?.title ?? "");
-                  if (!ok) alert("Allow pop-ups for this site to export the PDF.");
-                }}
-              >
-                Export PDF ⤓
-              </button>
+      {deltas.map((d) => (
+        <div className="dex-row" key={d.slug}>
+          <div>
+            <b>{actName(d.title)}</b> <span className="pd-cite">{d.citation}</span>
+            <div className="dex-sub">
+              as amended by {bill?.billNumber ?? "the bill"} · +{d.summary.added} ~{d.summary.changed} −
+              {d.summary.repealed}
             </div>
-            <div className="dex-preview">
-              {after.slice(0, 8).map((r, i) => (
-                <ProvBlock
-                  key={i}
-                  prov={(r.after ?? r.before)!}
-                  variant={r.status === "added" || r.status === "changed" ? "changed" : "plain"}
-                />
-              ))}
-            </div>
-            {after.length > 8 && (
-              <div className="dex-more">+{after.length - 8} more provisions in the exported PDF</div>
-            )}
           </div>
-        );
-      })}
+          <button className="btn primary" onClick={() => exportOne(d)}>
+            Export PDF ⤓
+          </button>
+        </div>
+      ))}
     </div>
   );
 }
