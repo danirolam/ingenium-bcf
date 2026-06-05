@@ -168,17 +168,46 @@ function topLevelSections(xml: string): string[] {
   return out;
 }
 
+// Split a clause into (instruction, AmendedText) units — one per AmendedText —
+// so a clause with several sub-amendments yields several operations. Each unit's
+// instruction is the text since the previous AmendedText. A clause with no
+// AmendedText (e.g. a repeal) is one instruction-only unit.
+function splitAmendmentUnits(clause: string): { instruction: string; amendedXml: string | null }[] {
+  const re = /<AmendedText\b[^>]*>([\s\S]*?)<\/AmendedText>/g;
+  const units: { instruction: string; amendedXml: string | null }[] = [];
+  let last = 0;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(clause))) {
+    units.push({ instruction: squish(clause.slice(last, m.index)), amendedXml: m[1] });
+    last = re.lastIndex;
+  }
+  if (units.length === 0) return [{ instruction: squish(clause), amendedXml: null }];
+  const tail = squish(clause.slice(last));
+  if (/\b(?:repealed|replaced|amended|striking out)\b/i.test(tail)) {
+    units.push({ instruction: tail, amendedXml: null });
+  }
+  return units;
+}
+
+// A provision reference: a section number ("30", "2.4", "21.9702(1)") or a bare
+// bracketed leaf ("(j)").
+const REF = "([0-9]+(?:\\.[0-9]+)*[A-Za-z]?(?:\\([^)]+\\))*|\\([^)]+\\))";
+
 function parseInstruction(text: string): { op: "add" | "replace" | "repeal"; anchor: string | null; position: "after" | "before" | null } {
-  const anchorOf = () => {
-    const a = text.match(/(?:sections?|subsections?|paragraphs?)\s+([\w.()]+)/i);
-    return a ? a[1] : null;
-  };
-  if (/replaced by the following/i.test(text)) return { op: "replace", anchor: anchorOf(), position: null };
-  if (/\b(?:is|are)\s+repealed\b/i.test(text)) return { op: "repeal", anchor: anchorOf(), position: null };
-  let m = text.match(/adding the following after (?:section|subsection|paragraph)\s+([\w.()]+)/i);
-  if (m) return { op: "add", anchor: m[1], position: "after" };
-  m = text.match(/adding the following before (?:section|subsection|paragraph)\s+([\w.()]+)/i);
-  if (m) return { op: "add", anchor: m[1], position: "before" };
+  // The container being amended ("Subsection 30(1) of the Act…") prefixes a bare
+  // leaf anchor, so "after paragraph (j)" of subsection 30(1) -> "30(1)(j)".
+  const container = text.match(/\b(?:sections?|subsections?)\s+([0-9]+(?:\.[0-9]+)*(?:\([^)]+\))*)\s+of\b/i)?.[1] ?? "";
+  const compose = (ref: string | null) =>
+    ref && /^\(/.test(ref) && container ? container + ref : ref;
+  const firstRef = () =>
+    text.match(new RegExp(`(?:sections?|subsections?|paragraphs?|subparagraphs?|clauses?)\\s+${REF}`, "i"))?.[1] ?? null;
+
+  if (/replaced by the following/i.test(text)) return { op: "replace", anchor: compose(firstRef()), position: null };
+  if (/\b(?:is|are)\s+repealed\b/i.test(text)) return { op: "repeal", anchor: compose(firstRef()), position: null };
+  let m = text.match(new RegExp(`adding the following after (?:section|subsection|paragraph|subparagraph|clause)\\s+${REF}`, "i"));
+  if (m) return { op: "add", anchor: compose(m[1]), position: "after" };
+  m = text.match(new RegExp(`adding the following before (?:section|subsection|paragraph|subparagraph|clause)\\s+${REF}`, "i"));
+  if (m) return { op: "add", anchor: compose(m[1]), position: "before" };
   return { op: "add", anchor: null, position: "after" }; // append-style add
 }
 
@@ -217,35 +246,38 @@ export function parseBillAmendments(
   let currentSlug: string | null = null;
 
   for (const clause of topLevelSections(body)) {
-    const am = /<AmendedText\b[^>]*>([\s\S]*)<\/AmendedText>/.exec(clause);
-    const amendedXml = am ? am[1] : "";
-    const instructionXml = clause.replace(/<AmendedText\b[^>]*>[\s\S]*<\/AmendedText>/, "");
-
-    // Which Act? The first act cross-reference in the instruction, else carry over.
-    const actRef = /<XRefExternal\b[^>]*reference-type="act"[^>]*>([\s\S]*?)<\/XRefExternal>/i.exec(instructionXml);
+    // Which Act? The first act cross-reference in the clause's instruction text
+    // (outside any AmendedText), else carry over from a previous clause.
+    const instrOnly = clause.replace(/<AmendedText\b[^>]*>[\s\S]*?<\/AmendedText>/g, " ");
+    const actRef = /<XRefExternal\b[^>]*reference-type="act"[^>]*>([\s\S]*?)<\/XRefExternal>/i.exec(instrOnly);
     if (actRef) {
       const slug = resolveActSlug(squish(actRef[1]), registry);
       if (slug) currentSlug = slug;
     }
     if (!currentSlug || !registry[currentSlug]) continue; // unregistered Act → no diff target
 
-    const instruction = squish(instructionXml);
+    // A clause can bundle several sub-amendments (e.g. 3(1) after (j); 3(2) after
+    // (o)) — one per AmendedText. Split so each gets its own op + anchor.
+    for (const unit of splitAmendmentUnits(clause)) {
+      const instruction = unit.instruction;
+      if (!instruction) continue;
 
-    // Partial edit (text surgery inside a provision) → hand to the AI scalpel.
-    if (PARTIAL_EDIT.test(instruction)) {
-      const hint = instruction.match(/(?:section|subsection|paragraph|subparagraph)\s+([\w.()]+)/i);
-      const list = edits.get(currentSlug) ?? [];
-      list.push({ actSlug: currentSlug, instruction, sectionHint: hint ? hint[1] : null });
-      edits.set(currentSlug, list);
-    }
+      // Partial edit (text surgery inside a provision) → hand to the AI scalpel.
+      if (PARTIAL_EDIT.test(instruction)) {
+        const hint = instruction.match(/(?:section|subsection|paragraph|subparagraph)\s+([\w.()]+)/i);
+        const list = edits.get(currentSlug) ?? [];
+        list.push({ actSlug: currentSlug, instruction, sectionHint: hint ? hint[1] : null });
+        edits.set(currentSlug, list);
+      }
 
-    // Whole-provision add/replace/repeal applied deterministically from <AmendedText>.
-    const provisions = parseProvisions(amendedXml);
-    if (provisions.length > 0 || /repealed/i.test(instruction)) {
-      const { op, anchor, position } = parseInstruction(instruction);
-      const list = groups.get(currentSlug) ?? [];
-      list.push({ actSlug: currentSlug, op, anchor, position, provisions, instruction });
-      groups.set(currentSlug, list);
+      // Whole-provision add/replace/repeal applied deterministically from <AmendedText>.
+      const provisions = unit.amendedXml ? parseProvisions(unit.amendedXml) : [];
+      if (provisions.length > 0 || /repealed/i.test(instruction)) {
+        const { op, anchor, position } = parseInstruction(instruction);
+        const list = groups.get(currentSlug) ?? [];
+        list.push({ actSlug: currentSlug, op, anchor, position, provisions, instruction });
+        groups.set(currentSlug, list);
+      }
     }
   }
   return { groups, edits };

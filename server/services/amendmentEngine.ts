@@ -96,6 +96,16 @@ export function findByPath(
   const exact = provisions.findIndex((p) => samePath(pathOf(p), target));
   if (exact >= 0) return { index: exact, matched: "exact", missingDepth: 0 };
 
+  // Container: the anchor names a section/subsection whose own label isn't a
+  // provision because it only exists through its children (e.g. "30" -> 30(1),
+  // 30(2)…). Resolve to the LAST descendant so "add after section 30" lands
+  // after the whole section. This is a confident match, so report it as exact.
+  let lastDesc = -1;
+  for (let i = 0; i < provisions.length; i++) {
+    if (isPrefix(target, pathOf(provisions[i]))) lastDesc = i;
+  }
+  if (lastDesc >= 0) return { index: lastDesc, matched: "exact", missingDepth: 0 };
+
   // Deepest ancestor: longest target prefix that exists as a provision path.
   let best = -1, bestLen = 0;
   for (let i = 0; i < provisions.length; i++) {
