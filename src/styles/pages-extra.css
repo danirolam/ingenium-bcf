@@ -600,8 +600,8 @@
 .dap2-block { padding: 11px 12px; }
 .dap2-said { background: var(--panel-2); }
 .dap2-result { border-top: 1px solid var(--border-3); }
-/* ±5 provisions of context, scrollable so a card stays compact. */
-.dap2-result .dap-diff { max-height: 320px; overflow: auto; border: 1px solid var(--border-3); border-radius: 3px; }
+/* The law renders inline (no box, no nested scroll) — the card list is the only
+   scroll region. The last row drops its divider so it doesn't look boxed. */
 .dap2-result .dap-diff > div:last-child .lawdiff-row { border-bottom: 0; }
 .dap2-sec-h {
   display: flex; align-items: center; gap: 8px; margin: 0 0 8px;

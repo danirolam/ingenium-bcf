@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import type { Bill, BillAmendmentOp, ProvisionDelta, ProvisionDiffRow } from "../../types";
-import { ProvBlock } from "../../components/ProvisionDeltaView";
+import { ProvisionBlock } from "../../components/delta/ProvisionBlock";
 
 function actName(t: string): string {
   return t.replace(/\s*\([^)]*\)\s*$/, "");
@@ -221,7 +221,7 @@ export function DeltaApprove({
                         ) : (
                           win.rows.map((r, i) => (
                             <div key={i} className={i === win.focusIdx ? "dap-diff-focus" : undefined}>
-                              <ProvBlock prov={(r.after ?? r.before)!} variant={VARIANT[r.status] ?? "plain"} />
+                              <ProvisionBlock prov={(r.after ?? r.before)!} variant={VARIANT[r.status] ?? "plain"} />
                             </div>
                           ))
                         )}
