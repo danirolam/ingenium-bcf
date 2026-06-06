@@ -1,13 +1,16 @@
 // Ingest Canadian federal Act XML from the Justice Laws website into a
-// diff-friendly normalized structure, with a built-in coverage validator so we
+// diff-friendly HIERARCHICAL structure, with a built-in coverage validator so we
 // KNOW when an Act doesn't fit the model instead of emitting silent garbage.
 //
 // The Justice Laws "LIMS" XML is consistent across vintages (see
 // scripts/probe-law-xml.mjs): root <Statute>, a <Body> of <Heading>/<Section>,
 // and a strict Section › Subsection › Paragraph › Subparagraph › Clause
 // hierarchy where every provision has <Label>, optional <MarginalNote>, <Text>,
-// and a STABLE lims:id. We parse on that real structure and key each provision
-// by lims:id — the identity a clean git-diff needs.
+// and a STABLE lims:id. We parse on that real structure into a nested tree of
+// Nodes { id, num, kind, heading?, marginalNote?, text, closingText?, children[] }
+// keyed by lims:id — the identity a clean git-diff needs. The composed label
+// ("30(1)(j)") and the hierarchy "path" are NOT stored: the tree IS the path, and
+// the server (server/services/lawProvisions.ts) flattens it back at load time.
 //
 // Usage:
 //   node --use-system-ca scripts/ingest-acts.mjs F-27 A-0.6 P-9.01   # ingest codes
@@ -15,10 +18,12 @@
 //   node --use-system-ca scripts/ingest-acts.mjs --list A            # discover Act codes under letter A
 //   node --use-system-ca scripts/ingest-acts.mjs F-27 --dry          # parse + validate, write nothing
 //   node --use-system-ca scripts/ingest-acts.mjs F-27 --write-registry  # also merge a registry entry
+//   node --use-system-ca scripts/ingest-acts.mjs --from-cache        # re-parse every cached current.xml, offline
+//   node --use-system-ca scripts/ingest-acts.mjs --verify --from-cache  # assert flatten(tree) === legacy flat parser
 //
-// Writes (unless --dry):
-//   data/laws/current/federal/<slug>/current.xml
-//   data/laws/current/federal/<slug>/current.normalized.json   (superset of the old format)
+// Writes (unless --dry/--verify):
+//   data/laws/current/federal/<slug>/current.xml             (skipped in --from-cache; the source)
+//   data/laws/current/federal/<slug>/current.normalized.json { title, citation, …, sections[], schedules[], fullText }
 
 import { promises as fs } from "node:fs";
 import path from "node:path";
@@ -134,8 +139,12 @@ function decode(s) {
 }
 const squish = (s) => decode(s).replace(/\s+/g, " ").trim();
 
-// ───────────────────────── parser ─────────────────────────
-function parseAct(xml, code) {
+// ───────────────────────── parser (legacy flat — kept as a verification oracle) ─────────────────────────
+// The hierarchical parseActTree below is the source of truth. This legacy flat
+// parser is retained ONLY so `--verify` can assert that flatten(tree) reproduces
+// the exact provision list the engine was validated against (C-265). Not used to
+// write output.
+function parseActLegacy(xml, code) {
   const provisions = [];
   const unknown = new Map();      // element name -> count (audit)
   const headingByLevel = [];      // current Part/Division titles by level
@@ -293,6 +302,208 @@ function parseAct(xml, code) {
   return { provisions, unknown, missingLabel };
 }
 
+// ───────────────────────── parser (hierarchical tree — source of truth) ─────────────────────────
+// Build the real nested structure instead of a flat list. Each provision is a
+// Node { id, num, kind, heading?, marginalNote?, text, closingText?, children[] }:
+//   num         — this provision's OWN label segment only ("30", "(1)", "(a)"),
+//                 or, for a definition, its quoted term (“advertisement”).
+//   kind        — section | subsection | paragraph | subparagraph | clause | definition.
+//   heading     — the Part/Division heading string; set on TOP-LEVEL nodes only.
+//   text        — this provision's own operative text (the chapeau / lead-in);
+//                 a parent may have its own text AND children.
+//   closingText — flush text that follows a child list (LIMS Continued* blocks).
+//   children    — nested provisions, in document order.
+// The composed label ("30(1)(a)") and the hierarchy "path" are NOT stored — they
+// are the tree itself, recomputed in memory by the loader for anchor matching.
+function parseActTree(xml, code) {
+  const roots = [];               // top-level Section nodes
+  const frames = [];              // stack of in-progress nodes
+  const unknown = new Map();
+  const headingByLevel = [];
+  let inBody = false, inSchedule = false, skipDepth = 0, continuedDepth = 0;
+  const captureStack = [];
+  let termBuf = null;
+  let headingTitleBuf = null, headingLevel = null;
+  const note = (map, k) => map.set(k, (map.get(k) ?? 0) + 1);
+  const top = () => frames[frames.length - 1] ?? null;
+
+  // Squish buffers, prune fully-empty nodes, drop scratch fields.
+  function finalize(node) {
+    node.text = squish(node._textBuf.join(""));
+    const closing = squish(node._closeBuf.join(""));
+    delete node._textBuf;
+    delete node._closeBuf;
+    delete node._term;
+    delete node._locked;
+    if (!node.text && !closing && node.children.length === 0) return null; // empty frame
+    if (closing) node.closingText = closing;
+    return node;
+  }
+
+  for (const t of tokens(xml)) {
+    if (t.type === "text") {
+      if (skipDepth > 0) continue;
+      if (termBuf) termBuf.push(t.value);
+      const cap = captureStack[captureStack.length - 1];
+      if (cap) cap.buf.push(t.value);
+      else if (headingTitleBuf) headingTitleBuf.push(t.value);
+      continue;
+    }
+
+    if (t.type === "open") {
+      if (t.name === "Body") inBody = true;
+      if (t.name === "Schedule") inSchedule = true;
+
+      if (t.name === "HistoricalNote" || t.name === "RecentAmendments") {
+        if (!t.selfClose) skipDepth++;
+        continue;
+      }
+      if (skipDepth > 0) { if (!t.selfClose) skipDepth++; continue; }
+
+      // Continued* blocks carry the flush text after a child list → closingText.
+      if (t.name === "ContinuedSectionSubsection" || t.name === "ContinuedParagraph" || t.name === "ContinuedDefinition") {
+        if (!t.selfClose) continuedDepth++;
+        continue;
+      }
+
+      if (t.name === "Heading" && inBody && !inSchedule) {
+        headingLevel = parseInt(attr(t.attrs, "level") ?? "1", 10) || 1;
+        continue;
+      }
+      if (t.name === "TitleText" && headingLevel != null) { headingTitleBuf = []; continue; }
+
+      if (STRUCTURAL.has(t.name) && inBody && !inSchedule) {
+        const node = {
+          id: attr(t.attrs, "lims:fid") || attr(t.attrs, "lims:id") || "",
+          num: "",
+          kind: KIND[t.name],
+          marginalNote: null,
+          _textBuf: [],
+          _closeBuf: [],
+          children: [],
+        };
+        if (frames.length === 0) node.heading = headingByLevel.filter(Boolean).slice(-1)[0] ?? null;
+        frames.push(node);
+        if (t.selfClose) {
+          const done = finalize(frames.pop());
+          const parent = top();
+          if (done) (parent?.children ?? roots).push(done);
+          if (parent) parent._locked = true; // a child has attached → lock parent's num
+        }
+        continue;
+      }
+
+      if (t.name === "DefinedTermEn") {
+        const f = top();
+        if (f && f.kind === "definition" && !f.num && !f._term && !t.selfClose) termBuf = [];
+        continue;
+      }
+
+      if (CAPTURE.has(t.name)) { if (!t.selfClose) captureStack.push({ kind: t.name, buf: [] }); continue; }
+
+      if (inBody && !inSchedule &&
+          !KNOWN_INLINE.has(t.name) && !KNOWN_STRUCTURAL_CONTAINERS.has(t.name) && !CAPTURE.has(t.name)) {
+        note(unknown, t.name);
+      }
+      continue;
+    }
+
+    // close
+    if (t.name === "Body") inBody = false;
+    if (t.name === "Schedule") inSchedule = false;
+
+    if (t.name === "HistoricalNote" || t.name === "RecentAmendments") { if (skipDepth > 0) skipDepth--; continue; }
+    if (skipDepth > 0) { skipDepth--; continue; }
+    if (t.name === "ContinuedSectionSubsection" || t.name === "ContinuedParagraph" || t.name === "ContinuedDefinition") {
+      if (continuedDepth > 0) continuedDepth--;
+      continue;
+    }
+
+    if (t.name === "DefinedTermEn" && termBuf) {
+      const f = top();
+      if (f) { f.num = `“${squish(termBuf.join(""))}”`; f._term = true; }
+      termBuf = null;
+      continue;
+    }
+
+    if (t.name === "Heading") { headingLevel = null; continue; }
+    if (t.name === "TitleText" && headingTitleBuf) {
+      const title = squish(headingTitleBuf.join(""));
+      const lvl = headingLevel ?? 1;
+      headingByLevel[lvl - 1] = title;
+      headingByLevel.length = lvl;
+      headingTitleBuf = null;
+      continue;
+    }
+
+    if (CAPTURE.has(t.name)) {
+      const cap = captureStack.pop();
+      if (!cap) continue;
+      const frame = top();
+      const val = squish(cap.buf.join(""));
+      if (!frame) continue;
+      // A provision's own number is set by the <Label>(s) in its HEADER, before
+      // any child provision. Once a structural child has attached (frame._locked),
+      // later <Label>s belong to unmodeled descendants (FormulaParagraph, Subclause…)
+      // and must NOT overwrite this frame's num — doing so corrupted descendant
+      // labels in formula-heavy Acts (ITA, ETA, Bank Act…). Header labels still
+      // resolve last-wins, so an empty-then-"*" marker sequence keeps "*".
+      if (cap.kind === "Label") { if (!frame._locked) frame.num = val || frame.num; }
+      else if (cap.kind === "MarginalNote") frame.marginalNote = val || frame.marginalNote;
+      else if (cap.kind === "Text") (continuedDepth > 0 ? frame._closeBuf : frame._textBuf).push(cap.buf.join("") + " ");
+      continue;
+    }
+
+    if (STRUCTURAL.has(t.name) && frames.length) {
+      const done = finalize(frames.pop());
+      const parent = top();
+      if (done) (parent?.children ?? roots).push(done);
+      if (parent) parent._locked = true; // a child has attached → lock parent's num
+      continue;
+    }
+  }
+
+  bakeIds(roots, code);
+  return { sections: roots, unknown };
+}
+
+// Assign a stable id to every node. Real provisions carry a lims id; the rare
+// label-less one falls back to `<code>:<n>` where n is its post-order position
+// among text-bearing nodes — identical to the legacy flat id, so diffs are stable.
+function bakeIds(roots, code) {
+  let counter = 0;
+  const walk = (node) => {
+    node.children.forEach(walk);
+    const hasText = !!(node.text || node.closingText);
+    if (!node.id) node.id = hasText ? `${code}:${counter}` : `${code}:c${counter}`;
+    if (hasText) counter++;
+  };
+  roots.forEach(walk);
+}
+
+// Flatten the tree to the engine's leaf-provision view — the SAME projection the
+// loader builds at runtime, kept here so `--verify` and coverage/fullText agree.
+// Post-order (children before parents), composed labels, section heading pushed
+// down to descendants, chapeau+closing merged, empty-text nodes skipped.
+function flattenTree(roots) {
+  const flat = [];
+  const walk = (node, ancestors) => {
+    for (const ch of node.children) walk(ch, [...ancestors, node]);
+    const own = (node.text ?? "").trim();
+    const close = (node.closingText ?? "").trim();
+    const text = [own, close].filter(Boolean).join(" ");
+    if (!text) return;
+    const chain = node.kind === "definition"
+      ? (node.num ?? "")
+      : [...ancestors, node].map((n) => n.num ?? "").filter(Boolean).join("");
+    const heading = ancestors.length ? (ancestors[0].heading ?? null) : (node.heading ?? null);
+    const label = chain || node.marginalNote || `¶${flat.length + 1}`;
+    flat.push({ id: node.id, label, kind: node.kind, heading, marginalNote: node.marginalNote ?? null, text });
+  };
+  roots.forEach((r) => walk(r, []));
+  return flat;
+}
+
 // ───────────────────────── coverage validator ─────────────────────────
 // Body <Text> chars (operative) vs what we captured. High ratio + no unknowns = trust.
 function coverage(xml, provisions) {
@@ -404,20 +615,29 @@ function slugify(s) {
     .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
 
-// Section-level compatibility view (old format): group leaf provisions by section.
-function sectionsView(provisions) {
-  const out = [];
-  let cur = null;
-  for (const p of provisions) {
-    const secNum = (p.label.match(/^[^()]+/) ?? [p.label])[0];
-    if (!cur || cur.label !== secNum) {
-      cur = { label: secNum, marginalNote: p.marginalNote ?? "", text: "" };
-      out.push(cur);
-    }
-    if (!cur.marginalNote && p.marginalNote) cur.marginalNote = p.marginalNote;
-    cur.text += (cur.text ? " " : "") + `${p.label} ${p.text}`;
+// --verify oracle: assert the tree's flat projection reproduces the legacy flat
+// parser's provisions exactly (id, label, kind, heading, marginalNote, text), so
+// the C-265-validated engine sees an identical "before" list. Returns the first
+// mismatch or null.
+function compareFlat(treeFlat, legacy) {
+  if (treeFlat.length !== legacy.length) {
+    return `count ${treeFlat.length} vs legacy ${legacy.length}`;
   }
-  return out;
+  const fields = ["id", "label", "kind", "marginalNote", "text"];
+  for (let i = 0; i < legacy.length; i++) {
+    const a = treeFlat[i], b = legacy[i];
+    for (const f of fields) {
+      if ((a[f] ?? null) !== (b[f] ?? null)) {
+        return `#${i} ${f}: tree=${JSON.stringify(a[f])} legacy=${JSON.stringify(b[f])} (label ${JSON.stringify(b.label)})`;
+      }
+    }
+    // heading: legacy attaches it to every provision; tree pushes the section's
+    // heading down in flattenTree, so these must match too.
+    if ((a.heading ?? null) !== (b.heading ?? null)) {
+      return `#${i} heading: tree=${JSON.stringify(a.heading)} legacy=${JSON.stringify(b.heading)} (label ${JSON.stringify(b.label)})`;
+    }
+  }
+  return null;
 }
 
 // ───────────────────────── per-Act ingest ─────────────────────────
@@ -431,16 +651,30 @@ function codeOf(entry) {
 }
 
 async function ingestCode(code, registry, opts) {
-  const xml = await fetchText(`${BASE}/eng/XML/${code}.xml`);
-  const { provisions: body, unknown, missingLabel } = parseAct(xml, code);
-  const provisions = body.concat(parseSchedules(xml, code, body.length));
-  const cov = coverage(xml, provisions);
-  const parsed = ident(xml, code);
-
-  // Reuse the existing slug for already-registered Acts; else derive from title.
+  // Slug first (needed to locate the cached XML in --from-cache mode); registry
+  // holds the stable slug for every code.
   const existingSlug = Object.entries(registry.laws ?? {})
     .find(([, e]) => codeOf(e) === code)?.[0];
   const existing = existingSlug ? registry.laws[existingSlug] : null;
+
+  // XML source: the cached local copy (offline re-ingest) or a fresh fetch.
+  let xml;
+  if (opts.fromCache) {
+    if (!existingSlug) throw new Error(`no cached dir (code ${code} not in registry)`);
+    xml = await fs.readFile(path.join(OUT_BASE, existingSlug, "current.xml"), "utf8");
+  } else {
+    xml = await fetchText(`${BASE}/eng/XML/${code}.xml`);
+  }
+
+  // Parse the hierarchical tree; flatten it the way the loader will at runtime.
+  const { sections, unknown } = parseActTree(xml, code);
+  const bodyFlat = flattenTree(sections);
+  const schedules = parseSchedules(xml, code, bodyFlat.length);
+  const flat = bodyFlat.concat(schedules); // leaf view for coverage / fullText / counts
+  const cov = coverage(xml, flat);
+  const parsed = ident(xml, code);
+  const missingLabel = bodyFlat.filter((p) => /^¶/.test(p.label)).length;
+
   // Prefer the registry's stable slug for this code; else derive (capped) from
   // the title, disambiguating with the Act code if another code already owns it.
   let slug = existingSlug || capSlug(slugify(parsed.title));
@@ -451,20 +685,28 @@ async function ingestCode(code, registry, opts) {
   const title = existing?.title || parsed.title;
   const citation = existing?.citation || parsed.citation;
 
+  // Oracle check: the tree's flat projection must equal the legacy flat parser.
+  let verifyErr = null;
+  if (opts.verify) {
+    const legacy = parseActLegacy(xml, code).provisions;
+    verifyErr = compareFlat(bodyFlat, legacy);
+  }
+
   const warn = [];
   if (cov.ratio < 0.9) warn.push(`LOW COVERAGE ${(cov.ratio * 100).toFixed(1)}% of operative text`);
   if (unknown.size) warn.push(`unhandled: ${[...unknown].map(([k, n]) => `${k}×${n}`).join(", ")}`);
   if (missingLabel) warn.push(`${missingLabel} provisions missing a Label`);
+  if (verifyErr) warn.push(`TREE≠LEGACY ${verifyErr}`);
 
-  const flag = warn.length ? "⚠" : "✓";
+  const flag = verifyErr ? "✗" : warn.length ? "⚠" : "✓";
   console.log(
     `${flag} ${code.padEnd(8)} ${slug.padEnd(34)} ` +
-    `${String(provisions.length).padStart(5)} provisions  ` +
+    `${String(flat.length).padStart(5)} provisions  ` +
     `cov ${(cov.ratio * 100).toFixed(1)}%` +
     (warn.length ? `  — ${warn.join("; ")}` : ""),
   );
 
-  if (opts.dry) return { slug, code };
+  if (opts.dry || opts.verify) return { slug, code, verifyErr };
 
   const normalized = {
     title, citation, jurisdiction: "Canada", level: "federal",
@@ -472,15 +714,15 @@ async function ingestCode(code, registry, opts) {
     currentPath: `data/laws/current/federal/${slug}`,
     source: { publisher: "Justice Laws Website", xmlUrl: `${BASE}/eng/XML/${code}.xml`, htmlUrl: `${BASE}/eng/acts/${code}/index.html` },
     normalizedAt: new Date().toISOString(),
-    coverage: { ratio: Number(cov.ratio.toFixed(4)), provisions: provisions.length, scheduleHasText: cov.scheduleHasText },
-    provisions,                          // ← leaf-level diff units, keyed by stable lims:id
-    sections: sectionsView(provisions),  // ← Section-level compat view (old consumers)
-    fullText: provisions.map((p) => `${p.marginalNote ? p.marginalNote + "\n" : ""}${p.label} ${p.text}`).join("\n\n"),
+    coverage: { ratio: Number(cov.ratio.toFixed(4)), provisions: flat.length, scheduleHasText: cov.scheduleHasText },
+    sections,    // ← hierarchical tree: Section › Subsection › Paragraph › … (children[])
+    schedules,   // ← schedules/forms/tables as a separate list
+    fullText: flat.map((p) => `${p.marginalNote ? p.marginalNote + "\n" : ""}${p.label} ${p.text}`).join("\n\n"),
   };
 
   const dir = path.join(OUT_BASE, slug);
   await fs.mkdir(dir, { recursive: true });
-  await fs.writeFile(path.join(dir, "current.xml"), xml, "utf8");
+  if (!opts.fromCache) await fs.writeFile(path.join(dir, "current.xml"), xml, "utf8");
   await fs.writeFile(path.join(dir, "current.normalized.json"), JSON.stringify(normalized, null, 2), "utf8");
 
   if (opts.writeRegistry) {
@@ -512,6 +754,8 @@ const args = process.argv.slice(2);
 const opts = {
   dry: args.includes("--dry"),
   writeRegistry: args.includes("--write-registry"),
+  fromCache: args.includes("--from-cache"), // re-parse the cached local XML, no network
+  verify: args.includes("--verify"),        // assert flatten(tree) === legacy flat, write nothing
 };
 const positional = args.filter((a) => !a.startsWith("--"));
 
@@ -530,7 +774,8 @@ if (args.includes("--list")) {
 }
 
 let codes;
-if (args.includes("--registry")) {
+if (args.includes("--registry") || ((opts.fromCache || opts.verify) && !positional.length)) {
+  // --from-cache / --verify default to the whole registry (every ingested Act).
   codes = Object.values(registry.laws ?? {}).map(codeOf).filter(Boolean);
 } else if (args.includes("--all")) {
   codes = [];
@@ -546,16 +791,22 @@ if (!codes.length) {
   process.exit(1);
 }
 
-console.log(`Ingesting ${codes.length} Act(s)${opts.dry ? " (dry run — no writes)" : ""}…\n`);
-let ok = 0, failed = 0;
+const mode = opts.verify ? " (verify — no writes)" : opts.dry ? " (dry run — no writes)" : opts.fromCache ? " (from cached XML — offline)" : "";
+console.log(`${opts.verify ? "Verifying" : "Ingesting"} ${codes.length} Act(s)${mode}…\n`);
+let ok = 0, failed = 0, mismatched = 0;
 for (const code of codes) {
-  try { await ingestCode(code, registry, opts); ok++; }
-  catch (e) { failed++; console.log(`✗ ${code.padEnd(8)} FAILED — ${e.message}`); }
-  if (codes.length > 20) await sleep(150); // be polite to laws-lois on a full run
+  try {
+    const r = await ingestCode(code, registry, opts);
+    ok++;
+    if (r?.verifyErr) mismatched++;
+  } catch (e) { failed++; console.log(`✗ ${code.padEnd(8)} FAILED — ${e.message}`); }
+  // Politeness delay only matters for live network fetches.
+  if (!opts.fromCache && !opts.verify && codes.length > 20) await sleep(150);
 }
 
-if (opts.writeRegistry && !opts.dry) {
+if (opts.writeRegistry && !opts.dry && !opts.verify) {
   await fs.writeFile(REGISTRY_PATH, JSON.stringify(registry, null, 2) + "\n", "utf8");
   console.log("\nregistry.json updated.");
 }
-console.log(`\nDone. ${ok} ok, ${failed} failed.`);
+console.log(`\nDone. ${ok} ok, ${failed} failed${opts.verify ? `, ${mismatched} mismatched` : ""}.`);
+if (opts.verify && mismatched > 0) process.exitCode = 1;

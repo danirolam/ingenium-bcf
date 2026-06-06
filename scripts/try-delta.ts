@@ -10,6 +10,7 @@ import {
   diffSummary,
   type Provision,
 } from "../server/services/amendmentEngine.js";
+import { loadActProvisions } from "../server/services/lawProvisions.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -23,9 +24,8 @@ for (const line of (await fs.readFile(path.join(ROOT, ".env"), "utf8").catch(() 
 const [billNumber, slug] = process.argv.slice(2);
 const bills = JSON.parse(await fs.readFile(path.join(ROOT, "server/data/bills.json"), "utf8"));
 const bill = bills.find((b: any) => b.billNumber === billNumber);
-const act = JSON.parse(
-  await fs.readFile(path.join(ROOT, `data/laws/current/federal/${slug}/current.normalized.json`), "utf8"),
-);
+const act = await loadActProvisions(slug);
+if (!act) { console.log(`No structured Act ingested for slug "${slug}".`); process.exit(1); }
 const provisions: Provision[] = act.provisions;
 
 console.log(`Bill ${billNumber} × ${act.title} — ${provisions.length} provisions, ${bill.clauses.length} clauses\n`);

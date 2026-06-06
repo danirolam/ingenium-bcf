@@ -10,1237 +10,1370 @@
     "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/F-10.xml",
     "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/F-10/index.html"
   },
-  "normalizedAt": "2026-06-03T03:27:32.278Z",
+  "normalizedAt": "2026-06-06T04:04:28.060Z",
   "coverage": {
     "ratio": 0.9148,
     "provisions": 155,
     "scheduleHasText": true
   },
-  "provisions": [
+  "sections": [
     {
       "id": "222128",
-      "label": "1",
+      "num": "1",
       "kind": "section",
-      "heading": "Short Title",
       "marginalNote": "Short title",
+      "children": [],
+      "heading": "Short Title",
       "text": "This Act may be cited as the Fertilizers Act."
     },
     {
-      "id": "222135",
-      "label": "“analyst”",
-      "kind": "definition",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "analyst means a person designated as an analyst pursuant to section 6; (analyste)"
-    },
-    {
-      "id": "222136",
-      "label": "“conveyance”",
-      "kind": "definition",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "conveyance means a vessel, aircraft, train, motor vehicle, trailer or other means of transportation, including a cargo container; (véhicule)"
-    },
-    {
-      "id": "222137",
-      "label": "“document”",
-      "kind": "definition",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "document means anything on which information that is capable of being understood by a person, or read by a computer or other device, is recorded or marked; (document)"
-    },
-    {
-      "id": "222139",
-      "label": "2“environment”(a)",
-      "kind": "paragraph",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "air, land and water,"
-    },
-    {
-      "id": "222140",
-      "label": "2“environment”(b)",
-      "kind": "paragraph",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "all layers of the atmosphere,"
-    },
-    {
-      "id": "222141",
-      "label": "2“environment”(c)",
-      "kind": "paragraph",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "all organic and inorganic matter and living organisms, and"
-    },
-    {
-      "id": "222142",
-      "label": "2“environment”(d)",
-      "kind": "paragraph",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "the interacting natural systems that include components referred to in paragraphs (a) to (c); (environnement)"
-    },
-    {
-      "id": "222138",
-      "label": "“environment”",
-      "kind": "definition",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "environment means the components of the Earth and includes"
-    },
-    {
-      "id": "222143",
-      "label": "“establishment”",
-      "kind": "definition",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "establishment means any place, including a conveyance, where a fertilizer or supplement is manufactured, stored, packaged or labelled; (établissement)"
-    },
-    {
-      "id": "222144",
-      "label": "“fertilizer”",
-      "kind": "definition",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "fertilizer means any substance or mixture of substances, containing nitrogen, phosphorus, potassium or other plant food, manufactured, sold or represented for use as a plant nutrient; (engrais)"
-    },
-    {
-      "id": "222145",
-      "label": "“inspector”",
-      "kind": "definition",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "inspector means a person designated as an inspector pursuant to section 6; (inspecteur)"
-    },
-    {
-      "id": "222147",
-      "label": "2“item to which this Act applies”(a)",
-      "kind": "paragraph",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "a fertilizer or supplement,"
-    },
-    {
-      "id": "222148",
-      "label": "2“item to which this Act applies”(b)",
-      "kind": "paragraph",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "anything used in an activity regulated under this Act, and"
-    },
-    {
-      "id": "222149",
-      "label": "2“item to which this Act applies”(c)",
-      "kind": "paragraph",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "a document that is related to a fertilizer or supplement or to any activity regulated under this Act; (chose visée par la présente loi)"
-    },
-    {
-      "id": "222146",
-      "label": "“item to which this Act applies”",
-      "kind": "definition",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "item to which this Act applies means"
-    },
-    {
-      "id": "222150",
-      "label": "“label”",
-      "kind": "definition",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "label includes any legend, word, mark, symbol or design applied or attached to, included in, belonging to or accompanying any fertilizer, supplement or package; (étiquette)"
-    },
-    {
-      "id": "222151",
-      "label": "“Minister”",
-      "kind": "definition",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "Minister means the Minister of Agriculture and Agri-Food; (ministre)"
-    },
-    {
-      "id": "222152",
-      "label": "“package”",
-      "kind": "definition",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "package includes a sack, bag, barrel, case or any other container in which fertilizers or supplements are placed or packed; (emballage)"
-    },
-    {
-      "id": "222153",
-      "label": "“penalty”",
-      "kind": "definition",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "penalty means an administrative monetary penalty imposed under the Agriculture and Agri-Food Administrative Monetary Penalties Act for a violation; (sanction)"
-    },
-    {
-      "id": "222154",
-      "label": "“prescribed”",
-      "kind": "definition",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "prescribed means prescribed by regulation; (Version anglaise seulement)"
-    },
-    {
-      "id": "222155",
-      "label": "“sell”",
-      "kind": "definition",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "sell includes sell, offer for sale, expose for sale, have in possession for sale and distribute; (vente)"
-    },
-    {
-      "id": "222156",
-      "label": "“supplement”",
-      "kind": "definition",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "supplement means any substance or mixture of substances, other than a fertilizer, that is manufactured, sold or represented for use in the improvement of the physical condition of soils or to aid plant growth or crop yields; (supplément)"
-    },
-    {
-      "id": "222157",
-      "label": "“Tribunal”",
-      "kind": "definition",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "Tribunal means the Review Tribunal continued by subsection 27(1) of the Agriculture and Agri-Food Administrative Monetary Penalties Act; (Commission)"
-    },
-    {
-      "id": "222158",
-      "label": "“violation”",
-      "kind": "definition",
-      "heading": "Interpretation",
-      "marginalNote": null,
-      "text": "violation means any contravention of this Act or the regulations that may be proceeded with in accordance with the Agriculture and Agri-Food Administrative Monetary Penalties Act. (violation)"
-    },
-    {
       "id": "222133",
-      "label": "2",
+      "num": "2",
       "kind": "section",
-      "heading": "Interpretation",
       "marginalNote": "Definitions",
+      "children": [
+        {
+          "id": "222135",
+          "num": "“analyst”",
+          "kind": "definition",
+          "marginalNote": null,
+          "children": [],
+          "text": "analyst means a person designated as an analyst pursuant to section 6; (analyste)"
+        },
+        {
+          "id": "222136",
+          "num": "“conveyance”",
+          "kind": "definition",
+          "marginalNote": null,
+          "children": [],
+          "text": "conveyance means a vessel, aircraft, train, motor vehicle, trailer or other means of transportation, including a cargo container; (véhicule)"
+        },
+        {
+          "id": "222137",
+          "num": "“document”",
+          "kind": "definition",
+          "marginalNote": null,
+          "children": [],
+          "text": "document means anything on which information that is capable of being understood by a person, or read by a computer or other device, is recorded or marked; (document)"
+        },
+        {
+          "id": "222138",
+          "num": "“environment”",
+          "kind": "definition",
+          "marginalNote": null,
+          "children": [
+            {
+              "id": "222139",
+              "num": "(a)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "air, land and water,"
+            },
+            {
+              "id": "222140",
+              "num": "(b)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "all layers of the atmosphere,"
+            },
+            {
+              "id": "222141",
+              "num": "(c)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "all organic and inorganic matter and living organisms, and"
+            },
+            {
+              "id": "222142",
+              "num": "(d)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "the interacting natural systems that include components referred to in paragraphs (a) to (c); (environnement)"
+            }
+          ],
+          "text": "environment means the components of the Earth and includes"
+        },
+        {
+          "id": "222143",
+          "num": "“establishment”",
+          "kind": "definition",
+          "marginalNote": null,
+          "children": [],
+          "text": "establishment means any place, including a conveyance, where a fertilizer or supplement is manufactured, stored, packaged or labelled; (établissement)"
+        },
+        {
+          "id": "222144",
+          "num": "“fertilizer”",
+          "kind": "definition",
+          "marginalNote": null,
+          "children": [],
+          "text": "fertilizer means any substance or mixture of substances, containing nitrogen, phosphorus, potassium or other plant food, manufactured, sold or represented for use as a plant nutrient; (engrais)"
+        },
+        {
+          "id": "222145",
+          "num": "“inspector”",
+          "kind": "definition",
+          "marginalNote": null,
+          "children": [],
+          "text": "inspector means a person designated as an inspector pursuant to section 6; (inspecteur)"
+        },
+        {
+          "id": "222146",
+          "num": "“item to which this Act applies”",
+          "kind": "definition",
+          "marginalNote": null,
+          "children": [
+            {
+              "id": "222147",
+              "num": "(a)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "a fertilizer or supplement,"
+            },
+            {
+              "id": "222148",
+              "num": "(b)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "anything used in an activity regulated under this Act, and"
+            },
+            {
+              "id": "222149",
+              "num": "(c)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "a document that is related to a fertilizer or supplement or to any activity regulated under this Act; (chose visée par la présente loi)"
+            }
+          ],
+          "text": "item to which this Act applies means"
+        },
+        {
+          "id": "222150",
+          "num": "“label”",
+          "kind": "definition",
+          "marginalNote": null,
+          "children": [],
+          "text": "label includes any legend, word, mark, symbol or design applied or attached to, included in, belonging to or accompanying any fertilizer, supplement or package; (étiquette)"
+        },
+        {
+          "id": "222151",
+          "num": "“Minister”",
+          "kind": "definition",
+          "marginalNote": null,
+          "children": [],
+          "text": "Minister means the Minister of Agriculture and Agri-Food; (ministre)"
+        },
+        {
+          "id": "222152",
+          "num": "“package”",
+          "kind": "definition",
+          "marginalNote": null,
+          "children": [],
+          "text": "package includes a sack, bag, barrel, case or any other container in which fertilizers or supplements are placed or packed; (emballage)"
+        },
+        {
+          "id": "222153",
+          "num": "“penalty”",
+          "kind": "definition",
+          "marginalNote": null,
+          "children": [],
+          "text": "penalty means an administrative monetary penalty imposed under the Agriculture and Agri-Food Administrative Monetary Penalties Act for a violation; (sanction)"
+        },
+        {
+          "id": "222154",
+          "num": "“prescribed”",
+          "kind": "definition",
+          "marginalNote": null,
+          "children": [],
+          "text": "prescribed means prescribed by regulation; (Version anglaise seulement)"
+        },
+        {
+          "id": "222155",
+          "num": "“sell”",
+          "kind": "definition",
+          "marginalNote": null,
+          "children": [],
+          "text": "sell includes sell, offer for sale, expose for sale, have in possession for sale and distribute; (vente)"
+        },
+        {
+          "id": "222156",
+          "num": "“supplement”",
+          "kind": "definition",
+          "marginalNote": null,
+          "children": [],
+          "text": "supplement means any substance or mixture of substances, other than a fertilizer, that is manufactured, sold or represented for use in the improvement of the physical condition of soils or to aid plant growth or crop yields; (supplément)"
+        },
+        {
+          "id": "222157",
+          "num": "“Tribunal”",
+          "kind": "definition",
+          "marginalNote": null,
+          "children": [],
+          "text": "Tribunal means the Review Tribunal continued by subsection 27(1) of the Agriculture and Agri-Food Administrative Monetary Penalties Act; (Commission)"
+        },
+        {
+          "id": "222158",
+          "num": "“violation”",
+          "kind": "definition",
+          "marginalNote": null,
+          "children": [],
+          "text": "violation means any contravention of this Act or the regulations that may be proceeded with in accordance with the Agriculture and Agri-Food Administrative Monetary Penalties Act. (violation)"
+        }
+      ],
+      "heading": "Interpretation",
       "text": "In this Act,"
     },
     {
-      "id": "222164",
-      "label": "3(a)",
-      "kind": "paragraph",
-      "heading": "Prohibitions",
-      "marginalNote": null,
-      "text": "has, in accordance with the regulations, been approved by the Minister or registered;"
-    },
-    {
-      "id": "222165",
-      "label": "3(b)",
-      "kind": "paragraph",
-      "heading": "Prohibitions",
-      "marginalNote": null,
-      "text": "conforms to prescribed standards; and"
-    },
-    {
-      "id": "222166",
-      "label": "3(c)",
-      "kind": "paragraph",
-      "heading": "Prohibitions",
-      "marginalNote": null,
-      "text": "is packaged and labelled in accordance with the regulations."
-    },
-    {
       "id": "222162",
-      "label": "3",
+      "num": "3",
       "kind": "section",
-      "heading": "Prohibitions",
       "marginalNote": "Absence of registration, etc.",
+      "children": [
+        {
+          "id": "222164",
+          "num": "(a)",
+          "kind": "paragraph",
+          "marginalNote": null,
+          "children": [],
+          "text": "has, in accordance with the regulations, been approved by the Minister or registered;"
+        },
+        {
+          "id": "222165",
+          "num": "(b)",
+          "kind": "paragraph",
+          "marginalNote": null,
+          "children": [],
+          "text": "conforms to prescribed standards; and"
+        },
+        {
+          "id": "222166",
+          "num": "(c)",
+          "kind": "paragraph",
+          "marginalNote": null,
+          "children": [],
+          "text": "is packaged and labelled in accordance with the regulations."
+        }
+      ],
+      "heading": "Prohibitions",
       "text": "No person shall sell, or import into Canada, any fertilizer or supplement unless the fertilizer or supplement"
     },
     {
       "id": "222169",
-      "label": "3.1",
+      "num": "3.1",
       "kind": "section",
-      "heading": "Prohibitions",
       "marginalNote": "Fertilizers and supplements presenting risk of harm",
+      "children": [],
+      "heading": "Prohibitions",
       "text": "No person shall manufacture, sell, import or export in contravention of the regulations any fertilizer or supplement that presents a risk of harm to human, animal or plant health or the environment."
     },
     {
       "id": "222173",
-      "label": "3.2",
+      "num": "3.2",
       "kind": "section",
-      "heading": "Prohibitions",
       "marginalNote": "Prescribed activity with licence or registration",
+      "children": [],
+      "heading": "Prohibitions",
       "text": "No person shall conduct a prescribed activity in respect of a prescribed fertilizer or supplement that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — unless the person is authorized to do so by a registration made under subsection 5.2(1), by a licence issued under that subsection or by both such a registration and licence, as provided for in the regulations."
     },
     {
       "id": "222177",
-      "label": "3.3",
+      "num": "3.3",
       "kind": "section",
-      "heading": "Prohibitions",
       "marginalNote": "Prescribed activity in registered establishment",
+      "children": [],
+      "heading": "Prohibitions",
       "text": "No person shall conduct a prescribed activity in respect of a prescribed fertilizer or supplement that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — unless the activity is conducted in an establishment registered under subsection 5.3(1) in accordance with the regulations."
     },
     {
       "id": "222181",
-      "label": "3.4",
+      "num": "3.4",
       "kind": "section",
-      "heading": "Prohibitions",
       "marginalNote": "Recall order — Canadian Food Inspection Agency Act",
+      "children": [],
+      "heading": "Prohibitions",
       "text": "No person shall sell a fertilizer or supplement that is the subject of a recall order referred to in subsection 19(1) of the Canadian Food Inspection Agency Act."
     },
     {
       "id": "222185",
-      "label": "4",
+      "num": "4",
       "kind": "section",
-      "heading": "Prohibitions",
       "marginalNote": "Destructive ingredients or harmful properties",
+      "children": [],
+      "heading": "Prohibitions",
       "text": "No person shall sell any fertilizer or supplement that contains destructive ingredients or properties harmful to plant growth when used according to the directions that accompany the fertilizer or supplement or that appear on the label of the package in which the fertilizer or supplement is contained."
     },
     {
-      "id": "222193",
-      "label": "5(1)(a)",
-      "kind": "paragraph",
+      "id": "222190",
+      "num": "5",
+      "kind": "section",
+      "marginalNote": "Regulations",
+      "children": [
+        {
+          "id": "222192",
+          "num": "(1)",
+          "kind": "subsection",
+          "marginalNote": null,
+          "children": [
+            {
+              "id": "222193",
+              "num": "(a)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "respecting applications for registration or for approval of fertilizers or supplements and the information to be furnished with the applications;"
+            },
+            {
+              "id": "222194",
+              "num": "(b)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "respecting the registration of fertilizers and supplements and prescribing fees for registration;"
+            },
+            {
+              "id": "222195",
+              "num": "(b.1)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "respecting the approval of fertilizers and supplements;"
+            },
+            {
+              "id": "222196",
+              "num": "(c)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "respecting the duration and cancellation of the registration or approval of fertilizers and supplements;"
+            },
+            {
+              "id": "222197",
+              "num": "(c.1)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "respecting the manufacturing, sale, importation or exportation of any fertilizer or supplement that presents a risk of harm to human, animal or plant health or the environment;"
+            },
+            {
+              "id": "222198",
+              "num": "(c.2)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "respecting the sending or conveying from one province to another or the importation or exportation of any fertilizer or supplement;"
+            },
+            {
+              "id": "222199",
+              "num": "(c.3)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "respecting the manufacturing or sale of any fertilizer or supplement that is to be exported or to be sent or conveyed from one province to another;"
+            },
+            {
+              "id": "222200",
+              "num": "(c.4)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "respecting the sale of any fertilizer or supplement that has been imported;"
+            },
+            {
+              "id": "222201",
+              "num": "(d)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "exempting, with or without conditions, any item to which this Act applies, or a person or activity in respect of a fertilizer or supplement, from the application of this Act or the regulations or a provision of this Act or the regulations;"
+            },
+            {
+              "id": "222202",
+              "num": "(e)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "prescribing the form, composition and other standards for fertilizers and supplements;"
+            },
+            {
+              "id": "222203",
+              "num": "(f)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "respecting the packaging of fertilizers and supplements and the labelling of packages thereof;"
+            },
+            {
+              "id": "222204",
+              "num": "(f.1)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [
+                {
+                  "id": "222205",
+                  "num": "(i)",
+                  "kind": "subparagraph",
+                  "marginalNote": null,
+                  "children": [],
+                  "text": "the provision of samples of the fertilizer or supplement,"
+                },
+                {
+                  "id": "222206",
+                  "num": "(ii)",
+                  "kind": "subparagraph",
+                  "marginalNote": null,
+                  "children": [
+                    {
+                      "id": "222207",
+                      "num": "(A)",
+                      "kind": "clause",
+                      "marginalNote": null,
+                      "children": [],
+                      "text": "permits the fertilizer or supplement to be distinguished from other fertilizers or supplements, and"
+                    },
+                    {
+                      "id": "222208",
+                      "num": "(B)",
+                      "kind": "clause",
+                      "marginalNote": null,
+                      "children": [],
+                      "text": "is required for evaluating the potential impact of the fertilizer or supplement on, and the risk of harm posed by the fertilizer or supplement to, human, animal or plant health or the environment, and"
+                    }
+                  ],
+                  "text": "the provision of information in respect of the fertilizer or supplement, including information that"
+                },
+                {
+                  "id": "222209",
+                  "num": "(iii)",
+                  "kind": "subparagraph",
+                  "marginalNote": null,
+                  "children": [],
+                  "text": "the evaluation of the potential impact of the fertilizer or supplement on, and the risk of harm posed by the fertilizer or supplement to, human, animal or plant health or the environment;"
+                }
+              ],
+              "text": "respecting the evaluation of a fertilizer or supplement, including regulations respecting"
+            },
+            {
+              "id": "222210",
+              "num": "(g)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "respecting the taking of samples and the making of analyses for the purposes of this Act;"
+            },
+            {
+              "id": "222211",
+              "num": "(g.1)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "requiring persons to take or keep samples of any fertilizer or supplement, or its package or label, and to provide the Minister or an inspector with, or with access to, those samples, and respecting the manner in which those samples are to be taken or kept and the manner in which they are to be provided or access to them is to be provided;"
+            },
+            {
+              "id": "222212",
+              "num": "(h)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "providing that fertilizers registered under this Act and containing a pest control product as defined in subsection 2(1) of the Pest Control Products Act are, in prescribed circumstances and subject to prescribed conditions, deemed to be registered under that Act;"
+            },
+            {
+              "id": "222213",
+              "num": "(h.1)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [
+                {
+                  "id": "222214",
+                  "num": "(i)",
+                  "kind": "subparagraph",
+                  "marginalNote": null,
+                  "children": [],
+                  "text": "the registration of persons or the issuing of licences to persons under section 5.2 or the registration of establishments under section 5.3,"
+                },
+                {
+                  "id": "222215",
+                  "num": "(ii)",
+                  "kind": "subparagraph",
+                  "marginalNote": null,
+                  "children": [],
+                  "text": "the suspension, cancellation and renewal of those licences and registrations, and"
+                },
+                {
+                  "id": "222216",
+                  "num": "(iii)",
+                  "kind": "subparagraph",
+                  "marginalNote": null,
+                  "children": [],
+                  "text": "the amendment of those licences and registrations or of any of the conditions to which they are subject by reason of subsection 5.2(3) or 5.3(4);"
+                }
+              ],
+              "text": "respecting"
+            },
+            {
+              "id": "222217",
+              "num": "(h.2)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "respecting quality management programs, quality control programs, safety programs, preventive control plans or any other similar programs or plans to be implemented by persons who conduct any activity regulated under this Act;"
+            },
+            {
+              "id": "222218",
+              "num": "(i)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "respecting the detention, preservation and safeguarding of anything seized under section 9;"
+            },
+            {
+              "id": "222219",
+              "num": "(j)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "respecting the disposition of anything forfeited under section 9;"
+            },
+            {
+              "id": "222220",
+              "num": "(j.1)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [
+                {
+                  "id": "222221",
+                  "num": "(i)",
+                  "kind": "subparagraph",
+                  "marginalNote": null,
+                  "children": [],
+                  "text": "the information in those documents,"
+                },
+                {
+                  "id": "222222",
+                  "num": "(ii)",
+                  "kind": "subparagraph",
+                  "marginalNote": null,
+                  "children": [],
+                  "text": "the manner in which they are to be prepared, kept or maintained,"
+                },
+                {
+                  "id": "222223",
+                  "num": "(iii)",
+                  "kind": "subparagraph",
+                  "marginalNote": null,
+                  "children": [],
+                  "text": "the place where they are to be kept or maintained, and"
+                },
+                {
+                  "id": "222224",
+                  "num": "(iv)",
+                  "kind": "subparagraph",
+                  "marginalNote": null,
+                  "children": [],
+                  "text": "the manner in which they are to be provided or access to them is to be provided;"
+                }
+              ],
+              "text": "requiring persons to prepare, keep or maintain documents and to provide the Minister or an inspector with, or with access to, those documents, and respecting"
+            },
+            {
+              "id": "222225",
+              "num": "(j.2)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "respecting the issuance of certificates or other documents for the purpose of section 5.5;"
+            },
+            {
+              "id": "222226",
+              "num": "(k)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "prescribing anything else that by this Act is required to be prescribed; and"
+            },
+            {
+              "id": "222227",
+              "num": "(l)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "generally, for carrying out the purposes and provisions of this Act."
+            }
+          ],
+          "text": "The Governor in Council may make regulations"
+        },
+        {
+          "id": "222228",
+          "num": "(1.1)",
+          "kind": "subsection",
+          "marginalNote": "Paragraphs (1)(c.1) and (c.2)",
+          "children": [],
+          "text": "Regulations made under paragraph (1)(c.1) or (c.2) may, among other things, establish preclearance or in-transit requirements for any imported fertilizer or supplement or anything imported with it."
+        },
+        {
+          "id": "222230",
+          "num": "(1.2)",
+          "kind": "subsection",
+          "marginalNote": "Paragraph (1)(j.1)",
+          "children": [],
+          "text": "Regulations made under paragraph (1)(j.1) may, among other things, require persons who conduct any activity regulated under this Act and who become aware that a fertilizer or supplement presents a risk of harm to human, animal or plant health or the environment or does not meet the requirements of the regulations to provide written notice to that effect to the Minister or an inspector."
+        },
+        {
+          "id": "222232",
+          "num": "(2)",
+          "kind": "subsection",
+          "marginalNote": "Regulations — international agreements",
+          "children": [
+            {
+              "id": "1253533",
+              "num": "(a)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "Article 20.45 of the Canada–United States–Mexico Agreement;"
+            },
+            {
+              "id": "1253534",
+              "num": "(b)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "paragraph 3 of Article 39 of the Agreement on Trade-related Aspects of Intellectual Property Rights set out in Annex 1C to the WTO Agreement; or"
+            },
+            {
+              "id": "1253535",
+              "num": "(c)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "Article 18.47 of the Trans-Pacific Partnership Agreement as incorporated by reference into the Comprehensive and Progressive Agreement for Trans-Pacific Partnership by Article 1 of that Agreement."
+            }
+          ],
+          "text": "Without limiting the authority conferred by subsection (1), the Governor in Council may make any regulations the Governor in Council considers necessary for the purpose of implementing, in relation to fertilizers or supplements, any of the following provisions:"
+        },
+        {
+          "id": "222234",
+          "num": "(3)",
+          "kind": "subsection",
+          "marginalNote": "Definitions",
+          "children": [
+            {
+              "id": "1253538",
+              "num": "“Canada–United States–Mexico Agreement”",
+              "kind": "definition",
+              "marginalNote": null,
+              "children": [],
+              "text": "Canada–United States–Mexico Agreement has the meaning assigned by the definition Agreement in section 2 of the Canada–United States–Mexico Agreement Implementation Act. (Accord Canada–États-Unis–Mexique)"
+            },
+            {
+              "id": "1253539",
+              "num": "“Comprehensive and Progressive Agreement for Trans-Pacific Partnership”",
+              "kind": "definition",
+              "marginalNote": null,
+              "children": [],
+              "text": "Comprehensive and Progressive Agreement for Trans-Pacific Partnership has the meaning assigned by the definition Agreement in section 2 of the Comprehensive and Progressive Agreement for Trans-Pacific Partnership Implementation Act. (Accord de partenariat transpacifique global et progressiste)"
+            },
+            {
+              "id": "1253540",
+              "num": "“WTO Agreement”",
+              "kind": "definition",
+              "marginalNote": null,
+              "children": [],
+              "text": "WTO Agreement has the meaning assigned by the definition Agreement in subsection 2(1) of the World Trade Organization Agreement Implementation Act. (Accord sur l’OMC)"
+            }
+          ],
+          "text": "The following definitions apply in subsection (2)."
+        }
+      ],
       "heading": "Regulations",
-      "marginalNote": null,
-      "text": "respecting applications for registration or for approval of fertilizers or supplements and the information to be furnished with the applications;"
+      "text": ""
     },
     {
-      "id": "222194",
-      "label": "5(1)(b)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "respecting the registration of fertilizers and supplements and prescribing fees for registration;"
-    },
-    {
-      "id": "222195",
-      "label": "5(1)(b.1)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "respecting the approval of fertilizers and supplements;"
-    },
-    {
-      "id": "222196",
-      "label": "5(1)(c)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "respecting the duration and cancellation of the registration or approval of fertilizers and supplements;"
-    },
-    {
-      "id": "222197",
-      "label": "5(1)(c.1)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "respecting the manufacturing, sale, importation or exportation of any fertilizer or supplement that presents a risk of harm to human, animal or plant health or the environment;"
-    },
-    {
-      "id": "222198",
-      "label": "5(1)(c.2)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "respecting the sending or conveying from one province to another or the importation or exportation of any fertilizer or supplement;"
-    },
-    {
-      "id": "222199",
-      "label": "5(1)(c.3)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "respecting the manufacturing or sale of any fertilizer or supplement that is to be exported or to be sent or conveyed from one province to another;"
-    },
-    {
-      "id": "222200",
-      "label": "5(1)(c.4)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "respecting the sale of any fertilizer or supplement that has been imported;"
-    },
-    {
-      "id": "222201",
-      "label": "5(1)(d)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "exempting, with or without conditions, any item to which this Act applies, or a person or activity in respect of a fertilizer or supplement, from the application of this Act or the regulations or a provision of this Act or the regulations;"
-    },
-    {
-      "id": "222202",
-      "label": "5(1)(e)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "prescribing the form, composition and other standards for fertilizers and supplements;"
-    },
-    {
-      "id": "222203",
-      "label": "5(1)(f)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "respecting the packaging of fertilizers and supplements and the labelling of packages thereof;"
-    },
-    {
-      "id": "222205",
-      "label": "5(1)(f.1)(i)",
-      "kind": "subparagraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "the provision of samples of the fertilizer or supplement,"
-    },
-    {
-      "id": "222207",
-      "label": "5(1)(f.1)(ii)(A)",
-      "kind": "clause",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "permits the fertilizer or supplement to be distinguished from other fertilizers or supplements, and"
-    },
-    {
-      "id": "222208",
-      "label": "5(1)(f.1)(ii)(B)",
-      "kind": "clause",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "is required for evaluating the potential impact of the fertilizer or supplement on, and the risk of harm posed by the fertilizer or supplement to, human, animal or plant health or the environment, and"
-    },
-    {
-      "id": "222206",
-      "label": "5(1)(f.1)(ii)",
-      "kind": "subparagraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "the provision of information in respect of the fertilizer or supplement, including information that"
-    },
-    {
-      "id": "222209",
-      "label": "5(1)(f.1)(iii)",
-      "kind": "subparagraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "the evaluation of the potential impact of the fertilizer or supplement on, and the risk of harm posed by the fertilizer or supplement to, human, animal or plant health or the environment;"
-    },
-    {
-      "id": "222204",
-      "label": "5(1)(f.1)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "respecting the evaluation of a fertilizer or supplement, including regulations respecting"
-    },
-    {
-      "id": "222210",
-      "label": "5(1)(g)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "respecting the taking of samples and the making of analyses for the purposes of this Act;"
-    },
-    {
-      "id": "222211",
-      "label": "5(1)(g.1)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "requiring persons to take or keep samples of any fertilizer or supplement, or its package or label, and to provide the Minister or an inspector with, or with access to, those samples, and respecting the manner in which those samples are to be taken or kept and the manner in which they are to be provided or access to them is to be provided;"
-    },
-    {
-      "id": "222212",
-      "label": "5(1)(h)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "providing that fertilizers registered under this Act and containing a pest control product as defined in subsection 2(1) of the Pest Control Products Act are, in prescribed circumstances and subject to prescribed conditions, deemed to be registered under that Act;"
-    },
-    {
-      "id": "222214",
-      "label": "5(1)(h.1)(i)",
-      "kind": "subparagraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "the registration of persons or the issuing of licences to persons under section 5.2 or the registration of establishments under section 5.3,"
-    },
-    {
-      "id": "222215",
-      "label": "5(1)(h.1)(ii)",
-      "kind": "subparagraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "the suspension, cancellation and renewal of those licences and registrations, and"
-    },
-    {
-      "id": "222216",
-      "label": "5(1)(h.1)(iii)",
-      "kind": "subparagraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "the amendment of those licences and registrations or of any of the conditions to which they are subject by reason of subsection 5.2(3) or 5.3(4);"
-    },
-    {
-      "id": "222213",
-      "label": "5(1)(h.1)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "respecting"
-    },
-    {
-      "id": "222217",
-      "label": "5(1)(h.2)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "respecting quality management programs, quality control programs, safety programs, preventive control plans or any other similar programs or plans to be implemented by persons who conduct any activity regulated under this Act;"
-    },
-    {
-      "id": "222218",
-      "label": "5(1)(i)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "respecting the detention, preservation and safeguarding of anything seized under section 9;"
-    },
-    {
-      "id": "222219",
-      "label": "5(1)(j)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "respecting the disposition of anything forfeited under section 9;"
-    },
-    {
-      "id": "222221",
-      "label": "5(1)(j.1)(i)",
-      "kind": "subparagraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "the information in those documents,"
-    },
-    {
-      "id": "222222",
-      "label": "5(1)(j.1)(ii)",
-      "kind": "subparagraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "the manner in which they are to be prepared, kept or maintained,"
-    },
-    {
-      "id": "222223",
-      "label": "5(1)(j.1)(iii)",
-      "kind": "subparagraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "the place where they are to be kept or maintained, and"
-    },
-    {
-      "id": "222224",
-      "label": "5(1)(j.1)(iv)",
-      "kind": "subparagraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "the manner in which they are to be provided or access to them is to be provided;"
-    },
-    {
-      "id": "222220",
-      "label": "5(1)(j.1)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "requiring persons to prepare, keep or maintain documents and to provide the Minister or an inspector with, or with access to, those documents, and respecting"
-    },
-    {
-      "id": "222225",
-      "label": "5(1)(j.2)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "respecting the issuance of certificates or other documents for the purpose of section 5.5;"
-    },
-    {
-      "id": "222226",
-      "label": "5(1)(k)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "prescribing anything else that by this Act is required to be prescribed; and"
-    },
-    {
-      "id": "222227",
-      "label": "5(1)(l)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "generally, for carrying out the purposes and provisions of this Act."
-    },
-    {
-      "id": "222192",
-      "label": "5(1)",
-      "kind": "subsection",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "The Governor in Council may make regulations"
-    },
-    {
-      "id": "222228",
-      "label": "5(1.1)",
-      "kind": "subsection",
-      "heading": "Regulations",
-      "marginalNote": "Paragraphs (1)(c.1) and (c.2)",
-      "text": "Regulations made under paragraph (1)(c.1) or (c.2) may, among other things, establish preclearance or in-transit requirements for any imported fertilizer or supplement or anything imported with it."
-    },
-    {
-      "id": "222230",
-      "label": "5(1.2)",
-      "kind": "subsection",
-      "heading": "Regulations",
-      "marginalNote": "Paragraph (1)(j.1)",
-      "text": "Regulations made under paragraph (1)(j.1) may, among other things, require persons who conduct any activity regulated under this Act and who become aware that a fertilizer or supplement presents a risk of harm to human, animal or plant health or the environment or does not meet the requirements of the regulations to provide written notice to that effect to the Minister or an inspector."
-    },
-    {
-      "id": "1253533",
-      "label": "5(2)(a)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "Article 20.45 of the Canada–United States–Mexico Agreement;"
-    },
-    {
-      "id": "1253534",
-      "label": "5(2)(b)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "paragraph 3 of Article 39 of the Agreement on Trade-related Aspects of Intellectual Property Rights set out in Annex 1C to the WTO Agreement; or"
-    },
-    {
-      "id": "1253535",
-      "label": "5(2)(c)",
-      "kind": "paragraph",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "Article 18.47 of the Trans-Pacific Partnership Agreement as incorporated by reference into the Comprehensive and Progressive Agreement for Trans-Pacific Partnership by Article 1 of that Agreement."
-    },
-    {
-      "id": "222232",
-      "label": "5(2)",
-      "kind": "subsection",
-      "heading": "Regulations",
-      "marginalNote": "Regulations — international agreements",
-      "text": "Without limiting the authority conferred by subsection (1), the Governor in Council may make any regulations the Governor in Council considers necessary for the purpose of implementing, in relation to fertilizers or supplements, any of the following provisions:"
-    },
-    {
-      "id": "1253538",
-      "label": "“Canada–United States–Mexico Agreement”",
-      "kind": "definition",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "Canada–United States–Mexico Agreement has the meaning assigned by the definition Agreement in section 2 of the Canada–United States–Mexico Agreement Implementation Act. (Accord Canada–États-Unis–Mexique)"
-    },
-    {
-      "id": "1253539",
-      "label": "“Comprehensive and Progressive Agreement for Trans-Pacific Partnership”",
-      "kind": "definition",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "Comprehensive and Progressive Agreement for Trans-Pacific Partnership has the meaning assigned by the definition Agreement in section 2 of the Comprehensive and Progressive Agreement for Trans-Pacific Partnership Implementation Act. (Accord de partenariat transpacifique global et progressiste)"
-    },
-    {
-      "id": "1253540",
-      "label": "“WTO Agreement”",
-      "kind": "definition",
-      "heading": "Regulations",
-      "marginalNote": null,
-      "text": "WTO Agreement has the meaning assigned by the definition Agreement in subsection 2(1) of the World Trade Organization Agreement Implementation Act. (Accord sur l’OMC)"
-    },
-    {
-      "id": "222234",
-      "label": "5(3)",
-      "kind": "subsection",
-      "heading": "Regulations",
-      "marginalNote": "Definitions",
-      "text": "The following definitions apply in subsection (2)."
-    },
-    {
-      "id": "222243",
-      "label": "5.1(1)",
-      "kind": "subsection",
+      "id": "222241",
+      "num": "5.1",
+      "kind": "section",
+      "marginalNote": "Incorporation by reference",
+      "children": [
+        {
+          "id": "222243",
+          "num": "(1)",
+          "kind": "subsection",
+          "marginalNote": null,
+          "children": [],
+          "text": "A regulation made under subsection 5(1) may incorporate by reference any document, regardless of its source, either as it exists on a particular date or as it is amended from time to time."
+        },
+        {
+          "id": "222244",
+          "num": "(2)",
+          "kind": "subsection",
+          "marginalNote": "Accessibility",
+          "children": [],
+          "text": "The Minister must ensure that any document that is incorporated by reference in a regulation made under subsection 5(1), including any amendments to the document, is accessible."
+        },
+        {
+          "id": "222246",
+          "num": "(3)",
+          "kind": "subsection",
+          "marginalNote": "Defence",
+          "children": [],
+          "text": "A person is not liable to be found guilty of an offence or subjected to an administrative sanction for any contravention in respect of which a document that is incorporated by reference in a regulation made under subsection 5(1) is relevant unless, at the time of the alleged contravention, the document was accessible as required by subsection (2) or it was otherwise accessible to the person."
+        },
+        {
+          "id": "222248",
+          "num": "(4)",
+          "kind": "subsection",
+          "marginalNote": "No registration or publication",
+          "children": [],
+          "text": "For greater certainty, a document that is incorporated by reference in a regulation made under subsection 5(1) is not required to be transmitted for registration or published in the Canada Gazette by reason only that it is incorporated by reference."
+        }
+      ],
       "heading": "Incorporation by Reference",
-      "marginalNote": null,
-      "text": "A regulation made under subsection 5(1) may incorporate by reference any document, regardless of its source, either as it exists on a particular date or as it is amended from time to time."
+      "text": ""
     },
     {
-      "id": "222244",
-      "label": "5.1(2)",
-      "kind": "subsection",
-      "heading": "Incorporation by Reference",
-      "marginalNote": "Accessibility",
-      "text": "The Minister must ensure that any document that is incorporated by reference in a regulation made under subsection 5(1), including any amendments to the document, is accessible."
-    },
-    {
-      "id": "222246",
-      "label": "5.1(3)",
-      "kind": "subsection",
-      "heading": "Incorporation by Reference",
-      "marginalNote": "Defence",
-      "text": "A person is not liable to be found guilty of an offence or subjected to an administrative sanction for any contravention in respect of which a document that is incorporated by reference in a regulation made under subsection 5(1) is relevant unless, at the time of the alleged contravention, the document was accessible as required by subsection (2) or it was otherwise accessible to the person."
-    },
-    {
-      "id": "222248",
-      "label": "5.1(4)",
-      "kind": "subsection",
-      "heading": "Incorporation by Reference",
-      "marginalNote": "No registration or publication",
-      "text": "For greater certainty, a document that is incorporated by reference in a regulation made under subsection 5(1) is not required to be transmitted for registration or published in the Canada Gazette by reason only that it is incorporated by reference."
-    },
-    {
-      "id": "222255",
-      "label": "5.2(1)",
-      "kind": "subsection",
+      "id": "222253",
+      "num": "5.2",
+      "kind": "section",
+      "marginalNote": "Persons",
+      "children": [
+        {
+          "id": "222255",
+          "num": "(1)",
+          "kind": "subsection",
+          "marginalNote": null,
+          "children": [],
+          "text": "The Minister may, on application, register a person, or issue a licence to a person, authorizing them to conduct a prescribed activity in respect of a prescribed fertilizer or supplement that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — or both register a person and issue them a licence."
+        },
+        {
+          "id": "222256",
+          "num": "(2)",
+          "kind": "subsection",
+          "marginalNote": "Conditions — regulations",
+          "children": [],
+          "text": "The registration and the licence are subject to the prescribed conditions."
+        },
+        {
+          "id": "222258",
+          "num": "(3)",
+          "kind": "subsection",
+          "marginalNote": "Conditions — Minister",
+          "children": [],
+          "text": "The Minister may make a registration or licence subject to any additional conditions that he or she considers appropriate."
+        },
+        {
+          "id": "222260",
+          "num": "(4)",
+          "kind": "subsection",
+          "marginalNote": "Obligation to comply",
+          "children": [],
+          "text": "The holder of the registration or licence must comply with all the conditions to which the registration or licence is subject."
+        },
+        {
+          "id": "222262",
+          "num": "(5)",
+          "kind": "subsection",
+          "marginalNote": "No transfer",
+          "children": [],
+          "text": "The registration or licence is not transferable."
+        }
+      ],
       "heading": "Registrations and Licences",
-      "marginalNote": null,
-      "text": "The Minister may, on application, register a person, or issue a licence to a person, authorizing them to conduct a prescribed activity in respect of a prescribed fertilizer or supplement that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — or both register a person and issue them a licence."
+      "text": ""
     },
     {
-      "id": "222256",
-      "label": "5.2(2)",
-      "kind": "subsection",
+      "id": "222266",
+      "num": "5.3",
+      "kind": "section",
+      "marginalNote": "Establishments",
+      "children": [
+        {
+          "id": "222268",
+          "num": "(1)",
+          "kind": "subsection",
+          "marginalNote": null,
+          "children": [],
+          "text": "The Minister may, on application, register an establishment as one where a prescribed activity may be conducted in respect of a prescribed fertilizer or supplement that has been imported for sale or that is to be exported or to be sent or conveyed from one province to another."
+        },
+        {
+          "id": "222269",
+          "num": "(2)",
+          "kind": "subsection",
+          "marginalNote": "Holder",
+          "children": [],
+          "text": "The applicant in respect of an establishment is the holder of the registration."
+        },
+        {
+          "id": "222271",
+          "num": "(3)",
+          "kind": "subsection",
+          "marginalNote": "Conditions — regulations",
+          "children": [],
+          "text": "The registration is subject to the prescribed conditions."
+        },
+        {
+          "id": "222273",
+          "num": "(4)",
+          "kind": "subsection",
+          "marginalNote": "Conditions — Minister",
+          "children": [],
+          "text": "The Minister may make a registration subject to any additional conditions that he or she considers appropriate."
+        },
+        {
+          "id": "222275",
+          "num": "(5)",
+          "kind": "subsection",
+          "marginalNote": "Obligation to comply",
+          "children": [],
+          "text": "The holder of the registration must comply with all the conditions to which the registration is subject."
+        },
+        {
+          "id": "222277",
+          "num": "(6)",
+          "kind": "subsection",
+          "marginalNote": "No transfer",
+          "children": [],
+          "text": "The registration is not transferable."
+        }
+      ],
       "heading": "Registrations and Licences",
-      "marginalNote": "Conditions — regulations",
-      "text": "The registration and the licence are subject to the prescribed conditions."
-    },
-    {
-      "id": "222258",
-      "label": "5.2(3)",
-      "kind": "subsection",
-      "heading": "Registrations and Licences",
-      "marginalNote": "Conditions — Minister",
-      "text": "The Minister may make a registration or licence subject to any additional conditions that he or she considers appropriate."
-    },
-    {
-      "id": "222260",
-      "label": "5.2(4)",
-      "kind": "subsection",
-      "heading": "Registrations and Licences",
-      "marginalNote": "Obligation to comply",
-      "text": "The holder of the registration or licence must comply with all the conditions to which the registration or licence is subject."
-    },
-    {
-      "id": "222262",
-      "label": "5.2(5)",
-      "kind": "subsection",
-      "heading": "Registrations and Licences",
-      "marginalNote": "No transfer",
-      "text": "The registration or licence is not transferable."
-    },
-    {
-      "id": "222268",
-      "label": "5.3(1)",
-      "kind": "subsection",
-      "heading": "Registrations and Licences",
-      "marginalNote": null,
-      "text": "The Minister may, on application, register an establishment as one where a prescribed activity may be conducted in respect of a prescribed fertilizer or supplement that has been imported for sale or that is to be exported or to be sent or conveyed from one province to another."
-    },
-    {
-      "id": "222269",
-      "label": "5.3(2)",
-      "kind": "subsection",
-      "heading": "Registrations and Licences",
-      "marginalNote": "Holder",
-      "text": "The applicant in respect of an establishment is the holder of the registration."
-    },
-    {
-      "id": "222271",
-      "label": "5.3(3)",
-      "kind": "subsection",
-      "heading": "Registrations and Licences",
-      "marginalNote": "Conditions — regulations",
-      "text": "The registration is subject to the prescribed conditions."
-    },
-    {
-      "id": "222273",
-      "label": "5.3(4)",
-      "kind": "subsection",
-      "heading": "Registrations and Licences",
-      "marginalNote": "Conditions — Minister",
-      "text": "The Minister may make a registration subject to any additional conditions that he or she considers appropriate."
-    },
-    {
-      "id": "222275",
-      "label": "5.3(5)",
-      "kind": "subsection",
-      "heading": "Registrations and Licences",
-      "marginalNote": "Obligation to comply",
-      "text": "The holder of the registration must comply with all the conditions to which the registration is subject."
-    },
-    {
-      "id": "222277",
-      "label": "5.3(6)",
-      "kind": "subsection",
-      "heading": "Registrations and Licences",
-      "marginalNote": "No transfer",
-      "text": "The registration is not transferable."
+      "text": ""
     },
     {
       "id": "222281",
-      "label": "5.4",
+      "num": "5.4",
       "kind": "section",
-      "heading": "Registrations and Licences",
       "marginalNote": "Amendment, suspension, cancellation and renewal",
+      "children": [],
+      "heading": "Registrations and Licences",
       "text": "Subject to the regulations, the Minister may amend, suspend, cancel or renew a registration made under subsection 5.2(1) or 5.3(1) or a licence issued under subsection 5.2(1)."
     },
     {
       "id": "222286",
-      "label": "5.5",
+      "num": "5.5",
       "kind": "section",
-      "heading": "General",
       "marginalNote": "Export certificates",
+      "children": [],
+      "heading": "General",
       "text": "The Minister may issue any certificate or other document setting out any information that he or she considers necessary to facilitate the export of any fertilizer or supplement."
     },
     {
       "id": "222290",
-      "label": "5.6",
+      "num": "5.6",
       "kind": "section",
-      "heading": "General",
       "marginalNote": "Disposition of samples",
+      "children": [],
+      "heading": "General",
       "text": "A sample taken by an inspector, or provided to the Minister or an inspector, under this Act may be disposed of in any manner that the Minister considers appropriate."
     },
     {
       "id": "222294",
-      "label": "5.7",
+      "num": "5.7",
       "kind": "section",
-      "heading": "General",
       "marginalNote": "Consideration of information",
+      "children": [],
+      "heading": "General",
       "text": "In considering an application made under the regulations in relation to a fertilizer or supplement, the Minister may consider information that is available from a review or evaluation of a fertilizer or supplement conducted by the government of a foreign state or of a subdivision of a foreign state or by an international organization, or association, of states."
     },
     {
-      "id": "222301",
-      "label": "6(1)",
-      "kind": "subsection",
+      "id": "222299",
+      "num": "6",
+      "kind": "section",
+      "marginalNote": "Designation of inspectors and analysts",
+      "children": [
+        {
+          "id": "222301",
+          "num": "(1)",
+          "kind": "subsection",
+          "marginalNote": null,
+          "children": [],
+          "text": "The President of the Canadian Food Inspection Agency may designate under section 13 of the Canadian Food Inspection Agency Act the inspectors and analysts necessary for the administration and enforcement of this Act."
+        },
+        {
+          "id": "222302",
+          "num": "(1.1)",
+          "kind": "subsection",
+          "marginalNote": "Designation",
+          "children": [],
+          "text": "The President of the Canada Border Services Agency may designate inspectors under paragraph 9(2)(b) of the Canada Border Services Agency Act for the purposes of enforcing this Act."
+        },
+        {
+          "id": "222304",
+          "num": "(2)",
+          "kind": "subsection",
+          "marginalNote": "Certificate to be produced",
+          "children": [],
+          "text": "Inspectors shall be given certificates in a form established by the President of the Canadian Food Inspection Agency or the President of the Canada Border Services Agency, as the case may be, attesting to their designation and, on entering any place under subsection 7(1), an inspector shall, if so required, produce the certificate to the person in charge of that place."
+        }
+      ],
       "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "The President of the Canadian Food Inspection Agency may designate under section 13 of the Canadian Food Inspection Agency Act the inspectors and analysts necessary for the administration and enforcement of this Act."
+      "text": ""
     },
     {
-      "id": "222302",
-      "label": "6(1.1)",
-      "kind": "subsection",
+      "id": "222308",
+      "num": "7",
+      "kind": "section",
+      "marginalNote": "Powers of inspectors",
+      "children": [
+        {
+          "id": "222310",
+          "num": "(1)",
+          "kind": "subsection",
+          "marginalNote": null,
+          "children": [
+            {
+              "id": "222311",
+              "num": "(a)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "enter any place in which the inspector believes on reasonable grounds there is any article to which this Act applies;"
+            },
+            {
+              "id": "222312",
+              "num": "(b)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "open any package found in that place that the inspector believes on reasonable grounds contains any such article;"
+            },
+            {
+              "id": "222313",
+              "num": "(c)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "examine the article and take samples thereof; and"
+            },
+            {
+              "id": "222314",
+              "num": "(d)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "remove anything from that place for the purpose of examination, conducting tests or taking samples."
+            }
+          ],
+          "text": "Subject to subsection (1.1), an inspector may, for a purpose related to verifying compliance or preventing non-compliance with this Act,"
+        },
+        {
+          "id": "222315",
+          "num": "(1.1)",
+          "kind": "subsection",
+          "marginalNote": "Warrant required to enter dwelling-house",
+          "children": [],
+          "text": "Where any place referred to in paragraph (1)(a) is a dwelling-house, an inspector may not enter that dwelling-house without the consent of the occupant except under the authority of a warrant issued under subsection (1.2)."
+        },
+        {
+          "id": "222317",
+          "num": "(1.2)",
+          "kind": "subsection",
+          "marginalNote": "Authority to issue warrant",
+          "children": [
+            {
+              "id": "222319",
+              "num": "(a)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "that the conditions for entry described in paragraph (1)(a) exist in relation to a dwelling-house,"
+            },
+            {
+              "id": "222320",
+              "num": "(b)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "that entry to the dwelling-house is necessary for any purpose relating to the administration or enforcement of this Act, and"
+            },
+            {
+              "id": "222321",
+              "num": "(c)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "that entry to the dwelling-house has been refused or that there are reasonable grounds for believing that entry thereto will be refused,"
+            }
+          ],
+          "text": "Where on ex parte application a justice of the peace is satisfied by information on oath",
+          "closingText": "the justice of the peace may issue a warrant under his hand authorizing the inspector named therein to enter that dwelling-house subject to such conditions as may be specified in the warrant."
+        },
+        {
+          "id": "222323",
+          "num": "(1.3)",
+          "kind": "subsection",
+          "marginalNote": "Use of force",
+          "children": [],
+          "text": "In executing a warrant issued under subsection (1.2), the inspector named therein shall not use force unless the inspector is accompanied by a peace officer and the use of force has been specifically authorized in the warrant."
+        },
+        {
+          "id": "222325",
+          "num": "(2)",
+          "kind": "subsection",
+          "marginalNote": "Assistance to inspectors",
+          "children": [],
+          "text": "The owner or person in charge of any place described in subsection (1) and every person found in that place shall give an inspector all reasonable assistance to enable the inspector to carry out his duties and functions under this Act and shall furnish the inspector with any information he may reasonably require with respect to the administration of this Act and the regulations."
+        },
+        {
+          "id": "222327",
+          "num": "(3)",
+          "kind": "subsection",
+          "marginalNote": "Provision of documents, information or samples",
+          "children": [],
+          "text": "An inspector may, for a purpose related to verifying compliance or preventing non-compliance with this Act, order a person to provide, on the date, at the time and place and in the manner specified by the inspector, any document, information or sample specified by the inspector."
+        }
+      ],
       "heading": "Enforcement",
-      "marginalNote": "Designation",
-      "text": "The President of the Canada Border Services Agency may designate inspectors under paragraph 9(2)(b) of the Canada Border Services Agency Act for the purposes of enforcing this Act."
+      "text": ""
     },
     {
-      "id": "222304",
-      "label": "6(2)",
-      "kind": "subsection",
+      "id": "222331",
+      "num": "8",
+      "kind": "section",
+      "marginalNote": "Obstruction of inspectors",
+      "children": [
+        {
+          "id": "222333",
+          "num": "(1)",
+          "kind": "subsection",
+          "marginalNote": null,
+          "children": [],
+          "text": "No person shall obstruct or hinder an inspector in the carrying out of his duties or functions under this Act."
+        },
+        {
+          "id": "222334",
+          "num": "(2)",
+          "kind": "subsection",
+          "marginalNote": "False statements",
+          "children": [],
+          "text": "No person shall make a false or misleading statement either orally or in writing to an inspector or other officer engaged in carrying out his duties or functions under this Act."
+        }
+      ],
       "heading": "Enforcement",
-      "marginalNote": "Certificate to be produced",
-      "text": "Inspectors shall be given certificates in a form established by the President of the Canadian Food Inspection Agency or the President of the Canada Border Services Agency, as the case may be, attesting to their designation and, on entering any place under subsection 7(1), an inspector shall, if so required, produce the certificate to the person in charge of that place."
+      "text": ""
     },
     {
-      "id": "222311",
-      "label": "7(1)(a)",
-      "kind": "paragraph",
+      "id": "222338",
+      "num": "9",
+      "kind": "section",
+      "marginalNote": "Seizure",
+      "children": [
+        {
+          "id": "222340",
+          "num": "(1)",
+          "kind": "subsection",
+          "marginalNote": null,
+          "children": [],
+          "text": "Where an inspector believes on reasonable grounds that this Act or the regulations have been contravened, the inspector may seize any article by means of or in relation to which the inspector believes on reasonable grounds the contravention was committed."
+        },
+        {
+          "id": "222341",
+          "num": "(2)",
+          "kind": "subsection",
+          "marginalNote": "Release of seized article",
+          "children": [],
+          "text": "If an inspector is satisfied that the provisions of this Act and the regulations that apply with respect to an article seized under this Act have been complied with, the article must be released."
+        },
+        {
+          "id": "222343",
+          "num": "(3)",
+          "kind": "subsection",
+          "marginalNote": "Forfeiture",
+          "children": [],
+          "text": "Where the Tribunal decides that a person has committed a violation, or a person is convicted of an offence under this Act, the Tribunal or the convicting court, as the case may be, may, in addition to any penalty or punishment imposed, order that any article by means of or in relation to which the violation or offence was committed, be forfeited to Her Majesty in right of Canada."
+        }
+      ],
       "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "enter any place in which the inspector believes on reasonable grounds there is any article to which this Act applies;"
+      "text": ""
     },
     {
-      "id": "222312",
-      "label": "7(1)(b)",
-      "kind": "paragraph",
+      "id": "222347",
+      "num": "9.1",
+      "kind": "section",
+      "marginalNote": "Removal or destruction of unlawful imports",
+      "children": [
+        {
+          "id": "222349",
+          "num": "(1)",
+          "kind": "subsection",
+          "marginalNote": null,
+          "children": [],
+          "text": "An inspector who has reasonable grounds to believe that an imported fertilizer or supplement does not meet the requirements of the regulations or was imported in contravention of a provision of this Act or the regulations may, by notice, whether the fertilizer or supplement is seized or not, order its owner or importer or the person having possession, care or control of it to remove it from Canada or, if removal is not possible, to destroy it."
+        },
+        {
+          "id": "222350",
+          "num": "(2)",
+          "kind": "subsection",
+          "marginalNote": "Notice",
+          "children": [],
+          "text": "The notice must either be delivered personally to the owner or importer of the fertilizer or supplement or to the person having possession, care or control of it or be sent by registered mail to the owner’s, importer’s or person’s address in Canada."
+        },
+        {
+          "id": "222352",
+          "num": "(3)",
+          "kind": "subsection",
+          "marginalNote": "Forfeiture",
+          "children": [],
+          "text": "If the fertilizer or supplement is not removed from Canada or destroyed within the period specified in the notice — or, if no period was specified, within 90 days after the day on which the notice was delivered or sent — it is, despite subsection 9(2), forfeited to Her Majesty in right of Canada and may be disposed of as the Minister may direct."
+        },
+        {
+          "id": "222354",
+          "num": "(4)",
+          "kind": "subsection",
+          "marginalNote": "Suspension of application of subsection (3)",
+          "children": [
+            {
+              "id": "222356",
+              "num": "(a)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "harm to human, animal or plant health or the environment is unlikely to result;"
+            },
+            {
+              "id": "222357",
+              "num": "(b)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "the fertilizer or supplement will not be sold within that period;"
+            },
+            {
+              "id": "222358",
+              "num": "(c)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "the measures that should have been taken for the fertilizer or supplement not to have been imported in contravention of a provision of this Act or the regulations will be taken within that period; and"
+            },
+            {
+              "id": "222359",
+              "num": "(d)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "if the fertilizer or supplement does not meet the requirements of the regulations, it will be brought into compliance with the regulations within that period."
+            }
+          ],
+          "text": "An inspector may, for a period that he or she specifies, suspend the application of subsection (3) if he or she is satisfied that"
+        },
+        {
+          "id": "222360",
+          "num": "(5)",
+          "kind": "subsection",
+          "marginalNote": "Cancellation",
+          "children": [
+            {
+              "id": "222362",
+              "num": "(a)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "harm to human, animal or plant health or the environment is unlikely to result;"
+            },
+            {
+              "id": "222363",
+              "num": "(b)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "the fertilizer or supplement has not been sold within the period referred to in subsection (6);"
+            },
+            {
+              "id": "222364",
+              "num": "(c)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "the measures referred to in paragraph (4)(c) were taken within that period; and"
+            },
+            {
+              "id": "222365",
+              "num": "(d)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "if the fertilizer or supplement did not meet the requirements of the regulations when it was imported, it was brought into compliance with the regulations within that period."
+            }
+          ],
+          "text": "An inspector may cancel the notice if he or she is satisfied that"
+        },
+        {
+          "id": "222366",
+          "num": "(6)",
+          "kind": "subsection",
+          "marginalNote": "Period",
+          "children": [
+            {
+              "id": "222368",
+              "num": "(a)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "if the application of subsection (3) was suspended under subsection (4), the period of the suspension; and"
+            },
+            {
+              "id": "222369",
+              "num": "(b)",
+              "kind": "paragraph",
+              "marginalNote": null,
+              "children": [],
+              "text": "if the application of subsection (3) was not suspended, the period specified in the notice or, if no period was specified, the period that ends 90 days after the day on which the notice was delivered or sent."
+            }
+          ],
+          "text": "The period for the purposes of subsection (5) is"
+        },
+        {
+          "id": "222370",
+          "num": "(7)",
+          "kind": "subsection",
+          "marginalNote": "Non-application of Statutory Instruments Act",
+          "children": [],
+          "text": "The Statutory Instruments Act does not apply in respect of the notice."
+        }
+      ],
       "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "open any package found in that place that the inspector believes on reasonable grounds contains any such article;"
-    },
-    {
-      "id": "222313",
-      "label": "7(1)(c)",
-      "kind": "paragraph",
-      "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "examine the article and take samples thereof; and"
-    },
-    {
-      "id": "222314",
-      "label": "7(1)(d)",
-      "kind": "paragraph",
-      "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "remove anything from that place for the purpose of examination, conducting tests or taking samples."
-    },
-    {
-      "id": "222310",
-      "label": "7(1)",
-      "kind": "subsection",
-      "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "Subject to subsection (1.1), an inspector may, for a purpose related to verifying compliance or preventing non-compliance with this Act,"
-    },
-    {
-      "id": "222315",
-      "label": "7(1.1)",
-      "kind": "subsection",
-      "heading": "Enforcement",
-      "marginalNote": "Warrant required to enter dwelling-house",
-      "text": "Where any place referred to in paragraph (1)(a) is a dwelling-house, an inspector may not enter that dwelling-house without the consent of the occupant except under the authority of a warrant issued under subsection (1.2)."
-    },
-    {
-      "id": "222319",
-      "label": "7(1.2)(a)",
-      "kind": "paragraph",
-      "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "that the conditions for entry described in paragraph (1)(a) exist in relation to a dwelling-house,"
-    },
-    {
-      "id": "222320",
-      "label": "7(1.2)(b)",
-      "kind": "paragraph",
-      "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "that entry to the dwelling-house is necessary for any purpose relating to the administration or enforcement of this Act, and"
-    },
-    {
-      "id": "222321",
-      "label": "7(1.2)(c)",
-      "kind": "paragraph",
-      "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "that entry to the dwelling-house has been refused or that there are reasonable grounds for believing that entry thereto will be refused,"
-    },
-    {
-      "id": "222317",
-      "label": "7(1.2)",
-      "kind": "subsection",
-      "heading": "Enforcement",
-      "marginalNote": "Authority to issue warrant",
-      "text": "Where on ex parte application a justice of the peace is satisfied by information on oath the justice of the peace may issue a warrant under his hand authorizing the inspector named therein to enter that dwelling-house subject to such conditions as may be specified in the warrant."
-    },
-    {
-      "id": "222323",
-      "label": "7(1.3)",
-      "kind": "subsection",
-      "heading": "Enforcement",
-      "marginalNote": "Use of force",
-      "text": "In executing a warrant issued under subsection (1.2), the inspector named therein shall not use force unless the inspector is accompanied by a peace officer and the use of force has been specifically authorized in the warrant."
-    },
-    {
-      "id": "222325",
-      "label": "7(2)",
-      "kind": "subsection",
-      "heading": "Enforcement",
-      "marginalNote": "Assistance to inspectors",
-      "text": "The owner or person in charge of any place described in subsection (1) and every person found in that place shall give an inspector all reasonable assistance to enable the inspector to carry out his duties and functions under this Act and shall furnish the inspector with any information he may reasonably require with respect to the administration of this Act and the regulations."
-    },
-    {
-      "id": "222327",
-      "label": "7(3)",
-      "kind": "subsection",
-      "heading": "Enforcement",
-      "marginalNote": "Provision of documents, information or samples",
-      "text": "An inspector may, for a purpose related to verifying compliance or preventing non-compliance with this Act, order a person to provide, on the date, at the time and place and in the manner specified by the inspector, any document, information or sample specified by the inspector."
-    },
-    {
-      "id": "222333",
-      "label": "8(1)",
-      "kind": "subsection",
-      "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "No person shall obstruct or hinder an inspector in the carrying out of his duties or functions under this Act."
-    },
-    {
-      "id": "222334",
-      "label": "8(2)",
-      "kind": "subsection",
-      "heading": "Enforcement",
-      "marginalNote": "False statements",
-      "text": "No person shall make a false or misleading statement either orally or in writing to an inspector or other officer engaged in carrying out his duties or functions under this Act."
-    },
-    {
-      "id": "222340",
-      "label": "9(1)",
-      "kind": "subsection",
-      "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "Where an inspector believes on reasonable grounds that this Act or the regulations have been contravened, the inspector may seize any article by means of or in relation to which the inspector believes on reasonable grounds the contravention was committed."
-    },
-    {
-      "id": "222341",
-      "label": "9(2)",
-      "kind": "subsection",
-      "heading": "Enforcement",
-      "marginalNote": "Release of seized article",
-      "text": "If an inspector is satisfied that the provisions of this Act and the regulations that apply with respect to an article seized under this Act have been complied with, the article must be released."
-    },
-    {
-      "id": "222343",
-      "label": "9(3)",
-      "kind": "subsection",
-      "heading": "Enforcement",
-      "marginalNote": "Forfeiture",
-      "text": "Where the Tribunal decides that a person has committed a violation, or a person is convicted of an offence under this Act, the Tribunal or the convicting court, as the case may be, may, in addition to any penalty or punishment imposed, order that any article by means of or in relation to which the violation or offence was committed, be forfeited to Her Majesty in right of Canada."
-    },
-    {
-      "id": "222349",
-      "label": "9.1(1)",
-      "kind": "subsection",
-      "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "An inspector who has reasonable grounds to believe that an imported fertilizer or supplement does not meet the requirements of the regulations or was imported in contravention of a provision of this Act or the regulations may, by notice, whether the fertilizer or supplement is seized or not, order its owner or importer or the person having possession, care or control of it to remove it from Canada or, if removal is not possible, to destroy it."
-    },
-    {
-      "id": "222350",
-      "label": "9.1(2)",
-      "kind": "subsection",
-      "heading": "Enforcement",
-      "marginalNote": "Notice",
-      "text": "The notice must either be delivered personally to the owner or importer of the fertilizer or supplement or to the person having possession, care or control of it or be sent by registered mail to the owner’s, importer’s or person’s address in Canada."
-    },
-    {
-      "id": "222352",
-      "label": "9.1(3)",
-      "kind": "subsection",
-      "heading": "Enforcement",
-      "marginalNote": "Forfeiture",
-      "text": "If the fertilizer or supplement is not removed from Canada or destroyed within the period specified in the notice — or, if no period was specified, within 90 days after the day on which the notice was delivered or sent — it is, despite subsection 9(2), forfeited to Her Majesty in right of Canada and may be disposed of as the Minister may direct."
-    },
-    {
-      "id": "222356",
-      "label": "9.1(4)(a)",
-      "kind": "paragraph",
-      "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "harm to human, animal or plant health or the environment is unlikely to result;"
-    },
-    {
-      "id": "222357",
-      "label": "9.1(4)(b)",
-      "kind": "paragraph",
-      "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "the fertilizer or supplement will not be sold within that period;"
-    },
-    {
-      "id": "222358",
-      "label": "9.1(4)(c)",
-      "kind": "paragraph",
-      "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "the measures that should have been taken for the fertilizer or supplement not to have been imported in contravention of a provision of this Act or the regulations will be taken within that period; and"
-    },
-    {
-      "id": "222359",
-      "label": "9.1(4)(d)",
-      "kind": "paragraph",
-      "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "if the fertilizer or supplement does not meet the requirements of the regulations, it will be brought into compliance with the regulations within that period."
-    },
-    {
-      "id": "222354",
-      "label": "9.1(4)",
-      "kind": "subsection",
-      "heading": "Enforcement",
-      "marginalNote": "Suspension of application of subsection (3)",
-      "text": "An inspector may, for a period that he or she specifies, suspend the application of subsection (3) if he or she is satisfied that"
-    },
-    {
-      "id": "222362",
-      "label": "9.1(5)(a)",
-      "kind": "paragraph",
-      "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "harm to human, animal or plant health or the environment is unlikely to result;"
-    },
-    {
-      "id": "222363",
-      "label": "9.1(5)(b)",
-      "kind": "paragraph",
-      "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "the fertilizer or supplement has not been sold within the period referred to in subsection (6);"
-    },
-    {
-      "id": "222364",
-      "label": "9.1(5)(c)",
-      "kind": "paragraph",
-      "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "the measures referred to in paragraph (4)(c) were taken within that period; and"
-    },
-    {
-      "id": "222365",
-      "label": "9.1(5)(d)",
-      "kind": "paragraph",
-      "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "if the fertilizer or supplement did not meet the requirements of the regulations when it was imported, it was brought into compliance with the regulations within that period."
-    },
-    {
-      "id": "222360",
-      "label": "9.1(5)",
-      "kind": "subsection",
-      "heading": "Enforcement",
-      "marginalNote": "Cancellation",
-      "text": "An inspector may cancel the notice if he or she is satisfied that"
-    },
-    {
-      "id": "222368",
-      "label": "9.1(6)(a)",
-      "kind": "paragraph",
-      "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "if the application of subsection (3) was suspended under subsection (4), the period of the suspension; and"
-    },
-    {
-      "id": "222369",
-      "label": "9.1(6)(b)",
-      "kind": "paragraph",
-      "heading": "Enforcement",
-      "marginalNote": null,
-      "text": "if the application of subsection (3) was not suspended, the period specified in the notice or, if no period was specified, the period that ends 90 days after the day on which the notice was delivered or sent."
-    },
-    {
-      "id": "222366",
-      "label": "9.1(6)",
-      "kind": "subsection",
-      "heading": "Enforcement",
-      "marginalNote": "Period",
-      "text": "The period for the purposes of subsection (5) is"
-    },
-    {
-      "id": "222370",
-      "label": "9.1(7)",
-      "kind": "subsection",
-      "heading": "Enforcement",
-      "marginalNote": "Non-application of Statutory Instruments Act",
-      "text": "The Statutory Instruments Act does not apply in respect of the notice."
-    },
-    {
-      "id": "222377",
-      "label": "9.2(a)",
-      "kind": "paragraph",
-      "heading": "Analysis",
-      "marginalNote": null,
-      "text": "any sample taken by an inspector, or provided to the Minister or an inspector, under this Act; or"
-    },
-    {
-      "id": "222378",
-      "label": "9.2(b)",
-      "kind": "paragraph",
-      "heading": "Analysis",
-      "marginalNote": null,
-      "text": "anything removed under paragraph 7(1)(d), any article seized under subsection 9(1) or any sample of that thing or article."
+      "text": ""
     },
     {
       "id": "222375",
-      "label": "9.2",
+      "num": "9.2",
       "kind": "section",
-      "heading": "Analysis",
       "marginalNote": "Analysis and examination",
+      "children": [
+        {
+          "id": "222377",
+          "num": "(a)",
+          "kind": "paragraph",
+          "marginalNote": null,
+          "children": [],
+          "text": "any sample taken by an inspector, or provided to the Minister or an inspector, under this Act; or"
+        },
+        {
+          "id": "222378",
+          "num": "(b)",
+          "kind": "paragraph",
+          "marginalNote": null,
+          "children": [],
+          "text": "anything removed under paragraph 7(1)(d), any article seized under subsection 9(1) or any sample of that thing or article."
+        }
+      ],
+      "heading": "Analysis",
       "text": "An inspector may submit to an analyst, for analysis or examination,"
     },
     {
-      "id": "222384",
-      "label": "9.3(a)",
-      "kind": "paragraph",
-      "heading": "Limitation on Liability",
-      "marginalNote": null,
-      "text": "for any costs, loss or damage resulting from the compliance; or"
-    },
-    {
-      "id": "222385",
-      "label": "9.3(b)",
-      "kind": "paragraph",
-      "heading": "Limitation on Liability",
-      "marginalNote": null,
-      "text": "to pay any fee, including any rent or charge, for what is done or permitted to be done."
-    },
-    {
       "id": "222382",
-      "label": "9.3",
+      "num": "9.3",
       "kind": "section",
-      "heading": "Limitation on Liability",
       "marginalNote": "Her Majesty not liable",
+      "children": [
+        {
+          "id": "222384",
+          "num": "(a)",
+          "kind": "paragraph",
+          "marginalNote": null,
+          "children": [],
+          "text": "for any costs, loss or damage resulting from the compliance; or"
+        },
+        {
+          "id": "222385",
+          "num": "(b)",
+          "kind": "paragraph",
+          "marginalNote": null,
+          "children": [],
+          "text": "to pay any fee, including any rent or charge, for what is done or permitted to be done."
+        }
+      ],
+      "heading": "Limitation on Liability",
       "text": "If a person must, under this Act, do anything or permit an inspector to do anything, Her Majesty in right of Canada is not liable"
     },
     {
       "id": "222388",
-      "label": "9.4",
+      "num": "9.4",
       "kind": "section",
-      "heading": "Limitation on Liability",
       "marginalNote": "No liability",
+      "children": [],
+      "heading": "Limitation on Liability",
       "text": "No person who exercises powers or performs duties or functions under this Act is liable in respect of anything done or omitted to be done in good faith in the exercise of those powers or the performance of those duties or functions."
     },
     {
-      "id": "222395",
-      "label": "10(a)",
-      "kind": "paragraph",
-      "heading": "Offences and Punishment",
-      "marginalNote": null,
-      "text": "an offence punishable on summary conviction and liable to a fine not exceeding $50,000 or to imprisonment for a term not exceeding six months, or to both; or"
-    },
-    {
-      "id": "222396",
-      "label": "10(b)",
-      "kind": "paragraph",
-      "heading": "Offences and Punishment",
-      "marginalNote": null,
-      "text": "an indictable offence and liable to a fine not exceeding $250,000 or to imprisonment for a term not exceeding two years, or to both."
-    },
-    {
       "id": "222393",
-      "label": "10",
+      "num": "10",
       "kind": "section",
-      "heading": "Offences and Punishment",
       "marginalNote": "Offences",
+      "children": [
+        {
+          "id": "222395",
+          "num": "(a)",
+          "kind": "paragraph",
+          "marginalNote": null,
+          "children": [],
+          "text": "an offence punishable on summary conviction and liable to a fine not exceeding $50,000 or to imprisonment for a term not exceeding six months, or to both; or"
+        },
+        {
+          "id": "222396",
+          "num": "(b)",
+          "kind": "paragraph",
+          "marginalNote": null,
+          "children": [],
+          "text": "an indictable offence and liable to a fine not exceeding $250,000 or to imprisonment for a term not exceeding two years, or to both."
+        }
+      ],
+      "heading": "Offences and Punishment",
       "text": "Every person who contravenes any provision of this Act or the regulations or fails to do anything that the person is ordered to do by an inspector under this Act is guilty of"
     },
     {
       "id": "222399",
-      "label": "10.1",
+      "num": "10.1",
       "kind": "section",
-      "heading": "Offences and Punishment",
       "marginalNote": "Parties to offence",
+      "children": [],
+      "heading": "Offences and Punishment",
       "text": "If a person other than an individual commits an offence under section 10, any of the person’s directors, officers or agents or mandataries who directs, authorizes, assents to or acquiesces or participates in the commission of the offence is a party to the offence and is liable on conviction to the punishment provided for by this Act, even if the person is not prosecuted for the offence."
     },
     {
       "id": "222403",
-      "label": "11",
+      "num": "11",
       "kind": "section",
-      "heading": "Offences and Punishment",
       "marginalNote": "Proof of offence",
+      "children": [],
+      "heading": "Offences and Punishment",
       "text": "In a prosecution for an offence under this Act, it is sufficient proof of the offence to establish that it was committed by an employee or an agent or mandatary of the accused, even if the employee or the agent or mandatary is not identified or prosecuted for the offence, unless the accused establishes that the offence was committed without the knowledge or consent of the accused and that the accused exercised all due diligence to prevent its commission."
     },
     {
       "id": "222407",
-      "label": "11.1",
+      "num": "11.1",
       "kind": "section",
-      "heading": "Offences and Punishment",
       "marginalNote": "Limitation period",
+      "children": [],
+      "heading": "Offences and Punishment",
       "text": "Summary conviction proceedings for an offence under this Act may be instituted no later than two years after the day on which the subject matter of the proceedings arises."
     },
     {
       "id": "222411",
-      "label": "12",
+      "num": "12",
       "kind": "section",
-      "heading": "Offences and Punishment",
       "marginalNote": "Certificate of analyst",
+      "children": [],
+      "heading": "Offences and Punishment",
       "text": "In any proceedings for a violation, or for an offence under this Act, a certificate of an analyst stating that the analyst has analyzed or examined a substance or a sample submitted to the analyst by an inspector and stating the result of the examination is evidence of the statement contained in the certificate."
     },
     {
       "id": "222415",
-      "label": "13",
+      "num": "13",
       "kind": "section",
-      "heading": "Offences and Punishment",
       "marginalNote": "Venue",
+      "children": [],
+      "heading": "Offences and Punishment",
       "text": "A complaint or information in respect of an offence under this Act may be heard, tried or determined by a provincial court judge or a justice if the accused is resident or carrying on business within the territorial jurisdiction of the provincial court judge or justice, although the matter of the complaint or information did not arise in that territorial jurisdiction."
-    },
+    }
+  ],
+  "schedules": [
     {
       "id": "F-10:sch:154",
       "label": "SCHEDULE ¶154",
@@ -1256,283 +1389,6 @@
       "heading": null,
       "marginalNote": null,
       "text": "Transitional"
-    }
-  ],
-  "sections": [
-    {
-      "label": "1",
-      "marginalNote": "Short title",
-      "text": "1 This Act may be cited as the Fertilizers Act."
-    },
-    {
-      "label": "“analyst”",
-      "marginalNote": "",
-      "text": "“analyst” analyst means a person designated as an analyst pursuant to section 6; (analyste)"
-    },
-    {
-      "label": "“conveyance”",
-      "marginalNote": "",
-      "text": "“conveyance” conveyance means a vessel, aircraft, train, motor vehicle, trailer or other means of transportation, including a cargo container; (véhicule)"
-    },
-    {
-      "label": "“document”",
-      "marginalNote": "",
-      "text": "“document” document means anything on which information that is capable of being understood by a person, or read by a computer or other device, is recorded or marked; (document)"
-    },
-    {
-      "label": "2“environment”",
-      "marginalNote": "",
-      "text": "2“environment”(a) air, land and water, 2“environment”(b) all layers of the atmosphere, 2“environment”(c) all organic and inorganic matter and living organisms, and 2“environment”(d) the interacting natural systems that include components referred to in paragraphs (a) to (c); (environnement)"
-    },
-    {
-      "label": "“environment”",
-      "marginalNote": "",
-      "text": "“environment” environment means the components of the Earth and includes"
-    },
-    {
-      "label": "“establishment”",
-      "marginalNote": "",
-      "text": "“establishment” establishment means any place, including a conveyance, where a fertilizer or supplement is manufactured, stored, packaged or labelled; (établissement)"
-    },
-    {
-      "label": "“fertilizer”",
-      "marginalNote": "",
-      "text": "“fertilizer” fertilizer means any substance or mixture of substances, containing nitrogen, phosphorus, potassium or other plant food, manufactured, sold or represented for use as a plant nutrient; (engrais)"
-    },
-    {
-      "label": "“inspector”",
-      "marginalNote": "",
-      "text": "“inspector” inspector means a person designated as an inspector pursuant to section 6; (inspecteur)"
-    },
-    {
-      "label": "2“item to which this Act applies”",
-      "marginalNote": "",
-      "text": "2“item to which this Act applies”(a) a fertilizer or supplement, 2“item to which this Act applies”(b) anything used in an activity regulated under this Act, and 2“item to which this Act applies”(c) a document that is related to a fertilizer or supplement or to any activity regulated under this Act; (chose visée par la présente loi)"
-    },
-    {
-      "label": "“item to which this Act applies”",
-      "marginalNote": "",
-      "text": "“item to which this Act applies” item to which this Act applies means"
-    },
-    {
-      "label": "“label”",
-      "marginalNote": "",
-      "text": "“label” label includes any legend, word, mark, symbol or design applied or attached to, included in, belonging to or accompanying any fertilizer, supplement or package; (étiquette)"
-    },
-    {
-      "label": "“Minister”",
-      "marginalNote": "",
-      "text": "“Minister” Minister means the Minister of Agriculture and Agri-Food; (ministre)"
-    },
-    {
-      "label": "“package”",
-      "marginalNote": "",
-      "text": "“package” package includes a sack, bag, barrel, case or any other container in which fertilizers or supplements are placed or packed; (emballage)"
-    },
-    {
-      "label": "“penalty”",
-      "marginalNote": "",
-      "text": "“penalty” penalty means an administrative monetary penalty imposed under the Agriculture and Agri-Food Administrative Monetary Penalties Act for a violation; (sanction)"
-    },
-    {
-      "label": "“prescribed”",
-      "marginalNote": "",
-      "text": "“prescribed” prescribed means prescribed by regulation; (Version anglaise seulement)"
-    },
-    {
-      "label": "“sell”",
-      "marginalNote": "",
-      "text": "“sell” sell includes sell, offer for sale, expose for sale, have in possession for sale and distribute; (vente)"
-    },
-    {
-      "label": "“supplement”",
-      "marginalNote": "",
-      "text": "“supplement” supplement means any substance or mixture of substances, other than a fertilizer, that is manufactured, sold or represented for use in the improvement of the physical condition of soils or to aid plant growth or crop yields; (supplément)"
-    },
-    {
-      "label": "“Tribunal”",
-      "marginalNote": "",
-      "text": "“Tribunal” Tribunal means the Review Tribunal continued by subsection 27(1) of the Agriculture and Agri-Food Administrative Monetary Penalties Act; (Commission)"
-    },
-    {
-      "label": "“violation”",
-      "marginalNote": "",
-      "text": "“violation” violation means any contravention of this Act or the regulations that may be proceeded with in accordance with the Agriculture and Agri-Food Administrative Monetary Penalties Act. (violation)"
-    },
-    {
-      "label": "2",
-      "marginalNote": "Definitions",
-      "text": "2 In this Act,"
-    },
-    {
-      "label": "3",
-      "marginalNote": "Absence of registration, etc.",
-      "text": "3(a) has, in accordance with the regulations, been approved by the Minister or registered; 3(b) conforms to prescribed standards; and 3(c) is packaged and labelled in accordance with the regulations. 3 No person shall sell, or import into Canada, any fertilizer or supplement unless the fertilizer or supplement"
-    },
-    {
-      "label": "3.1",
-      "marginalNote": "Fertilizers and supplements presenting risk of harm",
-      "text": "3.1 No person shall manufacture, sell, import or export in contravention of the regulations any fertilizer or supplement that presents a risk of harm to human, animal or plant health or the environment."
-    },
-    {
-      "label": "3.2",
-      "marginalNote": "Prescribed activity with licence or registration",
-      "text": "3.2 No person shall conduct a prescribed activity in respect of a prescribed fertilizer or supplement that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — unless the person is authorized to do so by a registration made under subsection 5.2(1), by a licence issued under that subsection or by both such a registration and licence, as provided for in the regulations."
-    },
-    {
-      "label": "3.3",
-      "marginalNote": "Prescribed activity in registered establishment",
-      "text": "3.3 No person shall conduct a prescribed activity in respect of a prescribed fertilizer or supplement that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — unless the activity is conducted in an establishment registered under subsection 5.3(1) in accordance with the regulations."
-    },
-    {
-      "label": "3.4",
-      "marginalNote": "Recall order — Canadian Food Inspection Agency Act",
-      "text": "3.4 No person shall sell a fertilizer or supplement that is the subject of a recall order referred to in subsection 19(1) of the Canadian Food Inspection Agency Act."
-    },
-    {
-      "label": "4",
-      "marginalNote": "Destructive ingredients or harmful properties",
-      "text": "4 No person shall sell any fertilizer or supplement that contains destructive ingredients or properties harmful to plant growth when used according to the directions that accompany the fertilizer or supplement or that appear on the label of the package in which the fertilizer or supplement is contained."
-    },
-    {
-      "label": "5",
-      "marginalNote": "Paragraphs (1)(c.1) and (c.2)",
-      "text": "5(1)(a) respecting applications for registration or for approval of fertilizers or supplements and the information to be furnished with the applications; 5(1)(b) respecting the registration of fertilizers and supplements and prescribing fees for registration; 5(1)(b.1) respecting the approval of fertilizers and supplements; 5(1)(c) respecting the duration and cancellation of the registration or approval of fertilizers and supplements; 5(1)(c.1) respecting the manufacturing, sale, importation or exportation of any fertilizer or supplement that presents a risk of harm to human, animal or plant health or the environment; 5(1)(c.2) respecting the sending or conveying from one province to another or the importation or exportation of any fertilizer or supplement; 5(1)(c.3) respecting the manufacturing or sale of any fertilizer or supplement that is to be exported or to be sent or conveyed from one province to another; 5(1)(c.4) respecting the sale of any fertilizer or supplement that has been imported; 5(1)(d) exempting, with or without conditions, any item to which this Act applies, or a person or activity in respect of a fertilizer or supplement, from the application of this Act or the regulations or a provision of this Act or the regulations; 5(1)(e) prescribing the form, composition and other standards for fertilizers and supplements; 5(1)(f) respecting the packaging of fertilizers and supplements and the labelling of packages thereof; 5(1)(f.1)(i) the provision of samples of the fertilizer or supplement, 5(1)(f.1)(ii)(A) permits the fertilizer or supplement to be distinguished from other fertilizers or supplements, and 5(1)(f.1)(ii)(B) is required for evaluating the potential impact of the fertilizer or supplement on, and the risk of harm posed by the fertilizer or supplement to, human, animal or plant health or the environment, and 5(1)(f.1)(ii) the provision of information in respect of the fertilizer or supplement, including information that 5(1)(f.1)(iii) the evaluation of the potential impact of the fertilizer or supplement on, and the risk of harm posed by the fertilizer or supplement to, human, animal or plant health or the environment; 5(1)(f.1) respecting the evaluation of a fertilizer or supplement, including regulations respecting 5(1)(g) respecting the taking of samples and the making of analyses for the purposes of this Act; 5(1)(g.1) requiring persons to take or keep samples of any fertilizer or supplement, or its package or label, and to provide the Minister or an inspector with, or with access to, those samples, and respecting the manner in which those samples are to be taken or kept and the manner in which they are to be provided or access to them is to be provided; 5(1)(h) providing that fertilizers registered under this Act and containing a pest control product as defined in subsection 2(1) of the Pest Control Products Act are, in prescribed circumstances and subject to prescribed conditions, deemed to be registered under that Act; 5(1)(h.1)(i) the registration of persons or the issuing of licences to persons under section 5.2 or the registration of establishments under section 5.3, 5(1)(h.1)(ii) the suspension, cancellation and renewal of those licences and registrations, and 5(1)(h.1)(iii) the amendment of those licences and registrations or of any of the conditions to which they are subject by reason of subsection 5.2(3) or 5.3(4); 5(1)(h.1) respecting 5(1)(h.2) respecting quality management programs, quality control programs, safety programs, preventive control plans or any other similar programs or plans to be implemented by persons who conduct any activity regulated under this Act; 5(1)(i) respecting the detention, preservation and safeguarding of anything seized under section 9; 5(1)(j) respecting the disposition of anything forfeited under section 9; 5(1)(j.1)(i) the information in those documents, 5(1)(j.1)(ii) the manner in which they are to be prepared, kept or maintained, 5(1)(j.1)(iii) the place where they are to be kept or maintained, and 5(1)(j.1)(iv) the manner in which they are to be provided or access to them is to be provided; 5(1)(j.1) requiring persons to prepare, keep or maintain documents and to provide the Minister or an inspector with, or with access to, those documents, and respecting 5(1)(j.2) respecting the issuance of certificates or other documents for the purpose of section 5.5; 5(1)(k) prescribing anything else that by this Act is required to be prescribed; and 5(1)(l) generally, for carrying out the purposes and provisions of this Act. 5(1) The Governor in Council may make regulations 5(1.1) Regulations made under paragraph (1)(c.1) or (c.2) may, among other things, establish preclearance or in-transit requirements for any imported fertilizer or supplement or anything imported with it. 5(1.2) Regulations made under paragraph (1)(j.1) may, among other things, require persons who conduct any activity regulated under this Act and who become aware that a fertilizer or supplement presents a risk of harm to human, animal or plant health or the environment or does not meet the requirements of the regulations to provide written notice to that effect to the Minister or an inspector. 5(2)(a) Article 20.45 of the Canada–United States–Mexico Agreement; 5(2)(b) paragraph 3 of Article 39 of the Agreement on Trade-related Aspects of Intellectual Property Rights set out in Annex 1C to the WTO Agreement; or 5(2)(c) Article 18.47 of the Trans-Pacific Partnership Agreement as incorporated by reference into the Comprehensive and Progressive Agreement for Trans-Pacific Partnership by Article 1 of that Agreement. 5(2) Without limiting the authority conferred by subsection (1), the Governor in Council may make any regulations the Governor in Council considers necessary for the purpose of implementing, in relation to fertilizers or supplements, any of the following provisions:"
-    },
-    {
-      "label": "“Canada–United States–Mexico Agreement”",
-      "marginalNote": "",
-      "text": "“Canada–United States–Mexico Agreement” Canada–United States–Mexico Agreement has the meaning assigned by the definition Agreement in section 2 of the Canada–United States–Mexico Agreement Implementation Act. (Accord Canada–États-Unis–Mexique)"
-    },
-    {
-      "label": "“Comprehensive and Progressive Agreement for Trans-Pacific Partnership”",
-      "marginalNote": "",
-      "text": "“Comprehensive and Progressive Agreement for Trans-Pacific Partnership” Comprehensive and Progressive Agreement for Trans-Pacific Partnership has the meaning assigned by the definition Agreement in section 2 of the Comprehensive and Progressive Agreement for Trans-Pacific Partnership Implementation Act. (Accord de partenariat transpacifique global et progressiste)"
-    },
-    {
-      "label": "“WTO Agreement”",
-      "marginalNote": "",
-      "text": "“WTO Agreement” WTO Agreement has the meaning assigned by the definition Agreement in subsection 2(1) of the World Trade Organization Agreement Implementation Act. (Accord sur l’OMC)"
-    },
-    {
-      "label": "5",
-      "marginalNote": "Definitions",
-      "text": "5(3) The following definitions apply in subsection (2)."
-    },
-    {
-      "label": "5.1",
-      "marginalNote": "Accessibility",
-      "text": "5.1(1) A regulation made under subsection 5(1) may incorporate by reference any document, regardless of its source, either as it exists on a particular date or as it is amended from time to time. 5.1(2) The Minister must ensure that any document that is incorporated by reference in a regulation made under subsection 5(1), including any amendments to the document, is accessible. 5.1(3) A person is not liable to be found guilty of an offence or subjected to an administrative sanction for any contravention in respect of which a document that is incorporated by reference in a regulation made under subsection 5(1) is relevant unless, at the time of the alleged contravention, the document was accessible as required by subsection (2) or it was otherwise accessible to the person. 5.1(4) For greater certainty, a document that is incorporated by reference in a regulation made under subsection 5(1) is not required to be transmitted for registration or published in the Canada Gazette by reason only that it is incorporated by reference."
-    },
-    {
-      "label": "5.2",
-      "marginalNote": "Conditions — regulations",
-      "text": "5.2(1) The Minister may, on application, register a person, or issue a licence to a person, authorizing them to conduct a prescribed activity in respect of a prescribed fertilizer or supplement that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — or both register a person and issue them a licence. 5.2(2) The registration and the licence are subject to the prescribed conditions. 5.2(3) The Minister may make a registration or licence subject to any additional conditions that he or she considers appropriate. 5.2(4) The holder of the registration or licence must comply with all the conditions to which the registration or licence is subject. 5.2(5) The registration or licence is not transferable."
-    },
-    {
-      "label": "5.3",
-      "marginalNote": "Holder",
-      "text": "5.3(1) The Minister may, on application, register an establishment as one where a prescribed activity may be conducted in respect of a prescribed fertilizer or supplement that has been imported for sale or that is to be exported or to be sent or conveyed from one province to another. 5.3(2) The applicant in respect of an establishment is the holder of the registration. 5.3(3) The registration is subject to the prescribed conditions. 5.3(4) The Minister may make a registration subject to any additional conditions that he or she considers appropriate. 5.3(5) The holder of the registration must comply with all the conditions to which the registration is subject. 5.3(6) The registration is not transferable."
-    },
-    {
-      "label": "5.4",
-      "marginalNote": "Amendment, suspension, cancellation and renewal",
-      "text": "5.4 Subject to the regulations, the Minister may amend, suspend, cancel or renew a registration made under subsection 5.2(1) or 5.3(1) or a licence issued under subsection 5.2(1)."
-    },
-    {
-      "label": "5.5",
-      "marginalNote": "Export certificates",
-      "text": "5.5 The Minister may issue any certificate or other document setting out any information that he or she considers necessary to facilitate the export of any fertilizer or supplement."
-    },
-    {
-      "label": "5.6",
-      "marginalNote": "Disposition of samples",
-      "text": "5.6 A sample taken by an inspector, or provided to the Minister or an inspector, under this Act may be disposed of in any manner that the Minister considers appropriate."
-    },
-    {
-      "label": "5.7",
-      "marginalNote": "Consideration of information",
-      "text": "5.7 In considering an application made under the regulations in relation to a fertilizer or supplement, the Minister may consider information that is available from a review or evaluation of a fertilizer or supplement conducted by the government of a foreign state or of a subdivision of a foreign state or by an international organization, or association, of states."
-    },
-    {
-      "label": "6",
-      "marginalNote": "Designation",
-      "text": "6(1) The President of the Canadian Food Inspection Agency may designate under section 13 of the Canadian Food Inspection Agency Act the inspectors and analysts necessary for the administration and enforcement of this Act. 6(1.1) The President of the Canada Border Services Agency may designate inspectors under paragraph 9(2)(b) of the Canada Border Services Agency Act for the purposes of enforcing this Act. 6(2) Inspectors shall be given certificates in a form established by the President of the Canadian Food Inspection Agency or the President of the Canada Border Services Agency, as the case may be, attesting to their designation and, on entering any place under subsection 7(1), an inspector shall, if so required, produce the certificate to the person in charge of that place."
-    },
-    {
-      "label": "7",
-      "marginalNote": "Warrant required to enter dwelling-house",
-      "text": "7(1)(a) enter any place in which the inspector believes on reasonable grounds there is any article to which this Act applies; 7(1)(b) open any package found in that place that the inspector believes on reasonable grounds contains any such article; 7(1)(c) examine the article and take samples thereof; and 7(1)(d) remove anything from that place for the purpose of examination, conducting tests or taking samples. 7(1) Subject to subsection (1.1), an inspector may, for a purpose related to verifying compliance or preventing non-compliance with this Act, 7(1.1) Where any place referred to in paragraph (1)(a) is a dwelling-house, an inspector may not enter that dwelling-house without the consent of the occupant except under the authority of a warrant issued under subsection (1.2). 7(1.2)(a) that the conditions for entry described in paragraph (1)(a) exist in relation to a dwelling-house, 7(1.2)(b) that entry to the dwelling-house is necessary for any purpose relating to the administration or enforcement of this Act, and 7(1.2)(c) that entry to the dwelling-house has been refused or that there are reasonable grounds for believing that entry thereto will be refused, 7(1.2) Where on ex parte application a justice of the peace is satisfied by information on oath the justice of the peace may issue a warrant under his hand authorizing the inspector named therein to enter that dwelling-house subject to such conditions as may be specified in the warrant. 7(1.3) In executing a warrant issued under subsection (1.2), the inspector named therein shall not use force unless the inspector is accompanied by a peace officer and the use of force has been specifically authorized in the warrant. 7(2) The owner or person in charge of any place described in subsection (1) and every person found in that place shall give an inspector all reasonable assistance to enable the inspector to carry out his duties and functions under this Act and shall furnish the inspector with any information he may reasonably require with respect to the administration of this Act and the regulations. 7(3) An inspector may, for a purpose related to verifying compliance or preventing non-compliance with this Act, order a person to provide, on the date, at the time and place and in the manner specified by the inspector, any document, information or sample specified by the inspector."
-    },
-    {
-      "label": "8",
-      "marginalNote": "False statements",
-      "text": "8(1) No person shall obstruct or hinder an inspector in the carrying out of his duties or functions under this Act. 8(2) No person shall make a false or misleading statement either orally or in writing to an inspector or other officer engaged in carrying out his duties or functions under this Act."
-    },
-    {
-      "label": "9",
-      "marginalNote": "Release of seized article",
-      "text": "9(1) Where an inspector believes on reasonable grounds that this Act or the regulations have been contravened, the inspector may seize any article by means of or in relation to which the inspector believes on reasonable grounds the contravention was committed. 9(2) If an inspector is satisfied that the provisions of this Act and the regulations that apply with respect to an article seized under this Act have been complied with, the article must be released. 9(3) Where the Tribunal decides that a person has committed a violation, or a person is convicted of an offence under this Act, the Tribunal or the convicting court, as the case may be, may, in addition to any penalty or punishment imposed, order that any article by means of or in relation to which the violation or offence was committed, be forfeited to Her Majesty in right of Canada."
-    },
-    {
-      "label": "9.1",
-      "marginalNote": "Notice",
-      "text": "9.1(1) An inspector who has reasonable grounds to believe that an imported fertilizer or supplement does not meet the requirements of the regulations or was imported in contravention of a provision of this Act or the regulations may, by notice, whether the fertilizer or supplement is seized or not, order its owner or importer or the person having possession, care or control of it to remove it from Canada or, if removal is not possible, to destroy it. 9.1(2) The notice must either be delivered personally to the owner or importer of the fertilizer or supplement or to the person having possession, care or control of it or be sent by registered mail to the owner’s, importer’s or person’s address in Canada. 9.1(3) If the fertilizer or supplement is not removed from Canada or destroyed within the period specified in the notice — or, if no period was specified, within 90 days after the day on which the notice was delivered or sent — it is, despite subsection 9(2), forfeited to Her Majesty in right of Canada and may be disposed of as the Minister may direct. 9.1(4)(a) harm to human, animal or plant health or the environment is unlikely to result; 9.1(4)(b) the fertilizer or supplement will not be sold within that period; 9.1(4)(c) the measures that should have been taken for the fertilizer or supplement not to have been imported in contravention of a provision of this Act or the regulations will be taken within that period; and 9.1(4)(d) if the fertilizer or supplement does not meet the requirements of the regulations, it will be brought into compliance with the regulations within that period. 9.1(4) An inspector may, for a period that he or she specifies, suspend the application of subsection (3) if he or she is satisfied that 9.1(5)(a) harm to human, animal or plant health or the environment is unlikely to result; 9.1(5)(b) the fertilizer or supplement has not been sold within the period referred to in subsection (6); 9.1(5)(c) the measures referred to in paragraph (4)(c) were taken within that period; and 9.1(5)(d) if the fertilizer or supplement did not meet the requirements of the regulations when it was imported, it was brought into compliance with the regulations within that period. 9.1(5) An inspector may cancel the notice if he or she is satisfied that 9.1(6)(a) if the application of subsection (3) was suspended under subsection (4), the period of the suspension; and 9.1(6)(b) if the application of subsection (3) was not suspended, the period specified in the notice or, if no period was specified, the period that ends 90 days after the day on which the notice was delivered or sent. 9.1(6) The period for the purposes of subsection (5) is 9.1(7) The Statutory Instruments Act does not apply in respect of the notice."
-    },
-    {
-      "label": "9.2",
-      "marginalNote": "Analysis and examination",
-      "text": "9.2(a) any sample taken by an inspector, or provided to the Minister or an inspector, under this Act; or 9.2(b) anything removed under paragraph 7(1)(d), any article seized under subsection 9(1) or any sample of that thing or article. 9.2 An inspector may submit to an analyst, for analysis or examination,"
-    },
-    {
-      "label": "9.3",
-      "marginalNote": "Her Majesty not liable",
-      "text": "9.3(a) for any costs, loss or damage resulting from the compliance; or 9.3(b) to pay any fee, including any rent or charge, for what is done or permitted to be done. 9.3 If a person must, under this Act, do anything or permit an inspector to do anything, Her Majesty in right of Canada is not liable"
-    },
-    {
-      "label": "9.4",
-      "marginalNote": "No liability",
-      "text": "9.4 No person who exercises powers or performs duties or functions under this Act is liable in respect of anything done or omitted to be done in good faith in the exercise of those powers or the performance of those duties or functions."
-    },
-    {
-      "label": "10",
-      "marginalNote": "Offences",
-      "text": "10(a) an offence punishable on summary conviction and liable to a fine not exceeding $50,000 or to imprisonment for a term not exceeding six months, or to both; or 10(b) an indictable offence and liable to a fine not exceeding $250,000 or to imprisonment for a term not exceeding two years, or to both. 10 Every person who contravenes any provision of this Act or the regulations or fails to do anything that the person is ordered to do by an inspector under this Act is guilty of"
-    },
-    {
-      "label": "10.1",
-      "marginalNote": "Parties to offence",
-      "text": "10.1 If a person other than an individual commits an offence under section 10, any of the person’s directors, officers or agents or mandataries who directs, authorizes, assents to or acquiesces or participates in the commission of the offence is a party to the offence and is liable on conviction to the punishment provided for by this Act, even if the person is not prosecuted for the offence."
-    },
-    {
-      "label": "11",
-      "marginalNote": "Proof of offence",
-      "text": "11 In a prosecution for an offence under this Act, it is sufficient proof of the offence to establish that it was committed by an employee or an agent or mandatary of the accused, even if the employee or the agent or mandatary is not identified or prosecuted for the offence, unless the accused establishes that the offence was committed without the knowledge or consent of the accused and that the accused exercised all due diligence to prevent its commission."
-    },
-    {
-      "label": "11.1",
-      "marginalNote": "Limitation period",
-      "text": "11.1 Summary conviction proceedings for an offence under this Act may be instituted no later than two years after the day on which the subject matter of the proceedings arises."
-    },
-    {
-      "label": "12",
-      "marginalNote": "Certificate of analyst",
-      "text": "12 In any proceedings for a violation, or for an offence under this Act, a certificate of an analyst stating that the analyst has analyzed or examined a substance or a sample submitted to the analyst by an inspector and stating the result of the examination is evidence of the statement contained in the certificate."
-    },
-    {
-      "label": "13",
-      "marginalNote": "Venue",
-      "text": "13 A complaint or information in respect of an offence under this Act may be heard, tried or determined by a provincial court judge or a justice if the accused is resident or carrying on business within the territorial jurisdiction of the provincial court judge or justice, although the matter of the complaint or information did not arise in that territorial jurisdiction."
-    },
-    {
-      "label": "SCHEDULE ¶154",
-      "marginalNote": "",
-      "text": "SCHEDULE ¶154 For greater certainty, the two year limitation period provided for in subsection 10.1(1) of the Act, as amended by subsection (1), only applies in respect of offences committed after the coming into force of that subsection."
-    },
-    {
-      "label": "SCHEDULE ¶155",
-      "marginalNote": "",
-      "text": "SCHEDULE ¶155 Transitional"
     }
   ],
   "fullText": "Short title\n1 This Act may be cited as the Fertilizers Act.\n\n“analyst” analyst means a person designated as an analyst pursuant to section 6; (analyste)\n\n“conveyance” conveyance means a vessel, aircraft, train, motor vehicle, trailer or other means of transportation, including a cargo container; (véhicule)\n\n“document” document means anything on which information that is capable of being understood by a person, or read by a computer or other device, is recorded or marked; (document)\n\n2“environment”(a) air, land and water,\n\n2“environment”(b) all layers of the atmosphere,\n\n2“environment”(c) all organic and inorganic matter and living organisms, and\n\n2“environment”(d) the interacting natural systems that include components referred to in paragraphs (a) to (c); (environnement)\n\n“environment” environment means the components of the Earth and includes\n\n“establishment” establishment means any place, including a conveyance, where a fertilizer or supplement is manufactured, stored, packaged or labelled; (établissement)\n\n“fertilizer” fertilizer means any substance or mixture of substances, containing nitrogen, phosphorus, potassium or other plant food, manufactured, sold or represented for use as a plant nutrient; (engrais)\n\n“inspector” inspector means a person designated as an inspector pursuant to section 6; (inspecteur)\n\n2“item to which this Act applies”(a) a fertilizer or supplement,\n\n2“item to which this Act applies”(b) anything used in an activity regulated under this Act, and\n\n2“item to which this Act applies”(c) a document that is related to a fertilizer or supplement or to any activity regulated under this Act; (chose visée par la présente loi)\n\n“item to which this Act applies” item to which this Act applies means\n\n“label” label includes any legend, word, mark, symbol or design applied or attached to, included in, belonging to or accompanying any fertilizer, supplement or package; (étiquette)\n\n“Minister” Minister means the Minister of Agriculture and Agri-Food; (ministre)\n\n“package” package includes a sack, bag, barrel, case or any other container in which fertilizers or supplements are placed or packed; (emballage)\n\n“penalty” penalty means an administrative monetary penalty imposed under the Agriculture and Agri-Food Administrative Monetary Penalties Act for a violation; (sanction)\n\n“prescribed” prescribed means prescribed by regulation; (Version anglaise seulement)\n\n“sell” sell includes sell, offer for sale, expose for sale, have in possession for sale and distribute; (vente)\n\n“supplement” supplement means any substance or mixture of substances, other than a fertilizer, that is manufactured, sold or represented for use in the improvement of the physical condition of soils or to aid plant growth or crop yields; (supplément)\n\n“Tribunal” Tribunal means the Review Tribunal continued by subsection 27(1) of the Agriculture and Agri-Food Administrative Monetary Penalties Act; (Commission)\n\n“violation” violation means any contravention of this Act or the regulations that may be proceeded with in accordance with the Agriculture and Agri-Food Administrative Monetary Penalties Act. (violation)\n\nDefinitions\n2 In this Act,\n\n3(a) has, in accordance with the regulations, been approved by the Minister or registered;\n\n3(b) conforms to prescribed standards; and\n\n3(c) is packaged and labelled in accordance with the regulations.\n\nAbsence of registration, etc.\n3 No person shall sell, or import into Canada, any fertilizer or supplement unless the fertilizer or supplement\n\nFertilizers and supplements presenting risk of harm\n3.1 No person shall manufacture, sell, import or export in contravention of the regulations any fertilizer or supplement that presents a risk of harm to human, animal or plant health or the environment.\n\nPrescribed activity with licence or registration\n3.2 No person shall conduct a prescribed activity in respect of a prescribed fertilizer or supplement that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — unless the person is authorized to do so by a registration made under subsection 5.2(1), by a licence issued under that subsection or by both such a registration and licence, as provided for in the regulations.\n\nPrescribed activity in registered establishment\n3.3 No person shall conduct a prescribed activity in respect of a prescribed fertilizer or supplement that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — unless the activity is conducted in an establishment registered under subsection 5.3(1) in accordance with the regulations.\n\nRecall order — Canadian Food Inspection Agency Act\n3.4 No person shall sell a fertilizer or supplement that is the subject of a recall order referred to in subsection 19(1) of the Canadian Food Inspection Agency Act.\n\nDestructive ingredients or harmful properties\n4 No person shall sell any fertilizer or supplement that contains destructive ingredients or properties harmful to plant growth when used according to the directions that accompany the fertilizer or supplement or that appear on the label of the package in which the fertilizer or supplement is contained.\n\n5(1)(a) respecting applications for registration or for approval of fertilizers or supplements and the information to be furnished with the applications;\n\n5(1)(b) respecting the registration of fertilizers and supplements and prescribing fees for registration;\n\n5(1)(b.1) respecting the approval of fertilizers and supplements;\n\n5(1)(c) respecting the duration and cancellation of the registration or approval of fertilizers and supplements;\n\n5(1)(c.1) respecting the manufacturing, sale, importation or exportation of any fertilizer or supplement that presents a risk of harm to human, animal or plant health or the environment;\n\n5(1)(c.2) respecting the sending or conveying from one province to another or the importation or exportation of any fertilizer or supplement;\n\n5(1)(c.3) respecting the manufacturing or sale of any fertilizer or supplement that is to be exported or to be sent or conveyed from one province to another;\n\n5(1)(c.4) respecting the sale of any fertilizer or supplement that has been imported;\n\n5(1)(d) exempting, with or without conditions, any item to which this Act applies, or a person or activity in respect of a fertilizer or supplement, from the application of this Act or the regulations or a provision of this Act or the regulations;\n\n5(1)(e) prescribing the form, composition and other standards for fertilizers and supplements;\n\n5(1)(f) respecting the packaging of fertilizers and supplements and the labelling of packages thereof;\n\n5(1)(f.1)(i) the provision of samples of the fertilizer or supplement,\n\n5(1)(f.1)(ii)(A) permits the fertilizer or supplement to be distinguished from other fertilizers or supplements, and\n\n5(1)(f.1)(ii)(B) is required for evaluating the potential impact of the fertilizer or supplement on, and the risk of harm posed by the fertilizer or supplement to, human, animal or plant health or the environment, and\n\n5(1)(f.1)(ii) the provision of information in respect of the fertilizer or supplement, including information that\n\n5(1)(f.1)(iii) the evaluation of the potential impact of the fertilizer or supplement on, and the risk of harm posed by the fertilizer or supplement to, human, animal or plant health or the environment;\n\n5(1)(f.1) respecting the evaluation of a fertilizer or supplement, including regulations respecting\n\n5(1)(g) respecting the taking of samples and the making of analyses for the purposes of this Act;\n\n5(1)(g.1) requiring persons to take or keep samples of any fertilizer or supplement, or its package or label, and to provide the Minister or an inspector with, or with access to, those samples, and respecting the manner in which those samples are to be taken or kept and the manner in which they are to be provided or access to them is to be provided;\n\n5(1)(h) providing that fertilizers registered under this Act and containing a pest control product as defined in subsection 2(1) of the Pest Control Products Act are, in prescribed circumstances and subject to prescribed conditions, deemed to be registered under that Act;\n\n5(1)(h.1)(i) the registration of persons or the issuing of licences to persons under section 5.2 or the registration of establishments under section 5.3,\n\n5(1)(h.1)(ii) the suspension, cancellation and renewal of those licences and registrations, and\n\n5(1)(h.1)(iii) the amendment of those licences and registrations or of any of the conditions to which they are subject by reason of subsection 5.2(3) or 5.3(4);\n\n5(1)(h.1) respecting\n\n5(1)(h.2) respecting quality management programs, quality control programs, safety programs, preventive control plans or any other similar programs or plans to be implemented by persons who conduct any activity regulated under this Act;\n\n5(1)(i) respecting the detention, preservation and safeguarding of anything seized under section 9;\n\n5(1)(j) respecting the disposition of anything forfeited under section 9;\n\n5(1)(j.1)(i) the information in those documents,\n\n5(1)(j.1)(ii) the manner in which they are to be prepared, kept or maintained,\n\n5(1)(j.1)(iii) the place where they are to be kept or maintained, and\n\n5(1)(j.1)(iv) the manner in which they are to be provided or access to them is to be provided;\n\n5(1)(j.1) requiring persons to prepare, keep or maintain documents and to provide the Minister or an inspector with, or with access to, those documents, and respecting\n\n5(1)(j.2) respecting the issuance of certificates or other documents for the purpose of section 5.5;\n\n5(1)(k) prescribing anything else that by this Act is required to be prescribed; and\n\n5(1)(l) generally, for carrying out the purposes and provisions of this Act.\n\n5(1) The Governor in Council may make regulations\n\nParagraphs (1)(c.1) and (c.2)\n5(1.1) Regulations made under paragraph (1)(c.1) or (c.2) may, among other things, establish preclearance or in-transit requirements for any imported fertilizer or supplement or anything imported with it.\n\nParagraph (1)(j.1)\n5(1.2) Regulations made under paragraph (1)(j.1) may, among other things, require persons who conduct any activity regulated under this Act and who become aware that a fertilizer or supplement presents a risk of harm to human, animal or plant health or the environment or does not meet the requirements of the regulations to provide written notice to that effect to the Minister or an inspector.\n\n5(2)(a) Article 20.45 of the Canada–United States–Mexico Agreement;\n\n5(2)(b) paragraph 3 of Article 39 of the Agreement on Trade-related Aspects of Intellectual Property Rights set out in Annex 1C to the WTO Agreement; or\n\n5(2)(c) Article 18.47 of the Trans-Pacific Partnership Agreement as incorporated by reference into the Comprehensive and Progressive Agreement for Trans-Pacific Partnership by Article 1 of that Agreement.\n\nRegulations — international agreements\n5(2) Without limiting the authority conferred by subsection (1), the Governor in Council may make any regulations the Governor in Council considers necessary for the purpose of implementing, in relation to fertilizers or supplements, any of the following provisions:\n\n“Canada–United States–Mexico Agreement” Canada–United States–Mexico Agreement has the meaning assigned by the definition Agreement in section 2 of the Canada–United States–Mexico Agreement Implementation Act. (Accord Canada–États-Unis–Mexique)\n\n“Comprehensive and Progressive Agreement for Trans-Pacific Partnership” Comprehensive and Progressive Agreement for Trans-Pacific Partnership has the meaning assigned by the definition Agreement in section 2 of the Comprehensive and Progressive Agreement for Trans-Pacific Partnership Implementation Act. (Accord de partenariat transpacifique global et progressiste)\n\n“WTO Agreement” WTO Agreement has the meaning assigned by the definition Agreement in subsection 2(1) of the World Trade Organization Agreement Implementation Act. (Accord sur l’OMC)\n\nDefinitions\n5(3) The following definitions apply in subsection (2).\n\n5.1(1) A regulation made under subsection 5(1) may incorporate by reference any document, regardless of its source, either as it exists on a particular date or as it is amended from time to time.\n\nAccessibility\n5.1(2) The Minister must ensure that any document that is incorporated by reference in a regulation made under subsection 5(1), including any amendments to the document, is accessible.\n\nDefence\n5.1(3) A person is not liable to be found guilty of an offence or subjected to an administrative sanction for any contravention in respect of which a document that is incorporated by reference in a regulation made under subsection 5(1) is relevant unless, at the time of the alleged contravention, the document was accessible as required by subsection (2) or it was otherwise accessible to the person.\n\nNo registration or publication\n5.1(4) For greater certainty, a document that is incorporated by reference in a regulation made under subsection 5(1) is not required to be transmitted for registration or published in the Canada Gazette by reason only that it is incorporated by reference.\n\n5.2(1) The Minister may, on application, register a person, or issue a licence to a person, authorizing them to conduct a prescribed activity in respect of a prescribed fertilizer or supplement that has been imported for sale — or that is to be exported or to be sent or conveyed from one province to another — or both register a person and issue them a licence.\n\nConditions — regulations\n5.2(2) The registration and the licence are subject to the prescribed conditions.\n\nConditions — Minister\n5.2(3) The Minister may make a registration or licence subject to any additional conditions that he or she considers appropriate.\n\nObligation to comply\n5.2(4) The holder of the registration or licence must comply with all the conditions to which the registration or licence is subject.\n\nNo transfer\n5.2(5) The registration or licence is not transferable.\n\n5.3(1) The Minister may, on application, register an establishment as one where a prescribed activity may be conducted in respect of a prescribed fertilizer or supplement that has been imported for sale or that is to be exported or to be sent or conveyed from one province to another.\n\nHolder\n5.3(2) The applicant in respect of an establishment is the holder of the registration.\n\nConditions — regulations\n5.3(3) The registration is subject to the prescribed conditions.\n\nConditions — Minister\n5.3(4) The Minister may make a registration subject to any additional conditions that he or she considers appropriate.\n\nObligation to comply\n5.3(5) The holder of the registration must comply with all the conditions to which the registration is subject.\n\nNo transfer\n5.3(6) The registration is not transferable.\n\nAmendment, suspension, cancellation and renewal\n5.4 Subject to the regulations, the Minister may amend, suspend, cancel or renew a registration made under subsection 5.2(1) or 5.3(1) or a licence issued under subsection 5.2(1).\n\nExport certificates\n5.5 The Minister may issue any certificate or other document setting out any information that he or she considers necessary to facilitate the export of any fertilizer or supplement.\n\nDisposition of samples\n5.6 A sample taken by an inspector, or provided to the Minister or an inspector, under this Act may be disposed of in any manner that the Minister considers appropriate.\n\nConsideration of information\n5.7 In considering an application made under the regulations in relation to a fertilizer or supplement, the Minister may consider information that is available from a review or evaluation of a fertilizer or supplement conducted by the government of a foreign state or of a subdivision of a foreign state or by an international organization, or association, of states.\n\n6(1) The President of the Canadian Food Inspection Agency may designate under section 13 of the Canadian Food Inspection Agency Act the inspectors and analysts necessary for the administration and enforcement of this Act.\n\nDesignation\n6(1.1) The President of the Canada Border Services Agency may designate inspectors under paragraph 9(2)(b) of the Canada Border Services Agency Act for the purposes of enforcing this Act.\n\nCertificate to be produced\n6(2) Inspectors shall be given certificates in a form established by the President of the Canadian Food Inspection Agency or the President of the Canada Border Services Agency, as the case may be, attesting to their designation and, on entering any place under subsection 7(1), an inspector shall, if so required, produce the certificate to the person in charge of that place.\n\n7(1)(a) enter any place in which the inspector believes on reasonable grounds there is any article to which this Act applies;\n\n7(1)(b) open any package found in that place that the inspector believes on reasonable grounds contains any such article;\n\n7(1)(c) examine the article and take samples thereof; and\n\n7(1)(d) remove anything from that place for the purpose of examination, conducting tests or taking samples.\n\n7(1) Subject to subsection (1.1), an inspector may, for a purpose related to verifying compliance or preventing non-compliance with this Act,\n\nWarrant required to enter dwelling-house\n7(1.1) Where any place referred to in paragraph (1)(a) is a dwelling-house, an inspector may not enter that dwelling-house without the consent of the occupant except under the authority of a warrant issued under subsection (1.2).\n\n7(1.2)(a) that the conditions for entry described in paragraph (1)(a) exist in relation to a dwelling-house,\n\n7(1.2)(b) that entry to the dwelling-house is necessary for any purpose relating to the administration or enforcement of this Act, and\n\n7(1.2)(c) that entry to the dwelling-house has been refused or that there are reasonable grounds for believing that entry thereto will be refused,\n\nAuthority to issue warrant\n7(1.2) Where on ex parte application a justice of the peace is satisfied by information on oath the justice of the peace may issue a warrant under his hand authorizing the inspector named therein to enter that dwelling-house subject to such conditions as may be specified in the warrant.\n\nUse of force\n7(1.3) In executing a warrant issued under subsection (1.2), the inspector named therein shall not use force unless the inspector is accompanied by a peace officer and the use of force has been specifically authorized in the warrant.\n\nAssistance to inspectors\n7(2) The owner or person in charge of any place described in subsection (1) and every person found in that place shall give an inspector all reasonable assistance to enable the inspector to carry out his duties and functions under this Act and shall furnish the inspector with any information he may reasonably require with respect to the administration of this Act and the regulations.\n\nProvision of documents, information or samples\n7(3) An inspector may, for a purpose related to verifying compliance or preventing non-compliance with this Act, order a person to provide, on the date, at the time and place and in the manner specified by the inspector, any document, information or sample specified by the inspector.\n\n8(1) No person shall obstruct or hinder an inspector in the carrying out of his duties or functions under this Act.\n\nFalse statements\n8(2) No person shall make a false or misleading statement either orally or in writing to an inspector or other officer engaged in carrying out his duties or functions under this Act.\n\n9(1) Where an inspector believes on reasonable grounds that this Act or the regulations have been contravened, the inspector may seize any article by means of or in relation to which the inspector believes on reasonable grounds the contravention was committed.\n\nRelease of seized article\n9(2) If an inspector is satisfied that the provisions of this Act and the regulations that apply with respect to an article seized under this Act have been complied with, the article must be released.\n\nForfeiture\n9(3) Where the Tribunal decides that a person has committed a violation, or a person is convicted of an offence under this Act, the Tribunal or the convicting court, as the case may be, may, in addition to any penalty or punishment imposed, order that any article by means of or in relation to which the violation or offence was committed, be forfeited to Her Majesty in right of Canada.\n\n9.1(1) An inspector who has reasonable grounds to believe that an imported fertilizer or supplement does not meet the requirements of the regulations or was imported in contravention of a provision of this Act or the regulations may, by notice, whether the fertilizer or supplement is seized or not, order its owner or importer or the person having possession, care or control of it to remove it from Canada or, if removal is not possible, to destroy it.\n\nNotice\n9.1(2) The notice must either be delivered personally to the owner or importer of the fertilizer or supplement or to the person having possession, care or control of it or be sent by registered mail to the owner’s, importer’s or person’s address in Canada.\n\nForfeiture\n9.1(3) If the fertilizer or supplement is not removed from Canada or destroyed within the period specified in the notice — or, if no period was specified, within 90 days after the day on which the notice was delivered or sent — it is, despite subsection 9(2), forfeited to Her Majesty in right of Canada and may be disposed of as the Minister may direct.\n\n9.1(4)(a) harm to human, animal or plant health or the environment is unlikely to result;\n\n9.1(4)(b) the fertilizer or supplement will not be sold within that period;\n\n9.1(4)(c) the measures that should have been taken for the fertilizer or supplement not to have been imported in contravention of a provision of this Act or the regulations will be taken within that period; and\n\n9.1(4)(d) if the fertilizer or supplement does not meet the requirements of the regulations, it will be brought into compliance with the regulations within that period.\n\nSuspension of application of subsection (3)\n9.1(4) An inspector may, for a period that he or she specifies, suspend the application of subsection (3) if he or she is satisfied that\n\n9.1(5)(a) harm to human, animal or plant health or the environment is unlikely to result;\n\n9.1(5)(b) the fertilizer or supplement has not been sold within the period referred to in subsection (6);\n\n9.1(5)(c) the measures referred to in paragraph (4)(c) were taken within that period; and\n\n9.1(5)(d) if the fertilizer or supplement did not meet the requirements of the regulations when it was imported, it was brought into compliance with the regulations within that period.\n\nCancellation\n9.1(5) An inspector may cancel the notice if he or she is satisfied that\n\n9.1(6)(a) if the application of subsection (3) was suspended under subsection (4), the period of the suspension; and\n\n9.1(6)(b) if the application of subsection (3) was not suspended, the period specified in the notice or, if no period was specified, the period that ends 90 days after the day on which the notice was delivered or sent.\n\nPeriod\n9.1(6) The period for the purposes of subsection (5) is\n\nNon-application of Statutory Instruments Act\n9.1(7) The Statutory Instruments Act does not apply in respect of the notice.\n\n9.2(a) any sample taken by an inspector, or provided to the Minister or an inspector, under this Act; or\n\n9.2(b) anything removed under paragraph 7(1)(d), any article seized under subsection 9(1) or any sample of that thing or article.\n\nAnalysis and examination\n9.2 An inspector may submit to an analyst, for analysis or examination,\n\n9.3(a) for any costs, loss or damage resulting from the compliance; or\n\n9.3(b) to pay any fee, including any rent or charge, for what is done or permitted to be done.\n\nHer Majesty not liable\n9.3 If a person must, under this Act, do anything or permit an inspector to do anything, Her Majesty in right of Canada is not liable\n\nNo liability\n9.4 No person who exercises powers or performs duties or functions under this Act is liable in respect of anything done or omitted to be done in good faith in the exercise of those powers or the performance of those duties or functions.\n\n10(a) an offence punishable on summary conviction and liable to a fine not exceeding $50,000 or to imprisonment for a term not exceeding six months, or to both; or\n\n10(b) an indictable offence and liable to a fine not exceeding $250,000 or to imprisonment for a term not exceeding two years, or to both.\n\nOffences\n10 Every person who contravenes any provision of this Act or the regulations or fails to do anything that the person is ordered to do by an inspector under this Act is guilty of\n\nParties to offence\n10.1 If a person other than an individual commits an offence under section 10, any of the person’s directors, officers or agents or mandataries who directs, authorizes, assents to or acquiesces or participates in the commission of the offence is a party to the offence and is liable on conviction to the punishment provided for by this Act, even if the person is not prosecuted for the offence.\n\nProof of offence\n11 In a prosecution for an offence under this Act, it is sufficient proof of the offence to establish that it was committed by an employee or an agent or mandatary of the accused, even if the employee or the agent or mandatary is not identified or prosecuted for the offence, unless the accused establishes that the offence was committed without the knowledge or consent of the accused and that the accused exercised all due diligence to prevent its commission.\n\nLimitation period\n11.1 Summary conviction proceedings for an offence under this Act may be instituted no later than two years after the day on which the subject matter of the proceedings arises.\n\nCertificate of analyst\n12 In any proceedings for a violation, or for an offence under this Act, a certificate of an analyst stating that the analyst has analyzed or examined a substance or a sample submitted to the analyst by an inspector and stating the result of the examination is evidence of the statement contained in the certificate.\n\nVenue\n13 A complaint or information in respect of an offence under this Act may be heard, tried or determined by a provincial court judge or a justice if the accused is resident or carrying on business within the territorial jurisdiction of the provincial court judge or justice, although the matter of the complaint or information did not arise in that territorial jurisdiction.\n\nSCHEDULE ¶154 For greater certainty, the two year limitation period provided for in subsection 10.1(1) of the Act, as amended by subsection (1), only applies in respect of offences committed after the coming into force of that subsection.\n\nSCHEDULE ¶155 Transitional"
