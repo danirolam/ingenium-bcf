@@ -48,7 +48,7 @@ export function DeltaFlow({
       : "📄 From bill text";
 
   return (
-    <>
+    <div className="delta-flow">
       <PageHeader
         crumbs={["Workspace", "Legal delta", bill?.billNumber ?? "Bill"]}
         title={`Legal delta — ${bill?.billNumber ?? ""}`}
@@ -95,6 +95,6 @@ export function DeltaFlow({
       {phase === "export" && (
         <DeltaExport bill={bill} deltas={deltas} allApproved={allApproved} onBack={() => onPhase("approve")} />
       )}
-    </>
+    </div>
   );
 }
