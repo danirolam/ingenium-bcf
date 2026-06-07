@@ -228,6 +228,9 @@ export interface BillAmendmentOp {
   newText?: string | null;
   note?: string | null;
   anchorFound: boolean;
+  /** How this op was resolved: deterministically from the bill XML ("structured")
+   *  or via the AI scalpel/interpreter ("ai"). */
+  resolution?: "structured" | "ai";
   /** Full instruction text — what the bill says (no longer truncated). */
   instruction: string;
   /** Indices into `ProvisionDelta.rows` of the provisions this op produced. */

@@ -295,6 +295,9 @@ export interface AppliedOp {
   /** Identity keys of the provisions this op produced — resolved to row indices
    *  by attachRowLinks (see amendmentEngine). */
   producedKeys: string[];
+  /** "structured" for these deterministic groups; the union lets the route mix in
+   *  the AI scalpel's "amend" ops (resolution "ai") in the same verified array. */
+  resolution: "structured" | "ai";
 }
 
 // Apply structured amendment groups to an Act's provisions (block inserts), in
@@ -364,6 +367,7 @@ export function applyGroups(
       instruction: g.instruction,
       note: g.instruction.slice(0, 160),
       producedKeys,
+      resolution: "structured",
     });
   }
   return { after, verified };

@@ -135,6 +135,9 @@ export type VerifiedOp = Amendment & {
   producedKeys: string[];
   /** Full human-readable instruction ("Bill says"). */
   instruction: string;
+  /** How this op was resolved: "structured" (deterministic from the bill XML) or
+   *  "ai" (the AI scalpel/interpreter). Per-op, so a mixed delta tags each card. */
+  resolution: "structured" | "ai";
 };
 
 export function applyAmendments(
@@ -185,7 +188,7 @@ export function applyAmendments(
       after.splice(at, 0, newP);
       producedKeys = [provKey(newP)];
     }
-    verified.push({ ...op, anchorFound, producedKeys, instruction: op.note ?? "" });
+    verified.push({ ...op, anchorFound, producedKeys, instruction: op.note ?? "", resolution: "ai" });
   }
   return { after, verified };
 }

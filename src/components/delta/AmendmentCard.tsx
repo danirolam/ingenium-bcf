@@ -27,7 +27,9 @@ export function AmendmentCard({
   onToggle: () => void;
   onApprove: (approved: boolean) => void;
 }) {
-  const structured = delta.source === "bill-xml";
+  // Per-op provenance: structural (deterministic from the bill XML) vs ai-located
+  // (the AI scalpel/interpreter). Falls back to the delta-level source.
+  const structured = op.resolution ? op.resolution === "structured" : delta.source === "bill-xml";
   const warn = !op.anchorFound;
 
   return (

@@ -434,7 +434,7 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
               tasks.push({ id: `e${i}`, kind: "edit", instruction: e.instruction, currentText: after[hit.index].text });
               targets.push({ provIndex: hit.index, anchorFound: hit.matched === "exact", instruction: e.instruction });
             } else {
-              verified.push({ op: "amend", anchor: e.sectionHint, position: null, count: 0, anchorFound: false, note: `(target not found) ${e.instruction.slice(0, 140)}`, instruction: e.instruction, producedKeys: [] });
+              verified.push({ op: "amend", anchor: e.sectionHint, position: null, count: 0, anchorFound: false, note: `(target not found) ${e.instruction.slice(0, 140)}`, instruction: e.instruction, producedKeys: [], resolution: "ai" });
             }
           });
           if (tasks.length > 0) {
@@ -449,6 +449,7 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
                 anchorFound: t.anchorFound, note: t.instruction.slice(0, 160),
                 instruction: t.instruction,
                 producedKeys: r?.newText ? [provKey(after[t.provIndex])] : [],
+                resolution: "ai",
               });
             });
           }
