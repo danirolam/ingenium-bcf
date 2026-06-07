@@ -16,9 +16,11 @@ import {
 } from "../services/gemini.js";
 import {
   applyAmendments,
+  attachRowLinks,
   diffProvisions,
   diffSummary,
   findByPath,
+  provKey,
 } from "../services/amendmentEngine.js";
 import { interpretAmendmentsClaude } from "../services/claude.js";
 import { applyGroups, parseBillAmendments } from "../services/billAmendments.js";
@@ -432,7 +434,7 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
               tasks.push({ id: `e${i}`, kind: "edit", instruction: e.instruction, currentText: after[hit.index].text });
               targets.push({ provIndex: hit.index, anchorFound: hit.matched === "exact", instruction: e.instruction });
             } else {
-              verified.push({ op: "amend", anchor: e.sectionHint, position: null, count: 0, anchorFound: false, note: `(target not found) ${e.instruction.slice(0, 140)}` });
+              verified.push({ op: "amend", anchor: e.sectionHint, position: null, count: 0, anchorFound: false, note: `(target not found) ${e.instruction.slice(0, 140)}`, instruction: e.instruction, producedKeys: [] });
             }
           });
           if (tasks.length > 0) {
@@ -445,6 +447,8 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
               verified.push({
                 op: "amend", anchor: after[t.provIndex].label, position: null, count: r?.newText ? 1 : 0,
                 anchorFound: t.anchorFound, note: t.instruction.slice(0, 160),
+                instruction: t.instruction,
+                producedKeys: r?.newText ? [provKey(after[t.provIndex])] : [],
               });
             });
           }
@@ -453,7 +457,7 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
         const rows = diffProvisions(actData.provisions, after);
         return {
           slug: actData.slug, title: actData.title, citation: actData.citation,
-          summary: diffSummary(rows), operations: verified,
+          summary: diffSummary(rows), operations: attachRowLinks(slug, verified, rows),
           rows,
           source: usedAi ? "ai-assisted" : "bill-xml",
           incomplete,

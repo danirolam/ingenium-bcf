@@ -55,6 +55,13 @@ export function normLabel(s: string | null | undefined): string {
     .trim();
 }
 
+// Stable identity key for diffing and op→row linking. Every provision carries a
+// unique id (real lims id for the Act; a fresh "ins:N" for bill-inserted ones, see
+// applyGroups/applyAmendments), so keying by id is both stable and collision-free.
+// One definition used everywhere so keys never disagree.
+export const provKey = (p: Provision) =>
+  p.id ? `id:${p.id}` : `lbl:${normLabel(p.label)}`;
+
 const STEP_KINDS = ["subsection", "paragraph", "subparagraph", "clause"];
 
 // Parse a composed label ("30(1)(o)", "2.4", "“advertisement”") into a
@@ -121,12 +128,22 @@ export function findByPath(
 
 // Apply interpreted operations to the Act's provisions. Returns the resulting
 // "after" provisions plus a list of operations whose anchor we couldn't verify.
+export type VerifiedOp = Amendment & {
+  anchorFound: boolean;
+  /** Identity keys of the provisions this op produced (added/changed/repealed),
+   *  resolved to row indices by attachRowLinks. */
+  producedKeys: string[];
+  /** Full human-readable instruction ("Bill says"). */
+  instruction: string;
+};
+
 export function applyAmendments(
   before: Provision[],
   ops: Amendment[],
-): { after: Provision[]; verified: Array<Amendment & { anchorFound: boolean }> } {
+): { after: Provision[]; verified: VerifiedOp[] } {
   const after: Provision[] = before.map((p) => ({ ...p }));
-  const verified: Array<Amendment & { anchorFound: boolean }> = [];
+  const verified: VerifiedOp[] = [];
+  let serial = 0; // unique ids for inserted provisions (so provKey distinguishes them)
   const indexOfLabel = (label: string | null) => {
     if (!label) return -1;
     const want = normLabel(label);
@@ -136,10 +153,10 @@ export function applyAmendments(
   for (const op of ops) {
     const i = indexOfLabel(op.anchor);
     const anchorFound = i >= 0 || (op.op === "add" && !op.anchor);
-    verified.push({ ...op, anchorFound });
+    let producedKeys: string[] = [];
 
     if (op.op === "repeal") {
-      if (i >= 0) after.splice(i, 1);
+      if (i >= 0) { producedKeys = [provKey(after[i])]; after.splice(i, 1); }
     } else if (op.op === "replace") {
       if (i >= 0) {
         after[i] = {
@@ -147,13 +164,17 @@ export function applyAmendments(
           marginalNote: op.newMarginalNote ?? after[i].marginalNote,
           text: op.newText ?? after[i].text,
         };
+        producedKeys = [provKey(after[i])];
       }
     } else if (op.op === "amend") {
-      if (i >= 0 && op.newText) after[i] = { ...after[i], text: op.newText };
+      if (i >= 0) {
+        if (op.newText) after[i] = { ...after[i], text: op.newText };
+        producedKeys = [provKey(after[i])];
+      }
     } else {
       // add — insert a new provision near the anchor (or append if no anchor).
       const newP: Provision = {
-        id: `new:${op.newLabel || op.anchor || verified.length}`,
+        id: `ins:${serial++}`,
         label: op.newLabel || "(new)",
         kind: "section",
         heading: i >= 0 ? after[i].heading ?? null : null,
@@ -162,33 +183,82 @@ export function applyAmendments(
       };
       const at = i < 0 ? after.length : op.position === "before" ? i : i + 1;
       after.splice(at, 0, newP);
+      producedKeys = [provKey(newP)];
     }
+    verified.push({ ...op, anchorFound, producedKeys, instruction: op.note ?? "" });
   }
   return { after, verified };
 }
 
-// Diff before/after by provision identity (stable id), falling back to label.
+// Diff before/after into rows in DOCUMENT ORDER (repealed rows interleaved at
+// their original position, not appended at the end), keyed by provKey. The
+// document-order guarantee lets a caller window ±N rows around any change.
 export function diffProvisions(before: Provision[], after: Provision[]): DiffRow[] {
-  const key = (p: Provision) =>
-    p.id && !p.id.startsWith("new:") ? `id:${p.id}` : `lbl:${normLabel(p.label)}`;
-  const beforeMap = new Map(before.map((p) => [key(p), p]));
-  const afterMap = new Map(after.map((p) => [key(p), p]));
+  const beforeKeys = before.map(provKey);
+  const beforeByKey = new Map(before.map((p) => [provKey(p), p] as const));
+  const afterKeys = new Set(after.map(provKey));
   const rows: DiffRow[] = [];
 
-  for (const p of after) {
-    const b = beforeMap.get(key(p));
+  // Emit repealed (in `before`, absent from `after`) up to a before-index.
+  let bi = 0;
+  const flushRepealedUpTo = (limit: number) => {
+    while (bi < limit) {
+      if (!afterKeys.has(beforeKeys[bi])) {
+        rows.push({ status: "repealed", label: before[bi].label, before: before[bi] });
+      }
+      bi++;
+    }
+  };
+
+  for (const a of after) {
+    const ak = provKey(a);
+    const b = beforeByKey.get(ak);
     if (!b) {
-      rows.push({ status: "added", label: p.label, after: p });
-    } else if (squish(b.text) === squish(p.text) && (b.marginalNote ?? "") === (p.marginalNote ?? "")) {
-      rows.push({ status: "unchanged", label: p.label, before: b, after: p });
+      rows.push({ status: "added", label: a.label, after: a });
+      continue;
+    }
+    // Flush any repealed provisions that originally preceded this survivor.
+    const bIdx = beforeKeys.indexOf(ak, bi);
+    if (bIdx >= 0) { flushRepealedUpTo(bIdx); bi = bIdx + 1; }
+    if (squish(b.text) === squish(a.text) && (b.marginalNote ?? "") === (a.marginalNote ?? "")) {
+      rows.push({ status: "unchanged", label: a.label, before: b, after: a });
     } else {
-      rows.push({ status: "changed", label: p.label, before: b, after: p });
+      rows.push({ status: "changed", label: a.label, before: b, after: a });
     }
   }
-  for (const p of before) {
-    if (!afterMap.has(key(p))) rows.push({ status: "repealed", label: p.label, before: p });
-  }
+  flushRepealedUpTo(before.length); // trailing repeals (e.g. end-of-Act)
   return rows;
+}
+
+// Resolve each op's produced provisions to indices into `rows` and a ±contextN
+// document-order window, and stamp the stable approval `key` ("<slug>#<i>").
+// Rows must be in document order (diffProvisions guarantees it). This is the one
+// place op→row linkage is computed, so the client never re-derives it.
+export function attachRowLinks<T extends { producedKeys?: string[] }>(
+  slug: string,
+  ops: T[],
+  rows: DiffRow[],
+  contextN = 5,
+): Array<Omit<T, "producedKeys"> & { key: string; producedRowIndices: number[]; contextRowIndices: number[] }> {
+  const keyToRow = new Map<string, number>();
+  rows.forEach((r, idx) => {
+    const p = r.after ?? r.before;
+    if (p) { const k = provKey(p); if (!keyToRow.has(k)) keyToRow.set(k, idx); }
+  });
+  return ops.map((op, i) => {
+    const { producedKeys, ...rest } = op as T & { producedKeys?: string[] };
+    const produced = (producedKeys ?? [])
+      .map((k) => keyToRow.get(k))
+      .filter((n): n is number => n !== undefined)
+      .sort((x, y) => x - y);
+    const context: number[] = [];
+    if (produced.length) {
+      const lo = Math.max(0, produced[0] - contextN);
+      const hi = Math.min(rows.length - 1, produced[produced.length - 1] + contextN);
+      for (let j = lo; j <= hi; j++) context.push(j);
+    }
+    return { ...(rest as Omit<T, "producedKeys">), key: `${slug}#${i}`, producedRowIndices: produced, contextRowIndices: context };
+  });
 }
 
 export function diffSummary(rows: DiffRow[]) {

@@ -550,3 +550,250 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ───────────────────────── Delta review (.dr-) ─────────────────────────
+   Two-pane amendment review: official bill PDF left, scrollable Act-grouped
+   amendment cards right. The page fills the area below the 64px shell bar; the
+   right list is the only scroll region. */
+
+.dr-page {
+  /* Bound to the viewport below the 64px shell bar. `.shell` is min-height:100vh
+     (not a fixed height), so flex:1 alone can't constrain — an explicit height
+     does. The panes scroll internally; the page itself never scrolls. */
+  height: calc(100vh - 64px);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Slim top bar — bill identity + always-present recompute/progress. */
+.dr-topbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 22px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+}
+.dr-topbar-back {
+  flex: none;
+  width: 30px; height: 30px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel-2);
+  color: var(--ink-2);
+  cursor: pointer;
+  font-size: 15px;
+}
+.dr-topbar-back:hover { background: var(--panel-3); color: var(--ink); }
+.dr-topbar-id { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.dr-topbar-num { color: var(--accent-warm); font-weight: 700; font-family: var(--mono); font-size: 14px; }
+.dr-topbar-title {
+  color: var(--ink-2); font-size: 13px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.dr-topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.dr-topbar-progress { font-size: 12px; color: var(--ink-3); white-space: nowrap; }
+.dr-topbar-progress b { color: var(--ink); }
+
+.dr-state {
+  flex: 1; min-height: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; padding: 40px; text-align: center; color: var(--ink-3); font-size: 13.5px;
+}
+.dr-state-err { color: var(--high); font-size: 12.5px; }
+
+/* Two-pane body. */
+.dr-grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(380px, 46%) 1fr;
+}
+
+/* Left — official bill PDF. */
+.dr-pdf {
+  display: flex; flex-direction: column; min-height: 0;
+  border-right: 1px solid var(--border);
+  background: var(--sidebar);
+}
+.dr-pdf-bar {
+  flex: none; display: flex; align-items: center; gap: 10px;
+  padding: 9px 14px; border-bottom: 1px solid var(--border);
+  font-size: 12px; color: var(--ink-3);
+}
+.dr-pdf-title .tnum { color: var(--accent-warm); font-weight: 700; }
+.dr-pdf-link { margin-left: auto; color: var(--accent-warm); text-decoration: none; font-size: 11.5px; }
+.dr-pdf-link:hover { text-decoration: underline; }
+.dr-pdf-frame { flex: 1; min-height: 0; width: 100%; border: 0; background: #525659; }
+
+/* Right — the scrollable amendment list (the only scroll region). */
+.dr-list {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px 18px 60px;
+}
+
+.dr-banner {
+  flex: none;
+  display: flex; align-items: center; gap: 14px;
+  padding: 10px 16px; border-bottom: 1px solid var(--high);
+  background: var(--high-bg); color: var(--ink-2); font-size: 12.5px;
+}
+.dr-banner button { margin-left: auto; flex: none; }
+
+/* Act group. */
+.dr-act { margin-bottom: 26px; }
+.dr-act-head {
+  position: sticky; top: -16px; z-index: 2;
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 4px 10px 2px; margin-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(var(--bg) 70%, transparent);
+}
+.dr-act-id { min-width: 0; }
+.dr-act-title { margin: 0; font-size: 14.5px; font-weight: 700; color: var(--ink); }
+.dr-act-cite { font-size: 11.5px; color: var(--ink-4); font-style: italic; }
+.dr-act-summary { display: flex; gap: 6px; font-family: var(--mono); font-size: 11.5px; font-weight: 700; }
+.dr-sum.is-added { color: var(--ok); }
+.dr-sum.is-changed { color: var(--high); }
+.dr-sum.is-repealed { color: var(--crit); }
+.dr-act-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.dr-progress { font-size: 11.5px; color: var(--ink-3); white-space: nowrap; }
+.dr-act-cards { display: flex; flex-direction: column; gap: 8px; }
+
+/* Amendment card. */
+.dr-card {
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--panel);
+  overflow: hidden;
+}
+.dr-card.is-open { border-color: var(--border-2); box-shadow: var(--shadow-sm); }
+.dr-card.is-approved { opacity: 0.72; }
+.dr-card.is-approved.is-open { opacity: 1; }
+.dr-card.is-warn { border-left: 3px solid var(--high); }
+
+.dr-card-head {
+  width: 100%;
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 14px;
+  background: transparent; border: 0; cursor: pointer; text-align: left;
+  color: var(--ink);
+}
+.dr-card-head:hover { background: var(--panel-2); }
+.dr-card-state { flex: none; width: 16px; text-align: center; color: var(--ok); font-size: 13px; }
+.dr-caret { color: var(--ink-4); font-size: 11px; }
+
+.dr-op {
+  flex: none;
+  font: 700 10.5px/1 var(--sans); letter-spacing: .04em; text-transform: uppercase;
+  padding: 4px 8px; border-radius: 5px;
+}
+.dr-op.is-add { color: var(--ok); background: var(--ok-bg); }
+.dr-op.is-replace { color: var(--med); background: var(--med-bg); }
+.dr-op.is-repeal { color: var(--crit); background: var(--crit-bg); }
+.dr-op.is-amend { color: var(--high); background: var(--high-bg); }
+
+.dr-card-anchor {
+  font-family: var(--mono); font-size: 12.5px; color: var(--ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.dr-card-warn { margin-left: 6px; color: var(--high); }
+.dr-card-meta { margin-left: auto; display: flex; align-items: center; gap: 8px; flex: none; }
+.dr-card-count { font-size: 11px; color: var(--ink-4); font-family: var(--mono); }
+.dr-tag {
+  font-size: 10px; padding: 2px 7px; border-radius: 999px;
+  border: 1px solid var(--border-2); color: var(--ink-4); background: var(--panel-2);
+}
+.dr-tag.is-ai { color: var(--high); border-color: rgba(210,153,34,.4); }
+
+/* Card body. */
+.dr-card-body {
+  padding: 4px 16px 16px;
+  border-top: 1px solid var(--border-3);
+  display: flex; flex-direction: column; gap: 14px;
+}
+.dr-says-h, .dr-lands-h {
+  font: 700 10.5px/1 var(--sans); letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink-4); margin: 12px 0 7px;
+}
+.dr-says-text { margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-2); }
+.dr-says-new {
+  margin: 8px 0 0; padding: 8px 11px; font-size: 12.5px; line-height: 1.5;
+  color: var(--ink); background: var(--panel-2); border-left: 2px solid var(--accent-warm); border-radius: 0 5px 5px 0;
+}
+
+/* The diff (where it lands in the Act) — inline, no surrounding box, but a fixed
+   height the user scrolls within to see more surrounding context. */
+.dr-diff {
+  position: relative;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 2px 0;
+}
+/* The section/subsection the change nests under — pinned at the top of the
+   preview so the hierarchy stays visible while scrolling the local context. */
+.dr-diff-anc {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border-3);
+  margin-bottom: 2px;
+}
+.dr-diff-empty {
+  padding: 12px 14px; font-size: 12.5px; color: var(--ink-3); line-height: 1.5;
+  border: 1px dashed var(--border-2); border-radius: 7px; background: var(--panel);
+}
+.dr-diff-empty code { font-family: var(--mono); color: var(--high); }
+
+/* One provision row. Uniform padding for every status — the only differences are
+   the coloured sign and opacity, so nothing shifts horizontally between rows. */
+.dr-prov {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 4px 8px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  opacity: 0.5; /* context is dim by default; focus rows below lift to full */
+}
+.dr-prov.is-focus { opacity: 1; }
+.dr-prov-sign {
+  flex: none; width: 10px; text-align: center;
+  font-family: var(--mono); font-weight: 700; color: var(--ink-4);
+}
+.dr-prov-label { flex: none; font-family: var(--mono); font-weight: 700; color: var(--ink-3); }
+.dr-prov-main { min-width: 0; }
+.dr-prov-mn { display: block; font-weight: 700; font-size: 11px; color: var(--ink-4); margin-bottom: 1px; }
+.dr-prov-text { color: var(--ink-3); }
+
+/* Status shown by the sign colour alone — no background fills. */
+.dr-prov.is-added .dr-prov-sign { color: var(--ok); }
+.dr-prov.is-added.is-focus .dr-prov-label { color: var(--ok); }
+.dr-prov.is-changed .dr-prov-sign { color: var(--high); }
+.dr-prov.is-repealed .dr-prov-sign { color: var(--crit); }
+.dr-prov.is-repealed .dr-prov-text { text-decoration: line-through; color: var(--ink-4); }
+.dr-prov.is-focus .dr-prov-text { color: var(--ink-2); }
+
+.dr-card-actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+/* Bill chooser. */
+.dr-pick { display: grid; grid-template-columns: repeat(auto-fill, minmax(258px, 1fr)); gap: 10px; }
+.dr-pick-item {
+  text-align: left; padding: 12px 14px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--panel); cursor: pointer;
+  display: flex; flex-direction: column; gap: 7px;
+}
+.dr-pick-item:hover { border-color: var(--border-2); background: var(--panel-2); }
+.dr-pick-top { display: flex; align-items: center; gap: 8px; }
+.dr-pick-num { color: var(--accent-warm); font-weight: 600; font-family: var(--mono); }
+.dr-pick-title { font-size: 12.5px; color: var(--ink-2); line-height: 1.4; }
+
+@media (max-width: 920px) {
+  .dr-grid { grid-template-columns: 1fr; }
+  .dr-pdf { display: none; }
+}

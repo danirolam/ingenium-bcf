@@ -429,6 +429,10 @@
 .shell-main {
   flex: 1;
   min-width: 0;
+  /* Allow a full-height page (e.g. the delta review) to bound itself to the
+     viewport and scroll internally, instead of growing the document. Pages that
+     use .body still scroll the document naturally. */
+  min-height: 0;
   display: flex;
   flex-direction: column;
 }

@@ -73,9 +73,7 @@ export function parsePath(pathname: string, search = ""): Route {
       if (segments[2] === "delta") {
         const law = query.get("law");
         if (law) params.lawVersionId = law;
-        // /bills/:billId/delta/:phase — Review & approve, then Export.
-        // (Legacy "verify" links fold into the combined review/approve screen.)
-        params.phase = segments[3] === "export" ? "export" : "approve";
+        // Single review surface — approve cards then export inline (no phase axis).
         return app("delta");
       }
       return app("bill");
@@ -124,8 +122,7 @@ export function buildPath(page: PageId, params: Record<string, string> = {}): st
     case "delta": {
       if (!params.billId) return "/delta";
       const base = `/bills/${params.billId}/delta`;
-      if (params.lawVersionId) return `${base}?law=${params.lawVersionId}`;
-      return `${base}/${params.phase === "export" ? "export" : "approve"}`;
+      return params.lawVersionId ? `${base}?law=${params.lawVersionId}` : base;
     }
 
     case "scanner":

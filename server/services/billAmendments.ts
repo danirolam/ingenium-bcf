@@ -6,7 +6,7 @@
 //   </Section>
 // So we read the OPERATION + ANCHOR from the instruction <Text> (regex), and
 // pull the inserted provisions verbatim from <AmendedText> (no AI generation).
-import { findByPath, labelToPath, type Provision } from "./amendmentEngine.js";
+import { findByPath, labelToPath, provKey, type Provision } from "./amendmentEngine.js";
 import { resolveActSlug, type RegistryEntry } from "./seedSource.js";
 
 const ENT: Record<string, string> = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " " };
@@ -290,6 +290,11 @@ export interface AppliedOp {
   count: number;
   anchorFound: boolean;
   note: string;
+  /** Full instruction text ("Bill says"). */
+  instruction: string;
+  /** Identity keys of the provisions this op produced — resolved to row indices
+   *  by attachRowLinks (see amendmentEngine). */
+  producedKeys: string[];
 }
 
 // Apply structured amendment groups to an Act's provisions (block inserts), in
@@ -300,25 +305,66 @@ export function applyGroups(
 ): { after: Provision[]; verified: AppliedOp[] } {
   const after: Provision[] = before.map((p) => ({ ...p }));
   const verified: AppliedOp[] = [];
+  let serial = 0;
+
+  // The anchor's container (its path minus the leaf), e.g. "30(1)(j)" → "30(1)".
+  const containerOf = (anchor: string | null) =>
+    !anchor
+      ? ""
+      : labelToPath(anchor)
+          .slice(0, -1)
+          .map((s) => (s.kind === "section" ? s.label : `(${s.label})`))
+          .join("");
+
+  // Prepare inserted provisions for splicing: (1) restamp a unique id —
+  // parseProvisions numbers per <AmendedText> unit so "ins:0" collides across
+  // ops; (2) for a sub-provision inserted as a sibling (a bracketed leaf like
+  // "(j.01)"), prefix the anchor's container so its label is the full path
+  // "30(1)(j.01)" — otherwise it renders at the wrong depth, detached from its
+  // siblings.
+  const prepare = (provs: Provision[], anchor: string | null) => {
+    const container = containerOf(anchor);
+    return provs.map((p) => {
+      const id = `ins:${serial++}`;
+      if (container && p.label.startsWith("(")) {
+        const label = container + p.label;
+        return { ...p, id, label, path: labelToPath(label) };
+      }
+      return { ...p, id };
+    });
+  };
 
   for (const g of groups) {
     // Level-by-level match: exact path, else deepest existing ancestor.
     const hit = findByPath(after, g.anchor);
     const i = hit.index;
     const anchorFound = hit.matched === "exact" || (g.op === "add" && !g.anchor);
+    let producedKeys: string[] = [];
+
+    if (g.op === "repeal") {
+      if (i >= 0) { producedKeys = [provKey(after[i])]; after.splice(i, 1); }
+    } else if (g.op === "replace") {
+      // The old provision becomes a repealed row, the inserts become added rows —
+      // both are this op's product, so the card shows the whole replacement.
+      if (i >= 0) {
+        const ins = prepare(g.provisions, g.anchor);
+        producedKeys = [provKey(after[i]), ...ins.map(provKey)];
+        after.splice(i, 1, ...ins);
+      }
+    } else {
+      const ins = prepare(g.provisions, g.anchor);
+      const at = i < 0 ? after.length : g.position === "before" ? i : i + 1;
+      after.splice(at, 0, ...ins);
+      producedKeys = ins.map(provKey);
+    }
+
     verified.push({
       op: g.op, anchor: g.anchor, position: g.position,
       count: g.provisions.length, anchorFound,
+      instruction: g.instruction,
       note: g.instruction.slice(0, 160),
+      producedKeys,
     });
-    if (g.op === "repeal") {
-      if (i >= 0) after.splice(i, 1);
-    } else if (g.op === "replace") {
-      if (i >= 0) after.splice(i, 1, ...g.provisions);
-    } else {
-      const at = i < 0 ? after.length : g.position === "before" ? i : i + 1;
-      after.splice(at, 0, ...g.provisions);
-    }
   }
   return { after, verified };
 }

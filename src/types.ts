@@ -215,15 +215,25 @@ export interface ProvisionDiffRow {
 }
 
 export interface BillAmendmentOp {
+  /** Stable approval identity, "<actSlug>#<opIndex>" — matches the approvals API. */
+  key: string;
   clause?: string;
   op: "add" | "replace" | "repeal" | "amend";
   anchor: string | null;
   position?: string | null;
+  /** Number of provisions inserted/replaced (bill-xml path only). */
+  count?: number;
   newLabel?: string | null;
   newMarginalNote?: string | null;
   newText?: string | null;
   note?: string | null;
   anchorFound: boolean;
+  /** Full instruction text — what the bill says (no longer truncated). */
+  instruction: string;
+  /** Indices into `ProvisionDelta.rows` of the provisions this op produced. */
+  producedRowIndices: number[];
+  /** Indices into `ProvisionDelta.rows` for the ±5 document-order context window. */
+  contextRowIndices: number[];
 }
 
 export interface ProvisionDelta {
