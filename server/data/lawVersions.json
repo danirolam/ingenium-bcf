@@ -1,5 +1,33 @@
 [
   {
+    "id": "lv-bill-13597539-employment-insurance-act",
+    "baseLawId": "employment-insurance-act",
+    "baseLawTitle": "Employment Insurance Act",
+    "sourceBillId": "bill-13597539",
+    "sourceBillNumber": "C-249",
+    "sourceBillTitle": "An Act to amend the Employment Insurance Act (combined weeks of benefits rule and certain benefits)",
+    "sourceBillStatus": "Outside the Order of Precedence",
+    "legislativeMomentum": "early",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "1 — Extension of period — regular and special benefits\n1 (1) Subsection 10(10) of the Employment Insurance Act is amended by striking out “or” at the end of paragraph (c) and by adding the following after that paragraph: (c.1) in receipt of benefits paid because of pregnancy under section 22 or parental benefits under section 23; or (2) Subsection 10(13.02) of the Act is replaced by the following: Extension of period — regular and special benefits (13.02) If, during a claimant’s benefit period, regular benefits were paid, benefits were paid for the reason mentioned in paragraph 12(3)(b) in the case where the applicable maximum number of weeks is established under subparagraph 12(3)(b)(ii), and benefits were paid for fewer than the total number of weeks established under subsection 12(6), the benefit period is extended so that benefits may be paid up to that total number of weeks. The extension must not exceed 26 weeks.",
+    "affectedSections": [
+      "1"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-249 introduces 1 clause that target the Employment Insurance Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-249 introduces 1 clause that target the Employment Insurance Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-06-08T00:02:13.973Z"
+  },
+  {
     "id": "lv-bill-13878167-budget-2025-implementation-act-no-1",
     "baseLawId": "budget-2025-implementation-act-no-1",
     "baseLawTitle": "Budget 2025 Implementation Act, No. 1",

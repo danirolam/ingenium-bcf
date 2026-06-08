@@ -644,49 +644,44 @@
 }
 .dr-banner button { margin-left: auto; flex: none; }
 
-/* Act group. */
-.dr-act { margin-bottom: 26px; }
-.dr-act-head {
-  position: sticky; top: -16px; z-index: 2;
+/* Pager: one full-height amendment with prev/next navigation. */
+.dr-pager { display: flex; flex-direction: column; min-height: 0; }
+.dr-pager-bar {
+  flex: none;
   display: flex; align-items: center; gap: 12px;
-  padding: 10px 4px 10px 2px; margin-bottom: 10px;
-  border-bottom: 1px solid var(--border);
-  background: linear-gradient(var(--bg) 70%, transparent);
-}
-.dr-act-id { min-width: 0; }
-.dr-act-title { margin: 0; font-size: 14.5px; font-weight: 700; color: var(--ink); }
-.dr-act-cite { font-size: 11.5px; color: var(--ink-4); font-style: italic; }
-.dr-act-summary { display: flex; gap: 6px; font-family: var(--mono); font-size: 11.5px; font-weight: 700; }
-.dr-sum.is-added { color: var(--ok); }
-.dr-sum.is-changed { color: var(--high); }
-.dr-sum.is-repealed { color: var(--crit); }
-.dr-act-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-.dr-progress { font-size: 11.5px; color: var(--ink-3); white-space: nowrap; }
-.dr-act-cards { display: flex; flex-direction: column; gap: 8px; }
-
-/* Amendment card. */
-.dr-card {
-  border: 1px solid var(--border);
-  border-radius: 9px;
+  padding: 10px 16px; border-bottom: 1px solid var(--border);
   background: var(--panel);
-  overflow: hidden;
 }
-.dr-card.is-open { border-color: var(--border-2); box-shadow: var(--shadow-sm); }
-.dr-card.is-approved { opacity: 0.72; }
-.dr-card.is-approved.is-open { opacity: 1; }
-.dr-card.is-warn { border-left: 3px solid var(--high); }
+.dr-nav {
+  flex: none; width: 32px; height: 32px;
+  border: 1px solid var(--border); border-radius: 8px;
+  background: var(--panel-2); color: var(--ink-2); font-size: 16px; cursor: pointer;
+}
+.dr-nav:hover:not(:disabled) { background: var(--panel-3); color: var(--ink); }
+.dr-nav:disabled { opacity: 0.4; cursor: default; }
+.dr-pager-pos { min-width: 0; display: flex; flex-direction: column; line-height: 1.3; }
+.dr-pager-count { font-size: 12.5px; color: var(--ink-2); }
+.dr-pager-count b { color: var(--ink); }
+.dr-pager-act { font-size: 11.5px; color: var(--ink-4); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dr-pager-export { margin-left: auto; flex: none; }
+.dr-pager-body { flex: 1; min-height: 0; padding: 14px 16px; }
+
+/* Amendment card — fills the pager body; approving recolours the border. */
+.dr-card {
+  height: 100%;
+  display: flex; flex-direction: column;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: var(--panel); overflow: hidden;
+}
+.dr-card.is-warn { border-color: var(--high); }
+.dr-card.is-approved { border-color: var(--ok); box-shadow: inset 0 0 0 1px var(--ok); }
 
 .dr-card-head {
-  width: 100%;
+  flex: none;
   display: flex; align-items: center; gap: 10px;
-  padding: 11px 14px;
-  background: transparent; border: 0; cursor: pointer; text-align: left;
+  padding: 13px 16px; border-bottom: 1px solid var(--border-3);
   color: var(--ink);
 }
-.dr-card-head:hover { background: var(--panel-2); }
-.dr-card-state { flex: none; width: 16px; text-align: center; color: var(--ok); font-size: 13px; }
-.dr-caret { color: var(--ink-4); font-size: 11px; }
-
 .dr-op {
   flex: none;
   font: 700 10.5px/1 var(--sans); letter-spacing: .04em; text-transform: uppercase;
@@ -698,27 +693,24 @@
 .dr-op.is-amend { color: var(--high); background: var(--high-bg); }
 
 .dr-card-anchor {
-  font-family: var(--mono); font-size: 12.5px; color: var(--ink);
+  font-family: var(--mono); font-size: 13px; color: var(--ink);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .dr-card-warn { margin-left: 6px; color: var(--high); }
 .dr-card-meta { margin-left: auto; display: flex; align-items: center; gap: 8px; flex: none; }
 .dr-card-count { font-size: 11px; color: var(--ink-4); font-family: var(--mono); }
+.dr-card-approved { font-size: 11px; color: var(--ok); font-weight: 700; }
 .dr-tag {
   font-size: 10px; padding: 2px 7px; border-radius: 999px;
   border: 1px solid var(--border-2); color: var(--ink-4); background: var(--panel-2);
 }
 .dr-tag.is-ai { color: var(--high); border-color: rgba(210,153,34,.4); }
-
-/* Card body. */
-.dr-card-body {
-  padding: 4px 16px 16px;
-  border-top: 1px solid var(--border-3);
-  display: flex; flex-direction: column; gap: 14px;
-}
+.dr-says { flex: none; padding: 12px 16px 6px; max-height: 34%; overflow-y: auto; }
+.dr-lands { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 4px 16px 8px; }
 .dr-says-h, .dr-lands-h {
+  flex: none;
   font: 700 10.5px/1 var(--sans); letter-spacing: .06em; text-transform: uppercase;
-  color: var(--ink-4); margin: 12px 0 7px;
+  color: var(--ink-4); margin: 0 0 7px;
 }
 .dr-says-text { margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-2); }
 .dr-says-new {
@@ -726,11 +718,12 @@
   color: var(--ink); background: var(--panel-2); border-left: 2px solid var(--accent-warm); border-radius: 0 5px 5px 0;
 }
 
-/* The diff (where it lands in the Act) — inline, no surrounding box, but a fixed
-   height the user scrolls within to see more surrounding context. */
+/* The diff (where it lands in the Act) — inline, no surrounding box; fills the
+   card's remaining height and scrolls within to reveal more context. */
 .dr-diff {
   position: relative;
-  max-height: 300px;
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding: 2px 0;
 }
@@ -743,6 +736,24 @@
   background: var(--panel);
   border-bottom: 1px solid var(--border-3);
   margin-bottom: 2px;
+}
+/* Boundary marker when the amendment appends text at the very end of the Act. */
+.dr-diff-end {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 6px 4px;
+  font: 600 10px/1 var(--sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.dr-diff-end::before,
+.dr-diff-end::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-2);
 }
 .dr-diff-empty {
   padding: 12px 14px; font-size: 12.5px; color: var(--ink-3); line-height: 1.5;
@@ -779,7 +790,11 @@
 .dr-prov.is-repealed .dr-prov-text { text-decoration: line-through; color: var(--ink-4); }
 .dr-prov.is-focus .dr-prov-text { color: var(--ink-2); }
 
-.dr-card-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.dr-card-actions {
+  flex: none;
+  display: flex; justify-content: flex-end; gap: 8px;
+  padding: 10px 16px; border-top: 1px solid var(--border-3);
+}
 
 /* Bill chooser. */
 .dr-pick { display: grid; grid-template-columns: repeat(auto-fill, minmax(258px, 1fr)); gap: 10px; }

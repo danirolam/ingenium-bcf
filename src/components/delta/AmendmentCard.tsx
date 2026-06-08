@@ -8,23 +8,18 @@ const OP_LABEL: Record<BillAmendmentOp["op"], string> = {
   amend: "Amend",
 };
 
-// One amendment = one card. Collapsed: op badge, anchor (+ warning if the anchor
-// wasn't verified), provenance tag, approval state. Expanded: what the bill says
-// and where it lands in the Act. Purely presentational — all data is pre-resolved
-// on `op`; approve/collapse is driven by the parent.
+// One amendment, shown full-height in the pager. Always expanded — approving
+// doesn't collapse it, it recolours the border (see .dr-card.is-approved). The
+// "In the Act" diff fills the remaining height and scrolls within.
 export function AmendmentCard({
   delta,
   op,
   approved,
-  open,
-  onToggle,
   onApprove,
 }: {
   delta: ProvisionDelta;
   op: BillAmendmentOp;
   approved: boolean;
-  open: boolean;
-  onToggle: () => void;
   onApprove: (approved: boolean) => void;
 }) {
   // Per-op provenance: structural (deterministic from the bill XML) vs ai-located
@@ -33,15 +28,8 @@ export function AmendmentCard({
   const warn = !op.anchorFound;
 
   return (
-    <div
-      className={`dr-card is-${op.op}${approved ? " is-approved" : ""}${open ? " is-open" : ""}${
-        warn ? " is-warn" : ""
-      }`}
-    >
-      <button className="dr-card-head" onClick={onToggle} aria-expanded={open}>
-        <span className="dr-card-state" aria-hidden="true">
-          {approved ? "✓" : <span className="dr-caret">{open ? "▾" : "▸"}</span>}
-        </span>
+    <div className={`dr-card is-${op.op}${approved ? " is-approved" : ""}${warn ? " is-warn" : ""}`}>
+      <div className="dr-card-head">
         <span className={`dr-op is-${op.op}`}>{OP_LABEL[op.op]}</span>
         <span className="dr-card-anchor">
           {op.position ? `${op.position} ` : ""}
@@ -57,35 +45,29 @@ export function AmendmentCard({
           <span className={`dr-tag is-${structured ? "structured" : "ai"}`}>
             {structured ? "structured" : "ai-located"}
           </span>
+          {approved && <span className="dr-card-approved">✓ approved</span>}
         </span>
-      </button>
+      </div>
 
-      {open && (
-        <div className="dr-card-body">
-          <section className="dr-says">
-            <div className="dr-says-h">Bill says</div>
-            <p className="dr-says-text">{op.instruction || op.note || "(no instruction text)"}</p>
-            {op.newText && <p className="dr-says-new">{op.newText}</p>}
-          </section>
+      <section className="dr-says">
+        <div className="dr-says-h">Bill says</div>
+        <p className="dr-says-text">{op.instruction || op.note || "(no instruction text)"}</p>
+        {op.newText && <p className="dr-says-new">{op.newText}</p>}
+      </section>
 
-          <section className="dr-lands">
-            <div className="dr-lands-h">In the {delta.title}</div>
-            <ProvisionDiff delta={delta} op={op} />
-          </section>
+      <section className="dr-lands">
+        <div className="dr-lands-h">In the {delta.title}</div>
+        <ProvisionDiff delta={delta} op={op} />
+      </section>
 
-          <div className="dr-card-actions">
-            {approved ? (
-              <button className="btn ghost sm" onClick={() => onApprove(false)}>
-                Undo approval
-              </button>
-            ) : (
-              <button className="btn primary" onClick={() => onApprove(true)}>
-                Approve placement
-              </button>
-            )}
-          </div>
-        </div>
-      )}
+      <div className="dr-card-actions">
+        <button
+          className={approved ? "btn ghost sm" : "btn primary"}
+          onClick={() => onApprove(!approved)}
+        >
+          {approved ? "Approved — click to undo" : "Approve placement"}
+        </button>
+      </div>
     </div>
   );
 }

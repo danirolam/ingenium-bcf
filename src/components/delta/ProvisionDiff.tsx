@@ -113,6 +113,9 @@ export function ProvisionDiff({
     }
   }
 
+  // The amendment appended new text at the very end of the Act — mark the boundary.
+  const addedAtEnd = produced.has(delta.rows.length - 1);
+
   return (
     <div className="dr-diff" ref={scrollRef}>
       {headers.length > 0 && (
@@ -123,6 +126,7 @@ export function ProvisionDiff({
         </div>
       )}
       {windowRows}
+      {addedAtEnd && <div className="dr-diff-end">end of Act</div>}
     </div>
   );
 }
