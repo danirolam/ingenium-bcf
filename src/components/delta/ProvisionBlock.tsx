@@ -38,6 +38,7 @@ export const provDepth = (row: ProvisionDiffRow): number => {
 // The leaf label as it appears in the Act: sections keep their number ("5.3"),
 // definitions their quoted term, everything else is bracketed ("(c)").
 function leafLabel(prov: ActProvision): string {
+  if (prov.kind === "schedule") return prov.label; // e.g. "SCHEDULE IV row 2222" (don't normalize)
   const segs = segments(prov);
   const last = segs[segs.length - 1];
   if (!last) return prov.label;

@@ -20,6 +20,7 @@ function segments(p: ActProvision): Step[] {
 
 // Leaf label as it reads in a statute: "5.3", a quoted term, or "(c)".
 function leaf(p: ActProvision): string {
+  if (p.kind === "schedule") return p.label;
   const segs = segments(p);
   const last = segs[segs.length - 1];
   if (!last) return p.label;

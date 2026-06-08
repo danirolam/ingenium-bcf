@@ -6,7 +6,7 @@
 //   </Section>
 // So we read the OPERATION + ANCHOR from the instruction <Text> (regex), and
 // pull the inserted provisions verbatim from <AmendedText> (no AI generation).
-import { findByPath, labelToPath, provKey, type Provision } from "./amendmentEngine.js";
+import { findAllUnder, findByPath, labelToPath, provKey, type Provision } from "./amendmentEngine.js";
 import { resolveActSlug, type RegistryEntry } from "./seedSource.js";
 
 const ENT: Record<string, string> = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " " };
@@ -201,9 +201,11 @@ function parseInstruction(text: string): { op: "add" | "replace" | "repeal"; anc
     ref && /^\(/.test(ref) && container ? container + ref : ref;
   const firstRef = () =>
     text.match(new RegExp(`(?:sections?|subsections?|paragraphs?|subparagraphs?|clauses?)\\s+${REF}`, "i"))?.[1] ?? null;
+  // A whole schedule named as the target ("Schedule IV to the Act is repealed").
+  const sched = text.match(/\bschedule\s+(?:[IVXLCDM]+|[0-9]+[A-Za-z]?)\b/i)?.[0] ?? null;
 
-  if (/replaced by the following/i.test(text)) return { op: "replace", anchor: compose(firstRef()), position: null };
-  if (/\b(?:is|are)\s+repealed\b/i.test(text)) return { op: "repeal", anchor: compose(firstRef()), position: null };
+  if (/replaced by the following/i.test(text)) return { op: "replace", anchor: sched ?? compose(firstRef()), position: null };
+  if (/\b(?:is|are)\s+repealed\b/i.test(text)) return { op: "repeal", anchor: sched ?? compose(firstRef()), position: null };
   let m = text.match(new RegExp(`adding the following after (?:section|subsection|paragraph|subparagraph|clause)\\s+${REF}`, "i"));
   if (m) return { op: "add", anchor: compose(m[1]), position: "after" };
   m = text.match(new RegExp(`adding the following before (?:section|subsection|paragraph|subparagraph|clause)\\s+${REF}`, "i"));
@@ -338,25 +340,32 @@ export function applyGroups(
   };
 
   for (const g of groups) {
-    // Level-by-level match: exact path, else deepest existing ancestor.
-    const hit = findByPath(after, g.anchor);
-    const i = hit.index;
-    const anchorFound = hit.matched === "exact" || (g.op === "add" && !g.anchor);
     let producedKeys: string[] = [];
+    let anchorFound = false;
 
     if (g.op === "repeal") {
-      if (i >= 0) { producedKeys = [provKey(after[i])]; after.splice(i, 1); }
+      // Remove every provision under the anchor — one leaf, or a whole section /
+      // schedule when the bill repeals the container. Splice high-to-low so the
+      // indices stay valid.
+      const idxs = findAllUnder(after, g.anchor);
+      anchorFound = idxs.length > 0;
+      producedKeys = idxs.map((k) => provKey(after[k]));
+      for (const k of [...idxs].sort((a, b) => b - a)) after.splice(k, 1);
     } else if (g.op === "replace") {
       // The old provision becomes a repealed row, the inserts become added rows —
       // both are this op's product, so the card shows the whole replacement.
-      if (i >= 0) {
+      const hit = findByPath(after, g.anchor);
+      anchorFound = hit.matched === "exact";
+      if (hit.index >= 0) {
         const ins = prepare(g.provisions, g.anchor);
-        producedKeys = [provKey(after[i]), ...ins.map(provKey)];
-        after.splice(i, 1, ...ins);
+        producedKeys = [provKey(after[hit.index]), ...ins.map(provKey)];
+        after.splice(hit.index, 1, ...ins);
       }
     } else {
+      const hit = findByPath(after, g.anchor);
+      anchorFound = hit.matched === "exact" || !g.anchor;
       const ins = prepare(g.provisions, g.anchor);
-      const at = i < 0 ? after.length : g.position === "before" ? i : i + 1;
+      const at = hit.index < 0 ? after.length : g.position === "before" ? hit.index : hit.index + 1;
       after.splice(at, 0, ...ins);
       producedKeys = ins.map(provKey);
     }

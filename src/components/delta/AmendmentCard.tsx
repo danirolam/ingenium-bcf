@@ -33,7 +33,7 @@ export function AmendmentCard({
         <span className={`dr-op is-${op.op}`}>{OP_LABEL[op.op]}</span>
         <span className="dr-card-anchor">
           {op.position ? `${op.position} ` : ""}
-          {op.anchor ?? "(new section)"}
+          {op.anchor ?? (op.op === "add" ? "(new section)" : "(unresolved location)")}
           {warn && (
             <span className="dr-card-warn" title="Anchor not verified against the Act">
               ⚠

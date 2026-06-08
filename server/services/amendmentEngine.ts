@@ -126,6 +126,27 @@ export function findByPath(
   return { index: -1, matched: "none", missingDepth: target.length };
 }
 
+// Every provision that falls under an anchor: the leaf it names, OR — when the
+// anchor names a container — everything inside it. A numeric anchor ("30",
+// "30(1)") matches itself + its descendants by path; a "Schedule IV" anchor
+// matches every provision under that schedule heading. Used by repeals, so
+// "Schedule IV … is repealed" or "section 30 is repealed" removes the whole
+// container instead of a single row.
+export function findAllUnder(provisions: Provision[], anchorLabel: string | null): number[] {
+  if (!anchorLabel) return [];
+  if (/^\s*schedule\b/i.test(anchorLabel)) {
+    const want = normLabel(anchorLabel); // "Schedule IV" → "scheduleiv"
+    return provisions.flatMap((p, i) => (normLabel(p.heading ?? "") === want ? [i] : []));
+  }
+  const target = labelToPath(anchorLabel);
+  const out: number[] = [];
+  provisions.forEach((p, i) => {
+    const pp = pathOf(p);
+    if (samePath(pp, target) || isPrefix(target, pp)) out.push(i);
+  });
+  return out;
+}
+
 // Apply interpreted operations to the Act's provisions. Returns the resulting
 // "after" provisions plus a list of operations whose anchor we couldn't verify.
 export type VerifiedOp = Amendment & {
