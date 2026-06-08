@@ -176,13 +176,16 @@ export function applyAmendments(
       }
     } else {
       // add — insert a new provision near the anchor (or append if no anchor).
+      const newLabel = op.newLabel || "(new)";
+      const newPath = labelToPath(newLabel);
       const newP: Provision = {
         id: `ins:${serial++}`,
-        label: op.newLabel || "(new)",
-        kind: "section",
+        label: newLabel,
+        kind: newPath[newPath.length - 1]?.kind ?? "section",
         heading: i >= 0 ? after[i].heading ?? null : null,
         marginalNote: op.newMarginalNote || null,
         text: op.newText || "",
+        path: newPath,
       };
       const at = i < 0 ? after.length : op.position === "before" ? i : i + 1;
       after.splice(at, 0, newP);

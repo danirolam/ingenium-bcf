@@ -1,7 +1,30 @@
-import type { Bill, ProvisionDelta } from "../types";
+import type { ActProvision, Bill, ProvisionDelta } from "../types";
 
 const esc = (s: string) =>
   (s ?? "").replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c] as string);
+
+type Step = { kind: string; label: string };
+
+// Hierarchy steps — prefer the server `path`, else derive from the composed label.
+function segments(p: ActProvision): Step[] {
+  if (p.path && p.path.length) return p.path;
+  const label = p.label ?? "";
+  if (/^[“"']/.test(label)) return [{ kind: "definition", label }];
+  const sec = label.match(/^([0-9]+(?:\.[0-9]+)*[A-Za-z]?)/);
+  const out: Step[] = [];
+  let rest = label;
+  if (sec) { out.push({ kind: "section", label: sec[1] }); rest = label.slice(sec[1].length); }
+  for (const g of rest.match(/\([^)]+\)/g) ?? []) out.push({ kind: "sub", label: g.replace(/[()]/g, "") });
+  return out.length ? out : [{ kind: "section", label }];
+}
+
+// Leaf label as it reads in a statute: "5.3", a quoted term, or "(c)".
+function leaf(p: ActProvision): string {
+  const segs = segments(p);
+  const last = segs[segs.length - 1];
+  if (!last) return p.label;
+  return last.kind === "section" || last.kind === "definition" ? last.label : `(${last.label})`;
+}
 
 // Branded, print-ready rendering of the amended Act: the after-side of the delta
 // (skip repealed, keep document order), amended provisions subtly marked. Opens a
@@ -13,10 +36,10 @@ export function exportActAsPdf(delta: ProvisionDelta, bill: Bill | null): boolea
     .map((r) => {
       const p = r.after ?? r.before;
       if (!p) return "";
-      const depth = Math.max(0, (p.path?.length ?? 1) - 1);
+      const depth = Math.max(0, segments(p).length - 1);
       const amended = r.status === "added" || r.status === "changed";
       const mn = p.marginalNote ? `<div class="mn">${esc(p.marginalNote)}</div>` : "";
-      return `<div class="prov${amended ? " amended" : ""}" style="margin-left:${depth * 20}px">${mn}<div class="ptext"><span class="plabel">${esc(p.label)}</span>${esc(p.text)}</div></div>`;
+      return `<div class="prov${amended ? " amended" : ""}" style="margin-left:${depth * 20}px">${mn}<div class="ptext"><span class="plabel">${esc(leaf(p))}</span>${esc(p.text)}</div></div>`;
     })
     .join("");
 
