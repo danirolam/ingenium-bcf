@@ -16,3 +16,5 @@ references/
 # The 5 curated demo Acts were committed earlier and stay tracked.
 data/laws/current/federal/
 .env*.local
+
+*.log
