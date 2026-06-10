@@ -1,51 +1,51 @@
 /* ───────── App glass layer ─────────
-   Frosted-glass surfaces over a dark violet/blue aurora, cohesive with the
-   landing. Reimplemented from the frosted-glass reference (translucent cards,
-   backdrop blur, generous radius, slow hover-scale) but kept dark + legible for
-   a legal tool. Imported last so it layers over the base panels; only surfaces
-   change (background / blur / radius / transform), never layout. */
+   Frosted-glass surfaces over a soft violet/blue aurora, cohesive with the
+   landing. Light reimplementation: translucent white cards, backdrop blur,
+   generous radius, slow hover-scale — legible dark-on-light for a legal tool.
+   Imported last so it layers over the base panels; only surfaces change
+   (background / blur / radius / transform), never layout. */
 
 .shell {
   position: relative;
   background:
-    radial-gradient(58% 48% at 86% -6%, rgba(168, 85, 247, 0.2), transparent 60%),
-    radial-gradient(52% 44% at 4% 6%, rgba(99, 102, 241, 0.17), transparent 60%),
-    radial-gradient(46% 42% at 52% 112%, rgba(236, 72, 153, 0.12), transparent 60%),
-    #0a0b10;
+    radial-gradient(58% 48% at 86% -6%, rgba(168, 85, 247, 0.10), transparent 60%),
+    radial-gradient(52% 44% at 4% 6%, rgba(99, 102, 241, 0.10), transparent 60%),
+    radial-gradient(46% 42% at 52% 112%, rgba(236, 72, 153, 0.07), transparent 60%),
+    #f7f8fb;
   background-attachment: fixed;
 }
 
 /* Top rail → glass */
 .shell-bar {
-  background: rgba(13, 16, 24, 0.55);
+  background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(31, 35, 40, 0.08);
 }
 
 /* Shared cards (Bill Monitor, Delta, Scanner, Impact) → glass */
 .card {
-  background: rgba(255, 255, 255, 0.045);
+  background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(31, 35, 40, 0.08);
   border-radius: 18px;
-  box-shadow: 0 24px 60px -34px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 24px 60px -34px rgba(66, 74, 83, 0.32);
 }
 
 /* Page headers sit directly on the aurora */
 .ph {
   background: transparent;
-  border-bottom-color: rgba(255, 255, 255, 0.08);
+  border-bottom-color: rgba(31, 35, 40, 0.08);
 }
 
 /* ── Overview / command center ── */
 .ov-stage,
 .ov-panel {
-  background: rgba(255, 255, 255, 0.045);
+  background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(31, 35, 40, 0.08);
   border-radius: 20px;
 }
 .ov-stage {
@@ -54,17 +54,17 @@
 }
 .ov-stage:hover {
   transform: translateY(-5px) scale(1.015);
-  background: rgba(255, 255, 255, 0.075);
-  border-color: rgba(168, 85, 247, 0.5);
-  box-shadow: 0 30px 70px -34px rgba(124, 58, 237, 0.55);
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(168, 85, 247, 0.45);
+  box-shadow: 0 30px 70px -34px rgba(124, 58, 237, 0.30);
 }
 .ov-stage-icon {
-  background: rgba(168, 85, 247, 0.16);
-  border-color: rgba(168, 85, 247, 0.34);
-  color: #c4a7f7;
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.30);
+  color: #7c3aed;
 }
 .ov-stage-cta {
-  color: #c4a7f7;
+  color: #7c3aed;
 }
 .ov-table tr,
 .ov-prac-row {
@@ -77,39 +77,39 @@
 .bd-clause,
 .bd-division,
 .bd-chamber-icon {
-  background: rgba(255, 255, 255, 0.045);
+  background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(31, 35, 40, 0.08);
 }
 .bd-facts,
 .bd-summary {
   border-radius: 16px;
 }
 .bd-topbar {
-  background: rgba(13, 16, 24, 0.5);
+  background: rgba(255, 255, 255, 0.70);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border-bottom-color: rgba(255, 255, 255, 0.08);
+  border-bottom-color: rgba(31, 35, 40, 0.08);
 }
 
 /* ── Toolbars, pills, inputs pick up the lighter surface ── */
 .bm-pill,
 .search,
 .segmented {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.66);
+  border-color: rgba(31, 35, 40, 0.10);
 }
 .bm-pill.is-active {
-  background: rgba(168, 85, 247, 0.18);
-  border-color: rgba(168, 85, 247, 0.45);
-  color: #f2e9ff;
+  background: rgba(168, 85, 247, 0.14);
+  border-color: rgba(168, 85, 247, 0.40);
+  color: #6b21a8;
 }
 
 /* Primary action → violet/blue to match the landing */
 .btn.primary {
   background: linear-gradient(135deg, #a855f7, #6366f1);
-  border-color: rgba(255, 255, 255, 0.16);
+  border-color: rgba(31, 35, 40, 0.06);
   color: #fff;
 }
 .btn.primary:hover {
@@ -123,7 +123,7 @@
     background 0.45s ease;
 }
 .card:hover {
-  border-color: rgba(255, 255, 255, 0.16);
+  border-color: rgba(168, 85, 247, 0.30);
 }
 
 @media (prefers-reduced-motion: reduce) {

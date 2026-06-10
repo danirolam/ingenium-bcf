@@ -1,12 +1,14 @@
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import type { ActProvision, BillAmendmentOp, ProvisionDelta, ProvisionDiffRow } from "../../types";
-import { ProvisionBlock, provDepth } from "./ProvisionBlock";
+import { ProvisionBlock } from "./ProvisionBlock";
+import { SplitRow } from "./SplitRow";
+import { provDepthOf, type Step } from "./provisionShape";
 
-// Surrounding provisions to render on each side of the produced rows. The preview
-// is a fixed-height scroll region, so this can be generous.
-const CONTEXT = 10;
+// Rows shown above/below the change to start, and how many more each "expand"
+// reveals (GitHub-style context unfolding).
+const BASE = 10;
+const STEP = 10;
 
-type Step = { kind: string; label: string };
 const provOf = (r: ProvisionDiffRow): ActProvision | undefined => r.after ?? r.before;
 
 // The label a path composes to, e.g. [30,(1)] → "30(1)".
@@ -15,6 +17,44 @@ const pathToLabel = (steps: Step[]) =>
 
 const isAncestorPath = (anc: Step[], full: Step[]) =>
   anc.length > 0 && anc.length < full.length && anc.every((s, i) => s.label === full[i].label);
+
+const sameLabel = (a?: string, b?: string) =>
+  !!a && (a ?? "").toLowerCase().replace(/\s+/g, "") === (b ?? "").toLowerCase().replace(/\s+/g, "");
+
+// A structured "replace" splices the new provision in and drops the old, so the
+// diff carries them as an adjacent added + repealed pair. Collapse that pair back
+// into one `changed` row so the side-by-side word-diff highlights only what
+// actually changed (CanLII style) instead of repainting both halves wholesale.
+type WindowRow = { key: string; row: ProvisionDiffRow; focus: boolean };
+function pairReplacements(
+  items: { i: number; row: ProvisionDiffRow }[],
+  produced: Set<number>,
+): WindowRow[] {
+  const out: WindowRow[] = [];
+  for (let k = 0; k < items.length; k++) {
+    const a = items[k];
+    const b = items[k + 1];
+    const isPair =
+      b &&
+      ((a.row.status === "added" && b.row.status === "repealed") ||
+        (a.row.status === "repealed" && b.row.status === "added"));
+    if (isPair) {
+      const added = a.row.status === "added" ? a.row : b.row;
+      const repealed = a.row.status === "repealed" ? a.row : b.row;
+      if (added.after && repealed.before && sameLabel(added.after.label, repealed.before.label)) {
+        out.push({
+          key: `pair-${a.i}`,
+          row: { status: "changed", label: added.after.label, before: repealed.before, after: added.after },
+          focus: produced.has(a.i) || produced.has(b.i),
+        });
+        k++; // consume the partner row
+        continue;
+      }
+    }
+    out.push({ key: String(a.i), row: a.row, focus: produced.has(a.i) });
+  }
+  return out;
+}
 
 // The ancestor chain of the produced provision (section, subsection, …), built
 // from its path so it's always complete. Each level uses the real Act row (with
@@ -30,7 +70,8 @@ function ancestorRows(
   if (!target || target.length <= 1) return { headers: [], usedIdx: new Set() };
 
   const sec = target[0].label;
-  let start = firstIdx, end = firstIdx;
+  let start = firstIdx;
+  let end = firstIdx;
   while (start > 0 && provOf(rows[start - 1])?.path?.[0]?.label === sec) start--;
   while (end < rows.length - 1 && provOf(rows[end + 1])?.path?.[0]?.label === sec) end++;
 
@@ -62,26 +103,34 @@ function ancestorRows(
   return { headers, usedIdx };
 }
 
-// Where an amendment lands in the Act: a scrollable, document-order window around
-// the produced rows (highlighted), with the section/subsection it nests under
-// pinned at the top so the hierarchy is always visible. Indentation is normalized
-// to the shallowest provision shown, so the tree reads correctly.
-export function ProvisionDiff({
-  delta,
-  op,
-}: {
-  delta: ProvisionDelta;
-  op: BillAmendmentOp;
-}) {
+// Where an amendment lands in the Act: a side-by-side (current | as-amended)
+// window around the produced rows, with the section/subsection it nests under
+// pinned at the top. Context unfolds 10 rows at a time in either direction.
+export function ProvisionDiff({ delta, op }: { delta: ProvisionDelta; op: BillAmendmentOp }) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [up, setUp] = useState(0);
+  const [down, setDown] = useState(0);
+  // Remember scroll metrics across an upward expand so the viewport doesn't jump
+  // when rows are prepended.
+  const pending = useRef<{ top: number; height: number } | null>(null);
 
+  // Centre the focus rows under the pinned header on mount / amendment change.
   useLayoutEffect(() => {
     const c = scrollRef.current;
     if (!c) return;
-    const f = c.querySelector<HTMLElement>(".dr-prov.is-focus");
-    const anc = c.querySelector<HTMLElement>(".dr-diff-anc");
-    if (f) c.scrollTop = Math.max(0, f.offsetTop - (anc?.offsetHeight ?? 0) - 8);
+    const f = c.querySelector<HTMLElement>(".dr-srow.is-focus");
+    const head = c.querySelector<HTMLElement>(".dr-diff-head");
+    if (f) c.scrollTop = Math.max(0, f.offsetTop - (head?.offsetHeight ?? 0) - 8);
   }, [op.key]);
+
+  // Keep the viewport anchored when revealing rows above.
+  useLayoutEffect(() => {
+    const c = scrollRef.current;
+    if (c && pending.current) {
+      c.scrollTop = pending.current.top + (c.scrollHeight - pending.current.height);
+      pending.current = null;
+    }
+  }, [up]);
 
   if (op.producedRowIndices.length === 0) {
     return (
@@ -95,37 +144,73 @@ export function ProvisionDiff({
 
   const produced = new Set(op.producedRowIndices);
   const firstIdx = Math.min(...op.producedRowIndices);
-  const lo = Math.max(0, firstIdx - CONTEXT);
-  const hi = Math.min(delta.rows.length - 1, Math.max(...op.producedRowIndices) + CONTEXT);
+  const lastIdx = Math.max(...op.producedRowIndices);
+  const lo = Math.max(0, firstIdx - BASE - up);
+  const hi = Math.min(delta.rows.length - 1, lastIdx + BASE + down);
   const { headers, usedIdx } = ancestorRows(delta.rows, firstIdx);
 
   // Normalize indentation across the pinned ancestors + the window together.
   let baseDepth = Infinity;
-  for (const a of headers) baseDepth = Math.min(baseDepth, provDepth(a));
-  for (let i = lo; i <= hi; i++) if (delta.rows[i]) baseDepth = Math.min(baseDepth, provDepth(delta.rows[i]));
+  for (const a of headers) {
+    const p = provOf(a);
+    if (p) baseDepth = Math.min(baseDepth, provDepthOf(p));
+  }
+  for (let i = lo; i <= hi; i++) {
+    const r = delta.rows[i];
+    const p = r ? provOf(r) : undefined;
+    if (p) baseDepth = Math.min(baseDepth, provDepthOf(p));
+  }
   if (!Number.isFinite(baseDepth)) baseDepth = 0;
 
-  const windowRows = [];
+  const items: { i: number; row: ProvisionDiffRow }[] = [];
   for (let i = lo; i <= hi; i++) {
     const row = delta.rows[i];
-    if (row && !usedIdx.has(i)) {
-      windowRows.push(<ProvisionBlock key={i} row={row} focus={produced.has(i)} baseDepth={baseDepth} />);
-    }
+    if (row && !usedIdx.has(i)) items.push({ i, row });
   }
+  const windowRows = pairReplacements(items, produced).map((w) => (
+    <SplitRow key={w.key} row={w.row} focus={w.focus} baseDepth={baseDepth} />
+  ));
 
-  // The amendment appended new text at the very end of the Act — mark the boundary.
+  const moreAbove = lo > 0;
+  const moreBelow = hi < delta.rows.length - 1;
   const addedAtEnd = produced.has(delta.rows.length - 1);
+
+  const expandUp = () => {
+    const c = scrollRef.current;
+    if (c) pending.current = { top: c.scrollTop, height: c.scrollHeight };
+    setUp((u) => u + STEP);
+  };
 
   return (
     <div className="dr-diff" ref={scrollRef}>
-      {headers.length > 0 && (
-        <div className="dr-diff-anc">
-          {headers.map((a, k) => (
-            <ProvisionBlock key={`anc-${k}`} row={a} baseDepth={baseDepth} />
-          ))}
+      <div className="dr-diff-head">
+        <div className="dr-diff-cols">
+          <span>Current</span>
+          <span>As amended</span>
         </div>
+        {headers.length > 0 && (
+          <div className="dr-diff-anc">
+            {headers.map((a, k) => (
+              <ProvisionBlock key={`anc-${k}`} row={a} baseDepth={baseDepth} />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {moreAbove && (
+        <button className="dr-expand" onClick={expandUp} title="Reveal more context above">
+          <span className="dr-expand-ic">↑</span> Show {Math.min(STEP, lo)} more above
+        </button>
       )}
-      {windowRows}
+
+      <div className="dr-split">{windowRows}</div>
+
+      {moreBelow && (
+        <button className="dr-expand" onClick={() => setDown((d) => d + STEP)} title="Reveal more context below">
+          <span className="dr-expand-ic">↓</span> Show {Math.min(STEP, delta.rows.length - 1 - hi)} more below
+        </button>
+      )}
+
       {addedAtEnd && <div className="dr-diff-end">end of Act</div>}
     </div>
   );

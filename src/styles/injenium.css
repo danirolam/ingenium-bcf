@@ -2,63 +2,65 @@
    Aesthetic: BCF black, warm legal paper, copper signal, restrained motion. */
 
 :root {
-  /* Workspace: GitHub "dark default" (Primer). Near-black canvas, raised
-     panels in graphite, hairline borders. Professional dev-tool surface —
-     legible, calm, no warm cast. */
-  --bg: #0d1117;
-  --panel: #161b22;
-  --panel-2: #21262d;
-  --panel-3: #30363d;
+  color-scheme: light;
+  /* Workspace: GitHub "light default" (Primer). White canvas, subtle gray
+     panels, hairline borders. Professional dev-tool surface — legible, calm. */
+  --bg: #ffffff;
+  --panel: #ffffff;
+  --panel-2: #f6f8fa;
+  --panel-3: #eaeef2;
 
-  /* Sidebar: one shade darker than the canvas so the rail reads as a frame. */
-  --sidebar: #010409;
-  --sidebar-2: #161b22;
-  --sidebar-ink: #e6edf3;
-  --sidebar-ink-2: #7d8590;
+  /* Sidebar: a faint gray frame against the white canvas. */
+  --sidebar: #f6f8fa;
+  --sidebar-2: #ffffff;
+  --sidebar-ink: #1f2328;
+  --sidebar-ink-2: #59636e;
 
-  /* Text — GitHub foreground ramp */
-  --ink: #e6edf3;
-  --ink-2: #c9d1d9;
-  --ink-3: #7d8590;
-  --ink-4: #6e7681;
+  /* Text — GitHub light foreground ramp */
+  --ink: #1f2328;
+  --ink-2: #424a53;
+  --ink-3: #59636e;
+  --ink-4: #818b98;
 
-  /* Borders / rules — graphite hairlines */
-  --border: #30363d;
-  --border-2: #3d444d;
-  --border-3: #21262d;
-  --rule: #30363d;
+  /* Borders / rules — light hairlines */
+  --border: #d1d9e0;
+  --border-2: #afb8c1;
+  --border-3: #eaeef2;
+  --rule: #d1d9e0;
 
   /* Accent: GitHub green for primary actions, blue for links/info */
-  --accent: #238636;
-  --accent-2: #2ea043;
-  --accent-warm: #2f81f7;
-  --accent-warm-2: #1f6feb;
-  --accent-soft: rgba(35, 134, 54, 0.15);
-  --accent-warm-soft: rgba(47, 129, 247, 0.15);
+  --accent: #1f883d;
+  --accent-2: #1a7f37;
+  --accent-warm: #0969da;
+  --accent-warm-2: #0550ae;
+  --accent-soft: rgba(31, 136, 61, 0.12);
+  --accent-warm-soft: rgba(9, 105, 218, 0.10);
 
-  /* Semantic status — GitHub Primer signal colors */
-  --crit: #f85149;
-  --crit-bg: rgba(248, 81, 73, 0.12);
-  --high: #d29922;
-  --high-bg: rgba(210, 153, 34, 0.12);
-  --med: #2f81f7;
-  --med-bg: rgba(47, 129, 247, 0.12);
-  --low: #7d8590;
-  --low-bg: rgba(125, 133, 144, 0.10);
-  --ok: #3fb950;
-  --ok-bg: rgba(63, 185, 80, 0.12);
+  /* Semantic status — GitHub Primer signal colors (light) */
+  --crit: #cf222e;
+  --crit-bg: rgba(207, 34, 46, 0.10);
+  --high: #9a6700;
+  --high-bg: rgba(154, 103, 0, 0.10);
+  --med: #0969da;
+  --med-bg: rgba(9, 105, 218, 0.10);
+  --low: #59636e;
+  --low-bg: rgba(89, 99, 110, 0.10);
+  --ok: #1a7f37;
+  --ok-bg: rgba(26, 127, 55, 0.12);
 
-  /* Diff — GitHub line-level add/del */
-  --diff-del-bg: rgba(248, 81, 73, 0.15);
-  --diff-del-ink: #ffa198;
-  --diff-add-bg: rgba(63, 185, 80, 0.15);
-  --diff-add-ink: #56d364;
-  --diff-context-bg: #161b22;
+  /* Diff — GitHub light add/del: a soft line tint + a stronger word tint */
+  --diff-del-bg: #ffebe9;
+  --diff-del-word: #ffc9c2;
+  --diff-del-ink: #82071e;
+  --diff-add-bg: #e6ffec;
+  --diff-add-word: #aceebb;
+  --diff-add-ink: #116329;
+  --diff-context-bg: #ffffff;
 
-  /* Dark UIs lean on 1px borders + low-opacity black, not big drop shadows */
-  --shadow-sm: 0 1px 0 rgba(1, 4, 9, 0.30), 0 8px 24px -18px rgba(1, 4, 9, 0.80);
+  /* Light UIs: soft, low-spread shadows tinted with slate, not pure black */
+  --shadow-sm: 0 1px 0 rgba(31, 35, 40, 0.04), 0 4px 12px -6px rgba(66, 74, 83, 0.16);
   --shadow-md:
-    0 1px 0 rgba(1, 4, 9, 0.30), 0 16px 40px -24px rgba(1, 4, 9, 0.85);
+    0 1px 0 rgba(31, 35, 40, 0.04), 0 16px 40px -20px rgba(66, 74, 83, 0.24);
 
   /* Manrope for UI text; a real monospace stack for diff / clause / code.
      --serif still aliases --sans; --mono is now a genuine mono family so the
@@ -73,14 +75,14 @@
     ui-monospace, "SFMono-Regular", "SF Mono", "Menlo", "Consolas",
     "Liberation Mono", monospace;
 
-  /* shadcn HSL tokens — dark variants for any ui/* components reading these */
-  --background: 215 28% 7%;
-  --foreground: 210 30% 92%;
-  --card: 215 21% 11%;
-  --card-foreground: 210 30% 92%;
-  --muted: 215 19% 16%;
-  --muted-foreground: 213 8% 53%;
-  --border-hsl: 213 13% 21%;
+  /* shadcn HSL tokens — light variants for any ui/* components reading these */
+  --background: 0 0% 100%;
+  --foreground: 213 18% 16%;
+  --card: 0 0% 100%;
+  --card-foreground: 213 18% 16%;
+  --muted: 210 29% 97%;
+  --muted-foreground: 213 9% 39%;
+  --border-hsl: 210 18% 85%;
 }
 
 * {
@@ -120,12 +122,12 @@ a {
 /* ───────── Sidebar ───────── */
 .sb {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0)),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(255, 255, 255, 0)),
     var(--sidebar);
   color: var(--sidebar-ink);
   display: flex;
   flex-direction: column;
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
   position: sticky;
   top: 0;
   height: 100vh;
@@ -135,7 +137,7 @@ a {
   display: flex;
   gap: 10px;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 /* Brand becomes a clickable "back to landing" surface */
 .sb-brand-button {
@@ -150,11 +152,11 @@ a {
   transition: background 0.15s ease;
 }
 .sb-brand-button:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(0, 0, 0, 0.04);
 }
 .sb-back-arrow {
   margin-left: auto;
-  color: rgba(251, 247, 237, 0.42);
+  color: var(--ink-4);
   opacity: 0;
   transform: translateX(4px);
   transition: opacity 0.18s ease, transform 0.18s ease, color 0.18s ease;
@@ -201,7 +203,7 @@ a {
   font-size: 10px;
   letter-spacing: 0;
   text-transform: uppercase;
-  color: rgba(251, 247, 237, 0.58);
+  color: var(--ink-3);
   font-family: var(--mono);
 }
 .sb-nav {
@@ -213,7 +215,7 @@ a {
 .sb-nav button {
   background: transparent;
   border: none;
-  color: rgba(251, 247, 237, 0.70);
+  color: var(--ink-2);
   text-align: left;
   padding: 9px 10px;
   font-size: 13px;
@@ -227,11 +229,11 @@ a {
   transition: background 0.15s ease, color 0.15s ease;
 }
 .sb-nav button:hover {
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(0, 0, 0, 0.05);
   color: var(--sidebar-ink);
 }
 .sb-nav button.active {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.08);
   color: var(--sidebar-ink);
   font-weight: 500;
 }
@@ -239,7 +241,7 @@ a {
   color: var(--accent-warm);
 }
 .sb-icon {
-  color: rgba(251, 247, 237, 0.58);
+  color: var(--ink-3);
   flex: 0 0 auto;
 }
 .sb-nav button.active .sb-icon {
@@ -256,7 +258,7 @@ a {
   font-family: var(--mono);
   font-size: 10.5px;
   width: 16px;
-  color: rgba(251, 247, 237, 0.42);
+  color: var(--ink-4);
   font-variant-numeric: tabular-nums;
 }
 .sb-tag {
@@ -265,13 +267,13 @@ a {
   font-size: 10.5px;
   padding: 1px 6px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(251, 247, 237, 0.58);
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--ink-3);
   font-variant-numeric: tabular-nums;
 }
 .sb-nav button.active .sb-tag {
   background: rgba(47, 129, 247, 0.22);
-  color: #79c0ff;
+  color: var(--accent-warm);
 }
 .sb-help {
   position: absolute;
@@ -282,14 +284,14 @@ a {
   transform: translateY(-50%) translateX(-4px);
   opacity: 0;
   pointer-events: none;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: #1c2128;
-  color: rgba(251, 247, 237, 0.86);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--panel);
+  color: var(--ink);
   border-radius: 8px;
   padding: 10px 11px;
   font-size: 12px;
   line-height: 1.45;
-  box-shadow: 0 18px 36px -26px rgba(0, 0, 0, 0.82);
+  box-shadow: 0 18px 36px -26px rgba(66, 74, 83, 0.20);
   transition: opacity 0.16s ease, transform 0.16s ease;
 }
 .sb-help::before {
@@ -299,9 +301,9 @@ a {
   left: -5px;
   width: 8px;
   height: 8px;
-  background: #1c2128;
-  border-left: 1px solid rgba(255, 255, 255, 0.12);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--panel);
+  border-left: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   transform: translateY(-50%) rotate(45deg);
 }
 .sb-nav button:hover .sb-help,
@@ -312,7 +314,7 @@ a {
 .sb-foot {
   margin-top: auto;
   padding: 14px 14px 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
   font-size: 12px;
   color: var(--sidebar-ink-2);
 }
@@ -326,14 +328,14 @@ a {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.09);
+  background: rgba(0, 0, 0, 0.05);
   color: var(--sidebar-ink);
   display: grid;
   place-items: center;
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0;
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 .sb-user-name {
   color: var(--sidebar-ink);
@@ -347,7 +349,7 @@ a {
 .sb-build {
   font-family: var(--mono);
   font-size: 10px;
-  color: rgba(251, 247, 237, 0.42);
+  color: var(--ink-4);
   letter-spacing: 0;
   font-variant-numeric: tabular-nums;
 }
@@ -626,7 +628,7 @@ a {
   opacity: 0.7;
 }
 .alert-1-close:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.06);
   opacity: 1;
 }
 .alert-1-warning.alert-1-light {
@@ -651,7 +653,7 @@ a {
   color: var(--bg);
 }
 .alert-1-mono.alert-1-solid .alert-1-description {
-  color: rgba(244, 241, 232, 0.72);
+  color: var(--ink-2);
 }
 
 /* Stats row */
