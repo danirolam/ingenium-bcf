@@ -5,7 +5,12 @@ import type {
   ClientImpactAnalysis,
 } from "../../src/types.js";
 import { sendClientImpactCompleteEmail } from "../services/email.js";
-import { analyzeClientImpact, billAffectedActs } from "../services/gemini.js";
+import {
+  analyzeClientImpact,
+  billAffectedActs,
+  buildImpactPrompt,
+} from "../services/gemini.js";
+import { claudeJson } from "../services/claude.js";
 import { flagImpactReview } from "../services/humanReview.js";
 import { FILES, findById, readAll, upsert } from "../services/jsonStore.js";
 import { findCannedImpact } from "../seed/seedDemo.js";
@@ -22,7 +27,11 @@ clientImpactRouter.post("/analyze", async (req, res) => {
   if (!client) return res.status(404).json({ error: "client not_found" });
   if (!bill) return res.status(404).json({ error: "bill not_found" });
 
+  // Gemini if its key is set, else the Anthropic key with the same prompt —
+  // either way a missing/failed call degrades to the canned/synthesized memo.
   let result = await analyzeClientImpact({ bill, client });
+  if (!result)
+    result = await claudeJson<ClientImpactAnalysis>(buildImpactPrompt({ bill, client }));
   if (!result) {
     const canned = findCannedImpact({ clientId: client.id, bill });
     if (canned) {

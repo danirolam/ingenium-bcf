@@ -59,6 +59,45 @@ const TOOLS: any = [
   },
 ];
 
+// Generic one-shot strict-JSON call (no tools) — lets routes that were written
+// against Gemini's callJson run on the Anthropic key instead, with the same
+// "null on any failure → deterministic fallback" contract.
+export async function claudeJson<T>(prompt: string): Promise<T | null> {
+  const key = process.env.ANTHROPIC_API_KEY;
+  if (!key) return null;
+  try {
+    const res = await fetch(API, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-api-key": key,
+        "anthropic-version": "2023-06-01",
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        max_tokens: 8000,
+        temperature: 0,
+        messages: [{ role: "user", content: prompt }],
+      }),
+    });
+    if (!res.ok) {
+      console.log(`[claude] json call failed: ${res.status} ${await res.text()}`);
+      return null;
+    }
+    const data: any = await res.json();
+    const text: string = (data.content ?? [])
+      .filter((b: any) => b.type === "text")
+      .map((b: any) => b.text)
+      .join("");
+    // Tolerate markdown fences or a stray preamble around the JSON object.
+    const jsonText = text.replace(/^[\s\S]*?(\{[\s\S]*\})[\s\S]*$/, "$1");
+    return JSON.parse(jsonText) as T;
+  } catch (err: any) {
+    console.log(`[claude] json call failed: ${err?.message ?? err}`);
+    return null;
+  }
+}
+
 export async function interpretAmendmentsClaude(args: {
   bill: Bill;
   actTitle: string;
