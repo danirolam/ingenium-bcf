@@ -1,44 +1,41 @@
 # AI integration — handoff guide
 
-Ingenium runs fully today with **no AI key** — every screen produces real,
-structured output using deterministic logic. Turning on live Gemini synthesis is
-essentially one step: **add `GEMINI_API_KEY`**. Nothing else needs to change.
-
-This guide is everything the team needs to wire it.
+**Status: live.** The Anthropic key (`ANTHROPIC_API_KEY`) is wired in Vercel
+(Production + Development) and powers everything; `/api/health` reports it. The
+app still runs fully with **no key** — every screen has a deterministic
+fallback — so a bad or missing key can never break it.
 
 ## TL;DR
 
-1. Get a free key: https://aistudio.google.com/apikey
-2. Add it where the app runs:
-   - **Production (Vercel):** Project → Settings → Environment Variables → add `GEMINI_API_KEY` → redeploy.
-   - **Local:** put it in `.env` → `GEMINI_API_KEY=AIza...`
-3. Confirm it took:
-   - `npm run verify:gemini` — pings the model, prints `OK` or a specific `FAIL`.
-   - `GET /api/health` → `ai.enabled` flips to `true`.
-
-The AI features activate automatically — **no code changes**.
+- **Primary key:** `ANTHROPIC_API_KEY` (Claude; console.anthropic.com). Already
+  set in Vercel → Settings → Environment Variables, and in the local `.env`.
+- **Optional:** `GEMINI_API_KEY` — if present, Gemini takes the client memo and
+  the legacy extraction path instead.
+- Confirm wiring: `GET /api/health` → `ai.anthropic.enabled` / `ai.gemini.enabled`.
 
 ## Where AI is used (and only there)
 
-AI is used in exactly three *synthesis* spots. Everything else — bill ingestion,
-the legislative path, practice‑area tagging, client matching, the diff renderer —
-is deterministic and never calls a model.
+Everything else — bill ingestion, the legislative path, practice‑area tagging,
+client matching, the diff renderer — is deterministic and never calls a model.
 
-| Touchpoint | Function (`server/services/gemini.ts`) | What the key turns on | Fallback without a key |
+| Touchpoint | Code | Key | Fallback without a key |
 | --- | --- | --- | --- |
-| **Client impact memo** | `analyzeClientImpact` (used by `routes/clientImpact.ts`) | A real, client‑specific exposure memo for **any** client × approved law | A deterministic synthesized memo — still structured and usable |
-| **Delta extraction** | `extractAmendmentsFromBill` (used by `routes/bills.ts`) | The structured amendment a bill makes to a **registered** Act | A one‑sided "proposed text" stub + a link to the current Act on Justice Laws Canada |
-| **Updated Act text** | `generateUpdatedLawText` | The "after" side of the before/after diff for a registered Act | (same stub as above) |
+| **Provision delta (step 02)** — interpreting how a bill's clauses amend the Act | `claude.ts` (`interpretAmendmentsClaude`, tool-use) + `scalpel.ts` (anchor resolution), used by `POST /bills/:id/provision-delta` | `ANTHROPIC_API_KEY` | The structured parser alone — plainly-worded amendments still resolve; complex ones report "AI key missing — cannot interpret …" |
+| **Client impact memo (step 04)** | `routes/clientImpact.ts`: Gemini's `analyzeClientImpact` → else `claudeJson(buildImpactPrompt(...))` | `GEMINI_API_KEY`, else `ANTHROPIC_API_KEY` | Canned demo memo, else a deterministic synthesized memo |
+| **Legacy two‑sided extraction** | `gemini.ts` (`extractAmendmentsFromBill`, `generateUpdatedLawText`) | `GEMINI_API_KEY` | One‑sided stub + Justice Laws link |
 
-All three return `null` on a missing key, an invalid key, a quota error, or a
-malformed response — the route then uses its fallback. **A bad key never breaks
-the app**; it just doesn't upgrade the output.
+Every call returns `null` on a missing key, an invalid key, a rate limit, or a
+malformed response — the route then uses its fallback.
 
-## The model
+## The models
 
-- Default: `gemini-2.5-flash` (fast, inexpensive, good for this workload).
-- Override with `GEMINI_MODEL` (e.g. `gemini-3-flash`, `gemini-2.5-pro`) — see `.env.example`.
-- Strict JSON is enforced (`responseMimeType: "application/json"`) and every response is `JSON.parse`d defensively.
+- Delta interpreter: `claude-haiku-4-5` by default (fast, cheap, mechanical
+  extraction). Override with `ANTHROPIC_MODEL` (e.g. `claude-sonnet-4-6` for more
+  depth); the anchor-resolution pass separately via `ANTHROPIC_SCALPEL_MODEL`.
+- Gemini (optional path): `gemini-2.5-flash`, override `GEMINI_MODEL`.
+- A fresh Anthropic key starts on tier-1 rate limits; big omnibus bills may
+  return `aiIncomplete: true` on the first pass — re-run with `?refresh=1`, or
+  the limits grow with usage.
 
 ## Verifying
 
