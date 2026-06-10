@@ -168,47 +168,58 @@ export function applyAmendments(
   const after: Provision[] = before.map((p) => ({ ...p }));
   const verified: VerifiedOp[] = [];
   let serial = 0; // unique ids for inserted provisions (so provKey distinguishes them)
-  const indexOfLabel = (label: string | null) => {
-    if (!label) return -1;
-    const want = normLabel(label);
-    return after.findIndex((p) => normLabel(p.label) === want);
-  };
 
   for (const op of ops) {
-    const i = indexOfLabel(op.anchor);
-    const anchorFound = i >= 0 || (op.op === "add" && !op.anchor);
+    // Resolve the anchor the SAME way the deterministic path does (level-by-level,
+    // container → last descendant) instead of a verbatim label match. This is what
+    // keeps an AI-interpreted op in document order: the new provision is spliced
+    // next to its real anchor rather than appended at the end when the label
+    // doesn't match byte-for-byte.
     let producedKeys: string[] = [];
+    let anchorFound = false;
 
     if (op.op === "repeal") {
-      if (i >= 0) { producedKeys = [provKey(after[i])]; after.splice(i, 1); }
+      // Repeal every provision under the anchor (leaf, whole section, or schedule),
+      // high-to-low so indices stay valid — mirrors applyGroups.
+      const idxs = findAllUnder(after, op.anchor);
+      anchorFound = idxs.length > 0;
+      producedKeys = idxs.map((k) => provKey(after[k]));
+      for (const k of [...idxs].sort((a, b) => b - a)) after.splice(k, 1);
     } else if (op.op === "replace") {
-      if (i >= 0) {
-        after[i] = {
-          ...after[i],
-          marginalNote: op.newMarginalNote ?? after[i].marginalNote,
-          text: op.newText ?? after[i].text,
+      const hit = findByPath(after, op.anchor);
+      anchorFound = hit.matched === "exact";
+      if (hit.index >= 0) {
+        after[hit.index] = {
+          ...after[hit.index],
+          marginalNote: op.newMarginalNote ?? after[hit.index].marginalNote,
+          text: op.newText ?? after[hit.index].text,
         };
-        producedKeys = [provKey(after[i])];
+        producedKeys = [provKey(after[hit.index])];
       }
     } else if (op.op === "amend") {
-      if (i >= 0) {
-        if (op.newText) after[i] = { ...after[i], text: op.newText };
-        producedKeys = [provKey(after[i])];
+      const hit = findByPath(after, op.anchor);
+      anchorFound = hit.matched === "exact";
+      if (hit.index >= 0) {
+        if (op.newText) after[hit.index] = { ...after[hit.index], text: op.newText };
+        producedKeys = [provKey(after[hit.index])];
       }
     } else {
-      // add — insert a new provision near the anchor (or append if no anchor).
+      // add — insert a new provision next to the resolved anchor (or append if the
+      // anchor is genuinely absent / there is no anchor).
+      const hit = findByPath(after, op.anchor);
+      anchorFound = hit.matched === "exact" || !op.anchor;
       const newLabel = op.newLabel || "(new)";
       const newPath = labelToPath(newLabel);
       const newP: Provision = {
         id: `ins:${serial++}`,
         label: newLabel,
         kind: newPath[newPath.length - 1]?.kind ?? "section",
-        heading: i >= 0 ? after[i].heading ?? null : null,
+        heading: hit.index >= 0 ? after[hit.index].heading ?? null : null,
         marginalNote: op.newMarginalNote || null,
         text: op.newText || "",
         path: newPath,
       };
-      const at = i < 0 ? after.length : op.position === "before" ? i : i + 1;
+      const at = hit.index < 0 ? after.length : op.position === "before" ? hit.index : hit.index + 1;
       after.splice(at, 0, newP);
       producedKeys = [provKey(newP)];
     }

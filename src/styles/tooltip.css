@@ -12,12 +12,12 @@
   flex-direction: column;
   max-width: min(304px, calc(100vw - 24px));
   padding: 9px 11px;
-  background: #1c2128;
+  background: var(--panel);
   border: 1px solid var(--border-2);
   border-radius: 8px;
   box-shadow:
-    0 1px 0 rgba(1, 4, 9, 0.4),
-    0 14px 34px -16px rgba(1, 4, 9, 0.92);
+    0 1px 0 rgba(66, 74, 83, 0.12),
+    0 14px 34px -16px rgba(66, 74, 83, 0.22);
   pointer-events: none;
   animation: tt-in 0.12s ease;
 }

@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { CSSProperties, MouseEvent as ReactMouseEvent } from "react";
 import type { Bill, BillAmendmentOp, ProvisionDelta } from "../../types";
 import type { ApprovalsState } from "../../lib/useApprovals";
 import { BillPdfPane } from "../../components/delta/BillPdfPane";
@@ -40,6 +41,32 @@ export function DeltaReview({
   const at = Math.min(idx, Math.max(0, items.length - 1));
   const go = (step: number) => setIdx(() => Math.max(0, Math.min(items.length - 1, at + step)));
 
+  // Resizable PDF pane: default to one third of the viewport; counsel can drag
+  // the divider. Width lives in a CSS var so the responsive media query can still
+  // collapse the two-pane grid on narrow screens.
+  const gridRef = useRef<HTMLDivElement>(null);
+  const [pdfPx, setPdfPx] = useState(() =>
+    Math.round((typeof window !== "undefined" ? window.innerWidth : 1200) / 3),
+  );
+  const startDrag = (e: ReactMouseEvent) => {
+    e.preventDefault();
+    document.body.style.cursor = "col-resize";
+    document.body.style.userSelect = "none";
+    const move = (ev: MouseEvent) => {
+      const rect = gridRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      setPdfPx(Math.max(300, Math.min(rect.width - 420, ev.clientX - rect.left)));
+    };
+    const up = () => {
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+      window.removeEventListener("mousemove", move);
+      window.removeEventListener("mouseup", up);
+    };
+    window.addEventListener("mousemove", move);
+    window.addEventListener("mouseup", up);
+  };
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") { setIdx((i) => Math.max(0, i - 1)); }
@@ -75,8 +102,15 @@ export function DeltaReview({
           </button>
         </div>
       )}
-      <div className="dr-grid">
+      <div className="dr-grid" ref={gridRef} style={{ "--pdf-w": `${pdfPx}px` } as CSSProperties}>
         <BillPdfPane bill={bill} />
+        <div
+          className="dr-resizer"
+          role="separator"
+          aria-orientation="vertical"
+          title="Drag to resize"
+          onMouseDown={startDrag}
+        />
         <div className="dr-pager">
           <div className="dr-pager-bar">
             <button className="dr-nav" onClick={() => go(-1)} disabled={at <= 0} title="Previous (←)">

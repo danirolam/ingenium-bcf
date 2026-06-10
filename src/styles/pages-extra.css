@@ -605,12 +605,32 @@
 }
 .dr-state-err { color: var(--high); font-size: 12.5px; }
 
-/* Two-pane body. */
+/* Two-pane body: PDF | draggable divider | review. The PDF width lives in a CSS
+   var (default a third of the viewport, set inline) so the responsive query can
+   still collapse the grid on narrow screens. */
 .dr-grid {
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(380px, 46%) 1fr;
+  grid-template-columns: var(--pdf-w, 33%) 6px minmax(0, 1fr);
+}
+
+/* Drag handle between the panes. */
+.dr-resizer {
+  position: relative;
+  cursor: col-resize;
+  background: var(--border);
+  transition: background 0.15s ease;
+}
+.dr-resizer:hover,
+.dr-resizer:active {
+  background: var(--accent-warm);
+}
+.dr-resizer::before {
+  /* a wider invisible hit area so the 6px handle is easy to grab */
+  content: "";
+  position: absolute;
+  inset: 0 -4px;
 }
 
 /* Left — official bill PDF. */
@@ -718,24 +738,167 @@
   color: var(--ink); background: var(--panel-2); border-left: 2px solid var(--accent-warm); border-radius: 0 5px 5px 0;
 }
 
-/* The diff (where it lands in the Act) — inline, no surrounding box; fills the
-   card's remaining height and scrolls within to reveal more context. */
+/* The diff (where it lands in the Act) — a side-by-side (current | as-amended)
+   window that fills the card's remaining height and scrolls within. */
 .dr-diff {
   position: relative;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: 2px 0;
+  padding: 0;
+  font-family: var(--mono);
 }
-/* The section/subsection the change nests under — pinned at the top of the
-   preview so the hierarchy stays visible while scrolling the local context. */
-.dr-diff-anc {
+/* Sticky header: the "Current / As amended" column labels and, beneath them, the
+   section/subsection the change nests under — pinned so the hierarchy and the
+   two sides stay oriented while scrolling local context. */
+.dr-diff-head {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 2;
   background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+.dr-diff-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  font: 700 9.5px/1 var(--sans);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.dr-diff-cols span {
+  padding: 7px 12px;
+}
+.dr-diff-cols span:first-child {
+  border-right: 1px solid var(--border-3);
+}
+.dr-diff-anc {
+  background: var(--panel-2);
+  border-top: 1px solid var(--border-3);
+}
+
+/* Context-unfold control (GitHub-style "show N more"). */
+.dr-expand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 10px;
+  border: none;
+  border-top: 1px solid var(--border-3);
   border-bottom: 1px solid var(--border-3);
-  margin-bottom: 2px;
+  background: var(--accent-warm-soft);
+  color: var(--accent-warm);
+  font: 600 11px/1 var(--sans);
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+.dr-expand:hover {
+  background: var(--med-bg);
+}
+.dr-expand-ic {
+  font-family: var(--mono);
+  font-weight: 700;
+}
+
+/* The split body: each row is two equal cells. */
+.dr-srow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--border-3);
+}
+.dr-srow:last-child {
+  border-bottom: none;
+}
+.dr-srow.is-focus {
+  scroll-margin-top: 64px;
+}
+.dr-cell {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  min-width: 0;
+  padding: 4px 10px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  border-right: 1px solid var(--border-3);
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+.dr-cell:last-child {
+  border-right: none;
+}
+/* An absent side (a wholly added or repealed provision) — faint hatch so the
+   eye reads "nothing here", not "unchanged". */
+.dr-cell.is-empty {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--panel-2),
+    var(--panel-2) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+  border-right: 1px solid var(--border-3);
+}
+.dr-cell.is-context {
+  opacity: 0.66;
+}
+.dr-cell.is-add {
+  background: var(--diff-add-bg);
+}
+.dr-cell.is-del {
+  background: var(--diff-del-bg);
+}
+.dr-cell.is-del.is-whole .dr-cell-text {
+  text-decoration: line-through;
+  color: var(--diff-del-ink);
+}
+.dr-cell-sign {
+  flex: none;
+  width: 9px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--ink-4);
+}
+.dr-cell.is-add .dr-cell-sign {
+  color: var(--ok);
+}
+.dr-cell.is-del .dr-cell-sign {
+  color: var(--crit);
+}
+.dr-cell-label {
+  flex: none;
+  font-weight: 700;
+  color: var(--ink-3);
+}
+.dr-cell-main {
+  min-width: 0;
+}
+.dr-cell-mn {
+  display: block;
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--ink-4);
+  margin-bottom: 1px;
+}
+.dr-cell-text {
+  color: var(--ink-2);
+}
+/* Word-level highlight inside a changed provision (CanLII style). */
+.dr-wd-del {
+  background: var(--diff-del-word);
+  color: var(--diff-del-ink);
+  text-decoration: line-through;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+.dr-wd-add {
+  background: var(--diff-add-word);
+  color: var(--diff-add-ink);
+  border-radius: 2px;
+  padding: 0 1px;
+  text-decoration: none;
 }
 /* Boundary marker when the amendment appends text at the very end of the Act. */
 .dr-diff-end {
@@ -810,5 +973,6 @@
 
 @media (max-width: 920px) {
   .dr-grid { grid-template-columns: 1fr; }
-  .dr-pdf { display: none; }
+  .dr-pdf,
+  .dr-resizer { display: none; }
 }

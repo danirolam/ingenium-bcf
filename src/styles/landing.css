@@ -5,8 +5,8 @@
 
 .lp {
   font-family: "Geist", ui-sans-serif, system-ui, sans-serif;
-  background: #0b0c0f;
-  color: #f2f3f5;
+  background: #ffffff;
+  color: #1f2328;
   min-height: 100vh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -16,23 +16,23 @@
   scroll-margin-top: 96px;
 }
 .lp ::selection {
-  background: rgba(236, 72, 153, 0.4);
-  color: #fff;
+  background: rgba(124, 58, 237, 0.18);
+  color: #1f2328;
 }
 
-/* Glass surfaces (from terra) */
+/* Glass surfaces (from terra) — light frosted */
 .glass-button {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-  color: #f2f3f5;
+  box-shadow: 0 4px 16px rgba(66, 74, 83, 0.16);
+  color: #1f2328;
   font-weight: 500;
 }
 .glass-pill {
-  background: rgba(15, 17, 23, 0.4);
+  background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(31, 35, 40, 0.1);
 }
 
 /* Hero background. `fixed` forces a full-viewport repaint on every scroll frame
@@ -116,10 +116,10 @@
    gradient + transparent fill only take effect where supported, so the text is
    never invisible. */
 .terra-grad {
-  background: linear-gradient(135deg, #d9a7c7 0%, #fffcdc 100%);
+  background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
   -webkit-background-clip: text;
   background-clip: text;
-  color: #eec9d6;
+  color: #7c3aed;
   -webkit-text-fill-color: transparent;
 }
 

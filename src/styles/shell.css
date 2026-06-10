@@ -22,10 +22,10 @@
   height: 64px;
   padding: 0 18px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)),
     var(--sidebar);
   border-bottom: 1px solid var(--border);
-  box-shadow: 0 1px 0 rgba(1, 4, 9, 0.5), 0 10px 30px -24px rgba(1, 4, 9, 0.9);
+  box-shadow: 0 1px 0 rgba(66, 74, 83, 0.10), 0 10px 30px -24px rgba(66, 74, 83, 0.16);
 }
 
 /* ── Breadcrumb / brand ── */
@@ -49,7 +49,7 @@
   transition: background 0.15s ease;
 }
 .shell-brand:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.05);
 }
 .shell-mark {
   width: 24px;
@@ -91,7 +91,7 @@
   transition: background 0.15s ease, color 0.15s ease;
 }
 .shell-crumb:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.05);
   color: var(--ink-2);
 }
 .shell-crumb.is-current {
@@ -150,7 +150,7 @@
   min-width: 0;
 }
 .shell-step:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(0, 0, 0, 0.04);
 }
 .shell-step:focus-visible {
   outline: 2px solid var(--accent-warm);
@@ -286,7 +286,7 @@
   background: var(--panel);
   border: 1px solid var(--border-2);
   border-radius: 11px;
-  box-shadow: 0 1px 0 rgba(1, 4, 9, 0.4), 0 24px 60px -28px rgba(1, 4, 9, 0.95);
+  box-shadow: 0 1px 0 rgba(66, 74, 83, 0.10), 0 24px 60px -28px rgba(66, 74, 83, 0.22);
   overflow: hidden;
   animation: shell-pop 0.14s ease;
 }
