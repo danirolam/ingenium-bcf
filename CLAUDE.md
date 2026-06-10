@@ -101,9 +101,16 @@ Gemini is called in exactly three synthesis spots, each returning `null` on any 
 | `generateUpdatedLawText` | (diff "after" side) | same stub |
 
 Default model `gemini-2.5-flash` (override with `GEMINI_MODEL`); strict JSON enforced.
-Two-sided legal diffs only work for Acts registered in `data/laws/registry.json` (5 today).
-Everything else (ingestion, legislative path, practice-area tagging, client matching, diff
-rendering) is deterministic and never calls a model. Email (`server/services/email.ts`,
+The provision delta resolves against the full federal corpus: all 964 consolidated Acts
+(registered in `data/laws/registry.json`) are ingested from the Justice Laws website and
+served from Vercel Blob — `lawProvisions.ts` reads the local file first (dev + the 5
+bundled demo Acts), then `acts/<slug>.json` in Blob via the committed
+`data/laws/blob-manifest.json`. Re-ingest with `scripts/ingest-acts.mjs --all
+--write-registry`, re-upload with `scripts/upload-acts-blob.mjs` (needs
+`BLOB_READ_WRITE_TOKEN` in `.env.local`; it is a *sensitive* env var, so copy it from the
+dashboard — `vercel env pull` returns it empty). Everything else (ingestion, legislative
+path, practice-area tagging, client matching, diff rendering) is deterministic and never
+calls a model. Email (`server/services/email.ts`,
 Resend) follows the same optional pattern. See `AI_INTEGRATION.md` for the full handoff guide.
 
 ## Conventions / gotchas

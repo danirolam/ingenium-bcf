@@ -57,22 +57,31 @@ curl https://ingenium-bcf.vercel.app/api/health
 `verify:gemini` already distinguishes the common failures: empty key, key rejected
 by Google, and model‑not‑available (it suggests an alternate `GEMINI_MODEL`).
 
-## Getting real two‑sided diffs (optional, beyond the key)
+## The Act corpus (already done — all 964 federal Acts)
 
 The before/after **legal delta** needs the *current consolidated text* of the
-affected Act to diff against. Five Acts are registered today (Feeds, Fertilizers,
-Seeds, Pest Control Products, Food and Drugs). With a key, those produce full
-two‑sided diffs; every other Act shows the one‑sided stub (with a Justice Laws
-link to today's text).
+affected Act to diff against. **The full federal corpus is in place**: all 964
+consolidated Acts, ingested from the public Justice Laws website
+(`scripts/ingest-acts.mjs --all`) and served from **Vercel Blob**
+(`scripts/upload-acts-blob.mjs` → `acts/<slug>.json`, indexed by the committed
+`data/laws/blob-manifest.json`). The server loads an Act from the local file
+first (dev + the 5 bundled demo Acts), then from Blob, with in‑memory caching.
 
-To add more Acts so more bills get real diffs — a **data** step, independent of the key:
+So the delta resolves against any federal Act today. The structured parser
+handles plainly‑worded amendments on its own; the AI key unlocks interpretation
+of the complex ones (the UI/API says "AI key missing — cannot interpret …" for
+exactly those until the key is added).
 
-1. Register the Act in `data/laws/registry.json` (`htmlUrl` / `xmlUrl` / `currentPath`).
-2. Fetch + normalize its current text: `node --use-system-ca scripts/retrieve-law.mjs <law-slug>`.
-3. Restart the server. The next `extract-delta` for a bill touching that Act produces a full diff.
+To refresh the corpus later (new consolidations):
+
+1. `node --use-system-ca scripts/ingest-acts.mjs --all --write-registry`
+2. `node scripts/upload-acts-blob.mjs` — needs `BLOB_READ_WRITE_TOKEN` in
+   `.env.local`; it's a *sensitive* env var, so copy it from the dashboard
+   (Storage → the Blob store) — `vercel env pull` returns it empty.
+3. Commit the updated `registry.json` + `blob-manifest.json`, deploy.
 
 The **client‑impact memo works for everything** the moment the key is added — it
-doesn't depend on the registry.
+doesn't depend on the corpus.
 
 ## Cost / safety
 
