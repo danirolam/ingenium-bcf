@@ -4,3 +4,13 @@ node_modules
 dist
 *.log
 .env
+.env.local
+
+# The full-corpus Act ingest (~GB) ships via Vercel Blob, not the function
+# bundle — only the 5 curated demo Acts stay bundled (legacy baseLaws path).
+data/laws/current/federal/*
+!data/laws/current/federal/feeds-act
+!data/laws/current/federal/fertilizers-act
+!data/laws/current/federal/food-and-drugs-act
+!data/laws/current/federal/pest-control-products-act
+!data/laws/current/federal/seeds-act
