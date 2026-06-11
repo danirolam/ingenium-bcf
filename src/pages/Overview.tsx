@@ -4,7 +4,6 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import type { Nav } from "../App";
 import type { Bill, Client, LawVersion, LegislativeMomentum } from "../types";
 import { api } from "../lib/api";
-import { PageHeader } from "../components/PageHeader";
 import { InfoHint } from "../components/InfoHint";
 import { MomentumBadge } from "../components/badges";
 import { WORKFLOW_STEPS } from "../lib/workflow";
@@ -112,14 +111,6 @@ export function Overview({ nav }: { nav: Nav }) {
 
   return (
     <div className="ov">
-      <PageHeader
-        title="Workspace overview"
-        hint={{
-          title: "Workspace overview",
-          body: "The command center. Pipeline status at a glance and one click into any stage of the work — from tracking a bill to briefing a client.",
-        }}
-        sub="Turn federal legislative change into clear, client-specific advice — in four stages."
-      />
       <div className="body ov-body">
         <section className="ov-intro">
           <h1 className="ov-intro-title">

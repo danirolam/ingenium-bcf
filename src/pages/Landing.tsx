@@ -7,12 +7,7 @@ import {
   ChevronDown,
   ChevronRight,
   ArrowRight,
-  Binoculars,
-  GitCompare,
-  ScanSearch,
-  FileSignature,
   Github,
-  type LucideIcon,
 } from "lucide-react";
 
 
@@ -45,36 +40,36 @@ function AnimatedCounter({ value }: { value: string }) {
   return <div ref={ref}>{shown}</div>;
 }
 
+function Mark({ size = "md" }: { size?: "sm" | "md" }) {
+  const box = size === "sm" ? "w-5 h-5 rounded-[6px] text-[9px]" : "w-6 h-6 rounded-[7px] text-[10.5px]";
+  return (
+    <span
+      className={`${box} bg-[#1d1d1f] text-white grid place-items-center font-semibold select-none`}
+      aria-hidden="true"
+    >
+      In
+    </span>
+  );
+}
+
 const NAV = [
   { id: "impact", label: "Impact" },
   { id: "workflow", label: "How it works" },
   { id: "faq", label: "FAQ" },
 ];
 
-const PRACTICES = [
-  "Business & M&A",
-  "Banking & Securities",
-  "Taxation",
-  "Intellectual Property",
-  "Labour & Employment",
-  "Privacy & Technology",
-  "Immigration",
-  "Health & Life Sciences",
-  "Litigation & Regulatory",
-];
-
 const METRICS = [
-  { label: "BILLS TRACKED", value: "5694", desc: "across 16 sessions of Parliament" },
-  { label: "WITH FULL TEXT", value: "160", desc: "current session, clause by clause" },
-  { label: "PRACTICE GROUPS", value: "9", desc: "mapped automatically" },
-  { label: "STAGES TRACED", value: "6", desc: "first reading to royal assent" },
+  { label: "Bills tracked", value: "5694", desc: "across 16 sessions of Parliament" },
+  { label: "With full text", value: "160", desc: "current session, clause by clause" },
+  { label: "Practice groups", value: "9", desc: "mapped automatically" },
+  { label: "Stages traced", value: "6", desc: "first reading to royal assent" },
 ];
 
-const CAPS: { title: string; desc: string; icon: LucideIcon }[] = [
-  { title: "Monitor", desc: "Every federal bill, tracked by practice area and momentum.", icon: Binoculars },
-  { title: "Legal delta", desc: "See exactly which sections of which Acts a bill changes.", icon: GitCompare },
-  { title: "Client scan", desc: "Match each change against a client's operations and contracts.", icon: ScanSearch },
-  { title: "Client brief", desc: "Produce a counsel-approved exposure memo, ready to send.", icon: FileSignature },
+const CAPS: { title: string; desc: string }[] = [
+  { title: "Monitor", desc: "Every federal bill, tracked by practice area and momentum." },
+  { title: "Legal delta", desc: "See exactly which sections of which Acts a bill changes." },
+  { title: "Client scan", desc: "Match each change against a client's operations and contracts." },
+  { title: "Client brief", desc: "Produce a counsel-approved exposure memo, ready to send." },
 ];
 
 const FAQS = [
@@ -153,19 +148,20 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
     <div className="lp relative min-h-screen bg-white text-[#1d1d1f] overflow-x-hidden">
       <header className="fixed top-0 inset-x-0 z-40 bg-white/80 backdrop-blur-xl border-b border-black/[0.08]">
         <div className="max-w-[1080px] mx-auto px-5 md:px-6">
-          <div className="flex items-center h-12">
+          <div className="flex items-center h-12 gap-3">
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="text-[15px] font-semibold tracking-tight hover:opacity-70 transition-opacity"
+              className="flex items-center gap-2.5 text-[15px] font-semibold tracking-tight hover:opacity-70 transition-opacity"
             >
+              <Mark />
               Ingenium
             </button>
-            <nav className="hidden md:flex items-center gap-7 ml-10">
+            <nav className="hidden md:flex items-center gap-7 ml-8">
               {NAV.map((n) => (
                 <button
                   key={n.id}
                   onClick={() => go(n.id)}
-                  className="text-xs text-[#424245] hover:text-black transition-colors"
+                  className="text-[13px] text-[#424245] hover:text-black transition-colors"
                 >
                   {n.label}
                 </button>
@@ -174,9 +170,9 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
             <div className="ml-auto hidden md:flex items-center">
               <button
                 onClick={onLaunch}
-                className="text-xs font-medium text-white bg-[#1d1d1f] hover:bg-black px-3.5 h-7 rounded-full transition-colors inline-flex items-center gap-1.5"
+                className="text-[13px] font-medium text-white bg-[#1d1d1f] hover:bg-black px-4 h-8 rounded-full transition-colors inline-flex items-center gap-1.5"
               >
-                Open workspace <ArrowRight className="w-3 h-3" />
+                Open workspace <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
             <button
@@ -220,36 +216,42 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
         </div>
       )}
 
-      {/* HERO — clean white, huge type */}
+      {/* HERO — Montréal, softened to white at the base */}
       <section
-        className={`relative flex flex-col items-center justify-center px-5 pt-32 md:pt-40 pb-14 transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${
+        className={`hero-section relative min-h-screen flex flex-col items-center justify-center px-5 pt-28 pb-16 transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${
           isLoaded ? "scale-100" : "scale-[1.02]"
         }`}
+        style={{
+          backgroundImage: "url('/montreal-view.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
       >
+        <div className="absolute inset-0 bg-gradient-to-t from-white via-white/85 to-white/30 pointer-events-none" />
         <div ref={heroRef} className="max-w-[1120px] w-full mx-auto relative z-10">
-          <div className="text-center mb-12">
+          <div className="text-center mb-10">
             <div
-              className="text-[13px] md:text-sm font-medium text-[#6e6e73] mb-6 stagger-reveal"
+              className="text-[13px] md:text-sm font-medium text-[#424245] mb-6 stagger-reveal"
               style={{ animationDelay: "0ms" }}
             >
               Legislative intelligence for BCF
             </div>
             <h1 className="font-semibold text-balance leading-[1.04]">
               <span
-                className="block text-5xl md:text-[80px] tracking-[-0.02em] stagger-reveal"
+                className="block text-5xl md:text-[76px] tracking-[-0.02em] stagger-reveal"
                 style={{ animationDelay: "60ms" }}
               >
                 Every federal bill,
               </span>
               <span
-                className="block text-5xl md:text-[80px] tracking-[-0.02em] stagger-reveal"
+                className="block text-5xl md:text-[76px] tracking-[-0.02em] stagger-reveal"
                 style={{ animationDelay: "150ms" }}
               >
                 translated to client-ready advice.
               </span>
             </h1>
             <p
-              className="text-[#6e6e73] text-[17px] md:text-[19px] max-w-[620px] mx-auto mt-7 leading-relaxed stagger-reveal"
+              className="text-[#424245] text-[17px] md:text-[19px] max-w-[620px] mx-auto mt-7 leading-relaxed stagger-reveal"
               style={{ animationDelay: "240ms" }}
             >
               Ingenium follows each bill through Parliament, pinpoints the exact
@@ -285,78 +287,56 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
         </div>
       </section>
 
-      {/* MARQUEE */}
-      <section className="relative py-10 border-y border-black/[0.06] bg-white overflow-hidden">
-        <p className="text-center text-[11px] uppercase tracking-[0.18em] text-[#86868b] mb-7">
-          Source-linked to Parliament &amp; Justice Canada
-        </p>
-        <div className="logo-marquee">
-          <div className="logo-marquee-content">
-            {[...PRACTICES, ...PRACTICES].map((p, i) => (
-              <span
-                key={i}
-                className="px-8 flex-shrink-0 text-xl font-medium tracking-tight text-[#86868b] whitespace-nowrap"
-              >
-                {p}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* METRICS — black band */}
-      <section id="impact" className="relative py-24 md:py-36 px-5 animate-on-scroll bg-black text-white">
+      <section id="impact" className="relative py-24 md:py-32 px-5 animate-on-scroll bg-black text-white">
         <div className="max-w-[1120px] w-full mx-auto">
-          <h2 className="text-[32px] md:text-[52px] font-semibold tracking-[-0.02em] mb-4 text-center text-balance leading-[1.08]">
+          <h2 className="text-[32px] md:text-[48px] font-semibold tracking-[-0.02em] mb-4 text-center text-balance leading-[1.08]">
             The whole federal docket, <span className="grad-blue">in one place.</span>
           </h2>
-          <p className="text-[#86868b] text-[15px] md:text-[17px] mb-16 text-center max-w-[620px] mx-auto leading-relaxed">
+          <p className="text-[#a1a1a6] text-[15px] md:text-[17px] mb-14 text-center max-w-[620px] mx-auto leading-relaxed">
             Tracked from the source, parsed to the clause, and tied to the clients it touches.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-x-16 md:gap-y-12 max-w-[820px] mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-x-16 md:gap-y-10 max-w-[820px] mx-auto">
             {METRICS.map((m, i) => (
-              <div key={i} className="p-6 md:p-9 text-center border-t border-white/10">
-                <div className="text-[10px] md:text-[11px] uppercase tracking-[0.16em] text-[#86868b] mb-4">
-                  {m.label}
-                </div>
-                <div className="text-[56px] md:text-[72px] leading-none font-semibold tracking-[-0.02em]">
+              <div key={i} className="p-6 md:p-8 text-center border-t border-white/10">
+                <div className="text-[13px] font-medium text-[#a1a1a6] mb-3">{m.label}</div>
+                <div className="text-[52px] md:text-[68px] leading-none font-semibold tracking-[-0.02em]">
                   <AnimatedCounter value={m.value} />
                 </div>
-                <div className="text-xs md:text-[13px] text-[#86868b] mt-3">{m.desc}</div>
+                <div className="text-[13px] text-[#a1a1a6] mt-3">{m.desc}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CAPABILITIES — light gray band, white tiles */}
-      <section id="workflow" className="relative py-24 md:py-32 px-5 animate-on-scroll bg-[#f5f5f7]">
-        <div className="max-w-[1120px] w-full mx-auto">
+      {/* HOW IT WORKS — four quiet columns */}
+      <section id="workflow" className="relative py-24 md:py-32 px-5 animate-on-scroll bg-white">
+        <div className="max-w-[1080px] w-full mx-auto">
           <div className="text-center mb-14">
-            <div className="text-[11px] uppercase tracking-[0.16em] text-[#86868b] mb-5">
-              How it works
-            </div>
-            <h2 className="text-[32px] md:text-[48px] font-semibold tracking-[-0.02em] text-balance leading-[1.08]">
+            <h2 className="text-[32px] md:text-[44px] font-semibold tracking-[-0.02em] text-balance leading-[1.08]">
               From a bill to a client memo, in four moves.
             </h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-10">
             {CAPS.map((c, i) => (
-              <div key={i} className="lp-tile bg-white rounded-[18px] p-7">
-                <div className="text-xs font-mono text-[#86868b] mb-6">0{i + 1}</div>
-                <c.icon className="w-7 h-7 text-[#1d1d1f] mb-5" strokeWidth={1.5} />
-                <h3 className="text-lg font-semibold tracking-tight mb-2">{c.title}</h3>
-                <p className="text-sm text-[#6e6e73] leading-relaxed">{c.desc}</p>
+              <div key={i} className="border-t border-[#d2d2d7] pt-6">
+                <div className="text-[13px] font-medium text-[#86868b] mb-3">Step {i + 1}</div>
+                <h3 className="text-[19px] font-semibold tracking-tight mb-2">{c.title}</h3>
+                <p className="text-[14px] text-[#6e6e73] leading-relaxed">{c.desc}</p>
               </div>
             ))}
           </div>
+          <p className="text-center text-[13px] text-[#86868b] mt-14">
+            Source-linked to Parliament &amp; Justice Canada throughout.
+          </p>
         </div>
       </section>
 
       {/* FAQ — hairline accordion */}
-      <section id="faq" className="relative py-24 md:py-32 px-5 animate-on-scroll bg-white">
+      <section id="faq" className="relative py-24 md:py-32 px-5 animate-on-scroll bg-[#f5f5f7]">
         <div className="max-w-[760px] w-full mx-auto">
-          <h2 className="text-[32px] md:text-[48px] font-semibold tracking-[-0.02em] mb-10 text-center text-balance leading-[1.08]">
+          <h2 className="text-[32px] md:text-[44px] font-semibold tracking-[-0.02em] mb-10 text-center text-balance leading-[1.08]">
             Everything counsel asks.
           </h2>
           <div>
@@ -388,21 +368,13 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
         </div>
       </section>
 
-      {/* CTA — black band over Montréal */}
-      <section className="relative py-28 md:py-44 px-5 animate-on-scroll overflow-hidden bg-black text-white">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-35 pointer-events-none"
-          style={{ backgroundImage: "url('/montreal-view.jpg')" }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-black/55 pointer-events-none" />
-        <div className="max-w-[800px] w-full mx-auto text-center relative z-10">
-          <div className="text-[11px] uppercase tracking-[0.16em] text-[#a1a1a6] mb-6">
-            Ready when you are
-          </div>
-          <h2 className="text-[40px] md:text-[64px] font-semibold tracking-[-0.02em] mb-6 text-balance leading-[1.06]">
+      {/* CTA — quiet black band */}
+      <section className="relative py-24 md:py-36 px-5 animate-on-scroll bg-black text-white">
+        <div className="max-w-[800px] w-full mx-auto text-center">
+          <h2 className="text-[36px] md:text-[56px] font-semibold tracking-[-0.02em] mb-6 text-balance leading-[1.06]">
             Open the workspace.
           </h2>
-          <p className="text-[#d2d2d7] text-base md:text-lg mb-10 leading-relaxed max-w-[560px] mx-auto">
+          <p className="text-[#a1a1a6] text-base md:text-lg mb-10 leading-relaxed max-w-[560px] mx-auto">
             Track the docket, read the deltas, brief the clients — start now.
           </p>
           <button
@@ -415,29 +387,32 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
       </section>
 
       {/* FOOTER */}
-      <footer className="relative px-5 bg-[#f5f5f7] py-12">
+      <footer className="relative px-5 bg-white border-t border-black/[0.06] py-12">
         <div className="max-w-[1080px] w-full mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
             <div className="flex flex-col gap-4">
-              <div className="text-[15px] font-semibold tracking-tight">Ingenium</div>
-              <p className="text-xs text-[#6e6e73] leading-relaxed max-w-[280px]">
+              <div className="flex items-center gap-2.5 text-[15px] font-semibold tracking-tight">
+                <Mark size="sm" />
+                Ingenium
+              </div>
+              <p className="text-[13px] text-[#6e6e73] leading-relaxed max-w-[280px]">
                 Turning federal legislative change into clear, client-specific advice. Built for BCF.
               </p>
             </div>
             <div className="flex flex-col gap-3">
-              <div className="text-xs font-semibold text-[#1d1d1f] mb-1">Product</div>
-              <button onClick={() => go("workflow")} className="text-xs text-[#6e6e73] hover:text-[#1d1d1f] transition-colors text-left">How it works</button>
-              <button onClick={() => go("impact")} className="text-xs text-[#6e6e73] hover:text-[#1d1d1f] transition-colors text-left">Coverage</button>
-              <button onClick={onLaunch} className="text-xs text-[#6e6e73] hover:text-[#1d1d1f] transition-colors text-left">Workspace</button>
+              <div className="text-[13px] font-semibold text-[#1d1d1f] mb-1">Product</div>
+              <button onClick={() => go("workflow")} className="text-[13px] text-[#6e6e73] hover:text-[#1d1d1f] transition-colors text-left">How it works</button>
+              <button onClick={() => go("impact")} className="text-[13px] text-[#6e6e73] hover:text-[#1d1d1f] transition-colors text-left">Coverage</button>
+              <button onClick={onLaunch} className="text-[13px] text-[#6e6e73] hover:text-[#1d1d1f] transition-colors text-left">Workspace</button>
             </div>
             <div className="flex flex-col gap-3">
-              <div className="text-xs font-semibold text-[#1d1d1f] mb-1">Sources</div>
-              <a href="https://www.parl.ca/legisinfo/en" target="_blank" rel="noreferrer" className="text-xs text-[#6e6e73] hover:text-[#1d1d1f] transition-colors">LEGISinfo</a>
-              <a href="https://laws-lois.justice.gc.ca" target="_blank" rel="noreferrer" className="text-xs text-[#6e6e73] hover:text-[#1d1d1f] transition-colors">Justice Canada</a>
-              <a href="https://github.com/Lil-Chen05/project-injenium" target="_blank" rel="noreferrer" className="text-xs text-[#6e6e73] hover:text-[#1d1d1f] transition-colors inline-flex items-center gap-2"><Github className="w-3.5 h-3.5" /> GitHub</a>
+              <div className="text-[13px] font-semibold text-[#1d1d1f] mb-1">Sources</div>
+              <a href="https://www.parl.ca/legisinfo/en" target="_blank" rel="noreferrer" className="text-[13px] text-[#6e6e73] hover:text-[#1d1d1f] transition-colors">LEGISinfo</a>
+              <a href="https://laws-lois.justice.gc.ca" target="_blank" rel="noreferrer" className="text-[13px] text-[#6e6e73] hover:text-[#1d1d1f] transition-colors">Justice Canada</a>
+              <a href="https://github.com/Lil-Chen05/project-injenium" target="_blank" rel="noreferrer" className="text-[13px] text-[#6e6e73] hover:text-[#1d1d1f] transition-colors inline-flex items-center gap-2"><Github className="w-3.5 h-3.5" /> GitHub</a>
             </div>
           </div>
-          <div className="border-t border-[#d2d2d7] pt-7 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-[#6e6e73]">
+          <div className="border-t border-black/[0.06] pt-7 flex flex-col md:flex-row justify-between items-center gap-3 text-[13px] text-[#6e6e73]">
             <div>© 2026 Ingenium · Built for BCF</div>
             <div>Montréal</div>
           </div>
@@ -453,15 +428,15 @@ function DashboardMock() {
     <div className="rounded-[18px] overflow-hidden border border-black/[0.08] bg-white shadow-[0_30px_90px_-30px_rgba(0,0,0,0.35)]">
       <div className="flex items-center gap-3 h-12 px-4 bg-[#fafafa] border-b border-black/[0.06]">
         <span className="flex items-center gap-2 font-semibold text-[13px] tracking-tight">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#0071e3]" />
-          BCF
+          <span className="w-[18px] h-[18px] rounded-[5px] bg-[#1d1d1f] text-white grid place-items-center text-[8px] font-semibold">In</span>
+          Ingenium
         </span>
         <div className="hidden sm:flex items-center gap-1.5 ml-2 text-[11.5px] text-[#6e6e73] overflow-hidden">
           {["Monitor", "Legal delta", "Client scan", "Client brief"].map((s, i) => (
             <span key={s} className="flex items-center gap-1.5">
               {i > 0 && <span className="text-[#d2d2d7]">›</span>}
-              <span className={`px-2.5 py-1.5 rounded-full ${i === 0 ? "bg-black/[0.05] text-[#1d1d1f]" : ""}`}>
-                <span className="font-mono text-[10px] text-[#86868b]">0{i + 1}</span> {s}
+              <span className={`px-2.5 py-1.5 rounded-full ${i === 0 ? "bg-black/[0.05] text-[#1d1d1f] font-medium" : ""}`}>
+                {s}
               </span>
             </span>
           ))}
@@ -469,20 +444,19 @@ function DashboardMock() {
         <span className="ml-auto w-[26px] h-[26px] rounded-full bg-[#e8e8ed] border border-black/[0.06] grid place-items-center text-[10px] font-semibold text-[#424245]">U1</span>
       </div>
       <div className="p-4 bg-white">
-        <div className="font-mono text-[10px] tracking-[0.08em] uppercase text-[#86868b] mb-3">
+        <div className="text-[12px] font-medium text-[#86868b] mb-3">
           Federal docket · 5,694 bills · 16 sessions
         </div>
         <div className="grid grid-cols-4 gap-2.5 mb-3">
           {[
-            { n: "01", v: "5,694", l: "Bills tracked", on: true },
-            { n: "02", v: "10", l: "Legal deltas", on: false },
-            { n: "03", v: "3", l: "Clients", on: false },
-            { n: "04", v: "5", l: "Ready", on: false },
+            { v: "5,694", l: "Bills tracked", on: true },
+            { v: "10", l: "Legal deltas", on: false },
+            { v: "3", l: "Clients", on: false },
+            { v: "5", l: "Ready", on: false },
           ].map((c) => (
-            <div key={c.n} className={`rounded-[12px] border p-3 ${c.on ? "border-[#0071e3]/50 bg-[#0071e3]/[0.04]" : "border-[#e8e8ed] bg-[#fafafa]"}`}>
-              <div className="font-mono text-[10px] text-[#86868b]">{c.n}</div>
-              <div className="text-[22px] font-semibold tracking-tight text-[#1d1d1f] mt-1.5">{c.v}</div>
-              <div className="text-[10.5px] text-[#6e6e73]">{c.l}</div>
+            <div key={c.l} className={`rounded-[12px] border p-3 ${c.on ? "border-[#1d1d1f]/30 bg-[#fafafa]" : "border-[#e8e8ed] bg-[#fafafa]"}`}>
+              <div className="text-[22px] font-semibold tracking-tight text-[#1d1d1f]">{c.v}</div>
+              <div className="text-[11px] text-[#6e6e73] mt-0.5">{c.l}</div>
             </div>
           ))}
         </div>
@@ -494,7 +468,7 @@ function DashboardMock() {
             { bill: "C-27", title: "Digital Charter Implementation Act", pill: "In committee", tone: "text-[#a05a00] border-[#a05a00]/30 bg-[#a05a00]/[0.08]" },
           ].map((r, i) => (
             <div key={r.bill} className={`grid grid-cols-[52px_1fr_auto] gap-3 items-center px-3 py-2.5 text-[11.5px] ${i > 0 ? "border-t border-[#f0f0f2]" : ""}`}>
-              <span className="font-mono font-semibold text-[#0066cc]">{r.bill}</span>
+              <span className="font-semibold text-[#0066cc]">{r.bill}</span>
               <span className="text-[#424245] truncate">{r.title}</span>
               <span className={`text-[10px] px-2 py-0.5 rounded-full border ${r.tone}`}>{r.pill}</span>
             </div>

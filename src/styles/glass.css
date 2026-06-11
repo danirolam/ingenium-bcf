@@ -108,14 +108,14 @@
   color: #ffffff;
 }
 
-/* Primary action — the one blue */
+/* Primary action — ink-solid, like the rest of the system */
 .btn.primary {
-  background: var(--accent);
+  background: var(--ink);
   border-color: transparent;
   color: #fff;
 }
 .btn.primary:hover {
-  background: var(--accent-2);
+  background: #000000;
 }
 
 /* Gentle elevation on the main cards */

@@ -48,10 +48,12 @@ export function WorkflowNav({
   return (
     <header className="shell-bar">
       <div className="shell-crumbs">
-        <Tooltip title="BCF · Ingenium" body="Return to the overview." placement="bottom">
+        <Tooltip title="Ingenium" body="Return to the overview." placement="bottom">
           <button type="button" className="shell-brand" onClick={onExit}>
-            <span className="shell-mark" aria-hidden="true" />
-            <span className="shell-brand-name">BCF</span>
+            <span className="shell-mark" aria-hidden="true">
+              In
+            </span>
+            <span className="shell-brand-name">Ingenium</span>
           </button>
         </Tooltip>
         <FontAwesomeIcon

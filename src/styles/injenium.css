@@ -63,8 +63,10 @@
   --shadow-md:
     0 2px 6px rgba(0, 0, 0, 0.05), 0 24px 60px -30px rgba(0, 0, 0, 0.18);
 
-  /* Inter for UI text (SF-adjacent, tight tracking at display sizes);
-     a real monospace stack for diff / clause / code. */
+  /* Inter everywhere (SF-adjacent, tight tracking at display sizes).
+     --mono intentionally aliases the sans stack: labels, numbers, and
+     citations read as product UI, not terminal output — numerals stay
+     aligned via font-variant-numeric where it matters. */
   --sans:
     "Inter", -apple-system, "SF Pro Text", "Segoe UI", system-ui,
     "Helvetica Neue", "Arial", sans-serif;
@@ -72,8 +74,8 @@
     "Inter", -apple-system, "SF Pro Text", "Segoe UI", system-ui,
     "Helvetica Neue", "Arial", sans-serif;
   --mono:
-    ui-monospace, "SFMono-Regular", "SF Mono", "Menlo", "Consolas",
-    "Liberation Mono", monospace;
+    "Inter", -apple-system, "SF Pro Text", "Segoe UI", system-ui,
+    "Helvetica Neue", "Arial", sans-serif;
 
   /* shadcn HSL tokens — light variants for any ui/* components reading these */
   --background: 240 24% 96%;
@@ -365,11 +367,10 @@ a {
 
 /* Page header — actual definition is below near the body block */
 .ph-crumbs {
-  font-family: var(--mono);
-  font-size: 11px;
+  font-family: var(--sans);
+  font-size: 12.5px;
   letter-spacing: 0;
   color: var(--ink-4);
-  text-transform: uppercase;
   margin-bottom: 10px;
 }
 .ph-crumbs span + span::before {
@@ -438,12 +439,12 @@ a {
   border-color: var(--ink-4);
 }
 .btn.primary {
-  background: var(--accent);
+  background: var(--ink);
   border-color: transparent;
   color: #ffffff;
 }
 .btn.primary:hover {
-  background: var(--accent-2);
+  background: #000000;
   border-color: transparent;
 }
 .btn.primary:disabled {
@@ -1034,11 +1035,11 @@ table.tbl tbody td:last-child {
   border-left: 1px solid var(--border);
 }
 .diff-version .vlabel {
-  font-size: 10.5px;
+  font-size: 12px;
+  font-weight: 500;
   letter-spacing: 0;
-  text-transform: uppercase;
   color: var(--ink-4);
-  font-family: var(--mono);
+  font-family: var(--sans);
 }
 .diff-version select {
   flex: 1;
@@ -1546,9 +1547,9 @@ table.tbl tbody td:last-child {
   margin-top: 6px;
 }
 .rec-meta .k {
-  font-size: 10.5px;
+  font-size: 11.5px;
+  font-weight: 500;
   letter-spacing: 0;
-  text-transform: uppercase;
   color: var(--ink-4);
   display: block;
   margin-bottom: 2px;
@@ -1586,11 +1587,11 @@ table.tbl tbody td:last-child {
   font-variant-numeric: tabular-nums;
 }
 .impact-totals .k {
-  font-size: 10.5px;
+  font-size: 12px;
+  font-weight: 500;
   letter-spacing: 0;
-  text-transform: uppercase;
   color: var(--ink-4);
-  font-family: var(--mono);
+  font-family: var(--sans);
 }
 
 .impact-bucket {

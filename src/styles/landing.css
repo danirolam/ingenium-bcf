@@ -20,6 +20,13 @@
   color: #1d1d1f;
 }
 
+/* Hero background. `fixed` forces a full-viewport repaint on every scroll frame
+   (badly janky on mobile and trackpads), so it scrolls normally — the subtle
+   JS parallax gives the depth without the cost. */
+.hero-section {
+  background-attachment: scroll;
+}
+
 /* Staggered reveal (hero lines) — transform/blur ONLY, no opacity, so content
    is never left invisible if the animation is paused or disabled. */
 @keyframes blur-reveal {
@@ -51,33 +58,6 @@
   animation: slide-up-from-bottom 0.9s cubic-bezier(0.83, 0, 0.17, 1) both;
 }
 
-/* Logo / practice marquee */
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-.logo-marquee {
-  display: flex;
-  overflow: hidden;
-  user-select: none;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-}
-.logo-marquee-content {
-  display: flex;
-  animation: marquee 38s linear infinite;
-  will-change: transform;
-}
-@media (prefers-reduced-motion: reduce) {
-  .logo-marquee-content {
-    animation-play-state: paused;
-  }
-}
-
 /* Scroll-in */
 .animate-on-scroll {
   opacity: 0;
@@ -101,16 +81,6 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* Workflow tiles — soft lift on hover, no borders */
-.lp-tile {
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03), 0 10px 30px -24px rgba(0, 0, 0, 0.10);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
-}
-.lp-tile:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04), 0 24px 50px -24px rgba(0, 0, 0, 0.16);
-}
-
 /* If motion is reduced, everything is shown immediately — never hidden. */
 @media (prefers-reduced-motion: reduce) {
   .lp .stagger-reveal,
@@ -120,8 +90,5 @@
     filter: none !important;
     animation: none !important;
     transition: none !important;
-  }
-  .lp-tile:hover {
-    transform: none;
   }
 }
