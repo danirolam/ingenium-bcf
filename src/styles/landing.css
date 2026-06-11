@@ -1,45 +1,23 @@
-/* Landing — faithful port of the terra reference (its glass + animation classes,
-   Geist type, photo hero). Markup uses Tailwind utilities like the original;
-   this file carries the custom classes terra defined in its globals.css plus a
-   CSS reimplementation of its framer-motion character reveal. */
+/* Landing — light editorial surface with full-bleed black bands.
+   Markup carries Tailwind utilities; this file holds the custom classes:
+   type stack, reveal animations, marquee, gradient accent, tile hover. */
 
 .lp {
-  font-family: "Geist", ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--sans);
   background: #ffffff;
-  color: #1f2328;
+  color: #1d1d1f;
   min-height: 100vh;
   overflow-x: hidden;
+  font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 .lp [id] {
-  scroll-margin-top: 96px;
+  scroll-margin-top: 64px;
 }
 .lp ::selection {
-  background: rgba(124, 58, 237, 0.18);
-  color: #1f2328;
-}
-
-/* Glass surfaces (from terra) — light frosted */
-.glass-button {
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 4px 16px rgba(66, 74, 83, 0.16);
-  color: #1f2328;
-  font-weight: 500;
-}
-.glass-pill {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(31, 35, 40, 0.1);
-}
-
-/* Hero background. `fixed` forces a full-viewport repaint on every scroll frame
-   (badly janky on mobile and trackpads), so we keep it scrolling normally — the
-   subtle JS parallax gives the depth without the cost. */
-.hero-section {
-  background-attachment: scroll;
+  background: rgba(0, 113, 227, 0.18);
+  color: #1d1d1f;
 }
 
 /* Staggered reveal (hero lines) — transform/blur ONLY, no opacity, so content
@@ -112,15 +90,25 @@
   transform: translateY(0);
 }
 
-/* Gradient accent text (terra). `color` is the visible fallback; the clipped
-   gradient + transparent fill only take effect where supported, so the text is
-   never invisible. */
-.terra-grad {
-  background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
+/* Gradient accent on the black band. `color` is the visible fallback; the
+   clipped gradient + transparent fill only take effect where supported, so
+   the text is never invisible. */
+.grad-blue {
+  background: linear-gradient(100deg, #2997ff 0%, #5ac8fa 60%, #a0e9ff 100%);
   -webkit-background-clip: text;
   background-clip: text;
-  color: #7c3aed;
+  color: #2997ff;
   -webkit-text-fill-color: transparent;
+}
+
+/* Workflow tiles — soft lift on hover, no borders */
+.lp-tile {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03), 0 10px 30px -24px rgba(0, 0, 0, 0.10);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+.lp-tile:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04), 0 24px 50px -24px rgba(0, 0, 0, 0.16);
 }
 
 /* If motion is reduced, everything is shown immediately — never hidden. */
@@ -132,5 +120,8 @@
     filter: none !important;
     animation: none !important;
     transition: none !important;
+  }
+  .lp-tile:hover {
+    transform: none;
   }
 }
