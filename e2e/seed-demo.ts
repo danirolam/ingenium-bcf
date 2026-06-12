@@ -12,9 +12,10 @@
  *     exposure: import/sale/licensing) and Lakehead Regional Health Network
  *     (medium exposure: clinical governance/reporting).
  *
- * Unlike the e2e fixtures (seed.ts), these records carry __demoSeed (not
- * __e2eSeed), so the Playwright teardown leaves them alone. The two runtime
- * files are gitignored — re-run this script after any data reset.
+ * Unlike the e2e fixtures (seed.ts), the delta and approval records carry
+ * __demoSeed (not __e2eSeed) and the clients survive by id/name rules, so the
+ * Playwright teardown leaves all of it alone. The two runtime files are
+ * gitignored — re-run this script after any data reset.
  */
 import { promises as fs } from "node:fs";
 import path from "node:path";
@@ -30,16 +31,25 @@ const BILL_ID = "bill-13953578"; // C-265 (45-1) — An Act to amend the Food an
 const SLUG = "food-and-drugs-act";
 
 // ── helpers ──
+// Missing file = empty store; anything else (corrupt JSON, permissions) must
+// THROW, not silently become [] — main() rewrites these files, and swallowing
+// a read error here would replace real stage-1/2 cached output with only the
+// demo record.
 async function readArray<T>(file: string): Promise<T[]> {
   try {
     const parsed = JSON.parse(await fs.readFile(file, "utf-8"));
     return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
+  } catch (err: unknown) {
+    if ((err as NodeJS.ErrnoException)?.code === "ENOENT") return [];
+    throw err;
   }
 }
+// Atomic write (temp + rename), mirroring jsonStore — a crash mid-write must
+// never leave a half-written store behind.
 async function writeArray(file: string, items: unknown[]): Promise<void> {
-  await fs.writeFile(file, JSON.stringify(items, null, 2), "utf-8");
+  const tmp = `${file}.${process.pid}.demo.tmp`;
+  await fs.writeFile(tmp, JSON.stringify(items, null, 2), "utf-8");
+  await fs.rename(tmp, file);
 }
 
 // ── the approved delta (mirrors stage-2 output; statutory text from C-265) ──
@@ -70,7 +80,7 @@ const ROWS = [
       "fda-21.9701",
       "21.9701",
       "Definitions",
-      "In this Part, establishment licence means a licence issued under the Food and Drug Regulations authorizing a person to conduct a licensable activity; practitioner has the meaning assigned by the regulations; and therapeutic product means a drug or device, or any combination of drugs and devices, other than a natural health product.",
+      "In this Part, establishment licence means a licence issued under section C.01A.008 of the Food and Drug Regulations or under section 46 of the Medical Devices Regulations. List of Therapeutic Products Pre-approved for Special Access means the list established under subsection 21.9702(1). non-marketed, in respect of a therapeutic product, means that it is not the subject of a therapeutic product authorization or it is no longer marketed in Canada. practitioner means a person who (a) is entitled under the laws of a province to treat patients with a therapeutic product; and (b) is practising their profession in that province. site licence means a licence issued under section 29 of the Natural Health Products Regulations.",
     ),
   },
   {
@@ -101,7 +111,7 @@ const ROWS = [
       "fda-21.9707",
       "21.9707",
       "Sale by manufacturer",
-      "(1) A manufacturer may sell a therapeutic product on the List of Therapeutic Products Pre-approved for Special Access (a) in accordance with a request made under subsection 21.9706(1); or (b) in anticipation of such a request, subject to any limitations or conditions specified by the Minister. (2) A sale made in accordance with subsection (1) is exempt from the provisions of this Act and any regulations made under it other than the provisions of this Part.",
+      "(1) A manufacturer may sell a therapeutic product on the List of Therapeutic Products Pre-approved for Special Access (a) in accordance with a request made under subsection 21.9706(1); or (b) in anticipation of such a request, subject to any limitations or conditions specified by the Minister. (2) A sale made in accordance with subsection (1) is exempt from the provisions of this Act and any regulations made under it other than the provisions of this Part and any regulations made for the purposes of this Part.",
     ),
   },
   {
@@ -122,7 +132,7 @@ const ROWS = [
       "fda-21.971",
       "21.971",
       "Notice to Minister by manufacturer — sale",
-      "(1) A manufacturer who sells a therapeutic product under subsection 21.9707(1) shall submit notice of the sale to the Minister, in the manner and form specified by the Minister, within 90 days after the day of the sale. (2) The notice must include (a) the name of the practitioner who requested the therapeutic product; (b) the name and the civic address of the person to whom the therapeutic product was shipped; (c) the name of the therapeutic product and its intended use; and (d) the quantity provided.",
+      "(1) A manufacturer who sells a therapeutic product under subsection 21.9707(1) shall submit notice of the sale to the Minister, in the manner and form specified by the Minister, within 90 days after the day of the sale. (2) The notice must include (a) the name of the practitioner who requested the therapeutic product; (b) the name and the civic address of the person to whom the therapeutic product was shipped; (c) the name of the therapeutic product and its intended use; and (d) the quantity of the therapeutic product provided.",
     ),
   },
   {
@@ -149,7 +159,7 @@ const ROWS = [
       "fda-30-1",
       "30(1)",
       "Regulations",
-      "The Governor in Council may make regulations for carrying the purposes and provisions of this Act into effect, and, in particular, but without restricting the generality of the foregoing, may make regulations … (j) exempting, with or without conditions, any food, drug, cosmetic, device, person or activity from all or any of the provisions of this Act or the regulations; (j.01) respecting the establishment, maintenance and publication of the List of Therapeutic Products Pre-approved for Special Access referred to in Part I.1 and any additional criteria for addition or removal of a therapeutic product to or from the list; (j.02) respecting the creation and maintenance of an electronic information exchange to facilitate requests and notifications required under Part I.1;",
+      "The Governor in Council may make regulations for carrying the purposes and provisions of this Act into effect, and, in particular, but without restricting the generality of the foregoing, may make regulations … (j) exempting, with or without conditions, any food, drug, cosmetic, device, person or activity from all or any of the provisions of this Act or the regulations; (j.01) respecting the establishment, maintenance and publication of the List of Therapeutic Products Pre-approved for Special Access referred to in Part I.1 and any additional criteria for addition or removal of a therapeutic product to or from the list; (j.02) respecting the creation and maintenance of an electronic information exchange to facilitate requests and notifications required under Part I.1; … (o.1) respecting a process to request the Minister to reconsider the refusal to issue a letter of authorization under subsection C.08.010(1) of the Food and Drug Regulations;",
     ),
   },
   // 9–10 — clause 4 (Emergency Access to New Drugs)
@@ -239,7 +249,7 @@ const OPERATIONS = [
     "add",
     "21.96",
     "Notices, reports and anti-circumvention",
-    "Part I.1 (continued): 90-day notices to the Minister for every sale and import (naming practitioner, ship-to address, product, use and quantity); 90-day outcome reports by requesting practitioners; and Ministerial power to demand a manufacturer's reasons for not seeking full regulatory approval, with removal from the list as the sanction.",
+    "Part I.1 (continued): 90-day notices to the Minister for every sale (naming the practitioner, ship-to address, product, intended use and quantity) and for every import (with the information the Minister specifies); 90-day reports by requesting practitioners; and Ministerial power to demand a manufacturer's reasons for not seeking full regulatory approval, with removal from the list as the sanction.",
     ROWS[6].after!.text,
     [6, 7],
   ),
@@ -249,7 +259,7 @@ const OPERATIONS = [
     "amend",
     "30(1)",
     "Regulations",
-    "Subsection 30(1) of the Act is amended by adding, after paragraph (j), (j.01) respecting the establishment, maintenance and publication of the List of Therapeutic Products Pre-approved for Special Access and criteria for addition or removal, and (j.02) respecting an electronic information exchange for the requests and notifications required under Part I.1.",
+    "Subsection 30(1) of the Act is amended by adding, after paragraph (j), (j.01) respecting the establishment, maintenance and publication of the List of Therapeutic Products Pre-approved for Special Access and criteria for addition or removal, and (j.02) respecting an electronic information exchange for the requests and notifications required under Part I.1; and by adding, after paragraph (o), (o.1) respecting a process to request reconsideration of a refusal to issue a letter of authorization under subsection C.08.010(1) of the Food and Drug Regulations.",
     "(j.01) respecting the establishment, maintenance and publication of the List of Therapeutic Products Pre-approved for Special Access referred to in Part I.1 and any additional criteria for addition or removal of a therapeutic product to or from the list; (j.02) respecting the creation and maintenance of an electronic information exchange to facilitate requests and notifications required under Part I.1;",
     [8],
   ),
@@ -259,7 +269,7 @@ const OPERATIONS = [
     "add",
     "30",
     "Emergency Access to New Drugs",
-    "The Act is amended by adding, after section 30, sections 30.001 to 30.008 (Emergency Access to New Drugs): letters of authorization with published issuance guidelines; a presumption in favour of the practitioner's clinical judgment where information is insufficient; written reasons for any refusal; a 24/7 departmental emergency line; emergency administration without prior authorization (with notice to the Minister); and an annual operational review.",
+    "The Act is amended by adding, after section 30, sections 30.001 to 30.008 (Emergency Access to New Drugs): letters of authorization with published issuance guidelines; a presumption in favour of the practitioner's clinical judgment where information is insufficient; written reasons for any refusal; a departmental emergency line the Minister must make every effort to keep available at all times; emergency administration without prior authorization (with notice to the Minister); and an annual operational review.",
     ROWS[9].after!.text,
     [9, 10],
   ),
@@ -286,6 +296,7 @@ const DELTA_RECORD = {
 
 const APPROVAL_RECORD = {
   id: BILL_ID,
+  __demoSeed: true,
   keys: OPERATIONS.map((o) => o.key),
 };
 
@@ -295,7 +306,7 @@ const CLIENTS = [
     id: "client-aurelia-thx",
     name: "Aurelia Therapeutics Inc.",
     industry: "Specialty pharmaceutical import & distribution",
-    jurisdictions: ["Toronto ON", "Canada"],
+    jurisdictions: ["Toronto, ON", "Canada"],
     description:
       "Importer-distributor of non-marketed specialty therapeutics (oncology, rare disease) supplied to roughly forty hospital pharmacy accounts across Canada, exclusively through Health Canada's Special Access Programme (SAP). Holds a Health Canada establishment licence covering import, storage and distribution of drugs in dosage form.",
     termsAndConditions:
@@ -311,7 +322,7 @@ const CLIENTS = [
     id: "client-lakehead-health",
     name: "Lakehead Regional Health Network",
     industry: "Hospital network / acute & cancer care",
-    jurisdictions: ["Thunder Bay ON", "Canada"],
+    jurisdictions: ["Thunder Bay, ON", "Canada"],
     description:
       "Three-hospital regional network serving Northwestern Ontario, including a regional cancer centre and the area's only Level III emergency department. Central pharmacy manages all drug procurement; a Pharmacy & Therapeutics (P&T) committee governs the formulary and all non-formulary or emergency drug use.",
     termsAndConditions:

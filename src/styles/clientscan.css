@@ -39,32 +39,6 @@
   justify-content: center;
 }
 
-/* ── Browse-all toggle ────────────────────────────────────────────────── */
-.cs-browse-toggle {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 14px 16px;
-  color: var(--ink);
-  font: 600 13px/1.4 var(--sans);
-  text-align: left;
-}
-.cs-browse-toggle:hover {
-  background: var(--panel-2);
-}
-.cs-browse-toggle .cs-caret {
-  color: var(--ink-4);
-  font-size: 11px;
-  transition: transform 0.15s ease;
-}
-.cs-browse-toggle.open .cs-caret {
-  transform: rotate(90deg);
-}
-
 /* ── Approved-changes summary ─────────────────────────────────────────── */
 .cs-act {
   border: 1px solid var(--border-3);

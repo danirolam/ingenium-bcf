@@ -33,6 +33,17 @@ npx playwright test --list                # discover every spec without running
 npm run seed:setup && npm run seed:teardown   # drive the seeder by hand
 ```
 
+## The DEMO fixture (separate from the test fixture)
+
+`npm run seed:demo` (`seed-demo.ts`) makes the **real Bill C-265** (45-1,
+amending the Food and Drugs Act) scan-ready — six approved operations anchored
+to real provisions of the ingested Act — and upserts the two demo clients it
+affects (Aurelia Therapeutics, Lakehead Regional Health Network). Its delta and
+approval records carry `__demoSeed` (not `__e2eSeed`) and the clients are
+id-protected, so the Playwright teardown leaves all of it intact; the suite and
+the demo fixture coexist. The two runtime stores are gitignored — re-run
+`seed:demo` after any data reset. It is idempotent (replaces its own records).
+
 ## What gets seeded (and cleaned)
 
 `seed.ts` runs as `globalSetup`/`globalTeardown`:
