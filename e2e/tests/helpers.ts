@@ -1,5 +1,5 @@
 /** Shared helpers for the spec files (not a spec — Playwright only collects *.spec.ts). */
-import { expect, type Page } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
 import { readSeedState, type SeedState } from "../seed";
 
 /** The Express API, hit directly (bypasses the Vite proxy). */
@@ -92,4 +92,28 @@ export async function expectAllRowsScored(
  */
 export function visibleRationales(page: Page) {
   return page.locator('[data-testid="scan-rationale"]:visible');
+}
+
+/**
+ * The single-action-slot law: a SCORED row renders EXACTLY ONE of
+ * `analyze-client` | `view-brief` (`scan-retry` is reserved for failed rows,
+ * so a scored row has zero). Waits for the slot to render, then returns which
+ * action it holds.
+ */
+export async function expectSingleActionSlot(
+  row: Locator,
+): Promise<"analyze-client" | "view-brief"> {
+  // Either action doubles as the render gate (auto-waits). If BOTH were
+  // present, the strict-mode violation fails the test — as it should.
+  await expect(
+    row.getByTestId("analyze-client").or(row.getByTestId("view-brief")),
+  ).toBeVisible();
+  await expect(row.getByTestId("scan-retry")).toHaveCount(0);
+  const analyze = await row.getByTestId("analyze-client").count();
+  const view = await row.getByTestId("view-brief").count();
+  expect(
+    analyze + view,
+    `a scored row must render exactly one slot action, got analyze-client=${analyze} view-brief=${view}`,
+  ).toBe(1);
+  return analyze === 1 ? "analyze-client" : "view-brief";
 }

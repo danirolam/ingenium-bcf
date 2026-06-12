@@ -8,6 +8,11 @@
  * GET /api/client-impact/scans — band-only views, the numeric score must
  * NEVER appear in any response, deterministic keyless fallback, scan cascade
  * on client delete.
+ * The "brief library" block is the acceptance test for the stage-4 picker
+ * backend (commit a1f3f13): GET /api/client-impact/briefs — bills sorted
+ * latestAt desc, latest-per-pair client entries with the band joined from the
+ * scans store (never the numeric score) — and the optional transient
+ * `guidance` string on POST /analyze.
  */
 import { test, expect } from "@playwright/test";
 import { SEED_ACT, SEED_APPROVED_KEYS } from "../seed";
@@ -405,6 +410,146 @@ test.describe("analyze", () => {
     expect(latest.id).toBe(analysis.id);
     expect(latest.clientId).toBe("client-corebloom");
     expect(latest.billId).toBe(st.billId);
+  });
+});
+
+/**
+ * The brief library — GET /api/client-impact/briefs, the stage-4 picker feed.
+ *
+ * ORDERING: this block is declared AFTER the scorer and analyze blocks — by
+ * the time it runs (workers=1, declaration order) the suite has both SCANNED
+ * (client-corebloom, bill1) — the scorer block — and ANALYZED that same pair
+ * (the scorer transition test and the analyze block), so the index must list
+ * the pair WITH its band joined from the scans store. It is declared BEFORE
+ * the CRUD block so that block's temp-client analysis and orphan handling
+ * can't interfere.
+ */
+test.describe("brief library", () => {
+  test("GET /briefs lists the seeded bill with the corebloom entry — band joined, no score key anywhere", async ({
+    request,
+  }) => {
+    const st = await seedState();
+    const res = await request.get(`${API}/api/client-impact/briefs`);
+    expect(res.status()).toBe(200);
+    const list = await res.json();
+    expect(Array.isArray(list)).toBe(true);
+
+    // Same law as every scorer payload: the numeric score is backend-only —
+    // deep-scan the WHOLE index.
+    expectNoScoreAnywhere(list);
+
+    const mine = list.find((b: any) => b.billId === st.billId);
+    expect(mine, `seeded bill ${st.billId} missing from /briefs`).toBeTruthy();
+    expect(mine).toMatchObject({
+      billId: st.billId,
+      billNumber: st.billNumber,
+      title: st.title,
+      status: st.status,
+    });
+    expect(mine.briefCount).toBeGreaterThanOrEqual(1);
+    expect(Array.isArray(mine.clients)).toBe(true);
+    expect(mine.clients, "briefCount must equal the clients listed").toHaveLength(
+      mine.briefCount,
+    );
+    expect(typeof mine.latestAt).toBe("string");
+    expect(Number.isNaN(Date.parse(mine.latestAt)), "latestAt must parse").toBe(false);
+
+    const entry = mine.clients.find((c: any) => c.clientId === "client-corebloom");
+    expect(entry, "the analyzed corebloom pair must be listed").toBeTruthy();
+    expect(typeof entry.name).toBe("string");
+    expect(entry.name.length).toBeGreaterThan(0);
+    expect(typeof entry.createdAt).toBe("string");
+    expect(Number.isNaN(Date.parse(entry.createdAt)), "createdAt must parse").toBe(false);
+
+    // analysisId must point at the LATEST brief for the pair — exactly what
+    // by-pair serves, so the picker and the deep link land on the same brief.
+    const byPair = await request.get(
+      `${API}/api/client-impact/by-pair?clientId=client-corebloom&billId=${st.billId}`,
+    );
+    expect(byPair.status()).toBe(200);
+    expect(entry.analysisId).toBe((await byPair.json()).id);
+
+    // The scorer block scanned this exact pair earlier in this file, so the
+    // band must be present (band iff a scan exists) — and band-only.
+    expect(
+      SCAN_BAND_VALUES as readonly string[],
+      "scanned pair ⇒ the entry must carry a valid band",
+    ).toContain(entry.band);
+  });
+
+  test("bills sort by latestAt desc — a fresh brief on another bill takes the top", async ({
+    request,
+  }) => {
+    test.setTimeout(120_000);
+    const st = await seedState();
+    // bill2 is seeded with a delta but NO approvals: /analyze still answers —
+    // the brief path doesn't require approvals, it falls back keylessly. That
+    // gives the index a SECOND bill whose latest brief is strictly newer than
+    // bill1's, making the sort observable. (Teardown cascades bill2's impacts.)
+    const analyzed = await request.post(`${API}/api/client-impact/analyze`, {
+      data: { clientId: "client-corebloom", billId: st.billId2 },
+      timeout: 90_000,
+    });
+    expect(analyzed.status()).toBe(200);
+
+    const res = await request.get(`${API}/api/client-impact/briefs`);
+    expect(res.status()).toBe(200);
+    const list = await res.json();
+    expectNoScoreAnywhere(list);
+
+    const i1 = list.findIndex((b: any) => b.billId === st.billId);
+    const i2 = list.findIndex((b: any) => b.billId === st.billId2);
+    expect(i1, "bill1 must be in the index").toBeGreaterThanOrEqual(0);
+    expect(i2, "bill2 must be in the index").toBeGreaterThanOrEqual(0);
+    expect(i2, "bill2's brief is newer — it must rank above bill1").toBeLessThan(i1);
+
+    // The whole list must be non-increasing on latestAt (ISO strings compare
+    // lexicographically).
+    for (let i = 1; i < list.length; i++) {
+      expect(
+        list[i - 1].latestAt.localeCompare(list[i].latestAt),
+        `briefs[${i - 1}].latestAt (${list[i - 1].latestAt}) must be ≥ briefs[${i}].latestAt (${list[i].latestAt})`,
+      ).toBeGreaterThanOrEqual(0);
+    }
+
+    // The scorer block scanned corebloom×bill2 too (the zero-approvals test),
+    // so bill2's entry must carry that deterministic 'low' band.
+    const e2 = list[i2].clients.find((c: any) => c.clientId === "client-corebloom");
+    expect(e2, "corebloom must be listed under bill2").toBeTruthy();
+    expect(e2.band, "band must join from the pair's stored scan").toBe("low");
+  });
+
+  test("analyze accepts counsel guidance — keyless still 200, guidance never persisted", async ({
+    request,
+  }) => {
+    test.setTimeout(120_000);
+    const st = await seedState();
+    const res = await request.post(`${API}/api/client-impact/analyze`, {
+      data: {
+        clientId: "client-corebloom",
+        billId: st.billId,
+        guidance: "focus on labeling",
+      },
+      timeout: 90_000,
+    });
+    expect(res.status()).toBe(200);
+    const { analysis } = await res.json();
+    expect(analysis.clientId).toBe("client-corebloom");
+    expect(analysis.billId).toBe(st.billId);
+    expect(analysis.humanReviewRequired, "keyless fallback must flag review").toBe(true);
+    // Guidance is a transient generation input, never an analysis field.
+    expect(analysis).not.toHaveProperty("guidance");
+
+    // The index is latest-wins per pair: the corebloom entry now points at the
+    // guidance-driven regen.
+    const briefs = await request.get(`${API}/api/client-impact/briefs`);
+    expect(briefs.status()).toBe(200);
+    const after = await briefs.json();
+    expectNoScoreAnywhere(after);
+    const entry = after
+      .find((b: any) => b.billId === st.billId)
+      ?.clients.find((c: any) => c.clientId === "client-corebloom");
+    expect(entry?.analysisId, "the index must follow the newest brief").toBe(analysis.id);
   });
 });
 

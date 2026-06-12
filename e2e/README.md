@@ -93,10 +93,11 @@ exists for the analyze call and is cleaned afterwards.
 | Spec | Verifies | Passes today? | Unblocked by |
 | --- | --- | --- | --- |
 | `smoke.spec.ts` | server boot, env blanking, `/` renders | **yes** | — |
-| `api.spec.ts` | scan-ready list/detail/404, scorer (`/scan` + `/scans`: bands, determinism, no-score-leak, cascade), analyze 400/404, keyless analyze + by-pair, client CRUD + cascade | **yes** (scorer backend landed) | — |
+| `api.spec.ts` | scan-ready list/detail/404, scorer (`/scan` + `/scans`: bands, determinism, no-score-leak, cascade), analyze 400/404, keyless analyze + by-pair, brief library (`/briefs` index: latestAt-desc sort, band join, no-score-leak; `guidance` on `/analyze`), client CRUD + cascade | **yes** (brief-library backend landed, a1f3f13) | — |
 | `core-unit.spec.ts` | `clientScanCore.ts` pure functions incl. `bandFromScore`/`normalizeScore`/`heuristicScore` laws (a missing/broken module FAILS the suite) | **yes** (scorer backend landed) | — |
 | `scan-ready.spec.ts` | ready list / approved summary UI | **yes** | — |
-| `scan-flow.spec.ts` | two-phase flow: band scoreboard → rationale accordion → per-row analyze → brief → persistence | **yes** (scoreboard frontend landed) | — |
+| `brief-picker.spec.ts` | stage-4 picker (`/brief`): bill → client drill-down to the brief page, `brief-back`, regen-with-guidance panel | not yet | brief-library frontend (in flight) |
+| `scan-flow.spec.ts` | two-phase flow: band scoreboard → rationale accordion → single-action-slot analyze (slot swaps to view-brief) → brief → persistence | not yet | single-slot frontend (in flight) |
 | `empty-states.spec.ts` | run-scan disabled guards | **yes** (Phase 2C frontend landed) | — |
 | `client-management.spec.ts` | client modal CRUD UI | **yes** (Phase 2C frontend landed) | — |
 | `live.spec.ts` | real AI analysis (opt-in `@live`) | opt-in | real keys + your running server |
@@ -111,8 +112,11 @@ Stage-3 selectors are the agreed `data-testid` contract (`ready-bill-list`,
 `confirm-delete-client`, `run-scan`, `scan-row[data-client-id]`,
 `scan-status` with exact text `queued|scoring|scored|failed`, `scan-band[data-band]`,
 `scan-rationale-toggle`, `scan-rationale` (accordion — at most ONE visible at a
-time), `analyze-client` (per row, soft-gated emphasis at high/critical),
-`scan-retry` (failed rows only), `view-brief` (when a brief exists)).
+time), and the **single action slot**: every scored row renders EXACTLY ONE of
+`analyze-client` | `view-brief` — uniform "Analyze" copy on every un-analyzed
+row (there is no "Analyze anyway"), and after a successful analyze the SAME
+slot swaps to `view-brief`. `scan-retry` appears on failed rows only (never on
+scored rows). `expectSingleActionSlot` in `helpers.ts` encodes the slot law.
 
 ### The scorer contract (two-agent split)
 
@@ -123,6 +127,14 @@ score is backend-only ranking state and must NEVER appear in any response —
 Keyless runs use the deterministic `heuristicScore` fallback, so scan results
 are stable in CI. `GET /api/client-impact/scans?billId=…` is the persisted,
 pre-ranked scoreboard feed (latest-wins per pair).
+
+`GET /api/client-impact/briefs` is the brief-library index behind the `/brief`
+picker: bills with ≥1 brief sorted `latestAt` desc, each with its
+latest-per-pair briefed clients (band joined from the scans store iff the pair
+was scanned — never the numeric score). `POST /analyze` also accepts an
+optional **transient** `guidance` string (≤2000 chars — the regen panel's
+counsel instructions, never persisted on the analysis); keyless servers still
+answer 200 via the fallback.
 
 Two behavioral notes encoded in the specs:
 
@@ -136,3 +148,20 @@ Stage-4 (Client Brief) selectors are derived from the page as it ships today
 (`src/pages/ClientImpactAnalysis.tsx`): the `Client Brief — …` `h1`, the
 `Summary` card, the `Needs review` badge and the `Lawyer review` /
 `Review before sending` section.
+
+### The brief-library picker + regen contract (stage 4 entry)
+
+Top-nav "Client brief" → `/brief` renders the two-step picker
+(`brief-picker.spec.ts` is its acceptance test):
+
+- step 1: `brief-bill-list` of `brief-bill-card[data-bill-id]` cards, or the
+  `briefs-empty` empty state when no briefs exist;
+- step 2 (in-page, after clicking a bill card): `brief-back`,
+  `brief-client-list`, `brief-client-card[data-client-id]` (shows a band chip
+  when the pair was scanned); clicking a client card opens the existing brief
+  page at `/clients/:clientId/bills/:billId`.
+
+On the brief page, the regen panel: `regen-toggle` (collapsed "Regenerate with
+instructions…" affordance) reveals `regen-context-input` (textarea) +
+`regen-brief`; on success the brief re-renders and the panel collapses
+(`regen-context-input` hidden again).

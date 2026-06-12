@@ -5,11 +5,14 @@
  *      scoreboard (scan-status settles at "scored", scan-band[data-band]).
  *   2. Rationale → per-row accordion (scan-rationale-toggle / scan-rationale):
  *      at most ONE rationale is visible at a time.
- *   3. Analyze   → the per-row analyze-client button produces the full brief;
- *      view-brief appears on that row, opens stage 4, back returns here.
+ *   3. Analyze   → the single action slot: every scored row renders EXACTLY
+ *      ONE of analyze-client | view-brief (scan-retry only on failed rows;
+ *      uniform "Analyze" copy — there is no "Analyze anyway"). Clicking
+ *      analyze-client produces the full brief and swaps THAT row's slot to
+ *      view-brief, which opens stage 4; back returns here.
  *   4. Persist   → scans are stored latest-wins: a reload + re-selecting the
- *      bill restores the scoreboard, bands included, and the analyzed row
- *      still offers view-brief.
+ *      bill restores the scoreboard, bands included, and the analyzed row's
+ *      slot still shows view-brief (and no analyze-client).
  *
  * Everything runs on the keyless fallback (deterministic heuristic scores,
  * synthesized briefs), so "scored" and the brief arrive fast — the generous
@@ -18,6 +21,7 @@
 import { test, expect } from "@playwright/test";
 import {
   expectAllRowsScored,
+  expectSingleActionSlot,
   seedState,
   setAllClientCheckboxes,
   visibleRationales,
@@ -55,7 +59,9 @@ test("two-phase scan: band scoreboard, rationale accordion, per-row analyze → 
   // ── Phase 1: the scoreboard. One row per selected client; every row settles
   // at "scored" (the full status set is queued|scoring|scored|failed) and
   // carries a band. The keyless heuristic never fails, so no scan-retry, and
-  // every row offers the per-row analyze button.
+  // every scored row obeys the single-slot law: EXACTLY ONE of
+  // analyze-client | view-brief (api.spec already analyzed corebloom against
+  // this bill, so its row may arrive as view-brief).
   await expectAllRowsScored(page, clientCount);
   // The post-loop ranking refresh can reorder rows a beat after the last row
   // turns "scored". setScanning(false) is sequenced strictly after that merge,
@@ -64,8 +70,7 @@ test("two-phase scan: band scoreboard, rationale accordion, per-row analyze → 
   await expect(runScan).toBeEnabled();
   const rows = page.getByTestId("scan-row");
   for (let i = 0; i < clientCount; i++) {
-    await expect(rows.nth(i).getByTestId("scan-retry")).toHaveCount(0);
-    await expect(rows.nth(i).getByTestId("analyze-client")).toBeVisible();
+    await expectSingleActionSlot(rows.nth(i));
   }
 
   // ── Phase 1b: the rationale accordion — at most ONE rationale visible.
@@ -90,22 +95,32 @@ test("two-phase scan: band scoreboard, rationale accordion, per-row analyze → 
   await rowB.getByTestId("scan-rationale-toggle").click(); // toggle B shut again
   await expect(visibleRationales(page)).toHaveCount(0);
 
-  // ── Phase 2: analyze ONE row. Prefer a row with no brief yet (api.spec may
-  // already have analyzed a demo client against this bill) so the click is
-  // what causes view-brief to appear.
-  let target = rows.first();
+  // ── Phase 2: analyze ONE row. Target a row whose slot still holds
+  // analyze-client (rows already analyzed by api.spec arrive as view-brief) —
+  // the click must swap THAT slot, not add a second action.
+  let targetIndex = -1;
   for (let i = 0; i < clientCount; i++) {
-    if ((await rows.nth(i).getByTestId("view-brief").count()) === 0) {
-      target = rows.nth(i);
+    if ((await rows.nth(i).getByTestId("analyze-client").count()) > 0) {
+      targetIndex = i;
       break;
     }
   }
-  const targetClientId = await target.getAttribute("data-client-id");
+  expect(
+    targetIndex,
+    "at least one scored row must still offer analyze-client",
+  ).toBeGreaterThanOrEqual(0);
+  const targetClientId = await rows.nth(targetIndex).getAttribute("data-client-id");
   expect(targetClientId).toBeTruthy();
+  // Pin the row by client id (stable across any re-render), not by position.
+  const target = page.locator(
+    `[data-testid="scan-row"][data-client-id="${targetClientId}"]`,
+  );
 
   await target.getByTestId("analyze-client").click();
+  // The swap: on success the SAME slot flips analyze-client → view-brief.
   const viewBrief = target.getByTestId("view-brief");
   await expect(viewBrief).toBeVisible({ timeout: 120_000 }); // keyless brief is fast
+  await expect(target.getByTestId("analyze-client")).toHaveCount(0);
   await viewBrief.click();
 
   // Stage 4: the brief page (selectors as shipped by ClientImpactAnalysis.tsx).
@@ -134,5 +149,8 @@ test("two-phase scan: band scoreboard, rationale accordion, per-row analyze → 
     `[data-testid="scan-row"][data-client-id="${targetClientId}"]`,
   );
   await expect(analyzedRow).toHaveCount(1);
+  // The analyzed pair's slot survives the reload as view-brief — and the slot
+  // law still holds: no analyze-client alongside it.
   await expect(analyzedRow.getByTestId("view-brief")).toBeVisible();
+  await expect(analyzedRow.getByTestId("analyze-client")).toHaveCount(0);
 });
