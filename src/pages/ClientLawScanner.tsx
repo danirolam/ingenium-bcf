@@ -15,7 +15,6 @@ import type { Nav } from "../App";
 import { PageHeader } from "../components/PageHeader";
 import { api } from "../lib/api";
 import {
-  ANALYZE_EMPHASIS_BANDS,
   deleteClient,
   fetchScanReady,
   fetchScanReadyDetail,
@@ -814,8 +813,6 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                       const c = clients.find((x) => x.id === r.clientId);
                       const scan = r.status === "scored" ? r.scan : undefined;
                       const open = openRationaleId === r.clientId;
-                      const emphasized =
-                        !!scan && ANALYZE_EMPHASIS_BANDS.has(scan.band);
                       // Mid-run rows stay locked until the loop finishes;
                       // rows scored from persistence remain analyzable.
                       const lockedByRun =
@@ -827,90 +824,102 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                           data-testid="scan-row"
                           data-client-id={r.clientId}
                         >
+                          {/* Fixed five-column grid — every cell is ALWAYS
+                              rendered (empty when inapplicable) so the
+                              columns never shift between rows. */}
                           <div className="cs-scan-line">
-                            <span className="cs-scan-client">
-                              {c?.name ?? r.clientId}
-                            </span>
-                            {r.status === "failed" && r.reason && (
-                              <span className="cs-scan-reason" title={r.reason}>
-                                {r.reason}
+                            <div className="cs-cell-name">
+                              <span className="cs-scan-client">
+                                {c?.name ?? r.clientId}
                               </span>
-                            )}
+                              {r.status === "failed" && r.reason && (
+                                <span
+                                  className="cs-scan-reason"
+                                  title={r.reason}
+                                >
+                                  {r.reason}
+                                </span>
+                              )}
+                            </div>
                             <span
                               className={`cs-status is-${r.status}`}
                               data-testid="scan-status"
                             >
                               {r.status}
                             </span>
-                            {scan && (
-                              <span
-                                className={`cs-band is-${scan.band}`}
-                                data-testid="scan-band"
-                                data-band={scan.band}
-                              >
-                                {scan.band}
-                              </span>
-                            )}
-                            {scan && (
-                              <button
-                                className={`cs-icon-btn cs-rationale-toggle${open ? " open" : ""}`}
-                                data-testid="scan-rationale-toggle"
-                                title={open ? "Hide rationale" : "Why this band?"}
-                                aria-expanded={open}
-                                onClick={() => toggleRationale(r.clientId)}
-                              >
-                                <FontAwesomeIcon
-                                  icon={faChevronDown}
-                                  aria-hidden="true"
-                                />
-                              </button>
-                            )}
-                            {r.status === "failed" && (
-                              <button
-                                className="cs-retry"
-                                data-testid="scan-retry"
-                                disabled={scanning}
-                                onClick={() => void retryScan(r.clientId)}
-                              >
-                                <FontAwesomeIcon
-                                  icon={faRotateRight}
-                                  aria-hidden="true"
-                                />
-                                Retry
-                              </button>
-                            )}
-                            {scan && (
-                              <button
-                                className={
-                                  emphasized
-                                    ? "btn primary sm"
-                                    : "btn sm cs-analyze-soft"
-                                }
-                                data-testid="analyze-client"
-                                disabled={!!r.analyzing || lockedByRun}
-                                onClick={() => void analyzeRow(r.clientId)}
-                              >
-                                {r.analyzing
-                                  ? "Analyzing…"
-                                  : emphasized
-                                    ? "Analyze"
-                                    : "Analyze anyway"}
-                              </button>
-                            )}
-                            {scan?.hasBrief && (
-                              <button
-                                className="btn ghost sm"
-                                data-testid="view-brief"
-                                onClick={() =>
-                                  nav.go("impact", {
-                                    clientId: r.clientId,
-                                    billId: scanBillId,
-                                  })
-                                }
-                              >
-                                View brief
-                              </button>
-                            )}
+                            <span className="cs-cell-band">
+                              {scan && (
+                                <span
+                                  className={`cs-band is-${scan.band}`}
+                                  data-testid="scan-band"
+                                  data-band={scan.band}
+                                >
+                                  {scan.band}
+                                </span>
+                              )}
+                            </span>
+                            <span className="cs-cell-chevron">
+                              {scan && (
+                                <button
+                                  className={`cs-icon-btn cs-rationale-toggle${open ? " open" : ""}`}
+                                  data-testid="scan-rationale-toggle"
+                                  title={
+                                    open ? "Hide rationale" : "Why this band?"
+                                  }
+                                  aria-expanded={open}
+                                  onClick={() => toggleRationale(r.clientId)}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faChevronDown}
+                                    aria-hidden="true"
+                                  />
+                                </button>
+                              )}
+                            </span>
+                            {/* The action slot — EXACTLY ONE control: Retry on
+                                failed rows, Analyze until a brief exists, then
+                                View brief. Queued/scoring rows leave it empty
+                                (the status pill already says so). */}
+                            <span className="cs-slot">
+                              {r.status === "failed" && (
+                                <button
+                                  className="cs-retry"
+                                  data-testid="scan-retry"
+                                  disabled={scanning}
+                                  onClick={() => void retryScan(r.clientId)}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faRotateRight}
+                                    aria-hidden="true"
+                                  />
+                                  Retry
+                                </button>
+                              )}
+                              {scan && scan.hasBrief && (
+                                <button
+                                  className="btn sm"
+                                  data-testid="view-brief"
+                                  onClick={() =>
+                                    nav.go("impact", {
+                                      clientId: r.clientId,
+                                      billId: scanBillId,
+                                    })
+                                  }
+                                >
+                                  View brief
+                                </button>
+                              )}
+                              {scan && !scan.hasBrief && (
+                                <button
+                                  className="btn primary sm"
+                                  data-testid="analyze-client"
+                                  disabled={!!r.analyzing || lockedByRun}
+                                  onClick={() => void analyzeRow(r.clientId)}
+                                >
+                                  {r.analyzing ? "Analyzing…" : "Analyze"}
+                                </button>
+                              )}
+                            </span>
                           </div>
                           {r.analyzeError && (
                             <div className="cs-analyze-error">

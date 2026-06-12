@@ -1,0 +1,177 @@
+/* Stage 4 — Brief library picker (the /brief drill-down). Imported only by
+   src/components/BriefPicker.tsx; everything is namespaced `bp-` so nothing
+   leaks into other pages. Mirrors the app's card/list aesthetics (lpg cards,
+   cs scoreboard rows) on the shared tokens. */
+
+.bp-count {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+/* ── Step 1: bills with at least one brief ────────────────────────────── */
+.bp-bill-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 880px) {
+  .bp-bill-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.bp-bill-card {
+  padding: 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.1s;
+}
+.bp-bill-card:hover {
+  border-color: var(--border-2);
+}
+.bp-bill-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.bp-bill-num {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+.bp-brief-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font: 600 11px/1.4 var(--sans);
+  color: var(--med);
+  background: var(--med-bg);
+  border-radius: 999px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+.bp-bill-title {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.35;
+}
+.bp-bill-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--ink-4);
+}
+.bp-empty-cta {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+}
+
+/* ── Step 2: the selected bill's briefed clients ──────────────────────── */
+.bp-step-head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.bp-back {
+  align-self: flex-start;
+}
+.bp-bill-line {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+.bp-bill-line-title {
+  font: 500 14px/1.35 var(--sans);
+  color: var(--ink);
+}
+.bp-bill-line-meta {
+  font-size: 11.5px;
+  color: var(--ink-4);
+}
+.bp-client-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-3);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.bp-client-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border-3);
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+.bp-client-card:last-child {
+  border-bottom: none;
+}
+.bp-client-card:hover {
+  background: var(--panel-2);
+}
+.bp-client-name {
+  flex: 1;
+  min-width: 0;
+  font: 500 13px/1.4 var(--sans);
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bp-client-when {
+  flex: none;
+  font-size: 11px;
+  color: var(--ink-4);
+  white-space: nowrap;
+}
+.bp-client-go {
+  flex: none;
+  font-size: 11px;
+  color: var(--ink-4);
+}
+
+/* Band chip — the scanner's band-pill rules (cs-band) copied under the bp-
+   prefix so this stylesheet stays self-contained: low muted, medium amber
+   (the palette's amber token is --high), high a strong red tint, critical
+   filled red. */
+.bp-band {
+  flex: none;
+  font: 700 10.5px/1 var(--sans);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+.bp-band.is-low {
+  color: var(--low);
+  background: var(--low-bg);
+}
+.bp-band.is-medium {
+  color: var(--high);
+  background: var(--high-bg);
+}
+.bp-band.is-high {
+  color: var(--crit);
+  background: var(--crit-bg);
+}
+.bp-band.is-critical {
+  color: #ffffff;
+  background: var(--crit);
+}

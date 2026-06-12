@@ -242,14 +242,24 @@
 .cs-scan-row:last-child {
   border-bottom: none;
 }
+/* Fixed five-column grid — name | status | band | chevron | action — so the
+   pills and the single action slot line up across every row. Each cell is
+   always rendered (empty when inapplicable); the action column is fixed-width
+   and right-aligned, so swapping Analyze ↔ View brief never shifts columns. */
 .cs-scan-line {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 92px 84px 28px 132px;
   align-items: center;
-  gap: 10px;
+  column-gap: 10px;
   min-width: 0;
 }
+.cs-cell-name {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
 .cs-scan-client {
-  flex: 1;
   min-width: 0;
   font: 500 13px/1.4 var(--sans);
   color: var(--ink);
@@ -258,16 +268,40 @@
   white-space: nowrap;
 }
 .cs-scan-reason {
-  flex: none;
-  max-width: 32%;
   font-size: 11px;
   color: var(--crit);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.cs-cell-band {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.cs-cell-chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* The single action slot: buttons stretch to the column so Analyze,
+   Analyzing… and View brief all render at identical geometry; the Retry
+   link keeps its natural width, right-aligned. */
+.cs-slot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+}
+.cs-slot .btn {
+  flex: 1 1 auto;
+  min-width: 0;
+  justify-content: center;
+  padding: 0 8px;
+  white-space: nowrap;
+}
 .cs-status {
-  flex: none;
+  justify-self: start;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -378,22 +412,6 @@
 .cs-rationale-meta {
   font-size: 10.5px;
   color: var(--ink-4);
-}
-
-/* Subdued "Analyze anyway" for rows outside the emphasis bands. */
-.btn.cs-analyze-soft {
-  background: transparent;
-  border-color: var(--border-2);
-  color: var(--ink-4);
-}
-.btn.cs-analyze-soft:hover:not(:disabled) {
-  background: var(--panel-2);
-  border-color: var(--border-2);
-  color: var(--ink-2, var(--ink));
-}
-.btn.cs-analyze-soft:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
 }
 
 /* Retry link on failed rows. */

@@ -7,6 +7,7 @@ import {
   faFileLines,
   faFloppyDisk,
   faPaperPlane,
+  faRotateRight,
   faScaleBalanced,
   faShieldHalved,
   faTriangleExclamation,
@@ -16,6 +17,7 @@ import {
   AffectedBadge,
   ReviewBadge,
 } from "../components/badges";
+import { BriefPicker } from "../components/BriefPicker";
 import { ImpactScale } from "../components/ImpactScale";
 import { PageHeader } from "../components/PageHeader";
 import {
@@ -26,6 +28,7 @@ import {
   AlertTitle,
 } from "../components/ui/alert-1";
 import { api } from "../lib/api";
+import { analyzeWithGuidance } from "../lib/clientScan";
 import { downloadDoc, esc } from "../lib/export";
 import type { Bill, Client, ClientImpactAnalysis } from "../types";
 
@@ -34,6 +37,10 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
   const [client, setClient] = useState<Client | null>(null);
   const [bill, setBill] = useState<Bill | null>(null);
   const [busy, setBusy] = useState(false);
+  // Regenerate-with-instructions panel (only offered once a brief exists).
+  const [regenOpen, setRegenOpen] = useState(false);
+  const [regenText, setRegenText] = useState("");
+  const [regenBusy, setRegenBusy] = useState(false);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     why: true,
     adaptations: true,
@@ -46,6 +53,9 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
   const { clientId, billId } = nav.params;
 
   useEffect(() => {
+    // A different pair owns the page now — its regen draft dies with it.
+    setRegenOpen(false);
+    setRegenText("");
     if (!clientId || !billId) return;
     let cancelled = false;
     (async () => {
@@ -85,7 +95,9 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     if (!clientId || !billId) return;
     setBusy(true);
     try {
-      const { analysis: a, email } = await api.clientImpact.analyze(
+      // Same endpoint as before — routed through the guidance-capable helper
+      // (no guidance here), so stage 4 has a single analyze entry point.
+      const { analysis: a, email } = await analyzeWithGuidance(
         clientId,
         billId,
       );
@@ -102,43 +114,44 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     }
   }
 
-  if (!analysis) {
-    // A client+bill pair is addressed but no brief exists yet → offer to generate
-    // it here, so the URL is directly actionable. No pair → point back to scan.
-    const hasPair = Boolean(clientId && billId);
+  // No (client, bill) pair addressed → the brief-library picker owns the
+  // content area: pick a bill, then a briefed client.
+  if (!clientId || !billId) {
     return (
       <>
         <PageHeader
           crumbs={["Workspace", "Client Brief"]}
           title="Client Brief"
-          sub={
-            hasPair
-              ? `No brief yet for ${client?.name ?? "this client"} on ${bill?.billNumber ?? "this bill"}.`
-              : "Pick a client and a bill in Client Scan to generate a brief."
-          }
+          sub="Browse generated briefs — pick a bill, then the client whose brief to open."
+        />
+        <div className="body">
+          <BriefPicker nav={nav} />
+        </div>
+      </>
+    );
+  }
+
+  if (!analysis) {
+    // A client+bill pair is addressed but no brief exists yet → offer to
+    // generate it here, so the URL is directly actionable.
+    return (
+      <>
+        <PageHeader
+          crumbs={["Workspace", "Client Brief"]}
+          title="Client Brief"
+          sub={`No brief yet for ${client?.name ?? "this client"} on ${bill?.billNumber ?? "this bill"}.`}
           actions={
-            hasPair ? (
-              <button className="btn primary" disabled={busy} onClick={generate}>
-                {busy ? "Generating…" : "Generate brief"}
-              </button>
-            ) : undefined
+            <button className="btn primary" disabled={busy} onClick={generate}>
+              {busy ? "Generating…" : "Generate brief"}
+            </button>
           }
         />
         <div className="body">
           <div className="rd-empty">
-            {hasPair ? (
-              <>
-                No brief has been generated for{" "}
-                <b>{client?.name ?? "this client"}</b> on{" "}
-                <b>{bill?.billNumber ?? "this bill"}</b> yet. Click{" "}
-                <b>Generate brief</b> to create one.
-              </>
-            ) : (
-              <>
-                No brief loaded. Open <b>Client Scan</b>, pick a client and a
-                bill, and click <b>Analyze client impact</b>.
-              </>
-            )}
+            No brief has been generated for{" "}
+            <b>{client?.name ?? "this client"}</b> on{" "}
+            <b>{bill?.billNumber ?? "this bill"}</b> yet. Click{" "}
+            <b>Generate brief</b> to create one.
           </div>
         </div>
       </>
@@ -165,6 +178,34 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
       nav.toast(email.simulated ? "Email simulated." : "Email sent to lawyer.");
     } finally {
       setBusy(false);
+    }
+  }
+
+  // Regenerate the brief, optionally steered by reviewing-lawyer instructions
+  // (transient — never persisted). An empty textarea is a plain regen.
+  async function regenerate() {
+    if (!clientId || !billId || regenBusy) return;
+    setRegenBusy(true);
+    try {
+      const { analysis: fresh } = await analyzeWithGuidance(
+        clientId,
+        billId,
+        regenText,
+      );
+      // Reload through the page's by-pair path; fall back to the response if
+      // that cosmetic re-fetch fails (the regen itself already succeeded).
+      const reloaded = await api.clientImpact
+        .byPair(clientId, billId)
+        .catch(() => fresh);
+      setAnalysis(reloaded);
+      setRegenOpen(false);
+      setRegenText("");
+      nav.toast("Brief regenerated.");
+    } catch (err: any) {
+      // Keep the panel (and the typed guidance) so the lawyer can retry.
+      nav.toast(`Could not regenerate brief: ${err.message ?? err}`);
+    } finally {
+      setRegenBusy(false);
     }
   }
 
@@ -232,6 +273,16 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
         }
         actions={
           <>
+            <button
+              className="btn ghost"
+              data-testid="regen-toggle"
+              aria-expanded={regenOpen}
+              disabled={regenBusy}
+              onClick={() => setRegenOpen((open) => !open)}
+            >
+              <FontAwesomeIcon icon={faRotateRight} aria-hidden="true" />
+              Regenerate with instructions…
+            </button>
             <button className="btn" onClick={downloadBrief}>
               <FontAwesomeIcon icon={faFileArrowDown} aria-hidden="true" />
               Download brief
@@ -252,6 +303,50 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
         }
       />
       <div className="body">
+        {regenOpen && (
+          /* Page-scoped CSS lives elsewhere, so this panel composes shared
+             primitives (card / rd-field / actions-row) + two inline margins. */
+          <div className="card" style={{ marginBottom: 18 }}>
+            <div className="card-h">
+              <div className="card-title-row">
+                <FontAwesomeIcon icon={faRotateRight} aria-hidden="true" />
+                <div className="card-title">Regenerate with instructions</div>
+              </div>
+              <div className="card-sub">
+                Guidance shapes this regeneration only — it is not stored.
+              </div>
+            </div>
+            <div className="card-pad">
+              <div className="rd-field">
+                <label>Instructions for the analyst (optional)</label>
+                <textarea
+                  data-testid="regen-context-input"
+                  value={regenText}
+                  disabled={regenBusy}
+                  placeholder="Optional instructions for the analyst — e.g. focus on supplier obligations, tighten the timeline…"
+                  onChange={(e) => setRegenText(e.target.value)}
+                />
+              </div>
+              <div className="actions-row" style={{ marginTop: 12 }}>
+                <button
+                  className="btn ghost"
+                  disabled={regenBusy}
+                  onClick={() => setRegenOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="btn primary"
+                  data-testid="regen-brief"
+                  disabled={regenBusy}
+                  onClick={() => void regenerate()}
+                >
+                  {regenBusy ? "Regenerating…" : "Regenerate brief"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         <div className="card impact-summary-card">
           <div className="card-h">
             <div>

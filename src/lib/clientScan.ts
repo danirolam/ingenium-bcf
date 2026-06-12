@@ -97,16 +97,6 @@ export interface ImpactScanView {
 }
 
 /**
- * Bands whose rows lead with the emphasized Analyze CTA — scan first, brief
- * these pairs. Mirrors ANALYZE_EMPHASIS_BANDS in
- * server/services/clientScanCore.ts (kept in sync by hand).
- */
-export const ANALYZE_EMPHASIS_BANDS: ReadonlySet<ScanBand> = new Set([
-  "high",
-  "critical",
-]);
-
-/**
  * Fast impact score for ONE (client, bill) pair — seconds, not the ~30s brief.
  * Persisted latest-wins server-side; 400/404 on bad ids.
  */
