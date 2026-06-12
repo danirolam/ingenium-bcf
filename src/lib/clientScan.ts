@@ -148,3 +148,57 @@ export function deleteClient(id: string): Promise<{ ok: boolean }> {
     method: "DELETE",
   });
 }
+
+// ── Brief library (stage-4 entry) ────────────────────────────────────────────
+// Wire shapes for GET /api/client-impact/briefs — mirrored from
+// server/routes/clientImpact.ts (BriefIndexBill/BriefIndexClient); keep in
+// sync. Bands only — the numeric score never leaves the backend.
+
+export interface BriefIndexClient {
+  clientId: string;
+  name: string;
+  analysisId: string;
+  createdAt: string;
+  band?: ScanBand;
+}
+
+export interface BriefIndexBill {
+  billId: string;
+  billNumber: string;
+  title: string;
+  shortTitle?: string;
+  status: string;
+  briefCount: number;
+  latestAt: string;
+  clients: BriefIndexClient[];
+}
+
+/**
+ * Bills that have at least one brief, each with its briefed clients — server
+ * sorted (bills by latest brief desc; clients by band severity desc, unknown
+ * last, then name).
+ */
+export function fetchBriefIndex(signal?: AbortSignal): Promise<BriefIndexBill[]> {
+  return j<BriefIndexBill[]>("/api/client-impact/briefs", { signal });
+}
+
+/**
+ * Generate (or regenerate) the full brief for a pair, optionally with
+ * reviewing-lawyer instructions the brief agent must follow. Guidance is
+ * transient — it shapes this generation only and is never persisted. Stage 3
+ * keeps using api.clientImpact.analyze (no guidance there).
+ */
+export function analyzeWithGuidance(
+  clientId: string,
+  billId: string,
+  guidance?: string,
+): Promise<{ analysis: import("../types").ClientImpactAnalysis; email: { sent: boolean; simulated?: boolean } }> {
+  return j("/api/client-impact/analyze", {
+    method: "POST",
+    body: JSON.stringify({
+      clientId,
+      billId,
+      ...(guidance?.trim() ? { guidance: guidance.trim() } : {}),
+    }),
+  });
+}

@@ -16,10 +16,12 @@ import {
   withFileLock,
   type ImpactScan,
 } from "../services/clientScan.js";
-import type {
-  ScanReadyBill,
-  ScanReadyDetail,
-  ScoreBody,
+import {
+  SCAN_BANDS,
+  type ScanBand,
+  type ScanReadyBill,
+  type ScanReadyDetail,
+  type ScoreBody,
 } from "../services/clientScanCore.js";
 import { sendClientImpactCompleteEmail } from "../services/email.js";
 import { billAffectedActs } from "../services/gemini.js";
@@ -110,11 +112,15 @@ clientImpactRouter.post(
     // provision changes (pipeline stages 1–2 output). Falls through to the
     // canned/synthesized paths when there is nothing approved, no API key, or
     // the AI calls fail.
+    // Optional reviewing-lawyer instructions (regen-with-guidance). Transient:
+    // used for this generation only, never persisted on the analysis record.
+    const guidance = String(req.body?.guidance ?? "").trim().slice(0, 2000);
+
     let result: ClientImpactAnalysis | null = null;
     const { changes, approvedCount } = await loadApprovedChanges(billId);
     if (approvedCount > 0) {
       const budget = createAiBudget();
-      const body = await analyzeClientFromChanges({ bill, client, changes }, budget);
+      const body = await analyzeClientFromChanges({ bill, client, changes, guidance }, budget);
       if (body) {
         result = {
           ...body,
@@ -378,6 +384,92 @@ clientImpactRouter.get(
       .filter((s) => clientsById.has(s.clientId))
       .sort((a, b) => rank(b) - rank(a) || name(a).localeCompare(name(b)))
       .map((s) => toScanView(s, latestByPair.get(`${s.clientId}|${s.billId}`)));
+    res.json(out);
+  }),
+);
+
+// ── Brief library (the stage-4 entry picker) ────────────────────────────────
+// Bills that have at least one brief, each with its briefed clients — the
+// work-product index behind the /brief drill-down. Bands come from the scans
+// store when a scan exists for the pair (never the numeric score). Registered
+// BEFORE /:id (Express matches in order).
+interface BriefIndexClient {
+  clientId: string;
+  name: string;
+  analysisId: string;
+  createdAt: string;
+  band?: ScanBand;
+}
+interface BriefIndexBill {
+  billId: string;
+  billNumber: string;
+  title: string;
+  shortTitle?: string;
+  status: string;
+  briefCount: number;
+  latestAt: string;
+  clients: BriefIndexClient[];
+}
+
+clientImpactRouter.get(
+  "/briefs",
+  safe(async (_req, res) => {
+    const impacts = presentOnly(await readAll<ClientImpactAnalysis>(FILES.impacts));
+    // Latest analysis per (client, bill) pair.
+    const latestByPair = new Map<string, ClientImpactAnalysis>();
+    for (const a of impacts) {
+      const k = `${a.clientId}|${a.billId}`;
+      const cur = latestByPair.get(k);
+      if (!cur || a.createdAt.localeCompare(cur.createdAt) > 0) latestByPair.set(k, a);
+    }
+
+    const clientsById = new Map(
+      presentOnly(await readAll<Client>(FILES.clients)).map((c) => [c.id, c]),
+    );
+    const bandByPair = new Map<string, ScanBand>();
+    for (const s of presentOnly(await readAll<ImpactScan>(SCANS_FILE))) {
+      bandByPair.set(`${s.clientId}|${s.billId}`, s.band);
+    }
+
+    // Group by bill; drop pairs whose client or bill no longer exists.
+    const byBill = new Map<string, BriefIndexClient[]>();
+    for (const a of latestByPair.values()) {
+      if (!clientsById.has(a.clientId)) continue;
+      const entry: BriefIndexClient = {
+        clientId: a.clientId,
+        name: clientsById.get(a.clientId)!.name,
+        analysisId: a.id,
+        createdAt: a.createdAt,
+        ...(bandByPair.has(`${a.clientId}|${a.billId}`)
+          ? { band: bandByPair.get(`${a.clientId}|${a.billId}`) }
+          : {}),
+      };
+      const arr = byBill.get(a.billId) ?? [];
+      arr.push(entry);
+      byBill.set(a.billId, arr);
+    }
+
+    // Severity desc (unknown band last), then name — most exposed first.
+    const severity = (b?: ScanBand) => (b ? SCAN_BANDS.indexOf(b) : -1);
+    const out: BriefIndexBill[] = [];
+    for (const [billId, clients] of byBill) {
+      const bill = await findRecord<Bill>(FILES.bills, billId);
+      if (!bill) continue;
+      clients.sort(
+        (a, b) => severity(b.band) - severity(a.band) || a.name.localeCompare(b.name),
+      );
+      out.push({
+        billId,
+        billNumber: bill.billNumber,
+        title: bill.title,
+        ...(bill.shortTitle ? { shortTitle: bill.shortTitle } : {}),
+        status: bill.status,
+        briefCount: clients.length,
+        latestAt: clients.reduce((m, c) => (c.createdAt > m ? c.createdAt : m), ""),
+        clients,
+      });
+    }
+    out.sort((a, b) => b.latestAt.localeCompare(a.latestAt));
     res.json(out);
   }),
 );
