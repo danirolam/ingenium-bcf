@@ -1,18 +1,70 @@
 /**
- * Request-level contracts for the stage 3-4 backend (Phase 1A).
+ * Request-level contracts for the stage 3-4 backend.
  *
- * Passing TODAY (current server): analyze validation (400/404), keyless
- * analyze + by-pair, client create.
- * Awaiting Phase 1A: /api/client-impact/scan-ready (+/:billId), PUT/DELETE
- * /api/clients/:id and the analyses cascade.
+ * Passing TODAY: scan-ready list/detail/404, analyze validation (400/404),
+ * keyless analyze + by-pair, clients CRUD + analyses cascade.
+ * The "scorer" block is the acceptance test for the two-agent split
+ * (Phase 1A, landing in parallel): POST /api/client-impact/scan and
+ * GET /api/client-impact/scans — band-only views, the numeric score must
+ * NEVER appear in any response, deterministic keyless fallback, scan cascade
+ * on client delete.
  */
 import { test, expect } from "@playwright/test";
 import { SEED_ACT, SEED_APPROVED_KEYS } from "../seed";
-import { API, seedState, waitForApiReady } from "./helpers";
+import { API, SCAN_BAND_VALUES, seedState, waitForApiReady } from "./helpers";
 
 test.beforeAll(async () => {
   await waitForApiReady();
 });
+
+// ── Scorer response invariants ────────────────────────────────────────────────
+
+/**
+ * Every path in `node` whose property key is exactly "score" — the numeric
+ * score is a backend-only ranking key, so for every scorer payload this MUST
+ * come back empty, at ANY depth.
+ */
+function scoreKeyPaths(node: unknown, path = "$"): string[] {
+  if (Array.isArray(node)) {
+    return node.flatMap((v, i) => scoreKeyPaths(v, `${path}[${i}]`));
+  }
+  if (node && typeof node === "object") {
+    return Object.entries(node as Record<string, unknown>).flatMap(([k, v]) => [
+      ...(k === "score" ? [`${path}.${k}`] : []),
+      ...scoreKeyPaths(v, `${path}.${k}`),
+    ]);
+  }
+  return [];
+}
+
+function expectNoScoreAnywhere(body: unknown): void {
+  expect(
+    scoreKeyPaths(body),
+    "the numeric score must never leave the backend",
+  ).toEqual([]);
+}
+
+const BAND_SEVERITY: Record<string, number> = Object.fromEntries(
+  SCAN_BAND_VALUES.map((b, i) => [b, i]),
+);
+
+/** Structural contract of one scan view (POST /scan and GET /scans share it). */
+function expectScanViewShape(scan: any, clientId: string, billId: string): void {
+  expect(scan, "response must carry a scan view").toBeTruthy();
+  expect(typeof scan.id).toBe("string");
+  expect(scan.id.length).toBeGreaterThan(0);
+  expect(scan.clientId).toBe(clientId);
+  expect(scan.billId).toBe(billId);
+  expect(SCAN_BAND_VALUES as readonly string[]).toContain(scan.band);
+  expect(typeof scan.rationale).toBe("string");
+  expect(scan.rationale.length).toBeGreaterThan(0);
+  expect(Array.isArray(scan.topAreas)).toBe(true);
+  for (const area of scan.topAreas) expect(typeof area).toBe("string");
+  expect(["ai", "fallback"]).toContain(scan.source);
+  expect(typeof scan.scannedAt).toBe("string");
+  expect(Number.isNaN(Date.parse(scan.scannedAt)), "scannedAt must parse").toBe(false);
+  expect(typeof scan.hasBrief).toBe("boolean");
+}
 
 test.describe("scan-ready", () => {
   test("lists the seeded bill with 3 approved ops", async ({ request }) => {
@@ -100,6 +152,208 @@ test.describe("scan-ready", () => {
     );
     expect(res.status()).toBe(404);
     expect(await res.json()).toMatchObject({ error: "bill not_found" });
+  });
+});
+
+/**
+ * The fast scorer agent (Phase 1A, two-agent split).
+ *
+ * ORDERING: this block must run BEFORE the "analyze" block below — the
+ * hasBrief:false assertions need (client-corebloom, bill1) to still be
+ * brief-less, and the analyze block (plus this block's own transition test)
+ * creates that brief. Serial: later tests consume earlier ones' state.
+ */
+test.describe.serial("scorer", () => {
+  test("missing ids are a 400", async ({ request }) => {
+    const st = await seedState();
+    for (const data of [
+      {},
+      { clientId: "client-corebloom" },
+      { billId: st.billId },
+    ]) {
+      const res = await request.post(`${API}/api/client-impact/scan`, { data });
+      expect(res.status(), `POST /scan ${JSON.stringify(data)}`).toBe(400);
+    }
+  });
+
+  test("unknown client is a 404", async ({ request }) => {
+    const st = await seedState();
+    const res = await request.post(`${API}/api/client-impact/scan`, {
+      data: { clientId: "e2e-no-such-client", billId: st.billId },
+    });
+    expect(res.status()).toBe(404);
+  });
+
+  test("unknown bill is a 404", async ({ request }) => {
+    const res = await request.post(`${API}/api/client-impact/scan`, {
+      data: { clientId: "client-corebloom", billId: "e2e-no-such-bill" },
+    });
+    expect(res.status()).toBe(404);
+  });
+
+  test("keyless scan returns a band-only fallback view — no score key anywhere", async ({
+    request,
+  }) => {
+    const st = await seedState();
+    const res = await request.post(`${API}/api/client-impact/scan`, {
+      data: { clientId: "client-corebloom", billId: st.billId },
+    });
+    expect(res.status()).toBe(200);
+    const body = await res.json();
+
+    // The numeric score is backend-only: deep-scan the WHOLE parsed payload.
+    expectNoScoreAnywhere(body);
+
+    expectScanViewShape(body.scan, "client-corebloom", st.billId);
+    expect(body.scan.source, "keyless server must take the fallback path").toBe(
+      "fallback",
+    );
+    expect(body.scan.hasBrief, "no brief exists for this pair yet").toBe(false);
+    expect(body.scan.analysisId ?? null, "no brief ⇒ no analysisId").toBeNull();
+  });
+
+  test("the same pair scans deterministically (identical except scannedAt)", async ({
+    request,
+  }) => {
+    const st = await seedState();
+    const scanOnce = async () => {
+      const res = await request.post(`${API}/api/client-impact/scan`, {
+        data: { clientId: "client-corebloom", billId: st.billId },
+      });
+      expect(res.status()).toBe(200);
+      const body = await res.json();
+      expectNoScoreAnywhere(body);
+      return body.scan;
+    };
+    const first = await scanOnce();
+    const second = await scanOnce();
+
+    const { scannedAt: _t1, ...rest1 } = first;
+    const { scannedAt: _t2, ...rest2 } = second;
+    expect(rest2, "keyless scans must be deterministic minus scannedAt").toEqual(rest1);
+  });
+
+  test("a bill with zero approved changes scans band 'low' and says why", async ({
+    request,
+  }) => {
+    const st = await seedState();
+    // bill2 has a seeded delta but NO approvals record.
+    const res = await request.post(`${API}/api/client-impact/scan`, {
+      data: { clientId: "client-corebloom", billId: st.billId2 },
+    });
+    expect(res.status()).toBe(200);
+    const body = await res.json();
+    expectNoScoreAnywhere(body);
+
+    expectScanViewShape(body.scan, "client-corebloom", st.billId2);
+    expect(body.scan.band).toBe("low");
+    expect(body.scan.source).toBe("fallback");
+    expect(
+      body.scan.rationale,
+      "the rationale must say there are no approved changes",
+    ).toMatch(/no approved changes/i);
+  });
+
+  test("GET /scans lists the pair (hasBrief:false), ranked, band-only", async ({
+    request,
+  }) => {
+    const st = await seedState();
+    const res = await request.get(
+      `${API}/api/client-impact/scans?billId=${st.billId}`,
+    );
+    expect(res.status()).toBe(200);
+    const list = await res.json();
+    expect(Array.isArray(list)).toBe(true);
+    expectNoScoreAnywhere(list);
+
+    const mine = list.find((s: any) => s.clientId === "client-corebloom");
+    expect(mine, "the scanned pair must appear in the bill's scan list").toBeTruthy();
+    expectScanViewShape(mine, "client-corebloom", st.billId);
+    expect(mine.hasBrief).toBe(false);
+
+    // Sorted by the backend's hidden score, descending. The score itself is
+    // unobservable by design — its band shadow must be non-increasing.
+    for (let i = 1; i < list.length; i++) {
+      expect(
+        BAND_SEVERITY[list[i - 1].band],
+        `scans[${i - 1}] (${list[i - 1].band}) must rank ≥ scans[${i}] (${list[i].band})`,
+      ).toBeGreaterThanOrEqual(BAND_SEVERITY[list[i].band]);
+    }
+  });
+
+  test("GET /scans without billId is a 400", async ({ request }) => {
+    const res = await request.get(`${API}/api/client-impact/scans`);
+    expect(res.status()).toBe(400);
+  });
+
+  test("after analyze, the pair's listing flips to hasBrief:true with the analysisId", async ({
+    request,
+  }) => {
+    test.setTimeout(120_000);
+    const st = await seedState();
+    const analyzed = await request.post(`${API}/api/client-impact/analyze`, {
+      data: { clientId: "client-corebloom", billId: st.billId },
+      timeout: 90_000,
+    });
+    expect(analyzed.status()).toBe(200);
+    const { analysis } = await analyzed.json();
+
+    const res = await request.get(
+      `${API}/api/client-impact/scans?billId=${st.billId}`,
+    );
+    expect(res.status()).toBe(200);
+    const list = await res.json();
+    expectNoScoreAnywhere(list);
+
+    const mine = list.find((s: any) => s.clientId === "client-corebloom");
+    expect(mine).toBeTruthy();
+    expect(mine.hasBrief, "an existing brief must surface without re-scanning").toBe(true);
+    expect(mine.analysisId).toBe(analysis.id);
+  });
+
+  test("deleting a client cascades its scans out of /scans", async ({ request }) => {
+    const st = await seedState();
+
+    const created = await request.post(`${API}/api/clients`, {
+      data: {
+        name: "E2E Scan Client",
+        industry: "Compliance testing",
+        jurisdictions: ["Canada"],
+        description: "Created by the e2e scorer specs — safe to delete.",
+      },
+    });
+    expect(created.ok()).toBeTruthy();
+    const tempId = (await created.json()).id;
+    expect(tempId).toBeTruthy();
+
+    const scanned = await request.post(`${API}/api/client-impact/scan`, {
+      data: { clientId: tempId, billId: st.billId },
+    });
+    expect(scanned.status()).toBe(200);
+    expectNoScoreAnywhere(await scanned.json());
+
+    const before = await (
+      await request.get(`${API}/api/client-impact/scans?billId=${st.billId}`)
+    ).json();
+    expect(
+      before.some((s: any) => s.clientId === tempId),
+      "the temp client's scan must be listed before the delete",
+    ).toBe(true);
+
+    const del = await request.delete(`${API}/api/clients/${tempId}`);
+    expect(del.status()).toBe(200);
+
+    const after = await (
+      await request.get(`${API}/api/client-impact/scans?billId=${st.billId}`)
+    ).json();
+    expect(
+      after.some((s: any) => s.clientId === tempId),
+      "DELETE /api/clients/:id must cascade the client's scans",
+    ).toBe(false);
+    expect(
+      after.some((s: any) => s.clientId === "client-corebloom"),
+      "the cascade must be surgical — other clients' scans stay",
+    ).toBe(true);
   });
 });
 

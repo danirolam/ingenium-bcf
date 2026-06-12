@@ -1,6 +1,12 @@
 import { Router } from "express";
 import type { Client, ClientImpactAnalysis } from "../../src/types.js";
-import { findRecord, safe, withFileLock } from "../services/clientScan.js";
+import {
+  SCANS_FILE,
+  findRecord,
+  safe,
+  withFileLock,
+  type ImpactScan,
+} from "../services/clientScan.js";
 import {
   FILES,
   readAll,
@@ -136,6 +142,16 @@ clientsRouter.delete(
       const remaining = impacts.filter((a) => a.clientId !== id);
       if (remaining.length !== impacts.length) {
         await writeAll(FILES.impacts, remaining);
+      }
+    });
+    // Same cascade for the client's impact scans (the scoreboard store).
+    await withFileLock(SCANS_FILE, async () => {
+      const scans = (await readAll<ImpactScan>(SCANS_FILE)).filter(
+        (s) => !!s && typeof s === "object",
+      );
+      const remaining = scans.filter((s) => s.clientId !== id);
+      if (remaining.length !== scans.length) {
+        await writeAll(SCANS_FILE, remaining);
       }
     });
     res.json({ ok: true });

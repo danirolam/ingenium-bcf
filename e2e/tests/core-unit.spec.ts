@@ -12,6 +12,14 @@
  *                                    dropped: { key, anchor, actTitle, reason: "chunk-cap" }[] }
  *   mergeAnalyses(parts[]): merged analysis body
  *   coverageNote(analyzedCount: number, dropped[]): string | null
+ *
+ * Scorer additions (Phase 1A, two-agent split):
+ *   SCAN_BANDS: ["low","medium","high","critical"] (ascending severity)
+ *   ANALYZE_EMPHASIS_BANDS: Set — exactly {high, critical}
+ *   bandFromScore(score): 0–24 low · 25–49 medium · 50–74 high · 75–100 critical
+ *   normalizeScore(raw: unknown): score body, never throws; the band is ALWAYS
+ *     recomputed from the (clamped/coerced) score — a claimed band is ignored
+ *   heuristicScore(changes, client): deterministic keyless score body, 0..90
  */
 import { test, expect } from "@playwright/test";
 
@@ -340,4 +348,163 @@ test("coverageNote distinguishes volume-cap drops from AI-unavailable skips", ()
   expect(note).toContain("AI unavailable");
   expect(note).toContain("Section 9");
   expect(note.indexOf("Section 9")).toBeGreaterThan(note.indexOf("AI unavailable"));
+});
+
+// ── Scorer (two-agent split): bands, normalizeScore, heuristicScore ──────────
+
+/**
+ * Fixture client for heuristicScore. Terms are mined from industry /
+ * jurisdictions / description (lowercased words ≥4 chars), so the snippets
+ * below are engineered against THAT vocabulary: every "overlap" snippet reuses
+ * several of the client's distinctive words, every "neutral" snippet shares
+ * none of them.
+ */
+const SCORE_CLIENT = {
+  id: "e2e-score-client",
+  name: "Maplecart Grocers",
+  industry: "Retail grocery distribution",
+  jurisdictions: ["Canada"],
+  description:
+    "Operates refrigerated grocery logistics: food labelling compliance, perishable storage temperature monitoring, and delivery fleet licensing.",
+  createdAt: new Date().toISOString(),
+};
+const OVERLAP_SNIPPETS = [
+  "food labelling disclosures for grocery products",
+  "refrigerated storage temperature monitoring of perishable goods",
+  "delivery fleet licensing renewals for grocery distribution",
+];
+const NEUTRAL_SNIPPETS = [
+  "maritime beacon luminosity certification",
+  "offshore platform inspection intervals",
+  "aviation runway marking colour codes",
+];
+
+/**
+ * One act with 4 ops: the first `overlapping` reuse the client's vocabulary,
+ * the rest are from a disjoint domain. Total op count is FIXED so the two
+ * monotonicity inputs differ only in how many ops overlap.
+ */
+function scoredChanges(overlapping: number) {
+  const ops = Array.from({ length: 4 }, (_, i) => {
+    const snippet =
+      i < overlapping
+        ? OVERLAP_SNIPPETS[i % OVERLAP_SNIPPETS.length]
+        : NEUTRAL_SNIPPETS[i % NEUTRAL_SNIPPETS.length];
+    return {
+      key: `e2e-score-act#${i}`,
+      op: "replace",
+      anchor: `Section ${i + 1}`,
+      instruction: `Section ${i + 1} is amended to govern ${snippet}.`,
+    };
+  });
+  return [
+    {
+      slug: "e2e-score-act",
+      actTitle: "Statutes Amendment Act",
+      citation: "TEST 2026, c. 4",
+      ops,
+    },
+  ];
+}
+
+test("scorer exports: SCAN_BANDS ascending, ANALYZE_EMPHASIS_BANDS = exactly {high, critical}", () => {
+  const c = requireCore();
+  // Canonical ascending-severity order — the same order bandFromScore maps.
+  expect(c.SCAN_BANDS).toEqual(["low", "medium", "high", "critical"]);
+
+  expect(c.ANALYZE_EMPHASIS_BANDS instanceof Set).toBe(true);
+  expect(c.ANALYZE_EMPHASIS_BANDS.size).toBe(2);
+  expect(c.ANALYZE_EMPHASIS_BANDS.has("high")).toBe(true);
+  expect(c.ANALYZE_EMPHASIS_BANDS.has("critical")).toBe(true);
+
+  for (const fn of ["bandFromScore", "normalizeScore", "heuristicScore"]) {
+    expect(typeof c[fn], `${fn} must be exported`).toBe("function");
+  }
+});
+
+test("bandFromScore boundary table: 0–24 low · 25–49 medium · 50–74 high · 75–100 critical", () => {
+  const c = requireCore();
+  const table: Array<[number, string]> = [
+    [0, "low"],
+    [24, "low"],
+    [25, "medium"],
+    [49, "medium"],
+    [50, "high"],
+    [74, "high"],
+    [75, "critical"],
+    [100, "critical"],
+  ];
+  for (const [score, band] of table) {
+    expect(c.bandFromScore(score), `bandFromScore(${score})`).toBe(band);
+  }
+});
+
+test("normalizeScore clamps out-of-range scores to 0..100 (band follows the clamp)", () => {
+  const c = requireCore();
+  const below = c.normalizeScore({ score: -5 });
+  expect(below.score).toBe(0);
+  expect(below.band).toBe("low");
+
+  const above = c.normalizeScore({ score: 250 });
+  expect(above.score).toBe(100);
+  expect(above.band).toBe("critical");
+});
+
+test("normalizeScore never throws on garbage and ALWAYS recomputes the band from the score", () => {
+  const c = requireCore();
+  const garbage: unknown[] = [null, undefined, "x", [], {}, { score: "high" }];
+  for (const input of garbage) {
+    let out: any;
+    expect(() => {
+      out = c.normalizeScore(input);
+    }, `normalizeScore threw on ${JSON.stringify(input)}`).not.toThrow();
+    expect(out, `normalizeScore returned nothing for ${JSON.stringify(input)}`).toBeTruthy();
+    expect(typeof out.score, `score must coerce to a number for ${JSON.stringify(input)}`).toBe(
+      "number",
+    );
+    expect(out.score).toBeGreaterThanOrEqual(0);
+    expect(out.score).toBeLessThanOrEqual(100);
+    expect(out.band, `band must be recomputed from the score`).toBe(
+      c.bandFromScore(out.score),
+    );
+    expect(typeof out.rationale).toBe("string");
+    expect(Array.isArray(out.topAreas)).toBe(true);
+  }
+
+  // A lying band is IGNORED — score 10 normalizes to "low", whatever it claims.
+  const lying = c.normalizeScore({ score: 10, band: "critical" });
+  expect(lying.score).toBe(10);
+  expect(lying.band).toBe("low");
+});
+
+test("heuristicScore is deterministic: same inputs ⇒ deep-identical output", () => {
+  const c = requireCore();
+  const first = c.heuristicScore(scoredChanges(3), SCORE_CLIENT);
+  const second = c.heuristicScore(scoredChanges(3), SCORE_CLIENT);
+  expect(second).toEqual(first);
+});
+
+test("heuristicScore stays within 0..90 and self-identifies as a heuristic", () => {
+  const c = requireCore();
+  // No changes at all / 4 zero-overlap ops / 3-of-4 overlapping ops.
+  for (const changes of [[], scoredChanges(0), scoredChanges(3)]) {
+    const out = c.heuristicScore(changes, SCORE_CLIENT);
+    expect(typeof out.score).toBe("number");
+    expect(out.score).toBeGreaterThanOrEqual(0);
+    expect(out.score, "a keyless heuristic must never claim a full 100").toBeLessThanOrEqual(90);
+    expect(out.band).toBe(c.bandFromScore(out.score));
+    expect(out.rationale, "the rationale must disclose its heuristic origin").toMatch(
+      /heuristic/i,
+    );
+  }
+});
+
+test("heuristicScore monotonicity: more client-term-overlapping ops never scores lower", () => {
+  const c = requireCore();
+  const fewer = c.heuristicScore(scoredChanges(1), SCORE_CLIENT);
+  const more = c.heuristicScore(scoredChanges(3), SCORE_CLIENT);
+  expect(
+    more.score,
+    `3-of-4 overlapping ops (${more.score}) must score ≥ 1-of-4 (${fewer.score})`,
+  ).toBeGreaterThanOrEqual(fewer.score);
 });

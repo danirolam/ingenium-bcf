@@ -54,3 +54,42 @@ export async function setAllClientCheckboxes(page: Page, selected: boolean): Pro
     await boxes.nth(i).setChecked(selected);
   }
 }
+
+// ── Two-phase scan (scorer) helpers ──────────────────────────────────────────
+
+/** The only legal `data-band` values, ascending severity (mirrors SCAN_BANDS). */
+export const SCAN_BAND_VALUES = ["low", "medium", "high", "critical"] as const;
+export const SCAN_BAND_RE = /^(low|medium|high|critical)$/;
+
+/**
+ * Assert the scoreboard holds exactly `expectedCount` scan rows and that every
+ * row settles at scan-status "scored" carrying a valid scan-band[data-band].
+ * (The keyless heuristic is near-instant; the generous per-row timeout is for
+ * slow CI machines, not the scorer.)
+ */
+export async function expectAllRowsScored(
+  page: Page,
+  expectedCount: number,
+  timeoutMs = 120_000,
+): Promise<void> {
+  const rows = page.getByTestId("scan-row");
+  await expect(rows).toHaveCount(expectedCount, { timeout: 30_000 });
+  for (let i = 0; i < expectedCount; i++) {
+    const row = rows.nth(i);
+    await expect(row.getByTestId("scan-status")).toHaveText("scored", {
+      timeout: timeoutMs,
+    });
+    const band = row.getByTestId("scan-band");
+    await expect(band).toBeVisible();
+    await expect(band).toHaveAttribute("data-band", SCAN_BAND_RE);
+  }
+}
+
+/**
+ * The rationale panels currently shown. The accordion law is "at most ONE
+ * visible at a time"; `:visible` keeps the count honest whether a closed panel
+ * is unmounted or merely CSS-hidden.
+ */
+export function visibleRationales(page: Page) {
+  return page.locator('[data-testid="scan-rationale"]:visible');
+}

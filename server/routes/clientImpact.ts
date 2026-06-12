@@ -7,13 +7,20 @@ import type {
 } from "../../src/types.js";
 import { createAiBudget } from "../services/aiBudget.js";
 import {
+  SCANS_FILE,
   analyzeClientFromChanges,
   findRecord,
   loadApprovedChanges,
   safe,
+  scoreClientAgainstChanges,
   withFileLock,
+  type ImpactScan,
 } from "../services/clientScan.js";
-import type { ScanReadyBill, ScanReadyDetail } from "../services/clientScanCore.js";
+import type {
+  ScanReadyBill,
+  ScanReadyDetail,
+  ScoreBody,
+} from "../services/clientScanCore.js";
 import { sendClientImpactCompleteEmail } from "../services/email.js";
 import { billAffectedActs } from "../services/gemini.js";
 import { flagImpactReview } from "../services/humanReview.js";
@@ -244,6 +251,123 @@ clientImpactRouter.get(
     const { changes, approvedCount } = await loadApprovedChanges(billId);
     const detail: ScanReadyDetail = { billId: bill.id, approvedCount, changes };
     res.json(detail);
+  }),
+);
+
+// ── Impact scans (the fast scorer agent) ─────────────────────────────────────
+
+/**
+ * Client-facing scan shape: the stored record WITHOUT the numeric score
+ * (backend-only ranking key), plus whether a full brief already exists for the
+ * pair. Omit<> keeps the type honest; the runtime destructure in toScanView
+ * keeps the value honest.
+ */
+interface ImpactScanView extends Omit<ImpactScan, "score"> {
+  hasBrief: boolean;
+  analysisId?: string;
+}
+
+function toScanView(
+  scan: ImpactScan,
+  brief: ClientImpactAnalysis | undefined,
+): ImpactScanView {
+  const { score: _score, ...rest } = scan; // strip the backend-only score
+  void _score;
+  return { ...rest, hasBrief: !!brief, ...(brief ? { analysisId: brief.id } : {}) };
+}
+
+/** Newest brief for a (client, bill) pair, if any. */
+function latestBriefFor(
+  impacts: ClientImpactAnalysis[],
+  clientId: string,
+  billId: string,
+): ClientImpactAnalysis | undefined {
+  return impacts
+    .filter((a) => a.clientId === clientId && a.billId === billId)
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0];
+}
+
+// Fast impact score for ONE (client, bill) pair — seconds, not the ~30s brief.
+// Persisted latest-wins under a deterministic id; the response NEVER carries
+// the numeric score.
+clientImpactRouter.post(
+  "/scan",
+  safe(async (req, res) => {
+    const clientId = String(req.body?.clientId ?? "");
+    const billId = String(req.body?.billId ?? "");
+    if (!clientId || !billId) {
+      return res.status(400).json({ error: "clientId and billId required" });
+    }
+    const client = await findRecord<Client>(FILES.clients, clientId);
+    const bill = await findRecord<Bill>(FILES.bills, billId);
+    if (!client) return res.status(404).json({ error: "client not_found" });
+    if (!bill) return res.status(404).json({ error: "bill not_found" });
+
+    const { changes, approvedCount } = await loadApprovedChanges(billId);
+    let scored: ScoreBody & { source: "ai" | "fallback" };
+    if (approvedCount === 0) {
+      scored = {
+        score: 0,
+        band: "low",
+        rationale:
+          "No approved changes for this bill — run the stage-2 delta and approve amendments first.",
+        topAreas: [],
+        source: "fallback",
+      };
+    } else {
+      scored = await scoreClientAgainstChanges({ bill, client, changes }, createAiBudget());
+    }
+
+    const record: ImpactScan = {
+      id: `scan-${clientId}-${billId}`, // deterministic ⇒ upsert is latest-wins per pair
+      clientId,
+      billId,
+      score: scored.score,
+      band: scored.band,
+      rationale: scored.rationale,
+      topAreas: scored.topAreas,
+      source: scored.source,
+      scannedAt: new Date().toISOString(),
+    };
+    await withFileLock(SCANS_FILE, () => upsert(SCANS_FILE, record));
+
+    const impacts = presentOnly(await readAll<ClientImpactAnalysis>(FILES.impacts));
+    res.json({ scan: toScanView(record, latestBriefFor(impacts, clientId, billId)) });
+  }),
+);
+
+// All scans for a bill, ranked by the stored (backend-only) score — the
+// scoreboard feed. Registered BEFORE /:id (Express matches in order; /:id
+// would swallow /scans).
+clientImpactRouter.get(
+  "/scans",
+  safe(async (req, res) => {
+    const billId = String(req.query.billId ?? "");
+    if (!billId) return res.status(400).json({ error: "billId required" });
+
+    const scans = presentOnly(await readAll<ImpactScan>(SCANS_FILE)).filter(
+      (s) => s.billId === billId,
+    );
+    // Join clients once: drop scans whose client no longer exists, and use the
+    // names for deterministic tie-breaks.
+    const clientsById = new Map(
+      presentOnly(await readAll<Client>(FILES.clients)).map((c) => [c.id, c]),
+    );
+    // Join impacts once: newest brief per pair for hasBrief/analysisId.
+    const latestByPair = new Map<string, ClientImpactAnalysis>();
+    for (const a of presentOnly(await readAll<ClientImpactAnalysis>(FILES.impacts))) {
+      const k = `${a.clientId}|${a.billId}`;
+      const cur = latestByPair.get(k);
+      if (!cur || a.createdAt.localeCompare(cur.createdAt) > 0) latestByPair.set(k, a);
+    }
+
+    const name = (s: ImpactScan) => clientsById.get(s.clientId)?.name ?? "";
+    const rank = (s: ImpactScan) => (Number.isFinite(s.score) ? s.score : 0);
+    const out = scans
+      .filter((s) => clientsById.has(s.clientId))
+      .sort((a, b) => rank(b) - rank(a) || name(a).localeCompare(name(b)))
+      .map((s) => toScanView(s, latestByPair.get(`${s.clientId}|${s.billId}`)));
+    res.json(out);
   }),
 );
 

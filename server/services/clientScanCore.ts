@@ -588,3 +588,182 @@ export function coverageNote(
   }
   return `${sentences.join(". ")} — review these provisions manually.`;
 }
+
+// ── Impact score (stage-3 scorer agent) ───────────────────────────────────────
+//
+// The fast first agent of the split stage 3: a per-(client, bill) impact SCORE.
+// The numeric 0–100 score is backend-only (stored for ranking, stripped from
+// every API response); clients see only the band, a one-line rationale and the
+// top affected areas.
+
+export const SCAN_BANDS = ["low", "medium", "high", "critical"] as const;
+export type ScanBand = (typeof SCAN_BANDS)[number];
+
+/** Bands the brief agent should lead with — scan first, analyze these pairs. */
+export const ANALYZE_EMPHASIS_BANDS: ReadonlySet<ScanBand> = new Set([
+  "high",
+  "critical",
+]);
+
+/** The model/heuristic-produced portion of an impact scan (storage fields stamped later). */
+export interface ScoreBody {
+  score: number; // 0–100 integer — backend-only, never serialized to clients
+  band: ScanBand;
+  rationale: string;
+  topAreas: string[];
+}
+
+/** Score → band: 0–24 low · 25–49 medium · 50–74 high · 75–100 critical. */
+export function bandFromScore(score: number): ScanBand {
+  if (score >= 75) return "critical";
+  if (score >= 50) return "high";
+  if (score >= 25) return "medium";
+  return "low";
+}
+
+const RATIONALE_MAX_CHARS = 400;
+const TOP_AREAS_MAX = 3;
+
+function capRationale(s: string): string {
+  const t = s.trim();
+  return t.length > RATIONALE_MAX_CHARS ? `${t.slice(0, RATIONALE_MAX_CHARS - 1)}…` : t;
+}
+
+/**
+ * Coerce ANY value (null, arrays, strings, garbage) into a valid ScoreBody.
+ * Never throws. The score becomes a finite integer clamped to [0,100]
+ * (garbage/NaN → 0) and the band is ALWAYS recomputed from that score — the
+ * model's claimed band is ignored, so score and band can never disagree.
+ */
+export function normalizeScore(raw: unknown): ScoreBody {
+  const rec = isRecord(raw) ? raw : undefined;
+  const scoreRaw = rec?.score;
+  const n =
+    typeof scoreRaw === "number"
+      ? scoreRaw
+      : typeof scoreRaw === "string" && scoreRaw.trim() !== ""
+        ? Number(scoreRaw)
+        : NaN;
+  const score = Number.isFinite(n) ? Math.min(100, Math.max(0, Math.round(n))) : 0;
+  return {
+    score,
+    band: bandFromScore(score),
+    rationale: capRationale(asStr(rec?.rationale)),
+    topAreas: asStrArray(rec?.topAreas)
+      .map((s) => s.trim())
+      .slice(0, TOP_AREAS_MAX),
+  };
+}
+
+// Heuristic tuning. An op only registers once it shares MORE than
+// HEURISTIC_NOISE_FLOOR distinct substantive terms with the client (1–2 shared
+// ≥4-char words is ambient legal English, not subject-matter overlap); its
+// density then saturates at HEURISTIC_DENSITY_SATURATION effective hits. The
+// summed per-op densities (the "overlap mass" W) map onto 0..90 through the
+// saturating curve MAX·W/(W+HALF) — strictly increasing in W, so adding an
+// overlapping op can never lower the score, and bounded below 90 because a
+// keyless heuristic must never claim the certainty of a full critical (100)
+// without AI.
+const HEURISTIC_MAX_SCORE = 90;
+const HEURISTIC_NOISE_FLOOR = 2; // distinct shared terms discounted as ambient noise
+const HEURISTIC_DENSITY_SATURATION = 10; // effective hits at which an op is fully dense
+const HEURISTIC_HALF_SCORE_MASS = 2; // overlap mass at which the curve crosses MAX/2
+
+/**
+ * Deterministic keyless fallback score: how many ops' text (Act title +
+ * marginal note + instruction + before/after text) intersect the client's
+ * documented term set, weighted by hit density. Same inputs ⇒ byte-identical
+ * output (no IO, no clock, no randomness); more overlapping ops ⇒ score never
+ * lower.
+ */
+export function heuristicScore(changes: ApprovedActChange[], client: Client): ScoreBody {
+  const terms = clientTerms(client);
+
+  interface OpHit {
+    hits: number; // distinct client terms in the op's text
+    density: number; // 0..1 — noise-floored hits over the saturation point
+    actTitle: string;
+    marginalNote: string | null;
+    idx: number;
+  }
+  const ops: OpHit[] = [];
+  let idx = 0;
+  for (const c of changes) {
+    for (const op of c.ops) {
+      const text = [
+        c.actTitle,
+        op.marginalNote ?? "",
+        op.instruction,
+        op.beforeText ?? "",
+        op.afterText ?? "",
+      ].join(" ");
+      const hits = scoreText(text, terms);
+      ops.push({
+        hits,
+        density: Math.min(
+          1,
+          Math.max(0, hits - HEURISTIC_NOISE_FLOOR) / HEURISTIC_DENSITY_SATURATION,
+        ),
+        actTitle: c.actTitle,
+        marginalNote: op.marginalNote ?? null,
+        idx: idx++,
+      });
+    }
+  }
+
+  const total = ops.length;
+  if (total === 0) {
+    return {
+      score: 0,
+      band: "low",
+      rationale: capRationale(
+        `Heuristic (no AI key): no approved changes to assess for ${client.name}.`,
+      ),
+      topAreas: [],
+    };
+  }
+
+  const hitOps = ops.filter((o) => o.density > 0);
+  if (hitOps.length === 0) {
+    return {
+      score: 0,
+      band: "low",
+      rationale: capRationale(
+        `Heuristic (no AI key): 0 of ${total} approved changes intersect ${client.name}'s documented terms — no substantive vocabulary shared between the amendments and the client's profile or documents.`,
+      ),
+      topAreas: [],
+    };
+  }
+
+  // Overlap mass → 0..HEURISTIC_MAX_SCORE through a saturating curve.
+  const mass = hitOps.reduce((s, o) => s + o.density, 0);
+  const score = Math.min(
+    HEURISTIC_MAX_SCORE,
+    Math.round((HEURISTIC_MAX_SCORE * mass) / (mass + HEURISTIC_HALF_SCORE_MASS)),
+  );
+
+  // Top areas from the strongest-hit ops: marginal note (the human-meaningful
+  // "area") with its Act, falling back to the Act title. Deterministic order:
+  // hits desc, original op order on ties; case-insensitive dedup.
+  const ranked = [...hitOps].sort((a, b) => b.hits - a.hits || a.idx - b.idx);
+  const topAreas: string[] = [];
+  const seen = new Set<string>();
+  for (const o of ranked) {
+    const note = o.marginalNote?.trim();
+    const label = note ? `${note} (${o.actTitle})` : o.actTitle;
+    const k = label.toLowerCase();
+    if (seen.has(k)) continue;
+    seen.add(k);
+    topAreas.push(label);
+    if (topAreas.length >= TOP_AREAS_MAX) break;
+  }
+
+  return {
+    score,
+    band: bandFromScore(score),
+    rationale: capRationale(
+      `Heuristic (no AI key): ${hitOps.length} of ${total} approved changes intersect ${client.name}'s documented terms — strongest overlap: ${topAreas.join("; ")}.`,
+    ),
+    topAreas,
+  };
+}

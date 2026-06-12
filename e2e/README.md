@@ -93,10 +93,10 @@ exists for the analyze call and is cleaned afterwards.
 | Spec | Verifies | Passes today? | Unblocked by |
 | --- | --- | --- | --- |
 | `smoke.spec.ts` | server boot, env blanking, `/` renders | **yes** | — |
-| `api.spec.ts` | scan-ready list/detail/404, analyze 400/404, keyless analyze + by-pair, client CRUD + cascade | **yes** (Phase 1A backend landed) | — |
-| `core-unit.spec.ts` | `clientScanCore.ts` pure functions (a missing/broken module FAILS the suite) | **yes** (Phase 1A backend landed) | — |
-| `scan-ready.spec.ts` | ready list / approved summary UI | **yes** (Phase 2C frontend landed) | — |
-| `scan-flow.spec.ts` | scan happy path → brief → back | **yes** (Phase 2C frontend landed) | — |
+| `api.spec.ts` | scan-ready list/detail/404, scorer (`/scan` + `/scans`: bands, determinism, no-score-leak, cascade), analyze 400/404, keyless analyze + by-pair, client CRUD + cascade | **yes** (scorer backend landed) | — |
+| `core-unit.spec.ts` | `clientScanCore.ts` pure functions incl. `bandFromScore`/`normalizeScore`/`heuristicScore` laws (a missing/broken module FAILS the suite) | **yes** (scorer backend landed) | — |
+| `scan-ready.spec.ts` | ready list / approved summary UI | **yes** | — |
+| `scan-flow.spec.ts` | two-phase flow: band scoreboard → rationale accordion → per-row analyze → brief → persistence | no | two-agent frontend (scoreboard testids) |
 | `empty-states.spec.ts` | run-scan disabled guards | **yes** (Phase 2C frontend landed) | — |
 | `client-management.spec.ts` | client modal CRUD UI | **yes** (Phase 2C frontend landed) | — |
 | `live.spec.ts` | real AI analysis (opt-in `@live`) | opt-in | real keys + your running server |
@@ -109,7 +109,20 @@ Stage-3 selectors are the agreed `data-testid` contract (`ready-bill-list`,
 `client-checkbox`, `select-all-clients`, `new-client-button`, `client-modal`,
 `client-*-input`, `client-modal-save`, `edit-client`, `delete-client`,
 `confirm-delete-client`, `run-scan`, `scan-row[data-client-id]`,
-`scan-status` with exact text `queued|running|done|failed`, `view-brief`).
+`scan-status` with exact text `queued|scoring|scored|failed`, `scan-band[data-band]`,
+`scan-rationale-toggle`, `scan-rationale` (accordion — at most ONE visible at a
+time), `analyze-client` (per row, soft-gated emphasis at high/critical),
+`scan-retry` (failed rows only), `view-brief` (when a brief exists)).
+
+### The scorer contract (two-agent split)
+
+`POST /api/client-impact/scan {clientId, billId}` returns a **band-only** view
+(`band`, `rationale`, `topAreas`, `source`, `hasBrief`); the numeric 0–100
+score is backend-only ranking state and must NEVER appear in any response —
+`api.spec.ts` enforces this on both the single-scan and `/scans` list shapes.
+Keyless runs use the deterministic `heuristicScore` fallback, so scan results
+are stable in CI. `GET /api/client-impact/scans?billId=…` is the persisted,
+pre-ranked scoreboard feed (latest-wins per pair).
 
 Two behavioral notes encoded in the specs:
 
