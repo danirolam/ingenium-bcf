@@ -86,7 +86,7 @@ exists for the analyze call and is cleaned afterwards.
 | `core-unit.spec.ts` | `clientScanCore.ts` pure functions (a missing/broken module FAILS the suite) | **yes** (Phase 1A backend landed) | — |
 | `scan-ready.spec.ts` | ready list / approved summary UI | **yes** (Phase 2C frontend landed) | — |
 | `scan-flow.spec.ts` | scan happy path → brief → back | **yes** (Phase 2C frontend landed) | — |
-| `empty-states.spec.ts` | run-scan disabled guards + stage-2 guidance for non-ready bills | **yes** (Phase 2C frontend landed) | — |
+| `empty-states.spec.ts` | run-scan disabled guards | **yes** (Phase 2C frontend landed) | — |
 | `client-management.spec.ts` | client modal CRUD UI | **yes** (Phase 2C frontend landed) | — |
 | `live.spec.ts` | real AI analysis (opt-in `@live`) | opt-in | real keys + your running server |
 

@@ -58,7 +58,3 @@ test("selecting the ready bill shows the approved-changes summary", async ({
   }
 });
 
-test("the browse-all toggle reveals the full bill grid", async ({ page }) => {
-  await page.getByTestId("browse-all-toggle").click();
-  await expect(page.getByTestId("browse-bill-grid")).toBeVisible();
-});

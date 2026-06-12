@@ -2,17 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,
-  faChevronRight,
   faListCheck,
   faPen,
   faPlay,
   faPlus,
-  faScroll,
   faTrash,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import type { Nav } from "../App";
-import { BillPickerGrid } from "../components/BillPickerGrid";
 import { PageHeader } from "../components/PageHeader";
 import { api } from "../lib/api";
 import {
@@ -24,7 +21,7 @@ import {
   type ScanReadyBill,
   type ScanReadyDetail,
 } from "../lib/clientScan";
-import type { Bill, Client } from "../types";
+import type { Client } from "../types";
 import "../styles/clientscan.css";
 
 const OP_LABEL: Record<ApprovedOpSummary["op"], string> = {
@@ -59,14 +56,12 @@ function fmtWhen(iso: string): string {
 export function ClientLawScanner({ nav }: { nav: Nav }) {
   const [clients, setClients] = useState<Client[]>([]);
   const [clientsLoaded, setClientsLoaded] = useState(false);
-  const [bills, setBills] = useState<Bill[]>([]);
   const [readyBills, setReadyBills] = useState<ScanReadyBill[]>([]);
   const [readyLoaded, setReadyLoaded] = useState(false);
 
   const [selectedBillId, setSelectedBillId] = useState("");
   const [detail, setDetail] = useState<ScanReadyDetail | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
-  const [showBrowse, setShowBrowse] = useState(false);
 
   const [selectedClientIds, setSelectedClientIds] = useState<Set<string>>(
     () => new Set(),
@@ -98,17 +93,12 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
     selectedBillIdRef.current = selectedBillId;
   }, [selectedBillId]);
 
-  // ── Initial data: clients + all bills + the scan-ready shortlist ──
+  // ── Initial data: clients + the scan-ready shortlist ──
   useEffect(() => {
     const ac = new AbortController();
-    Promise.all([
-      api.clients.list(),
-      api.bills.list(ac.signal),
-      fetchScanReady(ac.signal),
-    ])
-      .then(([cs, bs, ready]) => {
+    Promise.all([api.clients.list(), fetchScanReady(ac.signal)])
+      .then(([cs, ready]) => {
         setClients(cs);
-        setBills(bs);
         setReadyBills(ready);
       })
       .catch((err: unknown) => {
@@ -131,7 +121,6 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
 
   const selectedReady =
     readyBills.find((b) => b.billId === selectedBillId) ?? null;
-  const selectedBill = bills.find((b) => b.id === selectedBillId) ?? null;
 
   // ── Approved-changes detail for the selected ready bill ──
   useEffect(() => {
@@ -513,36 +502,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
               </div>
             </div>
 
-            {/* ── 2. Browse all bills (secondary) ── */}
-            <div className="card">
-              <button
-                type="button"
-                className={`cs-browse-toggle${showBrowse ? " open" : ""}`}
-                data-testid="browse-all-toggle"
-                aria-expanded={showBrowse}
-                onClick={() => setShowBrowse((v) => !v)}
-              >
-                <FontAwesomeIcon
-                  icon={faChevronRight}
-                  className="cs-caret"
-                  aria-hidden="true"
-                />
-                <FontAwesomeIcon icon={faScroll} aria-hidden="true" />
-                <span>Browse all bills</span>
-                <span className="cs-count">({bills.length})</span>
-              </button>
-              {showBrowse && (
-                <div className="card-pad" data-testid="browse-bill-grid">
-                  <BillPickerGrid
-                    bills={bills}
-                    activeId={selectedBillId}
-                    onSelect={setSelectedBillId}
-                  />
-                </div>
-              )}
-            </div>
-
-            {/* ── 3. Approved changes for the selected bill / stage-2 guidance ── */}
+            {/* ── 2. Approved changes for the selected bill ── */}
             {selectedBillId && selectedReady && (
               <div className="card" data-testid="approved-summary">
                 <div className="card-h">
@@ -631,38 +591,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                 </div>
               </div>
             )}
-            {selectedBillId && !selectedReady && readyLoaded && (
-              <div className="card" data-testid="stage2-guidance">
-                <div className="card-h">
-                  <div className="card-title-row">
-                    <FontAwesomeIcon icon={faListCheck} aria-hidden="true" />
-                    <div className="card-title">Not ready to scan</div>
-                  </div>
-                </div>
-                <div className="scanner-card-body">
-                  <div className="empty-small">
-                    {selectedBill
-                      ? `${selectedBill.billNumber} — ${selectedBill.title}`
-                      : "This bill"}{" "}
-                    has no counsel-approved amendments yet. Run the stage-2
-                    delta and approve amendments first.
-                  </div>
-                  <div className="actions-row">
-                    <button
-                      className="btn"
-                      onClick={() =>
-                        nav.go("delta", { billId: selectedBillId })
-                      }
-                    >
-                      Open Legal delta
-                      <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* ── 4. Run the scan + live progress ── */}
+            {/* ── 3. Run the scan + live progress ── */}
             <div className="card">
               <div className="card-h">
                 <div className="card-title-row">
@@ -677,13 +606,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                   <div className="v">
                     {selectedReady
                       ? `${selectedReady.billNumber} — ${selectedReady.shortTitle || selectedReady.title}`
-                      : selectedBillId
-                        ? "Selected bill is not scan-ready."
-                        : "Select a ready bill above."}
-                  </div>
-                  <div className="k">Clients</div>
-                  <div className="v">
-                    {selectedClientIds.size} of {clients.length} selected
+                      : "Select a ready bill above."}
                   </div>
                 </div>
                 <div className="actions-row">

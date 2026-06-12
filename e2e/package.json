@@ -8,7 +8,8 @@
     "test": "playwright test",
     "test:live": "RUN_LIVE=1 playwright test --grep @live",
     "seed:setup": "tsx seed.ts setup",
-    "seed:teardown": "tsx seed.ts teardown"
+    "seed:teardown": "tsx seed.ts teardown",
+    "seed:demo": "tsx seed-demo.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",

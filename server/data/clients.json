@@ -43,5 +43,35 @@
     "operations": "3 blending plants (Regina, Brandon, Lethbridge). 14 SKUs of fertilizer blends, 47 SKUs of certified seed. Currently no GM seed product line, but expansion under board review for 2026.",
     "riskTolerance": "medium",
     "createdAt": "2026-05-27T03:38:00.367Z"
+  },
+  {
+    "id": "client-aurelia-thx",
+    "name": "Aurelia Therapeutics Inc.",
+    "industry": "Specialty pharmaceutical import & distribution",
+    "jurisdictions": [
+      "Toronto ON",
+      "Canada"
+    ],
+    "description": "Importer-distributor of non-marketed specialty therapeutics (oncology, rare disease) supplied to roughly forty hospital pharmacy accounts across Canada, exclusively through Health Canada's Special Access Programme (SAP). Holds a Health Canada establishment licence covering import, storage and distribution of drugs in dosage form.",
+    "termsAndConditions": "Hospital Supply Terms (v4.2, in force) — 1. Authorization-gated supply: Aurelia will accept a purchase order for a non-marketed product only upon receipt of a Special Access Programme authorization letter issued by Health Canada that names the requesting practitioner and the individual patient. 2. No anticipatory supply: Aurelia does not sell, ship, reserve or hold inventory of any non-marketed product in anticipation of an authorization; each shipment corresponds to one patient-named authorization. 3. Import on authorization: import of the authorized quantity is initiated only after the authorization letter is received, and customs entries reference the authorization number. 4. Records: Aurelia maintains shipment records keyed to the patient-named authorization number and retains them for 5 years. 5. Returns of unused special-access stock are mandatory on treatment discontinuation.",
+    "policies": "SAP Request Handling SOP: completed practitioner SAP forms are processed within 48 hours; files are indexed by patient identity and authorization number. Inventory Policy: zero on-hand inventory of non-marketed products (no stocking ahead of a named authorization). Pharmacovigilance Policy: adverse drug reactions reported to the manufacturer and Health Canada within 15 days. Regulatory Pathway Policy: any product distributed under special access for more than 24 consecutive months without a New Drug Submission being filed triggers executive review to document why full market authorization is not being sought.",
+    "operations": "Operates a bonded GMP warehouse in Mississauga; customs broker files per-shipment import entries only after an authorization letter is on file. Intake desk receives SAP authorization letters by secure fax and email during business hours. Order-management system requires a patient name and SAP authorization number to open a shipment record. Quarterly compliance reviews reconcile every shipment against its authorization letter. No notice of individual sales is currently submitted to Health Canada beyond the SAP paperwork itself.",
+    "riskTolerance": "low",
+    "createdAt": "2026-06-11T14:05:00.000Z"
+  },
+  {
+    "id": "client-lakehead-health",
+    "name": "Lakehead Regional Health Network",
+    "industry": "Hospital network / acute & cancer care",
+    "jurisdictions": [
+      "Thunder Bay ON",
+      "Canada"
+    ],
+    "description": "Three-hospital regional network serving Northwestern Ontario, including a regional cancer centre and the area's only Level III emergency department. Central pharmacy manages all drug procurement; a Pharmacy & Therapeutics (P&T) committee governs the formulary and all non-formulary or emergency drug use.",
+    "termsAndConditions": "Medical Staff Rules and Supplier Purchasing Terms (extracts) — R7.3 Emergency use of unapproved drugs: a physician may administer a drug that lacks Canadian market authorization only after a Special Access Programme authorization letter for the named patient is on file with Pharmacy, except under the Crash Protocol (R7.4), which requires contemporaneous sign-off by two attending physicians and next-business-day notification to the P&T chair. P12.1 Procurement: Pharmacy may purchase non-marketed drugs only against a patient-specific authorization; standing inventory of non-marketed drugs is prohibited. S4.2 Suppliers must warrant that every non-marketed product shipped is matched to a Health Canada authorization document.",
+    "policies": "Emergency Drug Access Policy: SAP requests are prepared by oncology pharmacists and submitted by the central Drug Access Desk, which operates Monday to Friday, 08:00–16:00; after-hours requests wait for the next business day unless the Crash Protocol applies. Documentation Policy: the administering physician files an internal outcome report to the P&T committee within 30 days of any special-access administration; no external report is filed unless requested by Health Canada. Formulary Policy: only products with Canadian market authorization are stocked; special-access drugs are dispensed one patient at a time.",
+    "operations": "Central pharmacy in Thunder Bay distributes to the two community sites twice weekly. The Drug Access Desk (2 FTE pharmacists) handles roughly 150 SAP requests a year, with a median 4-business-day turnaround from physician request to drug-in-hand. The emergency department maintains the Crash Protocol kit but holds no non-marketed drugs. Physician onboarding includes annual training on R7.3/R7.4 and SAP paperwork.",
+    "riskTolerance": "medium",
+    "createdAt": "2026-06-11T14:05:00.000Z"
   }
 ]
