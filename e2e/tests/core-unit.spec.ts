@@ -508,3 +508,44 @@ test("heuristicScore monotonicity: more client-term-overlapping ops never scores
     `3-of-4 overlapping ops (${more.score}) must score ≥ 1-of-4 (${fewer.score})`,
   ).toBeGreaterThanOrEqual(fewer.score);
 });
+
+// ── Prior-brief serialization (regen-as-revision) ────────────────────────────
+
+test("serializePriorBrief never throws, carries the verdict + adaptations, and caps its size", () => {
+  const c = requireCore();
+  // Never throws on garbage / partial records (old store entries).
+  for (const garbage of [null, undefined, "", 42, [], {}]) {
+    expect(() => c.serializePriorBrief(garbage)).not.toThrow();
+    expect(typeof c.serializePriorBrief(garbage)).toBe("string");
+  }
+
+  const out = c.serializePriorBrief({
+    affected: "yes",
+    impactLevel: "high",
+    urgency: "immediate",
+    timing: "Coming into force one year after royal assent.",
+    whyItAffectsClient: "Supply terms conflict with the new list regime.",
+    affectedClientAreas: ["Supply terms", "Import workflow"],
+    requiredAdaptations: [
+      { area: "Hospital supply terms", recommendation: "Re-paper the authorization-gated clause." },
+    ],
+    relevantClientText: [{ source: "Terms & Conditions" }],
+    lawyerVerificationQuestions: ["Does the client rely on per-patient SAP letters?"],
+    humanReviewRequired: true,
+    humanReviewReason: "Material exposure.",
+  });
+  expect(out).toContain("impact=high");
+  expect(out).toContain("Hospital supply terms");
+  expect(out).toContain("Re-paper the authorization-gated clause.");
+  expect(out).toContain("Human review was required");
+
+  // Size cap: a pathological record must not produce an unbounded block.
+  const huge = c.serializePriorBrief({
+    whyItAffectsClient: "x".repeat(50_000),
+    requiredAdaptations: Array.from({ length: 100 }, (_, i) => ({
+      area: `Area ${i}`,
+      recommendation: "y".repeat(2_000),
+    })),
+  });
+  expect(huge.length).toBeLessThanOrEqual(6_100);
+});

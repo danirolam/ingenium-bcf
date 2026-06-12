@@ -281,7 +281,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
               onClick={() => setRegenOpen((open) => !open)}
             >
               <FontAwesomeIcon icon={faRotateRight} aria-hidden="true" />
-              Regenerate with instructions…
+              Regenerate with feedback…
             </button>
             <button className="btn" onClick={downloadBrief}>
               <FontAwesomeIcon icon={faFileArrowDown} aria-hidden="true" />
@@ -310,20 +310,21 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
             <div className="card-h">
               <div className="card-title-row">
                 <FontAwesomeIcon icon={faRotateRight} aria-hidden="true" />
-                <div className="card-title">Regenerate with instructions</div>
+                <div className="card-title">Regenerate with feedback</div>
               </div>
               <div className="card-sub">
-                Guidance shapes this regeneration only — it is not stored.
+                The analyst revises THIS brief (it travels along as context) —
+                your notes can be instructions or feedback on it. Not stored.
               </div>
             </div>
             <div className="card-pad">
               <div className="rd-field">
-                <label>Instructions for the analyst (optional)</label>
+                <label>Feedback / instructions for the analyst (optional)</label>
                 <textarea
                   data-testid="regen-context-input"
                   value={regenText}
                   disabled={regenBusy}
-                  placeholder="Optional instructions for the analyst — e.g. focus on supplier obligations, tighten the timeline…"
+                  placeholder="e.g. “the timeline is too vague”, “focus on supplier obligations”, “drop the labelling section”…"
                   onChange={(e) => setRegenText(e.target.value)}
                 />
               </div>

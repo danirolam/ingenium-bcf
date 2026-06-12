@@ -119,8 +119,18 @@ clientImpactRouter.post(
     let result: ClientImpactAnalysis | null = null;
     const { changes, approvedCount } = await loadApprovedChanges(billId);
     if (approvedCount > 0) {
+      // A prior brief for the pair means this is a REGENERATION: hand the old
+      // brief to the agent so it revises (and guidance can critique it).
+      const priorBrief = latestBriefFor(
+        presentOnly(await readAll<ClientImpactAnalysis>(FILES.impacts)),
+        client.id,
+        bill.id,
+      );
       const budget = createAiBudget();
-      const body = await analyzeClientFromChanges({ bill, client, changes, guidance }, budget);
+      const body = await analyzeClientFromChanges(
+        { bill, client, changes, guidance, priorBrief },
+        budget,
+      );
       if (body) {
         result = {
           ...body,

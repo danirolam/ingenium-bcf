@@ -774,3 +774,53 @@ export function heuristicScore(
     topAreas,
   };
 }
+
+// ── Prior-brief serialization (regen-as-revision) ────────────────────────────
+// When a brief is REGENERATED, the previous brief travels to the agent as
+// context so the new one is a revision, not a restart — and the reviewing
+// lawyer's guidance can critique it ("the timeline is too vague") and be
+// understood. Compact and defensive: tolerates partial/garbage records (old
+// store entries) and caps the whole block so it never crowds the payload.
+const PRIOR_BRIEF_MAX_CHARS = 6_000;
+
+export function serializePriorBrief(prior: unknown): string {
+  const p = (prior ?? {}) as Partial<ClientImpactAnalysis>;
+  const s = (v: unknown, max: number) =>
+    typeof v === "string" ? (v.length > max ? `${v.slice(0, max).trimEnd()}…` : v) : "";
+  const list = <T>(v: unknown): T[] => (Array.isArray(v) ? (v as T[]) : []);
+
+  const lines: string[] = [];
+  lines.push(
+    `Verdict: affected=${s(p.affected, 12) || "?"} · impact=${s(p.impactLevel, 12) || "?"} · urgency=${s(p.urgency, 12) || "?"}`,
+  );
+  if (p.timing) lines.push(`Timing: ${s(p.timing, 300)}`);
+  if (p.whyItAffectsClient) lines.push(`Why it affects the client: ${s(p.whyItAffectsClient, 1200)}`);
+  const areas = list<string>(p.affectedClientAreas).filter((a) => typeof a === "string");
+  if (areas.length) lines.push(`Affected areas: ${areas.slice(0, 6).join("; ")}`);
+  const adapts = list<{ area?: string; recommendation?: string }>(p.requiredAdaptations)
+    .filter((a) => a && typeof a === "object")
+    .slice(0, 8);
+  if (adapts.length) {
+    lines.push("Recommended adaptations:");
+    for (const a of adapts) lines.push(`- ${s(a.area, 80) || "(area)"}: ${s(a.recommendation, 240)}`);
+  }
+  const quotes = list<{ source?: string }>(p.relevantClientText).filter((q) => q && typeof q === "object");
+  if (quotes.length) {
+    lines.push(
+      `Client-text citations: ${quotes.length} (sources: ${[...new Set(quotes.map((q) => s(q.source, 40)).filter(Boolean))].slice(0, 4).join(", ")})`,
+    );
+  }
+  const questions = list<string>(p.lawyerVerificationQuestions).filter((q) => typeof q === "string");
+  if (questions.length) {
+    lines.push("Verification questions:");
+    for (const q of questions.slice(0, 8)) lines.push(`- ${s(q, 200)}`);
+  }
+  if (p.humanReviewRequired) {
+    lines.push(`Human review was required: ${s(p.humanReviewReason, 300) || "yes"}`);
+  }
+
+  const out = lines.join("\n");
+  return out.length > PRIOR_BRIEF_MAX_CHARS
+    ? `${out.slice(0, PRIOR_BRIEF_MAX_CHARS).trimEnd()}…`
+    : out;
+}
