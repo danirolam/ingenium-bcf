@@ -2,10 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,
+  faChevronDown,
   faListCheck,
   faPen,
   faPlay,
   faPlus,
+  faRotateRight,
   faTrash,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
@@ -13,11 +15,15 @@ import type { Nav } from "../App";
 import { PageHeader } from "../components/PageHeader";
 import { api } from "../lib/api";
 import {
+  ANALYZE_EMPHASIS_BANDS,
   deleteClient,
   fetchScanReady,
   fetchScanReadyDetail,
+  fetchScans,
+  runScan as requestScan,
   updateClient,
   type ApprovedOpSummary,
+  type ImpactScanView,
   type ScanReadyBill,
   type ScanReadyDetail,
 } from "../lib/clientScan";
@@ -31,12 +37,47 @@ const OP_LABEL: Record<ApprovedOpSummary["op"], string> = {
   amend: "Amend",
 };
 
-type ScanStatus = "queued" | "running" | "done" | "failed";
+type ScanStatus = "queued" | "scoring" | "scored" | "failed";
 
+/** One scoreboard row, keyed by clientId (one scan per (client, bill) pair). */
 interface ScanRow {
   clientId: string;
   status: ScanStatus;
-  reason?: string;
+  scan?: ImpactScanView; // present once "scored"
+  reason?: string; // why the scan failed
+  analyzing?: boolean; // per-row brief generation in flight
+  analyzeError?: string;
+}
+
+/**
+ * Fold the server's ranked scan list (hidden score desc, name asc) back into
+ * the scoreboard: scored rows adopt the fresh server view (order + hasBrief),
+ * non-scored local rows (e.g. failed) keep their status — a stale stored scan
+ * must not paper over a failure — and rows the server never stored (failed
+ * with no prior scan) trail in their local order.
+ */
+function mergeRanked(prev: ScanRow[], ranked: ImpactScanView[]): ScanRow[] {
+  const leftover = new Map(prev.map((r) => [r.clientId, r]));
+  const out: ScanRow[] = [];
+  for (const scan of ranked) {
+    const local = leftover.get(scan.clientId);
+    if (local && local.status !== "scored") {
+      out.push(local);
+    } else {
+      out.push({
+        clientId: scan.clientId,
+        status: "scored",
+        scan,
+        analyzing: local?.analyzing,
+        analyzeError: local?.analyzeError,
+      });
+    }
+    leftover.delete(scan.clientId);
+  }
+  for (const r of prev) {
+    if (leftover.has(r.clientId)) out.push(r);
+  }
+  return out;
 }
 
 function truncate(text: string, max = 200): string {
@@ -50,9 +91,11 @@ function fmtWhen(iso: string): string {
   return d.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
 }
 
-// Stage 3 — bill-first batch scanner. Pick a bill whose amendments counsel
-// approved in stage 2, select the clients to test it against, and run a
-// sequential scan; every client gets its own impact brief (stage 4).
+// Stage 3 — bill-first batch scanner, two-phase. Pick a bill whose amendments
+// counsel approved in stage 2, select the clients to test it against, and run
+// a sequential FAST scan: every client gets an impact band on the scoreboard
+// (the numeric score stays server-side). The full ~30s brief (stage 4) is then
+// generated per-row on demand via Analyze, soft-gated by band.
 export function ClientLawScanner({ nav }: { nav: Nav }) {
   const [clients, setClients] = useState<Client[]>([]);
   const [clientsLoaded, setClientsLoaded] = useState(false);
@@ -75,6 +118,14 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
   const [scanning, setScanning] = useState(false);
   const [scanBillId, setScanBillId] = useState("");
   const [scanRows, setScanRows] = useState<ScanRow[]>([]);
+  const [scansLoading, setScansLoading] = useState(false);
+  // Accordion: the clientId whose rationale panel is open — at most ONE.
+  const [openRationaleId, setOpenRationaleId] = useState<string | null>(null);
+  // Clients in the ACTIVE run: their Analyze stays locked until the loop ends
+  // (rows already scored from persistence remain analyzable mid-run).
+  const [scanRunIds, setScanRunIds] = useState<ReadonlySet<string>>(
+    () => new Set(),
+  );
 
   // Guards for the sequential scan loop: ignore completions after unmount,
   // after a newer run started, or after the user switched bills mid-scan.
@@ -150,19 +201,60 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedBillId, readyBills]);
 
-  // Progress rows belong to the bill they were run against — switching bills
-  // clears them and retires the run. Bumping scanRunRef makes the orphaned
-  // loop PERMANENTLY stale: without it, switching away and back to the same
-  // bill would let the old loop resume issuing analyze calls.
+  // Scoreboard rows belong to the bill they were run against — switching bills
+  // clears them (rationale accordion and per-row analyzing flags die with the
+  // rows) and retires the run. Bumping scanRunRef makes the orphaned loop
+  // PERMANENTLY stale: without it, switching away and back to the same bill
+  // would let the old loop resume issuing scan calls.
   useEffect(() => {
     if (scanRows.length > 0 && scanBillId && selectedBillId !== scanBillId) {
       scanRunRef.current += 1;
       setScanRows([]);
       setScanBillId("");
       setScanning(false);
+      setOpenRationaleId(null);
+      setScanRunIds(new Set());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedBillId]);
+
+  // ── Persisted scoreboard for the selected ready bill ──
+  // Scans are stored latest-wins per (client, bill); selecting a bill restores
+  // its scoreboard in the server's ranked order (hidden score desc, name asc).
+  useEffect(() => {
+    if (!selectedBillId || !readyBills.some((b) => b.billId === selectedBillId)) {
+      setScansLoading(false);
+      return;
+    }
+    const ac = new AbortController();
+    const runAtFetch = scanRunRef.current;
+    setScansLoading(true);
+    fetchScans(selectedBillId, ac.signal)
+      .then((scans) => {
+        // A run that started while this fetch was in flight owns the rows now.
+        if (ac.signal.aborted || scanRunRef.current !== runAtFetch) return;
+        if (scans.length === 0) return;
+        setScanBillId(selectedBillId);
+        setScanRows(
+          scans.map((scan) => ({
+            clientId: scan.clientId,
+            status: "scored" as const,
+            scan,
+          })),
+        );
+      })
+      .catch((err: unknown) => {
+        if (ac.signal.aborted) return;
+        console.error(err);
+        const msg = err instanceof Error ? err.message : String(err);
+        nav.toast(`Could not load stored scans: ${msg}`);
+      })
+      .finally(() => {
+        if (!ac.signal.aborted) setScansLoading(false);
+      });
+    return () => ac.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedBillId, readyBills]);
 
   // ── Client selection ──
   const allSelected =
@@ -231,8 +323,13 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
     }
   }
 
-  // ── The scan loop: sequential, snapshot-guarded ──
+  // ── The scan loop: sequential fast scoring, snapshot-guarded ──
   const canRun = !scanning && !!selectedReady && selectedClientIds.size > 0;
+
+  const patchRow = (clientId: string, patch: Partial<ScanRow>) =>
+    setScanRows((rows) =>
+      rows.map((r) => (r.clientId === clientId ? { ...r, ...patch } : r)),
+    );
 
   async function runScan() {
     if (!canRun || !selectedReady) return;
@@ -249,39 +346,118 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
       scanRunRef.current !== runId ||
       selectedBillIdRef.current !== billId;
 
+    const selectedSet = new Set(ids);
     setScanning(true);
     setScanBillId(billId);
-    setScanRows(ids.map((clientId) => ({ clientId, status: "queued" as const })));
-
-    const setRow = (clientId: string, patch: Partial<ScanRow>) =>
-      setScanRows((rows) =>
-        rows.map((r) => (r.clientId === clientId ? { ...r, ...patch } : r)),
+    setScanRunIds(selectedSet);
+    // Merge with whatever the scoreboard already shows: selected clients reset
+    // to fresh "queued" rows (in place, dropping their old scan), unselected
+    // persisted rows REMAIN, first-time clients append in list order.
+    setScanRows((prev) => {
+      const present = new Set(prev.map((r) => r.clientId));
+      const reset: ScanRow[] = prev.map((r) =>
+        selectedSet.has(r.clientId)
+          ? { clientId: r.clientId, status: "queued" as const }
+          : r,
       );
+      const added: ScanRow[] = ids
+        .filter((id) => !present.has(id))
+        .map((clientId) => ({ clientId, status: "queued" as const }));
+      return [...reset, ...added];
+    });
 
-    let done = 0;
+    let scored = 0;
     let failed = 0;
     for (const clientId of ids) {
       if (stale()) return;
-      setRow(clientId, { status: "running" });
+      patchRow(clientId, { status: "scoring" });
       try {
-        await api.clientImpact.analyze(clientId, billId);
+        const { scan } = await requestScan(clientId, billId);
         if (stale()) return;
-        setRow(clientId, { status: "done" });
-        done += 1;
+        patchRow(clientId, { status: "scored", scan, reason: undefined });
+        scored += 1;
       } catch (err: unknown) {
         if (stale()) return;
         const msg = err instanceof Error ? err.message : String(err);
-        setRow(clientId, { status: "failed", reason: truncate(msg, 140) });
+        patchRow(clientId, { status: "failed", reason: truncate(msg, 140) });
         failed += 1;
       }
+    }
+    if (stale()) return;
+
+    // One refresh to adopt the server's ranking (hidden score desc, name asc)
+    // and any hasBrief changes; failed rows keep their local status/order.
+    try {
+      const ranked = await fetchScans(billId);
+      if (stale()) return;
+      setScanRows((prev) => mergeRanked(prev, ranked));
+    } catch {
+      // Ranking refresh is cosmetic — keep the local order if it fails.
     }
     if (stale()) return;
     setScanning(false);
     nav.toast(
       failed === 0
-        ? `Scan complete · ${done} brief${done === 1 ? "" : "s"} ready`
-        : `Scan complete · ${done} brief${done === 1 ? "" : "s"} ready · ${failed} failed`,
+        ? `Scan complete · ${scored} scored`
+        : `Scan complete · ${scored} scored · ${failed} failed`,
     );
+  }
+
+  // Re-run the fast scan for ONE failed row (no batch loop, no run takeover).
+  async function retryScan(clientId: string) {
+    const billId = scanBillId;
+    if (!billId || scanning) return;
+    const runId = scanRunRef.current;
+    const stale = () =>
+      !mountedRef.current ||
+      scanRunRef.current !== runId ||
+      selectedBillIdRef.current !== billId;
+
+    patchRow(clientId, { status: "scoring", reason: undefined });
+    try {
+      const { scan } = await requestScan(clientId, billId);
+      if (stale()) return;
+      patchRow(clientId, { status: "scored", scan, reason: undefined });
+    } catch (err: unknown) {
+      if (stale()) return;
+      const msg = err instanceof Error ? err.message : String(err);
+      patchRow(clientId, { status: "failed", reason: truncate(msg, 140) });
+    }
+  }
+
+  // ── Per-row brief generation (the slow ~30s agent), soft-gated by band ──
+  async function analyzeRow(clientId: string) {
+    const billId = scanBillId;
+    if (!billId) return;
+    patchRow(clientId, { analyzing: true, analyzeError: undefined });
+    try {
+      const { analysis } = await api.clientImpact.analyze(clientId, billId);
+      // Rows only survive while their bill stays selected — if it changed,
+      // drop the patch (the brief is persisted; hasBrief returns on re-seed).
+      if (!mountedRef.current || selectedBillIdRef.current !== billId) return;
+      setScanRows((rows) =>
+        rows.map((r) =>
+          r.clientId === clientId
+            ? {
+                ...r,
+                analyzing: false,
+                analyzeError: undefined,
+                scan: r.scan
+                  ? { ...r.scan, hasBrief: true, analysisId: analysis.id }
+                  : r.scan,
+              }
+            : r,
+        ),
+      );
+    } catch (err: unknown) {
+      if (!mountedRef.current || selectedBillIdRef.current !== billId) return;
+      const msg = err instanceof Error ? err.message : String(err);
+      patchRow(clientId, { analyzing: false, analyzeError: truncate(msg, 140) });
+    }
+  }
+
+  function toggleRationale(clientId: string) {
+    setOpenRationaleId((cur) => (cur === clientId ? null : clientId));
   }
 
   return (
@@ -620,10 +796,25 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                     <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
                   </button>
                 </div>
+                {selectedReady && scanRows.length === 0 && (
+                  <div className="empty-small">
+                    {scansLoading
+                      ? "Checking for stored scans…"
+                      : "No scan yet — select clients and run a scan."}
+                  </div>
+                )}
                 {scanRows.length > 0 && (
                   <div className="cs-scan-rows">
                     {scanRows.map((r) => {
                       const c = clients.find((x) => x.id === r.clientId);
+                      const scan = r.status === "scored" ? r.scan : undefined;
+                      const open = openRationaleId === r.clientId;
+                      const emphasized =
+                        !!scan && ANALYZE_EMPHASIS_BANDS.has(scan.band);
+                      // Mid-run rows stay locked until the loop finishes;
+                      // rows scored from persistence remain analyzable.
+                      const lockedByRun =
+                        scanning && scanRunIds.has(r.clientId);
                       return (
                         <div
                           key={r.clientId}
@@ -631,33 +822,121 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                           data-testid="scan-row"
                           data-client-id={r.clientId}
                         >
-                          <span className="cs-scan-client">
-                            {c?.name ?? r.clientId}
-                          </span>
-                          {r.status === "failed" && r.reason && (
-                            <span className="cs-scan-reason" title={r.reason}>
-                              {r.reason}
+                          <div className="cs-scan-line">
+                            <span className="cs-scan-client">
+                              {c?.name ?? r.clientId}
                             </span>
-                          )}
-                          <span
-                            className={`cs-status is-${r.status}`}
-                            data-testid="scan-status"
-                          >
-                            {r.status}
-                          </span>
-                          {r.status === "done" && (
-                            <button
-                              className="btn ghost sm"
-                              data-testid="view-brief"
-                              onClick={() =>
-                                nav.go("impact", {
-                                  clientId: r.clientId,
-                                  billId: scanBillId,
-                                })
-                              }
+                            {r.status === "failed" && r.reason && (
+                              <span className="cs-scan-reason" title={r.reason}>
+                                {r.reason}
+                              </span>
+                            )}
+                            <span
+                              className={`cs-status is-${r.status}`}
+                              data-testid="scan-status"
                             >
-                              View brief
-                            </button>
+                              {r.status}
+                            </span>
+                            {scan && (
+                              <span
+                                className={`cs-band is-${scan.band}`}
+                                data-testid="scan-band"
+                                data-band={scan.band}
+                              >
+                                {scan.band}
+                              </span>
+                            )}
+                            {scan && (
+                              <button
+                                className={`cs-icon-btn cs-rationale-toggle${open ? " open" : ""}`}
+                                data-testid="scan-rationale-toggle"
+                                title={open ? "Hide rationale" : "Why this band?"}
+                                aria-expanded={open}
+                                onClick={() => toggleRationale(r.clientId)}
+                              >
+                                <FontAwesomeIcon
+                                  icon={faChevronDown}
+                                  aria-hidden="true"
+                                />
+                              </button>
+                            )}
+                            {r.status === "failed" && (
+                              <button
+                                className="cs-retry"
+                                data-testid="scan-retry"
+                                disabled={scanning}
+                                onClick={() => void retryScan(r.clientId)}
+                              >
+                                <FontAwesomeIcon
+                                  icon={faRotateRight}
+                                  aria-hidden="true"
+                                />
+                                Retry
+                              </button>
+                            )}
+                            {scan && (
+                              <button
+                                className={
+                                  emphasized
+                                    ? "btn primary sm"
+                                    : "btn sm cs-analyze-soft"
+                                }
+                                data-testid="analyze-client"
+                                disabled={!!r.analyzing || lockedByRun}
+                                onClick={() => void analyzeRow(r.clientId)}
+                              >
+                                {r.analyzing
+                                  ? "Analyzing…"
+                                  : emphasized
+                                    ? "Analyze"
+                                    : "Analyze anyway"}
+                              </button>
+                            )}
+                            {scan?.hasBrief && (
+                              <button
+                                className="btn ghost sm"
+                                data-testid="view-brief"
+                                onClick={() =>
+                                  nav.go("impact", {
+                                    clientId: r.clientId,
+                                    billId: scanBillId,
+                                  })
+                                }
+                              >
+                                View brief
+                              </button>
+                            )}
+                          </div>
+                          {r.analyzeError && (
+                            <div className="cs-analyze-error">
+                              Analyze failed: {r.analyzeError}
+                            </div>
+                          )}
+                          {open && scan && (
+                            <div
+                              className="cs-rationale"
+                              data-testid="scan-rationale"
+                            >
+                              <div className="cs-rationale-text">
+                                {scan.rationale}
+                              </div>
+                              {scan.topAreas.length > 0 && (
+                                <div className="cs-rationale-areas">
+                                  {scan.topAreas.map((area) => (
+                                    <span key={area} className="cs-area-chip">
+                                      {area}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                              <div className="cs-rationale-meta">
+                                {scan.source === "ai"
+                                  ? "AI triage"
+                                  : "Heuristic triage"}
+                                {fmtWhen(scan.scannedAt) &&
+                                  ` · ${fmtWhen(scan.scannedAt)}`}
+                              </div>
+                            </div>
                           )}
                         </div>
                       );

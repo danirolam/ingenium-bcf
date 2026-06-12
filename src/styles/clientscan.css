@@ -224,7 +224,7 @@
   line-height: 1.45;
 }
 
-/* ── Scan progress rows ───────────────────────────────────────────────── */
+/* ── Scoreboard rows (fast-scan bands + per-row analyze) ──────────────── */
 .cs-scan-rows {
   display: flex;
   flex-direction: column;
@@ -234,13 +234,19 @@
 }
 .cs-scan-row {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  gap: 0;
   padding: 10px 14px;
   border-bottom: 1px solid var(--border-3);
 }
 .cs-scan-row:last-child {
   border-bottom: none;
+}
+.cs-scan-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
 }
 .cs-scan-client {
   flex: 1;
@@ -253,7 +259,7 @@
 }
 .cs-scan-reason {
   flex: none;
-  max-width: 40%;
+  max-width: 32%;
   font-size: 11px;
   color: var(--crit);
   overflow: hidden;
@@ -280,14 +286,14 @@
   background: currentColor;
   opacity: 0.85;
 }
-.cs-status.is-running {
+.cs-status.is-scoring {
   color: var(--med);
   background: var(--med-bg);
 }
-.cs-status.is-running::before {
+.cs-status.is-scoring::before {
   animation: cs-pulse 1s ease-in-out infinite;
 }
-.cs-status.is-done {
+.cs-status.is-scored {
   color: var(--ok);
   background: var(--ok-bg);
 }
@@ -303,4 +309,117 @@
   50% {
     opacity: 1;
   }
+}
+
+/* Impact-band pill — same pill aesthetics as .dr-op, escalating severity:
+   low muted, medium amber (the palette's amber token is --high), high a
+   strong red tint, critical filled red. */
+.cs-band {
+  flex: none;
+  font: 700 10.5px/1 var(--sans);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+.cs-band.is-low {
+  color: var(--low);
+  background: var(--low-bg);
+}
+.cs-band.is-medium {
+  color: var(--high);
+  background: var(--high-bg);
+}
+.cs-band.is-high {
+  color: var(--crit);
+  background: var(--crit-bg);
+}
+.cs-band.is-critical {
+  color: #ffffff;
+  background: var(--crit);
+}
+
+/* Rationale accordion: chevron toggle + the per-row panel. */
+.cs-rationale-toggle .svg-inline--fa {
+  transition: transform 0.15s ease;
+}
+.cs-rationale-toggle.open .svg-inline--fa {
+  transform: rotate(180deg);
+}
+.cs-rationale {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 9px;
+  padding: 9px 11px;
+  border: 1px solid var(--border-3);
+  background: var(--panel-2);
+  border-radius: 7px;
+}
+.cs-rationale-text {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--ink-2, var(--ink));
+}
+.cs-rationale-areas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.cs-area-chip {
+  font: 600 10.5px/1.5 var(--sans);
+  color: var(--ink-3);
+  background: var(--panel);
+  border: 1px solid var(--border-2);
+  border-radius: 999px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+.cs-rationale-meta {
+  font-size: 10.5px;
+  color: var(--ink-4);
+}
+
+/* Subdued "Analyze anyway" for rows outside the emphasis bands. */
+.btn.cs-analyze-soft {
+  background: transparent;
+  border-color: var(--border-2);
+  color: var(--ink-4);
+}
+.btn.cs-analyze-soft:hover:not(:disabled) {
+  background: var(--panel-2);
+  border-color: var(--border-2);
+  color: var(--ink-2, var(--ink));
+}
+.btn.cs-analyze-soft:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Retry link on failed rows. */
+.cs-retry {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 4px 6px;
+  font: 600 11.5px/1 var(--sans);
+  color: var(--accent-warm);
+  cursor: pointer;
+}
+.cs-retry:hover:not(:disabled) {
+  text-decoration: underline;
+}
+.cs-retry:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cs-analyze-error {
+  margin-top: 7px;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--crit);
 }
