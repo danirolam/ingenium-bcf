@@ -78,6 +78,8 @@ export interface SeedState {
   session: string;
   /** Second bill: seeded delta but NO approvals — must NOT be scan-ready. */
   billId2: string;
+  billNumber2: string;
+  title2: string;
   deltasFileExisted: boolean;
   approvalsFileExisted: boolean;
   seededAt: string;
@@ -258,12 +260,21 @@ export async function teardown(): Promise<void> {
   }
 
   // provisionDeltas.json — drop __e2eSeed records.
+  //
+  // Crash recovery: if .seed-state.json was lost, `state` is null. A file left
+  // holding ONLY __e2eSeed records must still have been created by e2e (the
+  // server never writes seed-marked records), so when the filter empties it we
+  // unlink unless the state file positively says it pre-existed. Residual
+  // wrinkle (documented, accepted): a crash BETWEEN the deltas and approvals
+  // rewrites plus a lost state file means the next teardown can no longer
+  // derive seededBillIds from deltas, so a stray approvals record for the
+  // seeded bill could linger until cleaned manually.
   const deltas = await readArray<DeltaRecord>(DELTAS_FILE);
   if (deltas !== null) {
     for (const rec of deltas) if (rec.__e2eSeed) seededBillIds.add(rec.id);
     const kept = deltas.filter((rec) => !rec.__e2eSeed);
     if (kept.length !== deltas.length) {
-      if (kept.length === 0 && state && !state.deltasFileExisted) {
+      if (kept.length === 0 && !state?.deltasFileExisted) {
         await fs.unlink(DELTAS_FILE); // we created it; restore absence
       } else {
         await writeArray(DELTAS_FILE, kept);
@@ -276,7 +287,7 @@ export async function teardown(): Promise<void> {
   if (approvals !== null) {
     const kept = approvals.filter((rec) => !seededBillIds.has(rec.id));
     if (kept.length !== approvals.length) {
-      if (kept.length === 0 && state && !state.approvalsFileExisted) {
+      if (kept.length === 0 && !state?.approvalsFileExisted) {
         await fs.unlink(APPROVALS_FILE);
       } else {
         await writeArray(APPROVALS_FILE, kept);
@@ -347,6 +358,8 @@ export async function setup(): Promise<SeedState> {
     status: bill1.status,
     session: bill1.session ?? "",
     billId2: bill2.id,
+    billNumber2: bill2.billNumber,
+    title2: bill2.title,
     deltasFileExisted,
     approvalsFileExisted,
     seededAt: now,

@@ -1,6 +1,6 @@
 /**
  * Stage-3 UI: client CRUD through the modal.
- * Awaits Phase 2C (frontend testids). Backed by Phase 1A PUT/DELETE routes.
+ * Backed by the Phase 1A PUT/DELETE routes.
  */
 import { test, expect } from "@playwright/test";
 import { waitForApiReady } from "./helpers";

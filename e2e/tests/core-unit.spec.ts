@@ -1,9 +1,8 @@
 /**
  * Pure-module contract tests for server/services/clientScanCore.ts (Phase 1A).
  *
- * The module may not exist yet — these specs import it dynamically and SKIP
- * (not fail) until it lands, so `playwright test` stays green meanwhile and
- * the contract activates automatically the moment the file appears.
+ * The module is REQUIRED: a missing or unloadable clientScanCore.ts FAILS the
+ * suite (it skipped pre-landing; now a broken import must never read green).
  *
  * Expected exports:
  *   CHUNK_TOKENS: number, MAX_CHUNKS: number
@@ -44,7 +43,7 @@ test.beforeAll(async () => {
 });
 
 function requireCore(): Core {
-  test.skip(!core, `clientScanCore.ts not loadable yet (Phase 1A): ${loadError}`);
+  expect(core, `clientScanCore.ts failed to load: ${loadError}`).toBeTruthy();
   return core as Core;
 }
 
@@ -168,11 +167,11 @@ test("triageChangesForClient never returns empty for non-empty input (recall saf
   // Small payload: passes through whole. Large payload sharing zero vocabulary
   // with the client: the recall safety net must still return everything.
   const small = c.triageChangesForClient(SMALL_CHANGES, nonsenseClient);
-  expect(totalOpCount(small.relevant)).toBeGreaterThan(0);
+  expect(totalOpCount(small.relevant)).toBe(totalOpCount(SMALL_CHANGES));
 
   const big = syntheticChanges(40, Math.ceil((c.CHUNK_TOKENS * 4) / 8));
   const out = c.triageChangesForClient(big, nonsenseClient);
-  expect(totalOpCount(out.relevant)).toBeGreaterThan(0);
+  expect(totalOpCount(out.relevant)).toBe(totalOpCount(big));
 });
 
 test("chunkChanges splits ~40 one-k-token ops into >1 chunks, partitioning exactly", () => {
@@ -302,15 +301,16 @@ test("mergeAnalyses: identical adaptations dedupe to one", () => {
   expect(matches).toHaveLength(1);
 });
 
-test("mergeAnalyses: verification questions are capped at 10", () => {
+test("mergeAnalyses: verification questions are capped at exactly 10", () => {
   const c = requireCore();
   const q = (n: number, part: string) =>
     Array.from({ length: n }, (_, i) => `Question ${part}-${i + 1}?`);
+  // 14 distinct questions in → the cap must bite at exactly 10.
   const merged = c.mergeAnalyses([
     analysisFixture({ lawyerVerificationQuestions: q(7, "a") }),
     analysisFixture({ lawyerVerificationQuestions: q(7, "b") }),
   ]);
-  expect(merged.lawyerVerificationQuestions.length).toBeLessThanOrEqual(10);
+  expect(merged.lawyerVerificationQuestions.length).toBe(10);
 });
 
 test("coverageNote: null when nothing was dropped, names anchors when something was", () => {
@@ -324,4 +324,20 @@ test("coverageNote: null when nothing was dropped, names anchors when something 
   expect(typeof note).toBe("string");
   expect(note).toContain("Section 7");
   expect(note).toContain("Section 9");
+});
+
+test("coverageNote distinguishes volume-cap drops from AI-unavailable skips", () => {
+  const c = requireCore();
+  const note = c.coverageNote(3, [
+    { key: "x-act#1", actTitle: "X Act", anchor: "Section 7", reason: "chunk-cap" },
+    { key: "x-act#2", actTitle: "X Act", anchor: "Section 9", reason: "ai-unavailable" },
+  ]);
+  expect(typeof note).toBe("string");
+  // Each gap is attributed to its REAL cause — a rate-limited skip must not
+  // read as a volume-cap drop in a lawyer-facing brief.
+  expect(note).toContain("volume cap");
+  expect(note).toContain("Section 7");
+  expect(note).toContain("AI unavailable");
+  expect(note).toContain("Section 9");
+  expect(note.indexOf("Section 9")).toBeGreaterThan(note.indexOf("AI unavailable"));
 });

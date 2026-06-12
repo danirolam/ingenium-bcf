@@ -6,9 +6,10 @@
 // Raw fetch, no SDK — mirrors server/services/claude.ts conventions. All the
 // pure logic (triage/chunk/serialize/merge/normalize) lives in
 // clientScanCore.ts so it can be unit-tested without IO.
+import type { NextFunction, Request, Response } from "express";
 import type { Bill, Client, ProvisionDelta } from "../../src/types.js";
 import type { AiBudget } from "./aiBudget.js";
-import { FILES, findById } from "./jsonStore.js";
+import { FILES, readAll } from "./jsonStore.js";
 import {
   CHUNK_TOKENS,
   buildClientBlock,
@@ -28,6 +29,58 @@ const API = "https://api.anthropic.com/v1/messages";
 // Haiku is fast and cheap — override with ANTHROPIC_MODEL for more depth.
 const MODEL = process.env.ANTHROPIC_MODEL || "claude-haiku-4-5";
 const REQUEST_TIMEOUT_MS = 90_000;
+
+// ── Store-hardening helpers (shared with the stage-3/4 routes) ───────────────
+
+/**
+ * Null-tolerant findById replacement. A stored `null` (or other non-object)
+ * array element is valid JSON — it sails past jsonStore's corrupt-file
+ * self-heal — and jsonStore.findById's `it.id` access then throws, which under
+ * Express 4 escapes as an unhandled rejection and kills the process. Filter
+ * such elements out before matching.
+ */
+export async function findRecord<T extends { id: string }>(
+  file: string,
+  id: string,
+): Promise<T | undefined> {
+  const items = await readAll<T>(file);
+  return items
+    .filter((x): x is T => !!x && typeof x === "object")
+    .find((r) => r.id === id);
+}
+
+/**
+ * Wrap an async Express-4 route handler so a rejection becomes a logged 500
+ * instead of an unhandled rejection (which exits the process — and `tsx watch`
+ * does not respawn a crashed child).
+ */
+export function safe(
+  handler: (req: Request, res: Response, next: NextFunction) => Promise<unknown>,
+): (req: Request, res: Response, next: NextFunction) => void {
+  return (req, res, next) => {
+    handler(req, res, next).catch((err: unknown) => {
+      console.error(`[route] ${req.method} ${req.originalUrl} failed:`, err);
+      if (!res.headersSent) res.status(500).json({ error: "internal_error" });
+    });
+  };
+}
+
+/**
+ * Per-file async mutex. jsonStore serializes the physical writes, but a
+ * read-modify-write sequence (readAll → mutate → writeAll, e.g. upsert or the
+ * /analyze prune) is not atomic — two concurrent requests read the same
+ * snapshot and the last writer clobbers the other's update. Chain whole
+ * critical sections per file (same chain pattern as jsonStore's writeChains).
+ * Do NOT nest withFileLock calls for the same file — that deadlocks.
+ */
+const chains = new Map<string, Promise<unknown>>();
+
+export function withFileLock<T>(file: string, fn: () => Promise<T>): Promise<T> {
+  const prev = chains.get(file) ?? Promise.resolve();
+  const next = prev.catch(() => {}).then(fn);
+  chains.set(file, next);
+  return next;
+}
 
 // Runtime-state record shapes (written by the stage-1/2 pipeline routes).
 interface ProvisionDeltasRecord {
@@ -51,8 +104,8 @@ interface ApprovalsRecord {
 export async function loadApprovedChanges(
   billId: string,
 ): Promise<{ changes: ApprovedActChange[]; approvedCount: number }> {
-  const deltaRec = await findById<ProvisionDeltasRecord>(FILES.provisionDeltas, billId);
-  const approvalRec = await findById<ApprovalsRecord>(FILES.approvals, billId);
+  const deltaRec = await findRecord<ProvisionDeltasRecord>(FILES.provisionDeltas, billId);
+  const approvalRec = await findRecord<ApprovalsRecord>(FILES.approvals, billId);
   const approved = new Set(approvalRec?.keys ?? []);
   const changes: ApprovedActChange[] = [];
   let approvedCount = 0;
@@ -61,6 +114,9 @@ export async function loadApprovedChanges(
     const ops: ApprovedActChange["ops"] = [];
     for (const op of delta.operations ?? []) {
       if (!approved.has(op.key)) continue;
+      // Only the FIRST produced row supplies before/after text. Multi-row ops
+      // stay readable regardless: the instruction describes the whole change
+      // and op.newText backs the "after" side when the row is missing.
       const rowIdx = op.producedRowIndices?.[0];
       const row =
         typeof rowIdx === "number" && rowIdx >= 0 && rowIdx < (delta.rows?.length ?? 0)
@@ -205,7 +261,9 @@ export async function analyzeClientFromChanges(
     const markSkipped = () => {
       for (const act of chunk) {
         for (const op of act.ops) {
-          skipped.push({ key: op.key, anchor: op.anchor, actTitle: act.actTitle, reason: "chunk-cap" });
+          // These ops were skipped because the AI was rate-limited/erroring or
+          // timed out — NOT because of the volume cap ("chunk-cap").
+          skipped.push({ key: op.key, anchor: op.anchor, actTitle: act.actTitle, reason: "ai-unavailable" });
         }
       }
     };
@@ -268,8 +326,13 @@ export async function analyzeClientFromChanges(
       parts.push(normalizeAnalysis(input));
       analyzedOps += chunkOps;
     } catch (err: any) {
-      // AbortError = budget trip or timeout; anything else is a real failure.
-      if (budget && !budget.signal.aborted) budget.trip("ai-error");
+      // AbortError = the shared budget already tripped. TimeoutError = THIS
+      // request's 90s timer fired — a per-call condition that must not trip
+      // the shared budget (siblings may still be fine). Anything else is a
+      // real failure that should stop the siblings too.
+      if (budget && !budget.signal.aborted && err?.name !== "TimeoutError") {
+        budget.trip("ai-error");
+      }
       console.log(`[scan] chunk ${i + 1}/${chunks.length} failed: ${err?.message ?? err}`);
       failed = true;
       markSkipped();

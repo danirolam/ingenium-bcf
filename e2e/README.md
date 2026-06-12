@@ -83,11 +83,11 @@ exists for the analyze call and is cleaned afterwards.
 | --- | --- | --- | --- |
 | `smoke.spec.ts` | server boot, env blanking, `/` renders | **yes** | — |
 | `api.spec.ts` | scan-ready list/detail/404, analyze 400/404, keyless analyze + by-pair, client CRUD + cascade | **yes** (Phase 1A backend landed) | — |
-| `core-unit.spec.ts` | `clientScanCore.ts` pure functions (skips cleanly if the module is absent) | **yes** (Phase 1A backend landed) | — |
-| `scan-ready.spec.ts` | ready list / approved summary UI | no | Phase 2C (frontend testids) |
-| `scan-flow.spec.ts` | scan happy path → brief → back | no | Phase 2C (frontend testids) |
-| `empty-states.spec.ts` | run-scan disabled guards | no | Phase 2C (frontend testids) |
-| `client-management.spec.ts` | client modal CRUD UI | no | Phase 2C (frontend testids) |
+| `core-unit.spec.ts` | `clientScanCore.ts` pure functions (a missing/broken module FAILS the suite) | **yes** (Phase 1A backend landed) | — |
+| `scan-ready.spec.ts` | ready list / approved summary UI | **yes** (Phase 2C frontend landed) | — |
+| `scan-flow.spec.ts` | scan happy path → brief → back | **yes** (Phase 2C frontend landed) | — |
+| `empty-states.spec.ts` | run-scan disabled guards + stage-2 guidance for non-ready bills | **yes** (Phase 2C frontend landed) | — |
+| `client-management.spec.ts` | client modal CRUD UI | **yes** (Phase 2C frontend landed) | — |
 | `live.spec.ts` | real AI analysis (opt-in `@live`) | opt-in | real keys + your running server |
 
 ## Selector / behavior contract the frontend implements

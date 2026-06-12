@@ -1,8 +1,8 @@
 /**
  * Stage-3 -> stage-4 happy path: pick the seeded ready bill, scan every
  * client, open a brief, navigate back.
- * Awaits Phase 2C (frontend testids); the scan itself runs on the keyless
- * fallback, so "done" should arrive fast — timeouts are generous anyway.
+ * The scan runs on the keyless fallback, so "done" arrives fast — timeouts
+ * are generous anyway.
  */
 import { test, expect } from "@playwright/test";
 import { seedState, setAllClientCheckboxes, waitForApiReady } from "./helpers";

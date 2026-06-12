@@ -1,6 +1,5 @@
 /**
  * Stage-3 UI: the scan-ready list and approved-changes summary.
- * Awaits Phase 2C (frontend rebuild with the data-testid contract).
  */
 import { test, expect } from "@playwright/test";
 import { SEED_ACT, SEED_APPROVED_KEYS } from "../seed";

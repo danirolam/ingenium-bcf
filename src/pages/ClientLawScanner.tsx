@@ -108,16 +108,22 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
     ])
       .then(([cs, bs, ready]) => {
         setClients(cs);
-        setClientsLoaded(true);
         setBills(bs);
         setReadyBills(ready);
-        setReadyLoaded(true);
       })
       .catch((err: unknown) => {
         if (ac.signal.aborted) return;
         console.error(err);
         const msg = err instanceof Error ? err.message : String(err);
         nav.toast(`Could not load scanner data: ${msg}`);
+      })
+      .finally(() => {
+        // Mark loaded even on failure so the panes show their empty states
+        // instead of a forever "Loading…".
+        if (!ac.signal.aborted) {
+          setClientsLoaded(true);
+          setReadyLoaded(true);
+        }
       });
     return () => ac.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -130,8 +136,12 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
   // ── Approved-changes detail for the selected ready bill ──
   useEffect(() => {
     setDetail(null);
-    if (!selectedBillId) return;
-    if (!readyBills.some((b) => b.billId === selectedBillId)) return;
+    if (!selectedBillId || !readyBills.some((b) => b.billId === selectedBillId)) {
+      // Early-out (e.g. switching ready → non-ready): clear any loading state
+      // left by an aborted in-flight fetch, whose .finally skips it.
+      setDetailLoading(false);
+      return;
+    }
     const ac = new AbortController();
     setDetailLoading(true);
     fetchScanReadyDetail(selectedBillId, ac.signal)
@@ -152,9 +162,12 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
   }, [selectedBillId, readyBills]);
 
   // Progress rows belong to the bill they were run against — switching bills
-  // clears them (the loop itself self-aborts via the ref guard above).
+  // clears them and retires the run. Bumping scanRunRef makes the orphaned
+  // loop PERMANENTLY stale: without it, switching away and back to the same
+  // bill would let the old loop resume issuing analyze calls.
   useEffect(() => {
     if (scanRows.length > 0 && scanBillId && selectedBillId !== scanBillId) {
+      scanRunRef.current += 1;
       setScanRows([]);
       setScanBillId("");
       setScanning(false);
@@ -399,7 +412,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                         <button
                           className="btn sm danger"
                           data-testid="confirm-delete-client"
-                          disabled={deleting}
+                          disabled={deleting || scanning}
                           onClick={() => void confirmDelete(c.id)}
                         >
                           {deleting ? "Deleting…" : "Delete"}

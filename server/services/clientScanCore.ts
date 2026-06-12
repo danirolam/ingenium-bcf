@@ -13,7 +13,10 @@ export const MAX_CHUNKS = 6; // beyond → drop + name (coverage)
 export const CLIENT_BLOCK_TOKENS = 8_000; // cap on client materials
 export const estTokens = (s: string) => Math.ceil(s.length / 4); // rough chars→tokens
 
-/** One Act's counsel-approved operations, flattened for the scan prompt. */
+/**
+ * One Act's counsel-approved operations, flattened for the scan prompt.
+ * Wire type — mirrored in src/lib/clientScan.ts; keep in sync.
+ */
 export interface ApprovedActChange {
   slug: string;
   actTitle: string;
@@ -29,7 +32,10 @@ export interface ApprovedActChange {
   }[];
 }
 
-/** One row of the scan-ready bill list (bills with ≥1 approved op). */
+/**
+ * One row of the scan-ready bill list (bills with ≥1 approved op).
+ * Wire type — mirrored in src/lib/clientScan.ts; keep in sync.
+ */
 export interface ScanReadyBill {
   billId: string;
   billNumber: string;
@@ -42,7 +48,10 @@ export interface ScanReadyBill {
   computedAt: string;
 }
 
-/** Detail payload for one scan-ready bill. */
+/**
+ * Detail payload for one scan-ready bill.
+ * Wire type — mirrored in src/lib/clientScan.ts; keep in sync.
+ */
 export interface ScanReadyDetail {
   billId: string;
   approvedCount: number;
@@ -55,12 +64,16 @@ export type AnalysisBody = Omit<
   "id" | "clientId" | "billId" | "saved" | "createdAt"
 >;
 
-/** An op excluded from the AI calls (volume cap) — surfaced for coverage. */
+/**
+ * An op excluded from the AI calls — surfaced for coverage. "chunk-cap" means
+ * the volume cap dropped it before any call; "ai-unavailable" means its chunk
+ * was skipped because the AI was rate-limited, errored, or timed out.
+ */
 export interface DroppedOp {
   key: string;
   anchor: string | null;
   actTitle: string;
-  reason: "chunk-cap";
+  reason: "chunk-cap" | "ai-unavailable";
 }
 
 // ── Client-relevance scoring ──────────────────────────────────────────────────
@@ -82,9 +95,11 @@ const STOPWORDS = new Set([
 ]);
 
 function tokenize(s: string): string[] {
+  // Latin-1 letters plus the œ/Œ ligature (U+0153/U+0152), which sits outside
+  // the à-ÿ block but is common in French legal text (œuvre, cœur…).
   return (s || "")
     .toLowerCase()
-    .split(/[^a-z0-9à-öø-ÿ]+/)
+    .split(/[^a-z0-9à-öø-ÿœŒ]+/)
     .filter((w) => w.length >= 4 && !STOPWORDS.has(w));
 }
 
@@ -389,6 +404,7 @@ function dedupCI(items: string[]): string[] {
  * severity fields; text and lists union with dedup; confidence is the minimum.
  */
 export function mergeAnalyses(parts: AnalysisBody[]): AnalysisBody {
+  if (parts.length === 0) throw new Error("mergeAnalyses requires at least one part");
   // The highest-impact part (first on tie) anchors timing and the email draft.
   const primary = parts.reduce(
     (best, p) => (IMPACT_ORD[p.impactLevel] > IMPACT_ORD[best.impactLevel] ? p : best),
@@ -487,12 +503,20 @@ function asAdaptations(v: unknown): AnalysisBody["requiredAdaptations"] {
   return out;
 }
 
+// A misbehaving model can dump unbounded text into free-form fields; head+tail
+// cap the big ones (client-text excerpts, the email body) at ~2k chars each.
+const NORMALIZE_FIELD_MAX_CHARS = 2_000;
+
 function asClientText(v: unknown): AnalysisBody["relevantClientText"] {
   if (!Array.isArray(v)) return [];
   const out: AnalysisBody["relevantClientText"] = [];
   for (const it of v) {
     if (!isRecord(it)) continue; // drop malformed entries
-    const item = { source: asStr(it.source), excerpt: asStr(it.excerpt), issue: asStr(it.issue) };
+    const item = {
+      source: asStr(it.source),
+      excerpt: headTail(asStr(it.excerpt), NORMALIZE_FIELD_MAX_CHARS),
+      issue: asStr(it.issue),
+    };
     if (!item.source && !item.excerpt && !item.issue) continue;
     out.push(item);
   }
@@ -525,7 +549,10 @@ export function normalizeAnalysis(raw: unknown): AnalysisBody {
     requiredAdaptations: asAdaptations(rec?.requiredAdaptations),
     relevantClientText: asClientText(rec?.relevantClientText),
     lawyerVerificationQuestions: asStrArray(rec?.lawyerVerificationQuestions),
-    emailDraft: { subject: asStr(emailRec?.subject), body: asStr(emailRec?.body) },
+    emailDraft: {
+      subject: asStr(emailRec?.subject),
+      body: headTail(asStr(emailRec?.body), NORMALIZE_FIELD_MAX_CHARS),
+    },
     confidence,
     // Conservative: anything other than an explicit boolean means "review it".
     humanReviewRequired:
@@ -537,13 +564,27 @@ export function normalizeAnalysis(raw: unknown): AnalysisBody {
 
 // ── Coverage ──────────────────────────────────────────────────────────────────
 
-/** A lawyer-facing note naming the ops that were never sent to the model. */
+/**
+ * A lawyer-facing note naming the ops that were never sent to the model,
+ * grouped by WHY they were skipped — "volume cap" must never be claimed for
+ * ops that were actually lost to a rate limit, error, or timeout.
+ */
 export function coverageNote(
   analyzedCount: number,
   dropped: DroppedOp[],
 ): string | null {
   void analyzedCount; // part of the stable API; the note names only the gaps
   if (dropped.length === 0) return null;
-  const list = dropped.map((d) => `${d.anchor ?? d.key} (${d.actTitle})`).join(", ");
-  return `Not analyzed (volume cap): ${list} — review these provisions manually.`;
+  const list = (ds: DroppedOp[]) =>
+    ds.map((d) => `${d.anchor ?? d.key} (${d.actTitle})`).join(", ");
+  const capped = dropped.filter((d) => d.reason === "chunk-cap");
+  const unavailable = dropped.filter((d) => d.reason !== "chunk-cap");
+  const sentences: string[] = [];
+  if (capped.length > 0) sentences.push(`Not analyzed (volume cap): ${list(capped)}`);
+  if (unavailable.length > 0) {
+    sentences.push(
+      `Not analyzed (AI unavailable — rate limit or error): ${list(unavailable)}`,
+    );
+  }
+  return `${sentences.join(". ")} — review these provisions manually.`;
 }
