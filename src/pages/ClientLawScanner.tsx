@@ -306,6 +306,11 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
         next.delete(id);
         return next;
       });
+      // Drop the deleted client's scoreboard row too (its scans were
+      // cascade-deleted server-side; a leftover row would render the raw id
+      // and 404 on Analyze).
+      setScanRows((rows) => rows.filter((r) => r.clientId !== id));
+      setOpenRationaleId((cur) => (cur === id ? null : cur));
       setConfirmDeleteId(null);
       nav.toast("Client deleted · its stored briefs were removed.");
       // Refresh from the server so the list reflects the cascade.

@@ -57,6 +57,11 @@ test("two-phase scan: band scoreboard, rationale accordion, per-row analyze → 
   // carries a band. The keyless heuristic never fails, so no scan-retry, and
   // every row offers the per-row analyze button.
   await expectAllRowsScored(page, clientCount);
+  // The post-loop ranking refresh can reorder rows a beat after the last row
+  // turns "scored". setScanning(false) is sequenced strictly after that merge,
+  // so a re-enabled Run button proves the row order is FINAL — required before
+  // any positional locator below.
+  await expect(runScan).toBeEnabled();
   const rows = page.getByTestId("scan-row");
   for (let i = 0; i < clientCount; i++) {
     await expect(rows.nth(i).getByTestId("scan-retry")).toHaveCount(0);
@@ -64,8 +69,13 @@ test("two-phase scan: band scoreboard, rationale accordion, per-row analyze → 
   }
 
   // ── Phase 1b: the rationale accordion — at most ONE rationale visible.
-  const rowA = rows.nth(0);
-  const rowB = rows.nth(1);
+  // Pin the two probe rows by client id (stable across any re-render), not by
+  // position.
+  const idA = await rows.nth(0).getAttribute("data-client-id");
+  const idB = await rows.nth(1).getAttribute("data-client-id");
+  expect(idA && idB && idA !== idB).toBeTruthy();
+  const rowA = page.locator(`[data-testid="scan-row"][data-client-id="${idA}"]`);
+  const rowB = page.locator(`[data-testid="scan-row"][data-client-id="${idB}"]`);
 
   await rowA.getByTestId("scan-rationale-toggle").click();
   await expect(rowA.getByTestId("scan-rationale")).toBeVisible();

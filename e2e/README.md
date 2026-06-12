@@ -96,7 +96,7 @@ exists for the analyze call and is cleaned afterwards.
 | `api.spec.ts` | scan-ready list/detail/404, scorer (`/scan` + `/scans`: bands, determinism, no-score-leak, cascade), analyze 400/404, keyless analyze + by-pair, client CRUD + cascade | **yes** (scorer backend landed) | — |
 | `core-unit.spec.ts` | `clientScanCore.ts` pure functions incl. `bandFromScore`/`normalizeScore`/`heuristicScore` laws (a missing/broken module FAILS the suite) | **yes** (scorer backend landed) | — |
 | `scan-ready.spec.ts` | ready list / approved summary UI | **yes** | — |
-| `scan-flow.spec.ts` | two-phase flow: band scoreboard → rationale accordion → per-row analyze → brief → persistence | no | two-agent frontend (scoreboard testids) |
+| `scan-flow.spec.ts` | two-phase flow: band scoreboard → rationale accordion → per-row analyze → brief → persistence | **yes** (scoreboard frontend landed) | — |
 | `empty-states.spec.ts` | run-scan disabled guards | **yes** (Phase 2C frontend landed) | — |
 | `client-management.spec.ts` | client modal CRUD UI | **yes** (Phase 2C frontend landed) | — |
 | `live.spec.ts` | real AI analysis (opt-in `@live`) | opt-in | real keys + your running server |

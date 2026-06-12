@@ -503,14 +503,20 @@ export async function scoreClientAgainstChanges(
       // 429 = rate limit; trip the shared budget so sibling calls stop too.
       budget?.trip(res.status === 429 ? "rate-limit" : "ai-error");
       console.log(`[scan:score] ${bill.billNumber} × ${client.name} ${res.status} ${await res.text()}`);
-      return finish(heuristicScore(changes, client), "fallback");
+      return finish(heuristicScore(changes, client, "AI unavailable"), "fallback");
     }
     const data = await res.json();
+    if (data.stop_reason === "max_tokens") {
+      // Truncated tool input would normalize into a silent score-0 record
+      // tagged "ai" — treat truncation as a failure instead.
+      console.log(`[scan:score] ${bill.billNumber} × ${client.name}: output truncated (max_tokens)`);
+      return finish(heuristicScore(changes, client, "AI unavailable"), "fallback");
+    }
     const input = (data.content ?? []).find((b: any) => b.type === "tool_use")?.input;
     if (input === undefined) {
       // Forced tool_choice should prevent this; cover it anyway.
       console.log(`[scan:score] ${bill.billNumber} × ${client.name}: no tool_use block`);
-      return finish(heuristicScore(changes, client), "fallback");
+      return finish(heuristicScore(changes, client, "AI unavailable"), "fallback");
     }
     return finish(normalizeScore(input), "ai");
   } catch (err: any) {
@@ -521,6 +527,6 @@ export async function scoreClientAgainstChanges(
       budget.trip("ai-error");
     }
     console.log(`[scan:score] ${bill.billNumber} × ${client.name} failed: ${err?.message ?? err}`);
-    return finish(heuristicScore(changes, client), "fallback");
+    return finish(heuristicScore(changes, client, "AI unavailable"), "fallback");
   }
 }

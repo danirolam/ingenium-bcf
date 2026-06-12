@@ -44,6 +44,7 @@ const DELTAS_FILE = path.join(DATA_DIR, "provisionDeltas.json");
 const APPROVALS_FILE = path.join(DATA_DIR, "approvals.json");
 const IMPACTS_FILE = path.join(DATA_DIR, "clientImpactAnalyses.json");
 const CLIENTS_FILE = path.join(DATA_DIR, "clients.json");
+const SCANS_FILE = path.join(DATA_DIR, "clientScans.json");
 
 /** The five demo clients are sacred — never remove them, whatever their names. */
 const PROTECTED_CLIENT_IDS = new Set([
@@ -84,6 +85,7 @@ export interface SeedState {
   title2: string;
   deltasFileExisted: boolean;
   approvalsFileExisted: boolean;
+  scansFileExisted: boolean;
   seededAt: string;
 }
 
@@ -304,6 +306,22 @@ export async function teardown(): Promise<void> {
     if (kept.length !== impacts.length) await writeArray(IMPACTS_FILE, kept);
   }
 
+  // clientScans.json — drop scorer records for seeded bills (the scorer specs
+  // persist scans for protected demo clients against the seeded bills; without
+  // this cascade those rows would survive every run). Restore absence when the
+  // run created the file and the filter empties it.
+  const scans = await readArray<{ id: string; billId?: string }>(SCANS_FILE);
+  if (scans !== null) {
+    const kept = scans.filter((sc) => !sc.billId || !seededBillIds.has(sc.billId));
+    if (kept.length !== scans.length) {
+      if (kept.length === 0 && !state?.scansFileExisted) {
+        await fs.unlink(SCANS_FILE);
+      } else {
+        await writeArray(SCANS_FILE, kept);
+      }
+    }
+  }
+
   // clients.json — drop "E2E "-prefixed clients; demo clients are id-protected.
   const clients = await readArray<{ id: string; name?: string }>(CLIENTS_FILE);
   if (clients !== null) {
@@ -348,6 +366,9 @@ export async function setup(): Promise<SeedState> {
   // approvals.json — all three ops approved for bill1 ONLY.
   const existingApprovals = await readArray<ApprovalRecord>(APPROVALS_FILE);
   const approvalsFileExisted = existingApprovals !== null;
+  // The scorer specs will write clientScans.json; record whether it pre-existed
+  // so teardown can restore absence when the run created it.
+  const scansFileExisted = (await readArray<unknown>(SCANS_FILE)) !== null;
   await writeArray(APPROVALS_FILE, [
     ...(existingApprovals ?? []),
     { id: bill1.id, keys: [...SEED_APPROVED_KEYS] },
@@ -364,6 +385,7 @@ export async function setup(): Promise<SeedState> {
     title2: bill2.title,
     deltasFileExisted,
     approvalsFileExisted,
+    scansFileExisted,
     seededAt: now,
   };
   await fs.writeFile(STATE_FILE, JSON.stringify(state, null, 2), "utf-8");

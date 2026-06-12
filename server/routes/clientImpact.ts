@@ -271,9 +271,20 @@ function toScanView(
   scan: ImpactScan,
   brief: ClientImpactAnalysis | undefined,
 ): ImpactScanView {
-  const { score: _score, ...rest } = scan; // strip the backend-only score
-  void _score;
-  return { ...rest, hasBrief: !!brief, ...(brief ? { analysisId: brief.id } : {}) };
+  // Explicit allowlist (not a `score`-only denylist): a field added to
+  // ImpactScan later must be opted IN here before it can reach a client.
+  return {
+    id: scan.id,
+    clientId: scan.clientId,
+    billId: scan.billId,
+    band: scan.band,
+    rationale: scan.rationale,
+    topAreas: scan.topAreas,
+    source: scan.source,
+    scannedAt: scan.scannedAt,
+    hasBrief: !!brief,
+    ...(brief ? { analysisId: brief.id } : {}),
+  };
 }
 
 /** Newest brief for a (client, bill) pair, if any. */

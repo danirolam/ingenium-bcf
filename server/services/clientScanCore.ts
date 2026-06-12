@@ -676,7 +676,14 @@ const HEURISTIC_HALF_SCORE_MASS = 2; // overlap mass at which the curve crosses 
  * output (no IO, no clock, no randomness); more overlapping ops ⇒ score never
  * lower.
  */
-export function heuristicScore(changes: ApprovedActChange[], client: Client): ScoreBody {
+export function heuristicScore(
+  changes: ApprovedActChange[],
+  client: Client,
+  // Why the heuristic ran — counsel-facing prefix must not claim keylessness
+  // when the cause was an AI failure with a key present.
+  reason: "no AI key" | "AI unavailable" = "no AI key",
+): ScoreBody {
+  const prefix = `Heuristic (${reason})`;
   const terms = clientTerms(client);
 
   interface OpHit {
@@ -717,7 +724,7 @@ export function heuristicScore(changes: ApprovedActChange[], client: Client): Sc
       score: 0,
       band: "low",
       rationale: capRationale(
-        `Heuristic (no AI key): no approved changes to assess for ${client.name}.`,
+        `${prefix}: no approved changes to assess for ${client.name}.`,
       ),
       topAreas: [],
     };
@@ -729,13 +736,13 @@ export function heuristicScore(changes: ApprovedActChange[], client: Client): Sc
       score: 0,
       band: "low",
       rationale: capRationale(
-        `Heuristic (no AI key): 0 of ${total} approved changes intersect ${client.name}'s documented terms — no substantive vocabulary shared between the amendments and the client's profile or documents.`,
+        `${prefix}: 0 of ${total} approved changes intersect ${client.name}'s documented terms — no substantive vocabulary shared between the amendments and the client's profile or documents.`,
       ),
       topAreas: [],
     };
   }
 
-  // Overlap mass → 0..HEURISTIC_MAX_SCORE through a saturating curve.
+  // Overlap mass → 0..HEURISTIC_MAX_SCORE (inclusive cap) through a saturating curve.
   const mass = hitOps.reduce((s, o) => s + o.density, 0);
   const score = Math.min(
     HEURISTIC_MAX_SCORE,
@@ -762,7 +769,7 @@ export function heuristicScore(changes: ApprovedActChange[], client: Client): Sc
     score,
     band: bandFromScore(score),
     rationale: capRationale(
-      `Heuristic (no AI key): ${hitOps.length} of ${total} approved changes intersect ${client.name}'s documented terms — strongest overlap: ${topAreas.join("; ")}.`,
+      `${prefix}: ${hitOps.length} of ${total} approved changes intersect ${client.name}'s documented terms — strongest overlap: ${topAreas.join("; ")}.`,
     ),
     topAreas,
   };
