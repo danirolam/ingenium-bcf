@@ -1,14 +1,13 @@
-// Stage-4 entry — the brief-library drill-down rendered by ClientImpactAnalysis
-// when no (client, bill) pair is addressed. Step 1 lists the bills that have at
-// least one generated brief; step 2 lists that bill's briefed clients; picking
-// a client navigates to the pair URL (/clients/:clientId/bills/:billId). The
-// bill selection is internal state only — the URL stays /brief until a brief
-// is opened.
-import { useEffect, useState } from "react";
+// Stage-4 entry — the brief library, rendered by ClientImpactAnalysis when no
+// (client, bill) pair is addressed. A FLAT chronological list of every brief
+// (latest per pair, newest first) with Approved / Needs review tags, filterable
+// by bill and by client (combinable). Clicking an entry opens the brief at
+// /clients/:clientId/bills/:billId; the URL stays /brief until then.
+import { useEffect, useMemo, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faBookOpen } from "@fortawesome/free-solid-svg-icons";
 import type { Nav } from "../App";
-import { fetchBriefIndex, type BriefIndexBill } from "../lib/clientScan";
+import { fetchBriefIndex, type BriefIndexEntry } from "../lib/clientScan";
 import "../styles/briefpicker.css";
 
 // Same compact timestamp helper the scanner uses (copied, not imported —
@@ -21,15 +20,16 @@ function fmtWhen(iso: string): string {
 }
 
 export function BriefPicker({ nav }: { nav: Nav }) {
-  const [bills, setBills] = useState<BriefIndexBill[]>([]);
+  const [entries, setEntries] = useState<BriefIndexEntry[]>([]);
   const [loaded, setLoaded] = useState(false);
-  const [selectedBillId, setSelectedBillId] = useState<string | null>(null);
+  const [billFilter, setBillFilter] = useState(""); // "" = all bills
+  const [clientFilter, setClientFilter] = useState(""); // "" = all clients
 
   useEffect(() => {
     const ac = new AbortController();
     fetchBriefIndex(ac.signal)
       .then((index) => {
-        if (!ac.signal.aborted) setBills(index);
+        if (!ac.signal.aborted) setEntries(index);
       })
       .catch((err: unknown) => {
         if (ac.signal.aborted) return;
@@ -46,12 +46,33 @@ export function BriefPicker({ nav }: { nav: Nav }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const selected = selectedBillId
-    ? (bills.find((b) => b.billId === selectedBillId) ?? null)
-    : null;
+  // Dropdown options derive from the data itself — no extra endpoint.
+  const billOptions = useMemo(() => {
+    const seen = new Map<string, string>();
+    for (const e of entries) {
+      if (!seen.has(e.billId)) {
+        seen.set(e.billId, `${e.billNumber} — ${e.billShortTitle || e.billTitle}`);
+      }
+    }
+    return [...seen.entries()].sort((a, b) => a[1].localeCompare(b[1]));
+  }, [entries]);
+  const clientOptions = useMemo(() => {
+    const seen = new Map<string, string>();
+    for (const e of entries) {
+      if (!seen.has(e.clientId)) seen.set(e.clientId, e.clientName);
+    }
+    return [...seen.entries()].sort((a, b) => a[1].localeCompare(b[1]));
+  }, [entries]);
 
-  function openBrief(clientId: string, billId: string) {
-    nav.go("impact", { clientId, billId });
+  // Filters combine (AND); the server's chronological order is preserved.
+  const visible = entries.filter(
+    (e) =>
+      (!billFilter || e.billId === billFilter) &&
+      (!clientFilter || e.clientId === clientFilter),
+  );
+
+  function openBrief(e: BriefIndexEntry) {
+    nav.go("impact", { clientId: e.clientId, billId: e.billId });
   }
 
   return (
@@ -61,130 +82,120 @@ export function BriefPicker({ nav }: { nav: Nav }) {
           <FontAwesomeIcon icon={faBookOpen} aria-hidden="true" />
           <div className="card-title">Brief library</div>
         </div>
-        {loaded && !selected && bills.length > 0 && (
-          <span className="bp-count">({bills.length})</span>
+        {loaded && entries.length > 0 && (
+          <span className="bp-count">
+            ({visible.length === entries.length ? entries.length : `${visible.length} of ${entries.length}`})
+          </span>
         )}
       </div>
       <div className="card-pad">
-        {/* ── Step 1: bills with at least one brief ── */}
-        {!selected && (
+        {!loaded && <div className="empty-small">Loading brief library…</div>}
+
+        {loaded && entries.length === 0 && (
+          <div className="rd-empty" data-testid="briefs-empty">
+            No briefs yet — run a scan in Client scan (stage 3) and analyze a
+            client.
+            <div className="bp-empty-cta">
+              <button className="btn" onClick={() => nav.go("scanner")}>
+                Open Client scan
+                <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {loaded && entries.length > 0 && (
           <>
-            {!loaded && (
-              <div className="empty-small">Loading brief library…</div>
+            <div className="bp-filters">
+              <label className="bp-filter">
+                <span className="bp-filter-label">Bill</span>
+                <select
+                  data-testid="brief-filter-bill"
+                  value={billFilter}
+                  onChange={(e) => setBillFilter(e.target.value)}
+                >
+                  <option value="">All bills</option>
+                  {billOptions.map(([id, label]) => (
+                    <option key={id} value={id}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="bp-filter">
+                <span className="bp-filter-label">Client</span>
+                <select
+                  data-testid="brief-filter-client"
+                  value={clientFilter}
+                  onChange={(e) => setClientFilter(e.target.value)}
+                >
+                  <option value="">All clients</option>
+                  {clientOptions.map(([id, label]) => (
+                    <option key={id} value={id}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+
+            {visible.length === 0 && (
+              <div className="empty-small">No briefs match these filters.</div>
             )}
-            {loaded && bills.length === 0 && (
-              <div className="rd-empty" data-testid="briefs-empty">
-                No briefs yet — run a scan in Client scan (stage 3) and analyze
-                a client.
-                <div className="bp-empty-cta">
-                  <button className="btn" onClick={() => nav.go("scanner")}>
-                    Open Client scan
-                    <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
-                  </button>
-                </div>
-              </div>
-            )}
-            {loaded && bills.length > 0 && (
-              <div className="bp-bill-grid" data-testid="brief-bill-list">
-                {bills.map((b) => (
+
+            {visible.length > 0 && (
+              <div className="bp-entry-list" data-testid="brief-entry-list">
+                {visible.map((e) => (
                   <div
-                    key={b.billId}
-                    className="card bp-bill-card"
-                    data-testid="brief-bill-card"
-                    data-bill-id={b.billId}
+                    key={e.analysisId}
+                    className="bp-entry"
+                    data-testid="brief-entry"
+                    data-analysis-id={e.analysisId}
+                    data-bill-id={e.billId}
+                    data-client-id={e.clientId}
                     role="button"
                     tabIndex={0}
-                    onClick={() => setSelectedBillId(b.billId)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        setSelectedBillId(b.billId);
+                    onClick={() => openBrief(e)}
+                    onKeyDown={(ev) => {
+                      if (ev.key === "Enter" || ev.key === " ") {
+                        ev.preventDefault();
+                        openBrief(e);
                       }
                     }}
                   >
-                    <div className="bp-bill-top">
-                      <span className="bp-bill-num">{b.billNumber}</span>
-                      <span className="bp-brief-pill">
-                        {b.briefCount} brief{b.briefCount === 1 ? "" : "s"}
+                    <div className="bp-entry-main">
+                      <span className="bp-bill-num">{e.billNumber}</span>
+                      <span className="bp-entry-client">{e.clientName}</span>
+                      <span className="bp-entry-title">
+                        {e.billShortTitle || e.billTitle}
                       </span>
                     </div>
-                    <div className="bp-bill-title">
-                      {b.shortTitle || b.title}
-                    </div>
-                    <div className="bp-bill-foot">
-                      <span>{b.status}</span>
-                      {fmtWhen(b.latestAt) && (
-                        <span>Latest {fmtWhen(b.latestAt)}</span>
+                    <div className="bp-entry-meta">
+                      {e.band && (
+                        <span className={`bp-band is-${e.band}`} data-band={e.band}>
+                          {e.band}
+                        </span>
                       )}
+                      {e.approved ? (
+                        <span className="bp-tag bp-approved" data-testid="brief-tag-approved">
+                          Approved
+                        </span>
+                      ) : (
+                        <span className="bp-tag bp-review" data-testid="brief-tag-review">
+                          Needs review
+                        </span>
+                      )}
+                      <span className="bp-entry-when">{fmtWhen(e.createdAt)}</span>
+                      <FontAwesomeIcon
+                        icon={faArrowRight}
+                        className="bp-entry-go"
+                        aria-hidden="true"
+                      />
                     </div>
                   </div>
                 ))}
               </div>
             )}
-          </>
-        )}
-
-        {/* ── Step 2: the selected bill's briefed clients ── */}
-        {selected && (
-          <>
-            <div className="bp-step-head">
-              <button
-                className="btn ghost sm bp-back"
-                data-testid="brief-back"
-                onClick={() => setSelectedBillId(null)}
-              >
-                ← All bills
-              </button>
-              <div className="bp-bill-line">
-                <span className="bp-bill-num">{selected.billNumber}</span>
-                <span className="bp-bill-line-title">
-                  {selected.shortTitle || selected.title}
-                </span>
-              </div>
-              <div className="bp-bill-line-meta">
-                {selected.status} · {selected.briefCount} brief
-                {selected.briefCount === 1 ? "" : "s"}
-                {fmtWhen(selected.latestAt) &&
-                  ` · latest ${fmtWhen(selected.latestAt)}`}
-              </div>
-            </div>
-            <div className="bp-client-list" data-testid="brief-client-list">
-              {selected.clients.map((cl) => (
-                <div
-                  key={cl.clientId}
-                  className="bp-client-card"
-                  data-testid="brief-client-card"
-                  data-client-id={cl.clientId}
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => openBrief(cl.clientId, selected.billId)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      openBrief(cl.clientId, selected.billId);
-                    }
-                  }}
-                >
-                  <span className="bp-client-name">{cl.name}</span>
-                  {cl.band && (
-                    <span
-                      className={`bp-band is-${cl.band}`}
-                      data-band={cl.band}
-                    >
-                      {cl.band}
-                    </span>
-                  )}
-                  <span className="bp-client-when">
-                    {fmtWhen(cl.createdAt)}
-                  </span>
-                  <FontAwesomeIcon
-                    icon={faArrowRight}
-                    className="bp-client-go"
-                    aria-hidden="true"
-                  />
-                </div>
-              ))}
-            </div>
           </>
         )}
       </div>

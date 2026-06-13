@@ -1,4 +1,4 @@
-/* Stage 4 — Brief library picker (the /brief drill-down). Imported only by
+/* Stage 4 — Brief library (flat, filterable). Imported only by
    src/components/BriefPicker.tsx; everything is namespaced `bp-` so nothing
    leaks into other pages. Mirrors the app's card/list aesthetics (lpg cards,
    cs scoreboard rows) on the shared tokens. */
@@ -8,149 +8,134 @@
   font-size: 11.5px;
   color: var(--ink-3);
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0;
 }
 
-/* ── Step 1: bills with at least one brief ────────────────────────────── */
-.bp-bill-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-@media (max-width: 880px) {
-  .bp-bill-grid {
-    grid-template-columns: 1fr;
-  }
-}
-.bp-bill-card {
-  padding: 14px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  transition: border-color 0.1s;
-}
-.bp-bill-card:hover {
-  border-color: var(--border-2);
-}
-.bp-bill-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-.bp-bill-num {
-  font-family: var(--mono);
-  font-size: 12.5px;
-  color: var(--accent);
-  font-weight: 500;
-  letter-spacing: 0;
-  font-variant-numeric: tabular-nums;
-}
-.bp-brief-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font: 600 11px/1.4 var(--sans);
-  color: var(--med);
-  background: var(--med-bg);
-  border-radius: 999px;
-  padding: 2px 8px;
-  white-space: nowrap;
-}
-.bp-bill-title {
-  font-family: var(--sans);
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--ink);
-  line-height: 1.35;
-}
-.bp-bill-foot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  font-size: 11px;
-  color: var(--ink-4);
-}
 .bp-empty-cta {
   margin-top: 14px;
   display: flex;
   justify-content: center;
 }
 
-/* ── Step 2: the selected bill's briefed clients ──────────────────────── */
-.bp-step-head {
+/* ── Filters ──────────────────────────────────────────────────────────── */
+.bp-filters {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  gap: 14px;
+  flex-wrap: wrap;
   margin-bottom: 14px;
 }
-.bp-back {
-  align-self: flex-start;
-}
-.bp-bill-line {
+.bp-filter {
   display: flex;
-  align-items: baseline;
-  gap: 10px;
-  min-width: 0;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
 }
-.bp-bill-line-title {
-  font: 500 14px/1.35 var(--sans);
-  color: var(--ink);
-}
-.bp-bill-line-meta {
-  font-size: 11.5px;
+.bp-filter-label {
+  font: 600 11px/1.4 var(--sans);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--ink-4);
 }
-.bp-client-list {
+.bp-filter select {
+  font: 500 12.5px/1.4 var(--sans);
+  color: var(--ink);
+  background: var(--panel-2);
+  border: 1px solid var(--border-2);
+  border-radius: 7px;
+  padding: 6px 10px;
+  max-width: 320px;
+  cursor: pointer;
+}
+.bp-filter select:hover {
+  border-color: var(--border);
+}
+
+/* ── Entries (flat chronological list) ────────────────────────────────── */
+.bp-entry-list {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--border-3);
   border-radius: 8px;
   overflow: hidden;
 }
-.bp-client-card {
+.bp-entry {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  gap: 14px;
   padding: 11px 14px;
   border-bottom: 1px solid var(--border-3);
   cursor: pointer;
-  transition: background 0.1s ease;
 }
-.bp-client-card:last-child {
+.bp-entry:last-child {
   border-bottom: none;
 }
-.bp-client-card:hover {
+.bp-entry:hover {
   background: var(--panel-2);
 }
-.bp-client-name {
-  flex: 1;
+.bp-entry-main {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
   min-width: 0;
-  font: 500 13px/1.4 var(--sans);
+  flex: 1;
+}
+.bp-bill-num {
+  flex: none;
+  font: 700 12px/1.4 var(--mono);
+  color: var(--accent-warm, var(--ink));
+}
+.bp-entry-client {
+  flex: none;
+  font: 600 13px/1.4 var(--sans);
   color: var(--ink);
+  white-space: nowrap;
+}
+.bp-entry-title {
+  font: 400 12px/1.4 var(--sans);
+  color: var(--ink-4);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  min-width: 0;
 }
-.bp-client-when {
+.bp-entry-meta {
   flex: none;
-  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.bp-entry-when {
+  font: 500 11px/1.4 var(--mono);
   color: var(--ink-4);
   white-space: nowrap;
 }
-.bp-client-go {
-  flex: none;
-  font-size: 11px;
+.bp-entry-go {
   color: var(--ink-4);
+  font-size: 11px;
+}
+.bp-entry:hover .bp-entry-go {
+  color: var(--ink);
 }
 
-/* Band chip — the scanner's band-pill rules (cs-band) copied under the bp-
-   prefix so this stylesheet stays self-contained: low muted, medium amber
-   (the palette's amber token is --high), high a strong red tint, critical
-   filled red. */
+/* ── Approval / review tags ───────────────────────────────────────────── */
+.bp-tag {
+  flex: none;
+  font: 700 10.5px/1 var(--sans);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.bp-tag.bp-approved {
+  color: var(--ok);
+  background: var(--ok-bg);
+}
+.bp-tag.bp-review {
+  color: var(--high);
+  background: var(--high-bg);
+}
+
+/* ── Impact-band pill (same escalation as the scanner's cs-band) ──────── */
 .bp-band {
   flex: none;
   font: 700 10.5px/1 var(--sans);

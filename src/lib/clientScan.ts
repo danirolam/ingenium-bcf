@@ -140,36 +140,28 @@ export function deleteClient(id: string): Promise<{ ok: boolean }> {
 }
 
 // ── Brief library (stage-4 entry) ────────────────────────────────────────────
-// Wire shapes for GET /api/client-impact/briefs — mirrored from
-// server/routes/clientImpact.ts (BriefIndexBill/BriefIndexClient); keep in
-// sync. Bands only — the numeric score never leaves the backend.
+// Wire shape for GET /api/client-impact/briefs — mirrored from
+// server/routes/clientImpact.ts (BriefIndexEntry); keep in sync. A FLAT index:
+// one entry per latest-(client, bill) pair, server-sorted newest first.
+// `approved` mirrors the analysis' saved flag (the counsel-approval gate).
+// Bands only — the numeric score never leaves the backend.
 
-export interface BriefIndexClient {
-  clientId: string;
-  name: string;
+export interface BriefIndexEntry {
   analysisId: string;
-  createdAt: string;
-  band?: ScanBand;
-}
-
-export interface BriefIndexBill {
   billId: string;
   billNumber: string;
-  title: string;
-  shortTitle?: string;
-  status: string;
-  briefCount: number;
-  latestAt: string;
-  clients: BriefIndexClient[];
+  billTitle: string;
+  billShortTitle?: string;
+  clientId: string;
+  clientName: string;
+  createdAt: string;
+  band?: ScanBand;
+  approved: boolean;
 }
 
-/**
- * Bills that have at least one brief, each with its briefed clients — server
- * sorted (bills by latest brief desc; clients by band severity desc, unknown
- * last, then name).
- */
-export function fetchBriefIndex(signal?: AbortSignal): Promise<BriefIndexBill[]> {
-  return j<BriefIndexBill[]>("/api/client-impact/briefs", { signal });
+/** Every brief (latest per pair), chronological — newest first. */
+export function fetchBriefIndex(signal?: AbortSignal): Promise<BriefIndexEntry[]> {
+  return j<BriefIndexEntry[]>("/api/client-impact/briefs", { signal });
 }
 
 /**

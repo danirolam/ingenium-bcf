@@ -41,6 +41,9 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
   const [regenOpen, setRegenOpen] = useState(false);
   const [regenText, setRegenText] = useState("");
   const [regenBusy, setRegenBusy] = useState(false);
+  // Counsel's answers to the brief's verification questions, keyed by index.
+  // Transient like guidance — they ride the same regen channel, never stored.
+  const [reviewAnswers, setReviewAnswers] = useState<Record<number, string>>({});
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     why: true,
     adaptations: true,
@@ -158,13 +161,16 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     );
   }
 
-  async function save() {
+  // Counsel approval — repurposes the stored `saved` flag (and the existing
+  // /save route). Approval is per-version: regenerating creates a fresh,
+  // unapproved analysis, so the gate re-engages automatically.
+  async function approve() {
     if (!analysis) return;
     setBusy(true);
     try {
       const updated = await api.clientImpact.save(analysis.id);
       setAnalysis(updated);
-      nav.toast("Analysis saved to matter history.");
+      nav.toast("Brief approved — email and download unlocked.");
     } finally {
       setBusy(false);
     }
@@ -203,6 +209,49 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
       nav.toast("Brief regenerated.");
     } catch (err: any) {
       // Keep the panel (and the typed guidance) so the lawyer can retry.
+      nav.toast(`Could not regenerate brief: ${err.message ?? err}`);
+    } finally {
+      setRegenBusy(false);
+    }
+  }
+
+  // Regenerate using counsel's ANSWERS to the brief's verification questions.
+  // Same transient guidance channel as free-form feedback — each answer is
+  // sent with its question's FULL TEXT so the agent reads the resolution in
+  // context (the questions also reach it inside the PREVIOUS BRIEF block).
+  async function regenerateWithAnswers() {
+    if (!clientId || !billId || regenBusy || !analysis) return;
+    const questions = analysis.lawyerVerificationQuestions ?? [];
+    const pairs = questions
+      .map((q, i) => ({ q, a: (reviewAnswers[i] ?? "").trim() }))
+      .filter((p) => p.a.length > 0);
+    if (pairs.length === 0) return;
+    let composed =
+      "COUNSEL ANSWERS TO THE BRIEF'S VERIFICATION QUESTIONS:\n" +
+      pairs.map((p, i) => `Q${i + 1}: ${p.q}\nA${i + 1}: ${p.a}`).join("\n");
+    if (composed.length > 2000) {
+      // The guidance channel caps at 2000 chars server-side — truncate at a
+      // pair boundary so no half-answer goes through, and say so.
+      let cut = "COUNSEL ANSWERS TO THE BRIEF'S VERIFICATION QUESTIONS:\n";
+      for (let i = 0; i < pairs.length; i++) {
+        const next = `Q${i + 1}: ${pairs[i].q}\nA${i + 1}: ${pairs[i].a}\n`;
+        if (cut.length + next.length > 2000) break;
+        cut += next;
+      }
+      composed = cut.trimEnd();
+      nav.toast("Answers exceed the feedback limit — sending the first answers that fit.");
+    }
+    setRegenBusy(true);
+    try {
+      const { analysis: fresh } = await analyzeWithGuidance(clientId, billId, composed);
+      const reloaded = await api.clientImpact
+        .byPair(clientId, billId)
+        .catch(() => fresh);
+      setAnalysis(reloaded);
+      setReviewAnswers({});
+      nav.toast("Brief regenerated with counsel's answers.");
+    } catch (err: any) {
+      // Keep the typed answers so the lawyer can retry.
       nav.toast(`Could not regenerate brief: ${err.message ?? err}`);
     } finally {
       setRegenBusy(false);
@@ -283,21 +332,34 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
               <FontAwesomeIcon icon={faRotateRight} aria-hidden="true" />
               Regenerate with feedback…
             </button>
-            <button className="btn" onClick={downloadBrief}>
+            {/* Unapproved AI output cannot leave the building: download and
+                email unlock only once counsel approves this version. */}
+            <button
+              className="btn"
+              disabled={!analysis.saved}
+              title={analysis.saved ? undefined : "Requires counsel approval"}
+              onClick={downloadBrief}
+            >
               <FontAwesomeIcon icon={faFileArrowDown} aria-hidden="true" />
               Download brief
             </button>
-            <button className="btn" disabled={busy} onClick={emailLawyer}>
+            <button
+              className="btn"
+              disabled={busy || !analysis.saved}
+              title={analysis.saved ? undefined : "Requires counsel approval"}
+              onClick={emailLawyer}
+            >
               <FontAwesomeIcon icon={faEnvelope} aria-hidden="true" />
               Email lawyer
             </button>
             <button
               className="btn primary"
+              data-testid="approve-brief"
               disabled={busy || analysis.saved}
-              onClick={save}
+              onClick={approve}
             >
               <FontAwesomeIcon icon={faFloppyDisk} aria-hidden="true" />
-              {analysis.saved ? "Saved" : "Save analysis"}
+              {analysis.saved ? "Approved" : "Approve brief"}
             </button>
           </>
         }
@@ -315,6 +377,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
               <div className="card-sub">
                 The analyst revises THIS brief (it travels along as context) —
                 your notes can be instructions or feedback on it. Not stored.
+                Regenerating creates a new, unapproved version.
               </div>
             </div>
             <div className="card-pad">
@@ -361,7 +424,13 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
                 {client?.name ?? "-"} · {bill?.billNumber ?? "-"}
               </div>
             </div>
-            <ReviewBadge required={analysis.humanReviewRequired} />
+            {analysis.saved ? (
+              <span className="badge ok" data-testid="approved-badge">
+                Counsel approved
+              </span>
+            ) : (
+              <ReviewBadge required={analysis.humanReviewRequired} />
+            )}
           </div>
           <div className="cia-summary-top">
             <SummaryCell
@@ -378,10 +447,6 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
               level={analysis.impactLevel}
               urgency={analysis.urgency}
             />
-          </div>
-          <div className="cia-brief">
-            <div className="cia-brief-label">Executive read</div>
-            <p>{analysis.whyItAffectsClient}</p>
           </div>
         </div>
 
@@ -484,9 +549,40 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
                     </div>
                     <ul className="review-question-list">
                       {lawyerVerificationQuestions.map((q, i) => (
-                        <li key={i}>{q}</li>
+                        <li key={i}>
+                          <div>{q}</div>
+                          <textarea
+                            className="review-answer-input"
+                            data-testid="review-answer-input"
+                            rows={2}
+                            style={{ width: "100%", marginTop: 6 }}
+                            value={reviewAnswers[i] ?? ""}
+                            disabled={regenBusy}
+                            placeholder="Counsel's answer (optional) — feeds the next regeneration"
+                            onChange={(e) =>
+                              setReviewAnswers((cur) => ({
+                                ...cur,
+                                [i]: e.target.value,
+                              }))
+                            }
+                          />
+                        </li>
                       ))}
                     </ul>
+                    <div className="actions-row" style={{ marginTop: 10 }}>
+                      <button
+                        className="btn primary"
+                        data-testid="regen-with-answers"
+                        disabled={
+                          regenBusy ||
+                          !Object.values(reviewAnswers).some((a) => a.trim().length > 0)
+                        }
+                        onClick={() => void regenerateWithAnswers()}
+                      >
+                        <FontAwesomeIcon icon={faRotateRight} aria-hidden="true" />
+                        {regenBusy ? "Regenerating…" : "Regenerate with answers"}
+                      </button>
+                    </div>
                     </AlertDescription>
                   </AlertContent>
                 </Alert>

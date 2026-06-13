@@ -54,8 +54,8 @@ function synthesizeFallback(bill: Bill, client: Client): ClientImpactAnalysis {
     affected: "unclear",
     impactLevel: "medium",
     urgency: "medium",
-    timing: `${bill.billNumber} is at ${bill.status}. Coming-into-force timing is unspecified — assume a 6–12 month transition window from royal assent.`,
-    whyItAffectsClient: `${client.name} operates in ${client.industry} across ${client.jurisdictions.join(", ")}. ${bill.billNumber} (amending ${actList}) plausibly touches the client's operations; counsel verification is required to confirm scope and magnitude.`,
+    timing: `${bill.billNumber} is currently at: ${bill.status}. It is not law — if it were enacted, coming-into-force timing would depend on the final text and any transition provisions.`,
+    whyItAffectsClient: `${client.name} operates in ${client.industry} across ${client.jurisdictions.join(", ")}. ${bill.billNumber} (which would amend ${actList}) may touch areas of the client's operations; counsel review would be needed to confirm scope and magnitude before anything is communicated as definitive.`,
     affectedClientAreas: [
       "Contractual terms",
       "Operational compliance",
@@ -63,9 +63,9 @@ function synthesizeFallback(bill: Bill, client: Client): ClientImpactAnalysis {
     ],
     requiredAdaptations: [
       {
-        area: `${actName} compliance review`,
-        currentIssue: `Existing client posture has not been mapped against the changes proposed by ${bill.billNumber}.`,
-        recommendation: `Pull the client's current obligations under ${actName} and walk each affected provision against today's practice to identify gaps.`,
+        area: `${actName} — areas counsel could review`,
+        currentIssue: `The client's current posture has not yet been mapped against the changes proposed by ${bill.billNumber}.`,
+        recommendation: `Counsel may wish to review the client's current obligations under ${actName} against each proposed amendment to identify potential gaps, should the bill advance.`,
         reason: bill.summary ?? `${bill.billNumber} — ${bill.title}`,
       },
     ],
@@ -74,18 +74,18 @@ function synthesizeFallback(bill: Bill, client: Client): ClientImpactAnalysis {
           {
             source: "Terms & Conditions",
             excerpt: (client.termsAndConditions ?? "").slice(0, 240),
-            issue: `Verify these terms remain consistent with ${bill.billNumber}'s amendments to ${actName}.`,
+            issue: `These terms could be revisited if ${bill.billNumber}'s proposed amendments to ${actName} advance.`,
           },
         ]
       : [],
     lawyerVerificationQuestions: [
-      `Does ${client.name} currently rely on any provision modified by ${bill.billNumber}?`,
-      `What is the cost and lead time of bringing operations into compliance with the revised ${actName}?`,
-      `Are there client communications (T&Cs, policies, product labels) that need to be re-papered?`,
+      `Does ${client.name} currently rely on any provision that ${bill.billNumber} proposes to modify?`,
+      `What would the cost and lead time be if operations had to align with a revised ${actName}?`,
+      `Are there client communications (T&Cs, policies, product labels) that might need review?`,
     ],
     emailDraft: {
-      subject: `${bill.billNumber} — preliminary impact note for ${client.name}`,
-      body: `Hi team,\n\nPreliminary impact note on ${bill.billNumber} (${bill.title}) for ${client.name}:\n\nThe bill amends ${actList}. Based on the client's profile (${client.industry}, ${(client.jurisdictions ?? []).join(", ")}), the changes likely touch contractual terms, operational compliance, and disclosure / labelling.\n\nNext step: a lawyer-led mapping of the client's current obligations under ${actName} against the proposed amendments.\n\n— Ingenium`,
+      subject: `${bill.billNumber} — monitoring update for ${client.name}`,
+      body: `Hello,\n\nWe are monitoring Bill ${bill.billNumber} (${bill.title}), which, if enacted, may be relevant to ${client.name}.\n\nWhat the bill proposes\nThe bill would amend ${actList}. The changes remain proposals — the bill has not received royal assent and may be amended or may not pass.\n\nPotential areas to watch for ${client.name}\nBased on the client profile (${client.industry}), areas that might warrant attention include contractual terms, operational compliance, and disclosure or labelling practices.\n\nHow we can help\nWe could review your terms and conditions or contracts to identify potential exposures, and provide ongoing regulatory monitoring as the bill progresses through Parliament.\n\nWe would welcome a conversation about whether any of these areas merit a closer look.\n\n— Ingenium`,
     },
     confidence: 0.55,
     humanReviewRequired: true,
@@ -398,27 +398,23 @@ clientImpactRouter.get(
   }),
 );
 
-// ── Brief library (the stage-4 entry picker) ────────────────────────────────
-// Bills that have at least one brief, each with its briefed clients — the
-// work-product index behind the /brief drill-down. Bands come from the scans
-// store when a scan exists for the pair (never the numeric score). Registered
-// BEFORE /:id (Express matches in order).
-interface BriefIndexClient {
-  clientId: string;
-  name: string;
+// ── Brief library (the stage-4 entry) ────────────────────────────────────────
+// FLAT index: one entry per latest-(client, bill) pair, chronological (newest
+// first) — the library list filters client-side by bill/client. `approved`
+// mirrors the analysis' `saved` flag (the counsel-approval gate). Bands come
+// from the scans store when the pair was scanned (never the numeric score).
+// Registered BEFORE /:id (Express matches in order).
+interface BriefIndexEntry {
   analysisId: string;
-  createdAt: string;
-  band?: ScanBand;
-}
-interface BriefIndexBill {
   billId: string;
   billNumber: string;
-  title: string;
-  shortTitle?: string;
-  status: string;
-  briefCount: number;
-  latestAt: string;
-  clients: BriefIndexClient[];
+  billTitle: string;
+  billShortTitle?: string;
+  clientId: string;
+  clientName: string;
+  createdAt: string;
+  band?: ScanBand;
+  approved: boolean;
 }
 
 clientImpactRouter.get(
@@ -440,46 +436,36 @@ clientImpactRouter.get(
     for (const s of presentOnly(await readAll<ImpactScan>(SCANS_FILE))) {
       bandByPair.set(`${s.clientId}|${s.billId}`, s.band);
     }
+    // One bills read serves every entry (bills.json is large — don't re-read
+    // per pair via findRecord).
+    const billsById = new Map(
+      presentOnly(await readAll<Bill>(FILES.bills)).map((b) => [b.id, b]),
+    );
 
-    // Group by bill; drop pairs whose client or bill no longer exists.
-    const byBill = new Map<string, BriefIndexClient[]>();
+    const out: BriefIndexEntry[] = [];
     for (const a of latestByPair.values()) {
-      if (!clientsById.has(a.clientId)) continue;
-      const entry: BriefIndexClient = {
-        clientId: a.clientId,
-        name: clientsById.get(a.clientId)!.name,
+      const client = clientsById.get(a.clientId);
+      const bill = billsById.get(a.billId);
+      if (!client || !bill) continue; // orphaned pair — client or bill deleted
+      out.push({
         analysisId: a.id,
+        billId: a.billId,
+        billNumber: bill.billNumber,
+        billTitle: bill.title,
+        ...(bill.shortTitle ? { billShortTitle: bill.shortTitle } : {}),
+        clientId: a.clientId,
+        clientName: client.name,
         createdAt: a.createdAt,
         ...(bandByPair.has(`${a.clientId}|${a.billId}`)
           ? { band: bandByPair.get(`${a.clientId}|${a.billId}`) }
           : {}),
-      };
-      const arr = byBill.get(a.billId) ?? [];
-      arr.push(entry);
-      byBill.set(a.billId, arr);
-    }
-
-    // Severity desc (unknown band last), then name — most exposed first.
-    const severity = (b?: ScanBand) => (b ? SCAN_BANDS.indexOf(b) : -1);
-    const out: BriefIndexBill[] = [];
-    for (const [billId, clients] of byBill) {
-      const bill = await findRecord<Bill>(FILES.bills, billId);
-      if (!bill) continue;
-      clients.sort(
-        (a, b) => severity(b.band) - severity(a.band) || a.name.localeCompare(b.name),
-      );
-      out.push({
-        billId,
-        billNumber: bill.billNumber,
-        title: bill.title,
-        ...(bill.shortTitle ? { shortTitle: bill.shortTitle } : {}),
-        status: bill.status,
-        briefCount: clients.length,
-        latestAt: clients.reduce((m, c) => (c.createdAt > m ? c.createdAt : m), ""),
-        clients,
+        approved: a.saved === true,
       });
     }
-    out.sort((a, b) => b.latestAt.localeCompare(a.latestAt));
+    // Chronological, newest first; analysisId tiebreak keeps the order stable.
+    out.sort(
+      (a, b) => b.createdAt.localeCompare(a.createdAt) || a.analysisId.localeCompare(b.analysisId),
+    );
     res.json(out);
   }),
 );

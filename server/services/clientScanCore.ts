@@ -824,3 +824,51 @@ export function serializePriorBrief(prior: unknown): string {
     ? `${out.slice(0, PRIOR_BRIEF_MAX_CHARS).trimEnd()}…`
     : out;
 }
+
+// ── Bill-status serialization (the brief agent's missing context) ────────────
+// Without this the agent had NO idea where the bill stood in Parliament — it
+// wrote thin "Timing" sections and presented proposed changes as certainties
+// ("Health Canada will establish…"). Compact, never-throws, and always ends
+// with the not-law caveat the tone rules depend on.
+const BILL_STATUS_MAX_CHARS = 1_500;
+
+export function serializeBillStatus(bill: unknown): string {
+  const b = (bill ?? {}) as Record<string, unknown>;
+  const s = (v: unknown, max = 160): string =>
+    typeof v === "string" ? (v.length > max ? `${v.slice(0, max).trimEnd()}…` : v) : "";
+  const day = (v: unknown): string => s(v, 40).slice(0, 10); // ISO date prefix
+
+  const lines: string[] = [];
+  const num = s(b.billNumber, 20) || "(unknown bill)";
+  lines.push(`Bill ${num}: ${s(b.shortTitle) || s(b.title) || "(untitled)"}`);
+  if (b.status) lines.push(`Current status: ${s(b.status)}`);
+  if (b.legislativeMomentum) lines.push(`Momentum: ${s(b.legislativeMomentum, 20)}`);
+  if (b.introducedDate) lines.push(`Introduced: ${day(b.introducedDate)}`);
+  const ev = (b.latestEvent ?? null) as { name?: unknown; date?: unknown; chamber?: unknown } | null;
+  if (ev && typeof ev === "object" && (ev.name || ev.date)) {
+    lines.push(
+      `Latest event: ${s(ev.name)}${ev.chamber ? ` (${s(ev.chamber, 30)})` : ""}${ev.date ? ` — ${day(ev.date)}` : ""}`,
+    );
+  }
+  // The last few legislative-path entries show HOW FAST the bill is moving.
+  const path = Array.isArray(b.legislativePath) ? b.legislativePath : [];
+  const recent = path
+    .filter((p): p is Record<string, unknown> => !!p && typeof p === "object")
+    .slice(-3);
+  if (recent.length > 0) {
+    lines.push("Recent progress:");
+    for (const p of recent) {
+      lines.push(
+        `- ${s(p.name, 60) || "(stage)"}${p.chamber ? ` (${s(p.chamber, 20)})` : ""}: ${s(p.state, 30) || "?"}${p.date ? ` — ${day(p.date)}` : ""}`,
+      );
+    }
+  }
+  lines.push(
+    "This bill is NOT law. It may be amended, delayed or never receive royal assent — every change it makes is PROPOSED, not in force.",
+  );
+
+  const out = lines.join("\n");
+  return out.length > BILL_STATUS_MAX_CHARS
+    ? `${out.slice(0, BILL_STATUS_MAX_CHARS).trimEnd()}…`
+    : out;
+}
