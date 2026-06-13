@@ -56,9 +56,12 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
   const { clientId, billId } = nav.params;
 
   useEffect(() => {
-    // A different pair owns the page now — its regen draft dies with it.
+    // A different pair owns the page now — its regen draft AND its question
+    // answers die with it (the page never unmounts across SPA navigation, so
+    // stale answers would otherwise pair with the NEXT brief's questions).
     setRegenOpen(false);
     setRegenText("");
+    setReviewAnswers({});
     if (!clientId || !billId) return;
     let cancelled = false;
     (async () => {
@@ -177,7 +180,10 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
   }
 
   async function emailLawyer() {
-    if (!analysis) return;
+    // Defense-in-depth: the button is disabled pre-approval, but the gate
+    // ("unapproved AI output cannot leave the building") must hold even if
+    // this handler is ever reached another way.
+    if (!analysis?.saved) return;
     setBusy(true);
     try {
       const { email } = await api.clientImpact.emailLawyer(analysis.id);
@@ -206,6 +212,8 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
       setAnalysis(reloaded);
       setRegenOpen(false);
       setRegenText("");
+      // The new version has NEW questions — typed answers no longer pair.
+      setReviewAnswers({});
       nav.toast("Brief regenerated.");
     } catch (err: any) {
       // Keep the panel (and the typed guidance) so the lawyer can retry.
@@ -232,11 +240,17 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     if (composed.length > 2000) {
       // The guidance channel caps at 2000 chars server-side — truncate at a
       // pair boundary so no half-answer goes through, and say so.
-      let cut = "COUNSEL ANSWERS TO THE BRIEF'S VERIFICATION QUESTIONS:\n";
+      const header = "COUNSEL ANSWERS TO THE BRIEF'S VERIFICATION QUESTIONS:\n";
+      let cut = header;
       for (let i = 0; i < pairs.length; i++) {
         const next = `Q${i + 1}: ${pairs[i].q}\nA${i + 1}: ${pairs[i].a}\n`;
         if (cut.length + next.length > 2000) break;
         cut += next;
+      }
+      if (cut === header) {
+        // Even the first pair doesn't fit — don't fire an answer-less regen.
+        nav.toast("That answer is too long for one regeneration — please shorten it.");
+        return;
       }
       composed = cut.trimEnd();
       nav.toast("Answers exceed the feedback limit — sending the first answers that fit.");
@@ -259,7 +273,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
   }
 
   function downloadBrief() {
-    if (!analysis) return;
+    if (!analysis?.saved) return; // same gate as the disabled button
     const a = analysis;
     const recs = (a.requiredAdaptations ?? [])
       .map(
@@ -355,7 +369,9 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
             <button
               className="btn primary"
               data-testid="approve-brief"
-              disabled={busy || analysis.saved}
+              // regenBusy too: approving mid-regeneration would sign off the
+              // OLD version while a new one is about to replace it.
+              disabled={busy || regenBusy || analysis.saved}
               onClick={approve}
             >
               <FontAwesomeIcon icon={faFloppyDisk} aria-hidden="true" />

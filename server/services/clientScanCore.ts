@@ -506,6 +506,19 @@ function asAdaptations(v: unknown): AnalysisBody["requiredAdaptations"] {
 // A misbehaving model can dump unbounded text into free-form fields; head+tail
 // cap the big ones (client-text excerpts, the email body) at ~2k chars each.
 const NORMALIZE_FIELD_MAX_CHARS = 2_000;
+// The prescribed five-section client email (intro / what the bill proposes /
+// areas to watch / how we can help / closing) legitimately runs past 2k —
+// capping it there amputated the services section. Email bodies get their own
+// roomier bound; everything else keeps the tighter one.
+const NORMALIZE_EMAIL_BODY_MAX_CHARS = 4_500;
+
+// An email must keep its OPENING (intro → what the bill proposes → areas →
+// how we can help → close). head+tail truncation would gut the middle — where
+// "How we can help" lives — so the email body truncates from the tail only.
+function headOnly(s: string, maxChars: number): string {
+  if (s.length <= maxChars) return s;
+  return `${s.slice(0, maxChars).trimEnd()}…`;
+}
 
 function asClientText(v: unknown): AnalysisBody["relevantClientText"] {
   if (!Array.isArray(v)) return [];
@@ -551,7 +564,7 @@ export function normalizeAnalysis(raw: unknown): AnalysisBody {
     lawyerVerificationQuestions: asStrArray(rec?.lawyerVerificationQuestions),
     emailDraft: {
       subject: asStr(emailRec?.subject),
-      body: headTail(asStr(emailRec?.body), NORMALIZE_FIELD_MAX_CHARS),
+      body: headOnly(asStr(emailRec?.body), NORMALIZE_EMAIL_BODY_MAX_CHARS),
     },
     confidence,
     // Conservative: anything other than an explicit boolean means "review it".
@@ -863,12 +876,14 @@ export function serializeBillStatus(bill: unknown): string {
       );
     }
   }
-  lines.push(
-    "This bill is NOT law. It may be amended, delayed or never receive royal assent — every change it makes is PROPOSED, not in force.",
-  );
-
-  const out = lines.join("\n");
-  return out.length > BILL_STATUS_MAX_CHARS
-    ? `${out.slice(0, BILL_STATUS_MAX_CHARS).trimEnd()}…`
-    : out;
+  // The caveat is the load-bearing line — append it AFTER the cap so a
+  // truncation (currently unreachable: every field above is individually
+  // bounded) can never drop it.
+  const CAVEAT =
+    "This bill is NOT law. It may be amended, delayed or never receive royal assent — every change it makes is PROPOSED, not in force.";
+  let out = lines.join("\n");
+  if (out.length > BILL_STATUS_MAX_CHARS) {
+    out = `${out.slice(0, BILL_STATUS_MAX_CHARS).trimEnd()}…`;
+  }
+  return `${out}\n${CAVEAT}`;
 }

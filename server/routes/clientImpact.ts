@@ -520,6 +520,9 @@ clientImpactRouter.post(
   safe(async (req, res) => {
     const a = await findRecord<ClientImpactAnalysis>(FILES.impacts, String(req.params.id));
     if (!a) return res.status(404).json({ error: "not_found" });
+    // The approval gate, enforced server-side: unapproved AI output cannot
+    // leave the building, whatever the client UI says.
+    if (!a.saved) return res.status(409).json({ error: "approval_required" });
     const client = await findRecord<Client>(FILES.clients, a.clientId);
     const bill = await findRecord<Bill>(FILES.bills, a.billId);
     if (!client || !bill) return res.status(404).json({ error: "linked records missing" });
