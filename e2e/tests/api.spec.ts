@@ -8,10 +8,12 @@
  * GET /api/client-impact/scans — band-only views, the numeric score must
  * NEVER appear in any response, deterministic keyless fallback, scan cascade
  * on client delete.
- * The "brief library" block is the acceptance test for the stage-4 picker
- * backend (commit a1f3f13): GET /api/client-impact/briefs — bills sorted
- * latestAt desc, latest-per-pair client entries with the band joined from the
- * scans store (never the numeric score) — and the optional transient
+ * The "brief library" block is the acceptance test for the stage-4 library
+ * backend (commit 3ed4cf2): GET /api/client-impact/briefs is a FLAT
+ * BriefIndexEntry[] — one entry per latest-(client, bill) pair, sorted
+ * createdAt desc (analysisId tiebreak), `approved` mirroring the analysis'
+ * `saved` flag, band joined from the scans store (never the numeric score) —
+ * plus POST /:id/save (the counsel-approval flip) and the optional transient
  * `guidance` string on POST /analyze.
  */
 import { test, expect } from "@playwright/test";
@@ -414,7 +416,13 @@ test.describe("analyze", () => {
 });
 
 /**
- * The brief library — GET /api/client-impact/briefs, the stage-4 picker feed.
+ * The brief library — GET /api/client-impact/briefs, the stage-4 library feed.
+ *
+ * FLAT shape (commit 3ed4cf2): BriefIndexEntry[] — {analysisId, billId,
+ * billNumber, billTitle, billShortTitle?, clientId, clientName, createdAt,
+ * band?, approved} — one entry per latest-(client, bill) pair, sorted
+ * createdAt desc with an analysisId tiebreak. `approved` mirrors the analysis'
+ * `saved` flag; POST /:id/save is the approval flip.
  *
  * ORDERING: this block is declared AFTER the scorer and analyze blocks — by
  * the time it runs (workers=1, declaration order) the suite has both SCANNED
@@ -422,10 +430,34 @@ test.describe("analyze", () => {
  * (the scorer transition test and the analyze block), so the index must list
  * the pair WITH its band joined from the scans store. It is declared BEFORE
  * the CRUD block so that block's temp-client analysis and orphan handling
- * can't interfere.
+ * can't interfere. Serial: the sort test creates the bill2 brief the save
+ * test approves. The save test deliberately approves the BILL2 pair —
+ * approval.spec.ts (the next file alphabetically) needs corebloom×bill1's
+ * latest brief to arrive UNAPPROVED.
  */
-test.describe("brief library", () => {
-  test("GET /briefs lists the seeded bill with the corebloom entry — band joined, no score key anywhere", async ({
+test.describe.serial("brief library", () => {
+  /** The flat index entry for one (client, bill) pair. */
+  const entryFor = (list: any[], clientId: string, billId: string) =>
+    list.find((e: any) => e.clientId === clientId && e.billId === billId);
+
+  /** Chronological law: createdAt non-increasing, analysisId asc on ties. */
+  function expectChronological(list: any[]): void {
+    for (let i = 1; i < list.length; i++) {
+      const cmp = list[i - 1].createdAt.localeCompare(list[i].createdAt);
+      expect(
+        cmp,
+        `briefs[${i - 1}].createdAt (${list[i - 1].createdAt}) must be ≥ briefs[${i}].createdAt (${list[i].createdAt})`,
+      ).toBeGreaterThanOrEqual(0);
+      if (cmp === 0) {
+        expect(
+          list[i - 1].analysisId.localeCompare(list[i].analysisId),
+          `equal createdAt ⇒ analysisId must tiebreak ascending at [${i - 1}], [${i}]`,
+        ).toBeLessThanOrEqual(0);
+      }
+    }
+  }
+
+  test("GET /briefs is a flat index — full entry shape, approved:false on a fresh brief, band joined, chronological, no score key anywhere", async ({
     request,
   }) => {
     const st = await seedState();
@@ -438,31 +470,34 @@ test.describe("brief library", () => {
     // deep-scan the WHOLE index.
     expectNoScoreAnywhere(list);
 
-    const mine = list.find((b: any) => b.billId === st.billId);
-    expect(mine, `seeded bill ${st.billId} missing from /briefs`).toBeTruthy();
-    expect(mine).toMatchObject({
+    const entry = entryFor(list, "client-corebloom", st.billId);
+    expect(entry, `the analyzed corebloom×${st.billId} pair must be indexed`).toBeTruthy();
+
+    // Full BriefIndexEntry shape.
+    expect(entry).toMatchObject({
       billId: st.billId,
       billNumber: st.billNumber,
-      title: st.title,
-      status: st.status,
+      billTitle: st.title,
+      clientId: "client-corebloom",
     });
-    expect(mine.briefCount).toBeGreaterThanOrEqual(1);
-    expect(Array.isArray(mine.clients)).toBe(true);
-    expect(mine.clients, "briefCount must equal the clients listed").toHaveLength(
-      mine.briefCount,
-    );
-    expect(typeof mine.latestAt).toBe("string");
-    expect(Number.isNaN(Date.parse(mine.latestAt)), "latestAt must parse").toBe(false);
-
-    const entry = mine.clients.find((c: any) => c.clientId === "client-corebloom");
-    expect(entry, "the analyzed corebloom pair must be listed").toBeTruthy();
-    expect(typeof entry.name).toBe("string");
-    expect(entry.name.length).toBeGreaterThan(0);
+    expect(typeof entry.analysisId).toBe("string");
+    expect(entry.analysisId.length).toBeGreaterThan(0);
+    expect(typeof entry.clientName).toBe("string");
+    expect(entry.clientName.length).toBeGreaterThan(0);
     expect(typeof entry.createdAt).toBe("string");
     expect(Number.isNaN(Date.parse(entry.createdAt)), "createdAt must parse").toBe(false);
+    if (entry.billShortTitle !== undefined) {
+      expect(typeof entry.billShortTitle).toBe("string");
+    }
+    // A fresh analysis is never approved — the counsel gate starts engaged.
+    expect(entry.approved, "a fresh brief must index as approved:false").toBe(false);
+    // The grouped drill-down shape is GONE — no nested client arrays.
+    expect(entry).not.toHaveProperty("clients");
+    expect(entry).not.toHaveProperty("briefCount");
+    expect(entry).not.toHaveProperty("latestAt");
 
     // analysisId must point at the LATEST brief for the pair — exactly what
-    // by-pair serves, so the picker and the deep link land on the same brief.
+    // by-pair serves, so the library and the deep link land on the same brief.
     const byPair = await request.get(
       `${API}/api/client-impact/by-pair?clientId=client-corebloom&billId=${st.billId}`,
     );
@@ -475,17 +510,20 @@ test.describe("brief library", () => {
       SCAN_BAND_VALUES as readonly string[],
       "scanned pair ⇒ the entry must carry a valid band",
     ).toContain(entry.band);
+
+    // Chronological from the first byte: newest first, analysisId tiebreak.
+    expectChronological(list);
   });
 
-  test("bills sort by latestAt desc — a fresh brief on another bill takes the top", async ({
+  test("entries sort createdAt desc — a fresh brief on another bill takes the top", async ({
     request,
   }) => {
     test.setTimeout(120_000);
     const st = await seedState();
     // bill2 is seeded with a delta but NO approvals: /analyze still answers —
     // the brief path doesn't require approvals, it falls back keylessly. That
-    // gives the index a SECOND bill whose latest brief is strictly newer than
-    // bill1's, making the sort observable. (Teardown cascades bill2's impacts.)
+    // gives the index a SECOND entry strictly newer than bill1's, making the
+    // sort observable. (Teardown cascades bill2's impacts.)
     const analyzed = await request.post(`${API}/api/client-impact/analyze`, {
       data: { clientId: "client-corebloom", billId: st.billId2 },
       timeout: 90_000,
@@ -497,26 +535,25 @@ test.describe("brief library", () => {
     const list = await res.json();
     expectNoScoreAnywhere(list);
 
-    const i1 = list.findIndex((b: any) => b.billId === st.billId);
-    const i2 = list.findIndex((b: any) => b.billId === st.billId2);
-    expect(i1, "bill1 must be in the index").toBeGreaterThanOrEqual(0);
-    expect(i2, "bill2 must be in the index").toBeGreaterThanOrEqual(0);
-    expect(i2, "bill2's brief is newer — it must rank above bill1").toBeLessThan(i1);
+    const i1 = list.findIndex(
+      (e: any) => e.clientId === "client-corebloom" && e.billId === st.billId,
+    );
+    const i2 = list.findIndex(
+      (e: any) => e.clientId === "client-corebloom" && e.billId === st.billId2,
+    );
+    expect(i1, "the bill1 entry must be in the index").toBeGreaterThanOrEqual(0);
+    expect(i2, "the bill2 entry must be in the index").toBeGreaterThanOrEqual(0);
+    expect(i2, "bill2's brief is newer — it must rank above bill1's").toBeLessThan(i1);
 
-    // The whole list must be non-increasing on latestAt (ISO strings compare
-    // lexicographically).
-    for (let i = 1; i < list.length; i++) {
-      expect(
-        list[i - 1].latestAt.localeCompare(list[i].latestAt),
-        `briefs[${i - 1}].latestAt (${list[i - 1].latestAt}) must be ≥ briefs[${i}].latestAt (${list[i].latestAt})`,
-      ).toBeGreaterThanOrEqual(0);
-    }
+    // The whole list must still walk non-increasing on createdAt.
+    expectChronological(list);
 
     // The scorer block scanned corebloom×bill2 too (the zero-approvals test),
-    // so bill2's entry must carry that deterministic 'low' band.
-    const e2 = list[i2].clients.find((c: any) => c.clientId === "client-corebloom");
-    expect(e2, "corebloom must be listed under bill2").toBeTruthy();
+    // so its entry must carry that deterministic 'low' band — and start
+    // unapproved like every fresh brief.
+    const e2 = list[i2];
     expect(e2.band, "band must join from the pair's stored scan").toBe("low");
+    expect(e2.approved).toBe(false);
   });
 
   test("analyze accepts counsel guidance — keyless still 200, guidance never persisted", async ({
@@ -541,15 +578,55 @@ test.describe("brief library", () => {
     expect(analysis).not.toHaveProperty("guidance");
 
     // The index is latest-wins per pair: the corebloom entry now points at the
-    // guidance-driven regen.
+    // guidance-driven regen — which, being a new version, is unapproved again.
     const briefs = await request.get(`${API}/api/client-impact/briefs`);
     expect(briefs.status()).toBe(200);
     const after = await briefs.json();
     expectNoScoreAnywhere(after);
-    const entry = after
-      .find((b: any) => b.billId === st.billId)
-      ?.clients.find((c: any) => c.clientId === "client-corebloom");
+    const entry = entryFor(after, "client-corebloom", st.billId);
     expect(entry?.analysisId, "the index must follow the newest brief").toBe(analysis.id);
+    expect(entry?.approved, "a regenerated brief starts unapproved").toBe(false);
+  });
+
+  test("POST /:id/save approves the brief — saved:true on the record, approved:true in the index", async ({
+    request,
+  }) => {
+    const st = await seedState();
+    // Approve the corebloom×BILL2 brief (created by the sort test above), NOT
+    // bill1's — approval.spec.ts drives the bill1 pair through the UI gate and
+    // needs its latest brief to arrive unapproved.
+    const byPair = await request.get(
+      `${API}/api/client-impact/by-pair?clientId=client-corebloom&billId=${st.billId2}`,
+    );
+    expect(byPair.status()).toBe(200);
+    const latest = await byPair.json();
+    expect(latest.saved, "a fresh analysis must start unsaved").toBe(false);
+
+    const saved = await request.post(`${API}/api/client-impact/${latest.id}/save`);
+    expect(saved.status()).toBe(200);
+    const body = await saved.json();
+    expect(body.id).toBe(latest.id);
+    expect(body.saved, "/save must flip the stored saved flag").toBe(true);
+
+    const briefs = await request.get(`${API}/api/client-impact/briefs`);
+    expect(briefs.status()).toBe(200);
+    const list = await briefs.json();
+    expectNoScoreAnywhere(list);
+
+    const entry = entryFor(list, "client-corebloom", st.billId2);
+    expect(entry, "the approved pair must still be indexed").toBeTruthy();
+    expect(entry.analysisId).toBe(latest.id);
+    expect(entry.approved, "saved:true must surface as approved:true").toBe(true);
+
+    // The flip is per-analysis: the OTHER pair's entry stays unapproved.
+    const other = entryFor(list, "client-corebloom", st.billId);
+    expect(other?.approved, "approval must not leak across pairs").toBe(false);
+
+    // Unknown analysis id → 404.
+    const missing = await request.post(
+      `${API}/api/client-impact/e2e-no-such-analysis/save`,
+    );
+    expect(missing.status()).toBe(404);
   });
 });
 

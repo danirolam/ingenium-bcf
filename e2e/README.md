@@ -93,11 +93,12 @@ exists for the analyze call and is cleaned afterwards.
 | Spec | Verifies | Passes today? | Unblocked by |
 | --- | --- | --- | --- |
 | `smoke.spec.ts` | server boot, env blanking, `/` renders | **yes** | — |
-| `api.spec.ts` | scan-ready list/detail/404, scorer (`/scan` + `/scans`: bands, determinism, no-score-leak, cascade), analyze 400/404, keyless analyze + by-pair, brief library (`/briefs` index: latestAt-desc sort, band join, no-score-leak; `guidance` on `/analyze`), client CRUD + cascade | **yes** (brief-library backend landed, a1f3f13) | — |
-| `core-unit.spec.ts` | `clientScanCore.ts` pure functions incl. `bandFromScore`/`normalizeScore`/`heuristicScore` laws (a missing/broken module FAILS the suite) | **yes** (scorer backend landed) | — |
+| `api.spec.ts` | scan-ready list/detail/404, scorer (`/scan` + `/scans`: bands, determinism, no-score-leak, cascade), analyze 400/404, keyless analyze + by-pair, brief library (FLAT `/briefs` index: entry shape, `approved:false` on fresh briefs, createdAt-desc + analysisId tiebreak, band join, no-score-leak; `POST /:id/save` → `approved:true` flip; `guidance` on `/analyze`), client CRUD + cascade | **yes** (flat library + approval backend landed, 3ed4cf2) | — |
+| `approval.spec.ts` | counsel-approval gate on the brief page: Needs review → Approve → `approved-badge`, Download/Email locked until approved, `/brief` tag flips; answerable Lawyer Review (`review-answer-input` → `regen-with-answers` → NEW unapproved version, gate re-engages, answers clear) | **yes** (3ed4cf2) | — |
+| `core-unit.spec.ts` | `clientScanCore.ts` pure functions incl. `bandFromScore`/`normalizeScore`/`heuristicScore` laws, `serializeBillStatus` (never-throws, not-law caveat, bounded) and the multi-Act laws (serializer/triage/chunker/heuristic keep ops attributed to their Act) — a missing/broken module FAILS the suite | **yes** | — |
 | `scan-ready.spec.ts` | ready list / approved summary UI | **yes** | — |
-| `brief-picker.spec.ts` | stage-4 picker (`/brief`): bill → client drill-down to the brief page, `brief-back`, regen-with-guidance panel | not yet | brief-library frontend (in flight) |
-| `scan-flow.spec.ts` | two-phase flow: band scoreboard → rationale accordion → single-action-slot analyze (slot swaps to view-brief) → brief → persistence | not yet | single-slot frontend (in flight) |
+| `brief-picker.spec.ts` | stage-4 flat library (`/brief`): chronological `brief-entry` rows, exactly-one-tag law, bill+client filters AND-combine and reset, row click opens the brief page, regen-with-guidance panel | **yes** (flat-library frontend landed, 3ed4cf2) | — |
+| `scan-flow.spec.ts` | two-phase flow: band scoreboard → rationale accordion → single-action-slot analyze (slot swaps to view-brief) → brief → persistence | **yes** | — |
 | `empty-states.spec.ts` | run-scan disabled guards | **yes** (Phase 2C frontend landed) | — |
 | `client-management.spec.ts` | client modal CRUD UI | **yes** (Phase 2C frontend landed) | — |
 | `live.spec.ts` | real AI analysis (opt-in `@live`) | opt-in | real keys + your running server |
@@ -128,13 +129,18 @@ Keyless runs use the deterministic `heuristicScore` fallback, so scan results
 are stable in CI. `GET /api/client-impact/scans?billId=…` is the persisted,
 pre-ranked scoreboard feed (latest-wins per pair).
 
-`GET /api/client-impact/briefs` is the brief-library index behind the `/brief`
-picker: bills with ≥1 brief sorted `latestAt` desc, each with its
-latest-per-pair briefed clients (band joined from the scans store iff the pair
-was scanned — never the numeric score). `POST /analyze` also accepts an
-optional **transient** `guidance` string (≤2000 chars — the regen panel's
-counsel instructions, never persisted on the analysis); keyless servers still
-answer 200 via the fallback.
+`GET /api/client-impact/briefs` is the brief-library index behind `/brief` —
+**FLAT** since 3ed4cf2: a `BriefIndexEntry[]` (`analysisId`, `billId`,
+`billNumber`, `billTitle`, `billShortTitle?`, `clientId`, `clientName`,
+`createdAt`, `band?`, `approved`), one entry per latest-(client, bill) pair,
+sorted `createdAt` desc with an `analysisId` tiebreak. `approved` mirrors the
+analysis' stored `saved` flag — `POST /api/client-impact/:id/save` is the
+counsel-approval flip (404 on unknown ids); a fresh or regenerated brief always
+indexes `approved:false`. The band joins from the scans store iff the pair was
+scanned — never the numeric score. `POST /analyze` also accepts an optional
+**transient** `guidance` string (≤2000 chars — counsel instructions/feedback
+AND the composed verification-question answers ride this same channel, never
+persisted on the analysis); keyless servers still answer 200 via the fallback.
 
 Two behavioral notes encoded in the specs:
 
@@ -146,22 +152,57 @@ Two behavioral notes encoded in the specs:
 
 Stage-4 (Client Brief) selectors are derived from the page as it ships today
 (`src/pages/ClientImpactAnalysis.tsx`): the `Client Brief — …` `h1`, the
-`Summary` card, the `Needs review` badge and the `Lawyer review` /
-`Review before sending` section.
+`Summary` card, the `Needs review` badge (unapproved versions) and the
+`Lawyer review` / `Review before sending` section. The old "Executive read"
+cell is gone ("Why it matters" remains).
 
-### The brief-library picker + regen contract (stage 4 entry)
+### The counsel-approval gate (stage 4)
 
-Top-nav "Client brief" → `/brief` renders the two-step picker
+`approval.spec.ts` is the acceptance test. Approval repurposes the stored
+`saved` flag via the existing `POST /:id/save` route:
+
+- A fresh (or regenerated) brief is **unapproved**: the `Needs review` badge
+  shows, `approve-brief` is enabled with the text "Approve brief", and the
+  **Download brief / Email lawyer buttons are `disabled`** — unapproved AI
+  output cannot leave the building.
+- Clicking `approve-brief` flips the gate: `approved-badge`
+  ("Counsel approved") replaces the review badge, Download/Email enable, and
+  the button reads "Approved" (disabled). The `/brief` library tags the entry
+  `brief-tag-approved`.
+- Approval is **per-version**: any regeneration (plain, with guidance, or with
+  answers) produces a new unapproved analysis, so the badge, the export locks
+  and the library tag all revert until counsel approves again.
+
+### The answerable Lawyer Review (answers ride the guidance channel)
+
+Each verification question in the `Lawyer review` section carries a
+`review-answer-input` textarea. `regen-with-answers` is enabled only while
+**≥1 answer is non-empty**; clicking it composes the verbatim Q/A pairs and
+sends them through the SAME transient `guidance` channel as free-form feedback
+(2000-char server cap; the frontend truncates at a pair boundary so no
+half-answer goes through). On success the answers clear and a NEW unapproved
+version loads — the approval gate re-engages.
+
+### The flat brief library + regen contract (stage 4 entry)
+
+Top-nav "Client brief" → `/brief` renders the flat, filterable library
 (`brief-picker.spec.ts` is its acceptance test):
 
-- step 1: `brief-bill-list` of `brief-bill-card[data-bill-id]` cards, or the
-  `briefs-empty` empty state when no briefs exist;
-- step 2 (in-page, after clicking a bill card): `brief-back`,
-  `brief-client-list`, `brief-client-card[data-client-id]` (shows a band chip
-  when the pair was scanned); clicking a client card opens the existing brief
-  page at `/clients/:clientId/bills/:billId`.
+- `brief-entry-list` holds `brief-entry` rows
+  (`data-analysis-id` / `data-bill-id` / `data-client-id`) in chronological
+  order (newest first — the server's `/briefs` order); `briefs-empty` shows
+  when no briefs exist.
+- Every row carries **exactly one** of `brief-tag-approved` ("Approved") |
+  `brief-tag-review` ("Needs review"), plus an optional band chip when the
+  pair was scanned.
+- `brief-filter-bill` and `brief-filter-client` are native `<select>`s
+  (option value = the id, `""` = all) that **AND-combine**; resetting both
+  restores the full list. Clicking a row opens the pair's brief page at
+  `/clients/:clientId/bills/:billId`.
+- **Removed** with the drill-down (must not render): `brief-bill-list`,
+  `brief-bill-card`, `brief-client-list`, `brief-client-card`, `brief-back`.
 
 On the brief page, the regen panel: `regen-toggle` (collapsed "Regenerate with
-instructions…" affordance) reveals `regen-context-input` (textarea) +
+feedback…" affordance) reveals `regen-context-input` (textarea) +
 `regen-brief`; on success the brief re-renders and the panel collapses
 (`regen-context-input` hidden again).

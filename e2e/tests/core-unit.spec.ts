@@ -20,6 +20,14 @@
  *   normalizeScore(raw: unknown): score body, never throws; the band is ALWAYS
  *     recomputed from the (clamped/coerced) score — a claimed band is ignored
  *   heuristicScore(changes, client): deterministic keyless score body, 0..90
+ *
+ * Counsel-workflow additions (commit 3ed4cf2):
+ *   serializeBillStatus(bill: unknown): never-throws parliamentary-context
+ *     block, names the status, ALWAYS ends with the not-law caveat, bounded
+ *   Multi-Act laws: serializeChanges keeps each op under ITS Act header;
+ *     triage keeps/drops whole Acts by client overlap; chunkChanges partitions
+ *     exactly once across Acts; heuristicScore.topAreas attribute to the
+ *     overlapping Act only (the Act-qualification rule's foundation)
  */
 import { test, expect } from "@playwright/test";
 
@@ -548,4 +556,275 @@ test("serializePriorBrief never throws, carries the verdict + adaptations, and c
     })),
   });
   expect(huge.length).toBeLessThanOrEqual(6_100);
+});
+
+// ── Bill-status serialization (the brief agent's parliamentary context) ──────
+// serializeBillStatus leads every brief-agent prompt: without it the agent
+// can't write a real Timing section and presents proposed changes as
+// certainties. Laws: pure + never-throws on ANY input, names the bill's
+// status, ALWAYS ends with the binding not-law caveat, and stays bounded.
+
+test("serializeBillStatus never throws on garbage and always carries the not-law caveat", () => {
+  const c = requireCore();
+  expect(typeof c.serializeBillStatus, "serializeBillStatus must be exported").toBe(
+    "function",
+  );
+  for (const garbage of [null, undefined, 42, "", [], {}]) {
+    let out: any;
+    expect(() => {
+      out = c.serializeBillStatus(garbage);
+    }, `serializeBillStatus threw on ${JSON.stringify(garbage)}`).not.toThrow();
+    expect(typeof out).toBe("string");
+    // The caveat the tone rules depend on survives even total garbage.
+    expect(out, `caveat missing for ${JSON.stringify(garbage)}`).toMatch(/NOT law/);
+  }
+});
+
+test("serializeBillStatus names the parliamentary status and closes on the not-law caveat", () => {
+  const c = requireCore();
+  const out = c.serializeBillStatus({
+    billNumber: "C-999",
+    title: "An Act respecting synthetic compliance testing",
+    shortTitle: "Synthetic Compliance Act",
+    status: "Second reading in the House of Commons",
+    legislativeMomentum: "active",
+    introducedDate: "2026-01-15T00:00:00.000Z",
+    latestEvent: {
+      name: "Debate at second reading",
+      chamber: "House",
+      date: "2026-03-02T00:00:00.000Z",
+    },
+    legislativePath: [
+      { name: "First reading", chamber: "House", state: "completed", date: "2026-01-15" },
+      { name: "Second reading", chamber: "House", state: "in-progress", date: "2026-03-02" },
+    ],
+  });
+  expect(out).toContain("C-999");
+  expect(out, "the agent must see WHERE the bill stands").toContain(
+    "Second reading in the House of Commons",
+  );
+  expect(out).toMatch(/NOT law/);
+  // The caveat must CLOSE the block — it is the last thing the agent reads
+  // before the amendments, so nothing may trail it.
+  expect(
+    out.trimEnd().endsWith("PROPOSED, not in force."),
+    "the not-law caveat must be the final line",
+  ).toBe(true);
+});
+
+test("serializeBillStatus stays bounded on a pathological 50k-char-field bill", () => {
+  const c = requireCore();
+  const huge = c.serializeBillStatus({
+    billNumber: "C-1000",
+    title: "x".repeat(50_000),
+    status: "y".repeat(50_000),
+    legislativeMomentum: "z".repeat(50_000),
+    latestEvent: {
+      name: "n".repeat(50_000),
+      chamber: "c".repeat(50_000),
+      date: "d".repeat(50_000),
+    },
+    legislativePath: Array.from({ length: 200 }, (_, i) => ({
+      name: `Stage ${i} ${"p".repeat(50_000)}`,
+      chamber: "House",
+      state: "completed",
+      date: "2026-01-01",
+    })),
+  });
+  expect(typeof huge).toBe("string");
+  expect(huge.length, "the block must never crowd the prompt").toBeLessThanOrEqual(1_600);
+  expect(huge).toMatch(/NOT law/);
+});
+
+// ── Multi-Act laws ────────────────────────────────────────────────────────────
+// A bill can amend SEVERAL Acts. The serializer, triage, chunker and heuristic
+// must keep every op attributed to ITS Act — the brief agent's
+// Act-qualification rule ("Part I.1 of the Food and Drugs Act", never a bare
+// "Part I.1") is only as good as that attribution. The fixture: Act 1 and
+// Act 3 share ZERO vocabulary with SCORE_CLIENT (maritime/aviation domains),
+// Act 2's ops reuse the client's own terms (grocery/labelling/fleet…).
+
+const MA_ACT1 = {
+  slug: "maritime-beacon-act",
+  actTitle: "Maritime Beacon Act",
+  citation: "SYN 2026, c. 11",
+} as const;
+const MA_ACT2 = {
+  slug: "grocery-standards-act",
+  actTitle: "Grocery Distribution Standards Act",
+  citation: "SYN 2026, c. 12",
+} as const;
+const MA_ACT3 = {
+  slug: "aviation-marking-act",
+  actTitle: "Aviation Marking Act",
+  citation: "SYN 2026, c. 13",
+} as const;
+
+/**
+ * One ApprovedActChange for `act` with `opCount` ops cycling through
+ * `snippets`; each instruction is padded with neutral lorem filler up to
+ * `chars` chars (0 = no padding). Snippets/filler are chosen so an op shares
+ * client vocabulary ONLY via its snippet.
+ */
+function actWith(
+  act: { slug: string; actTitle: string; citation: string },
+  snippets: readonly string[],
+  opCount: number,
+  chars = 0,
+) {
+  const filler = "lorem ipsum dolor sit amet consectetur adipiscing elit sed do ";
+  return {
+    slug: act.slug,
+    actTitle: act.actTitle,
+    citation: act.citation,
+    ops: Array.from({ length: opCount }, (_, i) => {
+      let instruction = `Section ${i + 1} is amended to govern ${snippets[i % snippets.length]}.`;
+      if (chars > instruction.length) {
+        instruction += ` ${filler.repeat(Math.ceil(chars / filler.length))}`.slice(
+          0,
+          chars - instruction.length,
+        );
+      }
+      return {
+        key: `${act.slug}#${i}`,
+        op: "replace",
+        anchor: `Section ${i + 1}`,
+        instruction,
+      };
+    }),
+  };
+}
+
+const MULTI_ACT_SMALL = [
+  actWith(MA_ACT1, NEUTRAL_SNIPPETS, 3),
+  actWith(MA_ACT2, OVERLAP_SNIPPETS, 3),
+  actWith(MA_ACT3, ["aerodrome taxiway luminaire spacing", "harbour dredging permit renewals"], 2),
+];
+
+test("serializeChanges (multi-Act): every Act header appears and each op serializes under ITS OWN Act", () => {
+  const c = requireCore();
+  const text = c.serializeChanges(MULTI_ACT_SMALL);
+
+  // Every actTitle present, headers in input order.
+  const headerIdx = [MA_ACT1, MA_ACT2, MA_ACT3].map((a) => text.indexOf(a.actTitle));
+  for (const [i, act] of [MA_ACT1, MA_ACT2, MA_ACT3].entries()) {
+    expect(headerIdx[i], `${act.actTitle} header missing`).toBeGreaterThanOrEqual(0);
+  }
+  expect(headerIdx[0]).toBeLessThan(headerIdx[1]);
+  expect(headerIdx[1]).toBeLessThan(headerIdx[2]);
+
+  // Each op's text sits strictly between its Act's header and the next one —
+  // an op must never drift under a foreign Act.
+  MULTI_ACT_SMALL.forEach((actChange, ai) => {
+    const lo = headerIdx[ai];
+    const hi = ai + 1 < headerIdx.length ? headerIdx[ai + 1] : text.length;
+    for (const op of actChange.ops) {
+      const at = text.indexOf(op.instruction);
+      expect(at, `${op.key} instruction must serialize`).toBeGreaterThan(lo);
+      expect(
+        at,
+        `${op.key} must sit under "${actChange.actTitle}", before the next Act header`,
+      ).toBeLessThan(hi);
+    }
+  });
+});
+
+test("triageChangesForClient (multi-Act): a large payload keeps the client-relevant Act and drops the zero-overlap Act; small passes whole", () => {
+  const c = requireCore();
+
+  // Small multi-Act payload: under the threshold ⇒ untriaged, all Acts intact.
+  const small = c.triageChangesForClient(MULTI_ACT_SMALL, SCORE_CLIENT);
+  expect(small.triaged).toBe(false);
+  expect(small.relevant.map((a: any) => a.slug)).toEqual(
+    MULTI_ACT_SMALL.map((a) => a.slug),
+  );
+
+  // Large payload (> TRIAGE_THRESHOLD_TOKENS): Act 1's ops are bulked with
+  // neutral filler sharing zero vocabulary with the client; Act 2's ops
+  // overlap. Triage must keep Act 2 — every op of it — and may drop Act 1
+  // (with THIS fixture's disjoint vocabulary it deterministically does).
+  expect(typeof c.TRIAGE_THRESHOLD_TOKENS).toBe("number");
+  const big = [
+    actWith(MA_ACT1, NEUTRAL_SNIPPETS, 6, Math.ceil((c.TRIAGE_THRESHOLD_TOKENS * 4) / 5)),
+    actWith(MA_ACT2, OVERLAP_SNIPPETS, 3),
+  ];
+  expect(
+    c.estTokens(c.serializeChanges(big)),
+    "fixture sanity: the payload must exceed the triage threshold",
+  ).toBeGreaterThan(c.TRIAGE_THRESHOLD_TOKENS);
+
+  const out = c.triageChangesForClient(big, SCORE_CLIENT);
+  expect(out.triaged, "an oversized payload with partial overlap must triage").toBe(true);
+  const bySlug = new Map(out.relevant.map((a: any) => [a.slug, a]));
+  expect(bySlug.has(MA_ACT2.slug), "the client-relevant Act must survive").toBe(true);
+  expect(
+    (bySlug.get(MA_ACT2.slug) as any).ops,
+    "triage keeps whole Acts — Act 2's ops must come through intact",
+  ).toHaveLength(3);
+  expect(bySlug.has(MA_ACT1.slug), "the zero-overlap Act must be triaged away").toBe(false);
+});
+
+test("chunkChanges (multi-Act): the exactly-once partition holds across Acts and every op stays under its own Act", () => {
+  const c = requireCore();
+  // Two Acts, ops big enough that the packer must split — and (relevance
+  // ordering) interleave Act-2's overlapping ops ahead of Act-1's.
+  const charsPerOp = Math.ceil((c.CHUNK_TOKENS * 4) / 4);
+  const changes = [
+    actWith(MA_ACT1, NEUTRAL_SNIPPETS, 8, charsPerOp),
+    actWith(MA_ACT2, OVERLAP_SNIPPETS, 8, charsPerOp),
+  ];
+  const inputKeys = changes.flatMap((a) => a.ops.map((o) => o.key));
+  const { chunks, dropped } = c.chunkChanges(changes, SCORE_CLIENT);
+  expect(chunks.length).toBeGreaterThan(1);
+
+  // Exactly-once partition: every input op lands in one chunk OR in dropped —
+  // never both, never twice, never lost — across BOTH Acts.
+  const seen = new Map<string, number>();
+  for (const chunk of chunks) {
+    for (const op of opsOf(chunk)) seen.set(op.key, (seen.get(op.key) ?? 0) + 1);
+  }
+  for (const d of dropped ?? []) seen.set(d.key, (seen.get(d.key) ?? 0) + 1);
+  for (const key of inputKeys) {
+    expect(seen.get(key), `op ${key} must appear exactly once`).toBe(1);
+  }
+  expect(seen.size).toBe(inputKeys.length);
+
+  // Attribution: chunked ops are re-grouped under Act headers — each group is
+  // one of the input Acts and only carries ITS OWN ops (keys are slug#i).
+  for (const chunk of chunks) {
+    for (const group of chunk) {
+      expect(
+        [MA_ACT1.slug, MA_ACT2.slug],
+        `unknown act group ${group.slug}`,
+      ).toContain(group.slug);
+      const expected = group.slug === MA_ACT1.slug ? MA_ACT1 : MA_ACT2;
+      expect(group.actTitle).toBe(expected.actTitle);
+      for (const op of group.ops) {
+        expect(
+          String(op.key).startsWith(`${group.slug}#`),
+          `${op.key} is filed under ${group.slug} — an op must stay under its own Act`,
+        ).toBe(true);
+      }
+    }
+  }
+});
+
+test("heuristicScore (multi-Act): topAreas name the overlapping Act, never the zero-overlap one", () => {
+  const c = requireCore();
+  const out = c.heuristicScore(
+    [actWith(MA_ACT1, NEUTRAL_SNIPPETS, 3), actWith(MA_ACT2, OVERLAP_SNIPPETS, 3)],
+    SCORE_CLIENT,
+  );
+  expect(out.score, "overlapping ops must register").toBeGreaterThan(0);
+  expect(out.topAreas.length).toBeGreaterThan(0);
+  expect(
+    out.topAreas.some((a: string) => a.includes(MA_ACT2.actTitle)),
+    `topAreas ${JSON.stringify(out.topAreas)} must mention "${MA_ACT2.actTitle}"`,
+  ).toBe(true);
+  for (const area of out.topAreas) {
+    expect(
+      area.includes(MA_ACT1.actTitle),
+      `the zero-overlap Act surfaced in topAreas: "${area}"`,
+    ).toBe(false);
+  }
 });
