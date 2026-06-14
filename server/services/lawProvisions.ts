@@ -66,10 +66,66 @@ function flattenSections(sections: ActNode[]): Provision[] {
   return flat;
 }
 
-export async function loadActProvisions(slug: string): Promise<ActProvisions | null> {
+// ── Blob-backed corpus ─────────────────────────────────────────────────────
+// The full federal corpus (~900 Acts, GBs) lives in Vercel Blob, not the
+// function bundle. data/laws/blob-manifest.json (committed, written by
+// scripts/upload-acts-blob.mjs) says which slugs are there and the store's
+// public base URL. Local files win when present (dev + the 5 demo Acts).
+let blobManifest: { baseUrl: string; acts: Record<string, number> } | null | undefined;
+
+async function loadBlobManifest() {
+  if (blobManifest !== undefined) return blobManifest;
+  try {
+    const p = path.join(REPO_ROOT, "data/laws/blob-manifest.json");
+    blobManifest = JSON.parse(await fs.readFile(p, "utf8"));
+  } catch {
+    blobManifest = null;
+  }
+  return blobManifest;
+}
+
+// Parsed-Act cache for the warm instance: re-downloading + re-flattening a
+// 20MB Act (Criminal Code) per request would dominate latency. Small cap —
+// a few big Acts are fine, the whole corpus is not.
+const actCache = new Map<string, ActProvisions | null>();
+const ACT_CACHE_MAX = 8;
+
+function cachePut(slug: string, value: ActProvisions | null) {
+  if (actCache.size >= ACT_CACHE_MAX) {
+    const oldest = actCache.keys().next().value;
+    if (oldest !== undefined) actCache.delete(oldest);
+  }
+  actCache.set(slug, value);
+}
+
+async function readActJson(slug: string): Promise<any | null> {
+  // 1. Local file (dev machine after ingest; the 5 bundled demo Acts in prod).
   try {
     const p = path.join(REPO_ROOT, "data/laws/current/federal", slug, "current.normalized.json");
-    const j = JSON.parse(await fs.readFile(p, "utf8"));
+    return JSON.parse(await fs.readFile(p, "utf8"));
+  } catch {
+    /* fall through to Blob */
+  }
+  // 2. Blob (the full corpus in production).
+  const manifest = await loadBlobManifest();
+  if (!manifest?.baseUrl || !(slug in (manifest.acts ?? {}))) return null;
+  try {
+    const res = await fetch(`${manifest.baseUrl}/acts/${slug}.json`);
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+export async function loadActProvisions(slug: string): Promise<ActProvisions | null> {
+  if (actCache.has(slug)) return actCache.get(slug) ?? null;
+  try {
+    const j = await readActJson(slug);
+    if (!j) {
+      cachePut(slug, null);
+      return null;
+    }
 
     let provisions: Provision[];
     if (Array.isArray(j.sections) && j.sections.length && "children" in (j.sections[0] ?? {})) {
@@ -94,12 +150,19 @@ export async function loadActProvisions(slug: string): Promise<ActProvisions | n
         path: pv.path ?? labelToPath(pv.label),
       }));
     } else {
+      cachePut(slug, null);
       return null;
     }
 
-    if (provisions.length === 0) return null;
-    return { slug, title: j.title, citation: j.citation, provisions };
+    if (provisions.length === 0) {
+      cachePut(slug, null);
+      return null;
+    }
+    const out: ActProvisions = { slug, title: j.title, citation: j.citation, provisions };
+    cachePut(slug, out);
+    return out;
   } catch {
+    cachePut(slug, null);
     return null;
   }
 }

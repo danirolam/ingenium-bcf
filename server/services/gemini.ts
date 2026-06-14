@@ -269,15 +269,14 @@ function billClauseDigest(bill: Bill, maxClauses = 40): string {
   return omitted > 0 ? `${digest}\n\n…(+${omitted} more clauses)` : digest;
 }
 
-export async function analyzeClientImpact(args: {
-  bill: Bill;
-  client: Client;
-}): Promise<ClientImpactAnalysis | null> {
+// The memo prompt is provider-neutral: gemini.ts uses it below, and the route
+// falls back to the Anthropic key (claude.ts claudeJson) with the same prompt.
+export function buildImpactPrompt(args: { bill: Bill; client: Client }): string {
   const { bill, client } = args;
   const affectedActs = billAffectedActs(bill);
   const clauseDigest = billClauseDigest(bill);
 
-  const prompt = `You are a senior Canadian regulatory and business lawyer based in Montreal working for a big firm and advising a sophisticated corporate client. Assume the audience is an in-house legal department and senior executives familiar with their industrie's regulations. Use short analytical paragraphs and business-oriented headings. Prioritize precision, commercial relevance, and regulatory analysis over general explanation.
+  return `You are a senior Canadian regulatory and business lawyer based in Montreal working for a big firm and advising a sophisticated corporate client. Assume the audience is an in-house legal department and senior executives familiar with their industrie's regulations. Use short analytical paragraphs and business-oriented headings. Prioritize precision, commercial relevance, and regulatory analysis over general explanation.
     Return STRICT JSON with exactly these keys:
 
     {
@@ -336,6 +335,11 @@ Operations:
 ${client.operations ?? "(none provided)"}
 
 `;
+}
 
-  return callJson<ClientImpactAnalysis>(prompt);
+export async function analyzeClientImpact(args: {
+  bill: Bill;
+  client: Client;
+}): Promise<ClientImpactAnalysis | null> {
+  return callJson<ClientImpactAnalysis>(buildImpactPrompt(args));
 }

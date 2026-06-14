@@ -42,14 +42,23 @@ export async function createApp(): Promise<Express> {
   app.use(cors());
   app.use(express.json({ limit: "4mb" }));
 
-  // Health + integration status. After wiring GEMINI_API_KEY, `ai.enabled`
-  // flips to true here — the one check the team needs to confirm the key took.
+  // Health + integration status. After wiring an AI key, `ai.enabled` flips to
+  // true here — the one check the team needs to confirm the key took. The
+  // Anthropic key powers the provision delta and (absent Gemini) the client
+  // memo; Gemini, if present, takes the memo and the legacy extraction.
   app.get("/api/health", (_req, res) =>
     res.json({
       ok: true,
       ai: {
-        enabled: Boolean(process.env.GEMINI_API_KEY),
-        model: process.env.GEMINI_MODEL || "gemini-2.5-flash",
+        enabled: Boolean(process.env.ANTHROPIC_API_KEY || process.env.GEMINI_API_KEY),
+        anthropic: {
+          enabled: Boolean(process.env.ANTHROPIC_API_KEY),
+          model: process.env.ANTHROPIC_MODEL || "claude-haiku-4-5",
+        },
+        gemini: {
+          enabled: Boolean(process.env.GEMINI_API_KEY),
+          model: process.env.GEMINI_MODEL || "gemini-2.5-flash",
+        },
       },
       email: { enabled: Boolean(process.env.RESEND_API_KEY) },
     }),

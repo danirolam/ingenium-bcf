@@ -1,44 +1,41 @@
 # AI integration — handoff guide
 
-Ingenium runs fully today with **no AI key** — every screen produces real,
-structured output using deterministic logic. Turning on live Gemini synthesis is
-essentially one step: **add `GEMINI_API_KEY`**. Nothing else needs to change.
-
-This guide is everything the team needs to wire it.
+**Status: live.** The Anthropic key (`ANTHROPIC_API_KEY`) is wired in Vercel
+(Production + Development) and powers everything; `/api/health` reports it. The
+app still runs fully with **no key** — every screen has a deterministic
+fallback — so a bad or missing key can never break it.
 
 ## TL;DR
 
-1. Get a free key: https://aistudio.google.com/apikey
-2. Add it where the app runs:
-   - **Production (Vercel):** Project → Settings → Environment Variables → add `GEMINI_API_KEY` → redeploy.
-   - **Local:** put it in `.env` → `GEMINI_API_KEY=AIza...`
-3. Confirm it took:
-   - `npm run verify:gemini` — pings the model, prints `OK` or a specific `FAIL`.
-   - `GET /api/health` → `ai.enabled` flips to `true`.
-
-The AI features activate automatically — **no code changes**.
+- **Primary key:** `ANTHROPIC_API_KEY` (Claude; console.anthropic.com). Already
+  set in Vercel → Settings → Environment Variables, and in the local `.env`.
+- **Optional:** `GEMINI_API_KEY` — if present, Gemini takes the client memo and
+  the legacy extraction path instead.
+- Confirm wiring: `GET /api/health` → `ai.anthropic.enabled` / `ai.gemini.enabled`.
 
 ## Where AI is used (and only there)
 
-AI is used in exactly three *synthesis* spots. Everything else — bill ingestion,
-the legislative path, practice‑area tagging, client matching, the diff renderer —
-is deterministic and never calls a model.
+Everything else — bill ingestion, the legislative path, practice‑area tagging,
+client matching, the diff renderer — is deterministic and never calls a model.
 
-| Touchpoint | Function (`server/services/gemini.ts`) | What the key turns on | Fallback without a key |
+| Touchpoint | Code | Key | Fallback without a key |
 | --- | --- | --- | --- |
-| **Client impact memo** | `analyzeClientImpact` (used by `routes/clientImpact.ts`) | A real, client‑specific exposure memo for **any** client × approved law | A deterministic synthesized memo — still structured and usable |
-| **Delta extraction** | `extractAmendmentsFromBill` (used by `routes/bills.ts`) | The structured amendment a bill makes to a **registered** Act | A one‑sided "proposed text" stub + a link to the current Act on Justice Laws Canada |
-| **Updated Act text** | `generateUpdatedLawText` | The "after" side of the before/after diff for a registered Act | (same stub as above) |
+| **Provision delta (step 02)** — interpreting how a bill's clauses amend the Act | `claude.ts` (`interpretAmendmentsClaude`, tool-use) + `scalpel.ts` (anchor resolution), used by `POST /bills/:id/provision-delta` | `ANTHROPIC_API_KEY` | The structured parser alone — plainly-worded amendments still resolve; complex ones report "AI key missing — cannot interpret …" |
+| **Client impact memo (step 04)** | `routes/clientImpact.ts`: Gemini's `analyzeClientImpact` → else `claudeJson(buildImpactPrompt(...))` | `GEMINI_API_KEY`, else `ANTHROPIC_API_KEY` | Canned demo memo, else a deterministic synthesized memo |
+| **Legacy two‑sided extraction** | `gemini.ts` (`extractAmendmentsFromBill`, `generateUpdatedLawText`) | `GEMINI_API_KEY` | One‑sided stub + Justice Laws link |
 
-All three return `null` on a missing key, an invalid key, a quota error, or a
-malformed response — the route then uses its fallback. **A bad key never breaks
-the app**; it just doesn't upgrade the output.
+Every call returns `null` on a missing key, an invalid key, a rate limit, or a
+malformed response — the route then uses its fallback.
 
-## The model
+## The models
 
-- Default: `gemini-2.5-flash` (fast, inexpensive, good for this workload).
-- Override with `GEMINI_MODEL` (e.g. `gemini-3-flash`, `gemini-2.5-pro`) — see `.env.example`.
-- Strict JSON is enforced (`responseMimeType: "application/json"`) and every response is `JSON.parse`d defensively.
+- Delta interpreter: `claude-haiku-4-5` by default (fast, cheap, mechanical
+  extraction). Override with `ANTHROPIC_MODEL` (e.g. `claude-sonnet-4-6` for more
+  depth); the anchor-resolution pass separately via `ANTHROPIC_SCALPEL_MODEL`.
+- Gemini (optional path): `gemini-2.5-flash`, override `GEMINI_MODEL`.
+- A fresh Anthropic key starts on tier-1 rate limits; big omnibus bills may
+  return `aiIncomplete: true` on the first pass — re-run with `?refresh=1`, or
+  the limits grow with usage.
 
 ## Verifying
 
@@ -57,22 +54,31 @@ curl https://ingenium-bcf.vercel.app/api/health
 `verify:gemini` already distinguishes the common failures: empty key, key rejected
 by Google, and model‑not‑available (it suggests an alternate `GEMINI_MODEL`).
 
-## Getting real two‑sided diffs (optional, beyond the key)
+## The Act corpus (already done — all 964 federal Acts)
 
 The before/after **legal delta** needs the *current consolidated text* of the
-affected Act to diff against. Five Acts are registered today (Feeds, Fertilizers,
-Seeds, Pest Control Products, Food and Drugs). With a key, those produce full
-two‑sided diffs; every other Act shows the one‑sided stub (with a Justice Laws
-link to today's text).
+affected Act to diff against. **The full federal corpus is in place**: all 964
+consolidated Acts, ingested from the public Justice Laws website
+(`scripts/ingest-acts.mjs --all`) and served from **Vercel Blob**
+(`scripts/upload-acts-blob.mjs` → `acts/<slug>.json`, indexed by the committed
+`data/laws/blob-manifest.json`). The server loads an Act from the local file
+first (dev + the 5 bundled demo Acts), then from Blob, with in‑memory caching.
 
-To add more Acts so more bills get real diffs — a **data** step, independent of the key:
+So the delta resolves against any federal Act today. The structured parser
+handles plainly‑worded amendments on its own; the AI key unlocks interpretation
+of the complex ones (the UI/API says "AI key missing — cannot interpret …" for
+exactly those until the key is added).
 
-1. Register the Act in `data/laws/registry.json` (`htmlUrl` / `xmlUrl` / `currentPath`).
-2. Fetch + normalize its current text: `node --use-system-ca scripts/retrieve-law.mjs <law-slug>`.
-3. Restart the server. The next `extract-delta` for a bill touching that Act produces a full diff.
+To refresh the corpus later (new consolidations):
+
+1. `node --use-system-ca scripts/ingest-acts.mjs --all --write-registry`
+2. `node scripts/upload-acts-blob.mjs` — needs `BLOB_READ_WRITE_TOKEN` in
+   `.env.local`; it's a *sensitive* env var, so copy it from the dashboard
+   (Storage → the Blob store) — `vercel env pull` returns it empty.
+3. Commit the updated `registry.json` + `blob-manifest.json`, deploy.
 
 The **client‑impact memo works for everything** the moment the key is added — it
-doesn't depend on the registry.
+doesn't depend on the corpus.
 
 ## Cost / safety
 

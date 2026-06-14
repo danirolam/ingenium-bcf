@@ -207,7 +207,7 @@ export function BillMonitor({ nav }: { nav: Nav }) {
           title: "Bill Monitor",
           body: "Stage 1 of 4. Every federal bill the firm tracks, filterable by practice group and momentum. Open any bill to read its full path through Parliament, then send it on to legal-delta review.",
         }}
-        sub="Every federal bill from the 37th–45th Parliaments. Filter by session, practice group, and momentum — or open any 45-1 bill for its full path and text."
+        sub="Every federal bill, filterable by session, practice group, and momentum. Open a bill for its full record."
         actions={
           <>
             <input
@@ -245,48 +245,6 @@ export function BillMonitor({ nav }: { nav: Nav }) {
         }
       />
       <div className="body">
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            flexWrap: "wrap",
-            margin: "0 0 18px",
-            fontSize: 12.5,
-            color: "var(--ink-3)",
-          }}
-        >
-          {[
-            "Pick a session",
-            "Narrow by category, momentum, or search",
-            "Open a bill for its full record",
-          ].map((step, i) => (
-            <span
-              key={i}
-              style={{ display: "inline-flex", alignItems: "center", gap: 10 }}
-            >
-              {i > 0 && (
-                <FontAwesomeIcon
-                  icon={faArrowRight}
-                  style={{ fontSize: 10, color: "var(--ink-4)" }}
-                  aria-hidden="true"
-                />
-              )}
-              <span>
-                <b
-                  style={{
-                    color: "var(--accent-warm)",
-                    fontFamily: "var(--mono)",
-                    marginRight: 7,
-                  }}
-                >
-                  {i + 1}
-                </b>
-                {step}
-              </span>
-            </span>
-          ))}
-        </div>
         <StatsRibbon bills={sessionBills} />
 
         <div className="bm-toolbar">
@@ -306,11 +264,9 @@ export function BillMonitor({ nav }: { nav: Nav }) {
             >
               <span
                 style={{
-                  fontSize: 11,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.04em",
-                  color: "var(--ink-4)",
-                  fontFamily: "var(--mono)",
+                  fontSize: 12.5,
+                  fontWeight: 500,
+                  color: "var(--ink-3)",
                 }}
               >
                 Session

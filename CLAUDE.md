@@ -164,6 +164,15 @@ The app is fully functional with **no keys** — every AI call has a determinist
   full-text delta path (`extract-delta`) and as the keyless-Anthropic fallback interpreter.
 - Email (`server/services/email.ts`, Resend) is optional; without a key it reports
   `simulated: true`.
+- **Law corpus**: the provision delta resolves against the full federal corpus — all 964
+  consolidated Acts (registered in `data/laws/registry.json`), served from Vercel Blob.
+  `lawProvisions.ts` reads the local file first (dev + the 5 bundled demo Acts), then
+  `acts/<slug>.json` in Blob via the committed `data/laws/blob-manifest.json`. Re-ingest with
+  `scripts/ingest-acts.mjs --all --write-registry`, re-upload with
+  `scripts/upload-acts-blob.mjs` (needs `BLOB_READ_WRITE_TOKEN` in `.env.local` — a *sensitive*
+  var; copy it from the dashboard, `vercel env pull` returns it empty).
+
+See `AI_INTEGRATION.md` for the full AI/provider handoff guide.
 
 ## Conventions / gotchas
 

@@ -1,50 +1,51 @@
 /* Ingenium — Federal bill intelligence
-   Aesthetic: BCF black, warm legal paper, copper signal, restrained motion. */
+   Aesthetic: gallery-white surfaces, near-black ink, one blue signal,
+   hairline rules, restrained motion. Built to read like serious counsel
+   software, not a dashboard template. */
 
 :root {
   color-scheme: light;
-  /* Workspace: GitHub "light default" (Primer). White canvas, subtle gray
-     panels, hairline borders. Professional dev-tool surface — legible, calm. */
-  --bg: #ffffff;
+  /* Workspace: soft gray canvas, white cards floating on it. */
+  --bg: #f5f5f7;
   --panel: #ffffff;
-  --panel-2: #f6f8fa;
-  --panel-3: #eaeef2;
+  --panel-2: #f5f5f7;
+  --panel-3: #e8e8ed;
 
-  /* Sidebar: a faint gray frame against the white canvas. */
-  --sidebar: #f6f8fa;
+  /* Top rail / legacy sidebar frame */
+  --sidebar: #ffffff;
   --sidebar-2: #ffffff;
-  --sidebar-ink: #1f2328;
-  --sidebar-ink-2: #59636e;
+  --sidebar-ink: #1d1d1f;
+  --sidebar-ink-2: #6e6e73;
 
-  /* Text — GitHub light foreground ramp */
-  --ink: #1f2328;
-  --ink-2: #424a53;
-  --ink-3: #59636e;
-  --ink-4: #818b98;
+  /* Text ramp — near-black to quiet gray */
+  --ink: #1d1d1f;
+  --ink-2: #424245;
+  --ink-3: #6e6e73;
+  --ink-4: #86868b;
 
   /* Borders / rules — light hairlines */
-  --border: #d1d9e0;
-  --border-2: #afb8c1;
-  --border-3: #eaeef2;
-  --rule: #d1d9e0;
+  --border: #d2d2d7;
+  --border-2: #b9b9c0;
+  --border-3: #e8e8ed;
+  --rule: #d2d2d7;
 
-  /* Accent: GitHub green for primary actions, blue for links/info */
-  --accent: #1f883d;
-  --accent-2: #1a7f37;
-  --accent-warm: #0969da;
-  --accent-warm-2: #0550ae;
-  --accent-soft: rgba(31, 136, 61, 0.12);
-  --accent-warm-soft: rgba(9, 105, 218, 0.10);
+  /* Accent: one blue for actions, links and focus. */
+  --accent: #0071e3;
+  --accent-2: #0066cc;
+  --accent-warm: #0066cc;
+  --accent-warm-2: #004a99;
+  --accent-soft: rgba(0, 113, 227, 0.10);
+  --accent-warm-soft: rgba(0, 113, 227, 0.08);
 
-  /* Semantic status — GitHub Primer signal colors (light) */
-  --crit: #cf222e;
-  --crit-bg: rgba(207, 34, 46, 0.10);
-  --high: #9a6700;
-  --high-bg: rgba(154, 103, 0, 0.10);
-  --med: #0969da;
-  --med-bg: rgba(9, 105, 218, 0.10);
-  --low: #59636e;
-  --low-bg: rgba(89, 99, 110, 0.10);
+  /* Semantic status */
+  --crit: #d70015;
+  --crit-bg: rgba(215, 0, 21, 0.08);
+  --high: #a05a00;
+  --high-bg: rgba(178, 102, 0, 0.10);
+  --med: #0071e3;
+  --med-bg: rgba(0, 113, 227, 0.10);
+  --low: #6e6e73;
+  --low-bg: rgba(110, 110, 115, 0.10);
   --ok: #1a7f37;
   --ok-bg: rgba(26, 127, 55, 0.12);
 
@@ -57,32 +58,33 @@
   --diff-add-ink: #116329;
   --diff-context-bg: #ffffff;
 
-  /* Light UIs: soft, low-spread shadows tinted with slate, not pure black */
-  --shadow-sm: 0 1px 0 rgba(31, 35, 40, 0.04), 0 4px 12px -6px rgba(66, 74, 83, 0.16);
+  /* Soft, low-spread shadows — depth without weight */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px -18px rgba(0, 0, 0, 0.12);
   --shadow-md:
-    0 1px 0 rgba(31, 35, 40, 0.04), 0 16px 40px -20px rgba(66, 74, 83, 0.24);
+    0 2px 6px rgba(0, 0, 0, 0.05), 0 24px 60px -30px rgba(0, 0, 0, 0.18);
 
-  /* Manrope for UI text; a real monospace stack for diff / clause / code.
-     --serif still aliases --sans; --mono is now a genuine mono family so the
-     diff viewer and statute text read like GitHub. */
+  /* Inter everywhere (SF-adjacent, tight tracking at display sizes).
+     --mono intentionally aliases the sans stack: labels, numbers, and
+     citations read as product UI, not terminal output — numerals stay
+     aligned via font-variant-numeric where it matters. */
   --sans:
-    "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    "Inter", -apple-system, "SF Pro Text", "Segoe UI", system-ui,
     "Helvetica Neue", "Arial", sans-serif;
   --serif:
-    "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    "Inter", -apple-system, "SF Pro Text", "Segoe UI", system-ui,
     "Helvetica Neue", "Arial", sans-serif;
   --mono:
-    ui-monospace, "SFMono-Regular", "SF Mono", "Menlo", "Consolas",
-    "Liberation Mono", monospace;
+    "Inter", -apple-system, "SF Pro Text", "Segoe UI", system-ui,
+    "Helvetica Neue", "Arial", sans-serif;
 
   /* shadcn HSL tokens — light variants for any ui/* components reading these */
-  --background: 0 0% 100%;
-  --foreground: 213 18% 16%;
+  --background: 240 24% 96%;
+  --foreground: 240 3% 12%;
   --card: 0 0% 100%;
-  --card-foreground: 213 18% 16%;
-  --muted: 210 29% 97%;
-  --muted-foreground: 213 9% 39%;
-  --border-hsl: 210 18% 85%;
+  --card-foreground: 240 3% 12%;
+  --muted: 240 24% 96%;
+  --muted-foreground: 240 2% 44%;
+  --border-hsl: 240 6% 83%;
 }
 
 * {
@@ -99,7 +101,8 @@ body {
   font-size: 14px;
   color: var(--ink);
   background: var(--bg);
-  font-feature-settings: "ss01", "cv11";
+  font-optical-sizing: auto;
+  font-feature-settings: "cv11";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -364,11 +367,10 @@ a {
 
 /* Page header — actual definition is below near the body block */
 .ph-crumbs {
-  font-family: var(--mono);
-  font-size: 11px;
+  font-family: var(--sans);
+  font-size: 12.5px;
   letter-spacing: 0;
   color: var(--ink-4);
-  text-transform: uppercase;
   margin-bottom: 10px;
 }
 .ph-crumbs span + span::before {
@@ -389,7 +391,7 @@ a {
 .ph-title {
   font-family: var(--sans);
   font-size: 38px;
-  letter-spacing: 0;
+  letter-spacing: -0.022em;
   font-weight: 600;
   margin: 0 0 8px;
   color: var(--ink);
@@ -437,13 +439,13 @@ a {
   border-color: var(--ink-4);
 }
 .btn.primary {
-  background: var(--accent);
-  border-color: rgba(240, 246, 252, 0.10);
+  background: var(--ink);
+  border-color: transparent;
   color: #ffffff;
 }
 .btn.primary:hover {
-  background: var(--accent-2);
-  border-color: rgba(240, 246, 252, 0.10);
+  background: #000000;
+  border-color: transparent;
 }
 .btn.primary:disabled {
   background: var(--panel-2);
@@ -683,7 +685,7 @@ a {
   font-family: var(--sans);
   font-size: 34px;
   font-weight: 600;
-  letter-spacing: 0;
+  letter-spacing: -0.02em;
   color: var(--ink);
   font-variant-numeric: tabular-nums;
   line-height: 1;
@@ -1033,11 +1035,11 @@ table.tbl tbody td:last-child {
   border-left: 1px solid var(--border);
 }
 .diff-version .vlabel {
-  font-size: 10.5px;
+  font-size: 12px;
+  font-weight: 500;
   letter-spacing: 0;
-  text-transform: uppercase;
   color: var(--ink-4);
-  font-family: var(--mono);
+  font-family: var(--sans);
 }
 .diff-version select {
   flex: 1;
@@ -1369,8 +1371,8 @@ table.tbl tbody td:last-child {
   background: var(--panel-2);
 }
 .client-row.active {
-  background: linear-gradient(90deg, rgba(47, 129, 247, 0.14), rgba(47, 129, 247, 0));
-  box-shadow: inset 3px 0 0 var(--accent-warm);
+  background: linear-gradient(90deg, rgba(0, 113, 227, 0.10), rgba(0, 113, 227, 0));
+  box-shadow: inset 3px 0 0 var(--accent);
   padding-left: 16px;
 }
 .client-row .nm {
@@ -1545,9 +1547,9 @@ table.tbl tbody td:last-child {
   margin-top: 6px;
 }
 .rec-meta .k {
-  font-size: 10.5px;
+  font-size: 11.5px;
+  font-weight: 500;
   letter-spacing: 0;
-  text-transform: uppercase;
   color: var(--ink-4);
   display: block;
   margin-bottom: 2px;
@@ -1585,11 +1587,11 @@ table.tbl tbody td:last-child {
   font-variant-numeric: tabular-nums;
 }
 .impact-totals .k {
-  font-size: 10.5px;
+  font-size: 12px;
+  font-weight: 500;
   letter-spacing: 0;
-  text-transform: uppercase;
   color: var(--ink-4);
-  font-family: var(--mono);
+  font-family: var(--sans);
 }
 
 .impact-bucket {
@@ -1755,7 +1757,7 @@ table.tbl tbody td:last-child {
 /* selection */
 ::selection {
   background: var(--accent);
-  color: var(--bg);
+  color: #ffffff;
 }
 
 /* scrollbar */

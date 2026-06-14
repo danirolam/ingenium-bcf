@@ -1,43 +1,28 @@
-/* Landing — faithful port of the terra reference (its glass + animation classes,
-   Geist type, photo hero). Markup uses Tailwind utilities like the original;
-   this file carries the custom classes terra defined in its globals.css plus a
-   CSS reimplementation of its framer-motion character reveal. */
+/* Landing — light editorial surface with full-bleed black bands.
+   Markup carries Tailwind utilities; this file holds the custom classes:
+   type stack, reveal animations, marquee, gradient accent, tile hover. */
 
 .lp {
-  font-family: "Geist", ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--sans);
   background: #ffffff;
-  color: #1f2328;
+  color: #1d1d1f;
   min-height: 100vh;
   overflow-x: hidden;
+  font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 .lp [id] {
-  scroll-margin-top: 96px;
+  scroll-margin-top: 64px;
 }
 .lp ::selection {
-  background: rgba(124, 58, 237, 0.18);
-  color: #1f2328;
-}
-
-/* Glass surfaces (from terra) — light frosted */
-.glass-button {
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 4px 16px rgba(66, 74, 83, 0.16);
-  color: #1f2328;
-  font-weight: 500;
-}
-.glass-pill {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(31, 35, 40, 0.1);
+  background: rgba(0, 113, 227, 0.18);
+  color: #1d1d1f;
 }
 
 /* Hero background. `fixed` forces a full-viewport repaint on every scroll frame
-   (badly janky on mobile and trackpads), so we keep it scrolling normally — the
-   subtle JS parallax gives the depth without the cost. */
+   (badly janky on mobile and trackpads), so it scrolls normally — the subtle
+   JS parallax gives the depth without the cost. */
 .hero-section {
   background-attachment: scroll;
 }
@@ -73,33 +58,6 @@
   animation: slide-up-from-bottom 0.9s cubic-bezier(0.83, 0, 0.17, 1) both;
 }
 
-/* Logo / practice marquee */
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-.logo-marquee {
-  display: flex;
-  overflow: hidden;
-  user-select: none;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-}
-.logo-marquee-content {
-  display: flex;
-  animation: marquee 38s linear infinite;
-  will-change: transform;
-}
-@media (prefers-reduced-motion: reduce) {
-  .logo-marquee-content {
-    animation-play-state: paused;
-  }
-}
-
 /* Scroll-in */
 .animate-on-scroll {
   opacity: 0;
@@ -112,14 +70,14 @@
   transform: translateY(0);
 }
 
-/* Gradient accent text (terra). `color` is the visible fallback; the clipped
-   gradient + transparent fill only take effect where supported, so the text is
-   never invisible. */
-.terra-grad {
-  background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
+/* Gradient accent on the black band. `color` is the visible fallback; the
+   clipped gradient + transparent fill only take effect where supported, so
+   the text is never invisible. */
+.grad-blue {
+  background: linear-gradient(100deg, #2997ff 0%, #5ac8fa 60%, #a0e9ff 100%);
   -webkit-background-clip: text;
   background-clip: text;
-  color: #7c3aed;
+  color: #2997ff;
   -webkit-text-fill-color: transparent;
 }
 
