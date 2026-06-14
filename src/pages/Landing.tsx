@@ -62,7 +62,7 @@ const METRICS = [
   { label: "Bills tracked", value: "5694", desc: "across 16 sessions of Parliament" },
   { label: "With full text", value: "160", desc: "current session, clause by clause" },
   { label: "Practice groups", value: "9", desc: "mapped automatically" },
-  { label: "Stages traced", value: "6", desc: "first reading to royal assent" },
+  { label: "Consolidated Acts", value: "964", desc: "the full federal statute book" },
 ];
 
 const CAPS: { title: string; desc: string }[] = [
@@ -75,7 +75,7 @@ const CAPS: { title: string; desc: string }[] = [
 const FAQS = [
   {
     q: "Where does the legislative data come from?",
-    a: "Every bill is sourced from Parliament's LEGISinfo and the published bill text on parl.ca — first reading through royal assent, with committee stages and recorded divisions. The official source is one click away on each bill.",
+    a: "Every bill is sourced from Parliament's LEGISinfo and the published bill text on parl.ca, from first reading through royal assent, with committee stages and recorded divisions. The official source is one click away on each bill.",
   },
   {
     q: "What does “legal delta” mean?",
@@ -83,7 +83,7 @@ const FAQS = [
   },
   {
     q: "How are bills matched to our clients?",
-    a: "Approved deltas are scanned against each client's operations, policies, and contracts to flag who is exposed, how, and how urgently — turning a statutory change into a client-specific assessment.",
+    a: "Approved deltas are scanned against each client's operations, policies, and contracts to flag who is exposed, how, and how urgently, turning a statutory change into a client-specific assessment.",
   },
   {
     q: "Is anything sent to a client without review?",
@@ -110,9 +110,9 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
         raf = 0;
         const y = window.scrollY;
         if (heroRef.current)
-          heroRef.current.style.transform = `translateY(${(y * 0.16).toFixed(1)}px)`;
+          heroRef.current.style.transform = `translateY(${(y * 0.06).toFixed(1)}px)`;
         if (mockRef.current)
-          mockRef.current.style.transform = `rotateX(${Math.max(0, 8 - y * 0.025).toFixed(2)}deg)`;
+          mockRef.current.style.transform = `rotateX(${Math.max(0, 5 - y * 0.02).toFixed(2)}deg)`;
       });
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -218,7 +218,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
 
       {/* HERO — Montréal, softened to white at the base */}
       <section
-        className={`hero-section relative min-h-screen flex flex-col items-center justify-center px-5 pt-28 pb-16 transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${
+        className={`hero-section relative min-h-screen flex flex-col items-center justify-start px-5 pt-24 md:pt-28 pb-20 transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${
           isLoaded ? "scale-100" : "scale-[1.02]"
         }`}
         style={{
@@ -255,8 +255,8 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
               style={{ animationDelay: "240ms" }}
             >
               Ingenium follows each bill through Parliament, pinpoints the exact
-              statutory change, and turns it into clear, client-specific exposure
-              — reviewed and approved by counsel.
+              statutory change, and turns it into clear, client-specific exposure,
+              reviewed and approved by counsel.
             </p>
             <div
               className="flex items-center justify-center gap-6 mt-9 stagger-reveal"
@@ -277,9 +277,9 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
             </div>
           </div>
 
-          <div className="mt-8 md:mt-14" style={{ perspective: "1200px" }}>
+          <div className="mt-6 md:mt-10" style={{ perspective: "1200px" }}>
             <div className="dashboard-image" style={{ animationDelay: "420ms" }}>
-              <div ref={mockRef} style={{ transform: "rotateX(8deg)", transformStyle: "preserve-3d" }}>
+              <div ref={mockRef} style={{ transform: "rotateX(5deg)", transformStyle: "preserve-3d" }}>
                 <DashboardMock />
               </div>
             </div>
@@ -288,12 +288,12 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
       </section>
 
       {/* METRICS — black band */}
-      <section id="impact" className="relative py-24 md:py-32 px-5 animate-on-scroll bg-black text-white">
+      <section id="impact" className="relative py-16 md:py-24 px-5 animate-on-scroll bg-black text-white">
         <div className="max-w-[1120px] w-full mx-auto">
           <h2 className="text-[32px] md:text-[48px] font-semibold tracking-[-0.02em] mb-4 text-center text-balance leading-[1.08]">
             The whole federal docket, <span className="grad-blue">in one place.</span>
           </h2>
-          <p className="text-[#a1a1a6] text-[15px] md:text-[17px] mb-14 text-center max-w-[620px] mx-auto leading-relaxed">
+          <p className="text-[#a1a1a6] text-[15px] md:text-[17px] mb-10 text-center max-w-[620px] mx-auto leading-relaxed">
             Tracked from the source, parsed to the clause, and tied to the clients it touches.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-x-16 md:gap-y-10 max-w-[820px] mx-auto">
@@ -311,9 +311,9 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
       </section>
 
       {/* HOW IT WORKS — four quiet columns */}
-      <section id="workflow" className="relative py-24 md:py-32 px-5 animate-on-scroll bg-white">
+      <section id="workflow" className="relative py-16 md:py-24 px-5 animate-on-scroll bg-white">
         <div className="max-w-[1080px] w-full mx-auto">
-          <div className="text-center mb-14">
+          <div className="text-center mb-12">
             <h2 className="text-[32px] md:text-[44px] font-semibold tracking-[-0.02em] text-balance leading-[1.08]">
               From a bill to a client memo, in four moves.
             </h2>
@@ -327,14 +327,14 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
               </div>
             ))}
           </div>
-          <p className="text-center text-[13px] text-[#86868b] mt-14">
+          <p className="text-center text-[13px] text-[#86868b] mt-12">
             Source-linked to Parliament &amp; Justice Canada throughout.
           </p>
         </div>
       </section>
 
       {/* FAQ — hairline accordion */}
-      <section id="faq" className="relative py-24 md:py-32 px-5 animate-on-scroll bg-[#f5f5f7]">
+      <section id="faq" className="relative py-16 md:py-24 px-5 animate-on-scroll bg-[#f5f5f7]">
         <div className="max-w-[760px] w-full mx-auto">
           <h2 className="text-[32px] md:text-[44px] font-semibold tracking-[-0.02em] mb-10 text-center text-balance leading-[1.08]">
             Everything counsel asks.
@@ -369,13 +369,13 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
       </section>
 
       {/* CTA — quiet black band */}
-      <section className="relative py-24 md:py-36 px-5 animate-on-scroll bg-black text-white">
+      <section className="relative py-16 md:py-24 px-5 animate-on-scroll bg-black text-white">
         <div className="max-w-[800px] w-full mx-auto text-center">
           <h2 className="text-[36px] md:text-[56px] font-semibold tracking-[-0.02em] mb-6 text-balance leading-[1.06]">
             Open the workspace.
           </h2>
           <p className="text-[#a1a1a6] text-base md:text-lg mb-10 leading-relaxed max-w-[560px] mx-auto">
-            Track the docket, read the deltas, brief the clients — start now.
+            Track the docket, read the deltas, brief the clients. Start now.
           </p>
           <button
             onClick={onLaunch}
@@ -464,7 +464,7 @@ function DashboardMock() {
           {[
             { bill: "C-11", title: "An Act to amend the National Defence Act", pill: "Passed", tone: "text-[#1a7f37] border-[#1a7f37]/30 bg-[#1a7f37]/[0.08]" },
             { bill: "C-30", title: "Spring economic update implementation", pill: "Active", tone: "text-[#0066cc] border-[#0071e3]/30 bg-[#0071e3]/[0.08]" },
-            { bill: "S-233", title: "Criminal Code — health & first responders", pill: "Passed", tone: "text-[#1a7f37] border-[#1a7f37]/30 bg-[#1a7f37]/[0.08]" },
+            { bill: "S-233", title: "Criminal Code (health and first responders)", pill: "Passed", tone: "text-[#1a7f37] border-[#1a7f37]/30 bg-[#1a7f37]/[0.08]" },
             { bill: "C-27", title: "Digital Charter Implementation Act", pill: "In committee", tone: "text-[#a05a00] border-[#a05a00]/30 bg-[#a05a00]/[0.08]" },
           ].map((r, i) => (
             <div key={r.bill} className={`grid grid-cols-[52px_1fr_auto] gap-3 items-center px-3 py-2.5 text-[11.5px] ${i > 0 ? "border-t border-[#f0f0f2]" : ""}`}>
