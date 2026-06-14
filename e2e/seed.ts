@@ -46,13 +46,21 @@ const IMPACTS_FILE = path.join(DATA_DIR, "clientImpactAnalyses.json");
 const CLIENTS_FILE = path.join(DATA_DIR, "clients.json");
 const SCANS_FILE = path.join(DATA_DIR, "clientScans.json");
 
-/** The five demo clients are sacred — never remove them, whatever their names. */
+/** The demo + eval clients are sacred — never remove them, whatever their names. */
 const PROTECTED_CLIENT_IDS = new Set([
   "client-corebloom",
   "client-northcedar-elections",
   "client-prairie-agri",
   "client-aurelia-thx", // seed-demo.ts (C-265 fixture)
   "client-lakehead-health", // seed-demo.ts (C-265 fixture)
+  // eval/fixtures/clients.ts — the 7 lawyer-gold benchmark clients
+  "client-nutrien",
+  "client-bayer",
+  "client-canneberges",
+  "client-gdms-canada",
+  "client-westjet",
+  "client-dollarama",
+  "client-air-canada",
 ]);
 
 // ── Seeded fixture identity (specs import these — single source of truth) ──

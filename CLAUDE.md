@@ -42,6 +42,39 @@ fallbacks. `e2e/README.md` is the authoritative contract doc: the `data-testid` 
 frontend implements, the endpoint shapes, and what global setup seeds/cleans (`__e2eSeed`
 records, surgically removed by teardown).
 
+### Evaluation harness (`eval/`, keyed — separate from `e2e/`)
+
+`eval/` measures whether stages 3–4 are production-quality by comparing their output, side by
+side, against a practicing BCF lawyer's gold benchmark (7 real company × 45-1 bill pairs). Unlike
+`e2e/` (keyless, deterministic, CI), the eval runs against YOUR **keyed** local server to grade the
+real Anthropic brief. Run order:
+
+```bash
+npx tsx eval/seed-eval.ts          # write fixtures + upsert the 7 eval clients (idempotent)
+npm run dev                        # keyed: ANTHROPIC_API_KEY set
+npx tsx eval/run-eval.ts           # scan matrix + briefs → eval/out/*.md side-by-sides + INDEX.md
+```
+
+- `eval/fixtures/bill-deltas.ts` — deterministically-authored stage-1/2 output (approved
+  `provisionDeltas` + `approvals`) for 5 bills, in the exact schema stages 1–2 emit, derived from
+  real `bills.json` clause text (mirrors `e2e/seed-demo.ts`). C-273 → 5 `ProvisionDelta`s
+  (multi-Act). Marked `__evalSeed`.
+- `eval/fixtures/clients.ts` — the 7 clients' INPUT halves only (the lawyer's profiles **minus**
+  the answer). `eval/seed-eval.ts` upserts them, so running the seeder is what populates the 7
+  into committed `clients.json` (single source of truth — don't hand-edit them in).
+- `eval/gold/profiles.json` — the lawyer's cleaned answer key (per client: assigned bill + impact
+  assessment + BCF services). Cleaning edits are logged in `eval/README.md`.
+- `eval/run-eval.ts` — reads raw 0–100 scores from `clientScans.json` directly (offline) for a
+  sharp matrix; reveals each client's bill pairing only at the stage-4 step.
+
+**Leakage contract** (enforced, not aspirational): NO `server/` code imports `eval/`
+(`grep -rn "eval/" server/` → empty), so the pipeline cannot read the gold; the client→bill
+pairing is **withheld** from `clients.json` (the `Client` type has no bill field). Success = each
+client's assigned bill lands in its top band/score and the negative control (Canneberges) stays
+low across all 5 bills. The 7 eval client ids are protected in `e2e/seed.ts`'s
+`PROTECTED_CLIENT_IDS`. Resumption/design notes live in
+`~/.claude/plans/yes-and-also-rememebr-merry-hartmanis.md`.
+
 ### Data refresh pipeline
 
 Run in order, then commit the updated `server/data/bills.json`. The network scripts **must**
