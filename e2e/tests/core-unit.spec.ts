@@ -119,7 +119,7 @@ function totalOpCount(changes: any): number {
   );
 }
 
-test("exports the contract surface (constants + 5 functions)", () => {
+test("exports the contract surface (constants + 6 functions)", () => {
   const c = requireCore();
   expect(typeof c.CHUNK_TOKENS).toBe("number");
   expect(c.CHUNK_TOKENS).toBeGreaterThan(0);
@@ -131,6 +131,7 @@ test("exports the contract surface (constants + 5 functions)", () => {
     "chunkChanges",
     "mergeAnalyses",
     "coverageNote",
+    "synthesizeEmailDraft",
   ]) {
     expect(typeof c[fn], `${fn} must be exported`).toBe("function");
   }
@@ -327,6 +328,56 @@ test("mergeAnalyses: verification questions are capped at exactly 10", () => {
     analysisFixture({ lawyerVerificationQuestions: q(7, "b") }),
   ]);
   expect(merged.lawyerVerificationQuestions.length).toBe(10);
+});
+
+test("mergeAnalyses: omits emailDraft when no part carries one (email is approval-time)", () => {
+  const c = requireCore();
+  const merged = c.mergeAnalyses([
+    analysisFixture({ emailDraft: undefined }),
+    analysisFixture({ emailDraft: undefined }),
+  ]);
+  expect(merged.emailDraft).toBeUndefined();
+});
+
+test("mergeAnalyses: keeps the first non-empty part email (skips an empty primary)", () => {
+  const c = requireCore();
+  const merged = c.mergeAnalyses([
+    // Highest impact (the primary) but carries no email…
+    analysisFixture({ impactLevel: "critical", emailDraft: undefined }),
+    // …a lower-impact part carries the real one.
+    analysisFixture({ impactLevel: "low", emailDraft: { subject: "Real subject", body: "Real body." } }),
+  ]);
+  expect(merged.emailDraft?.subject).toBe("Real subject");
+});
+
+test("normalizeAnalysis omits emailDraft (the email is generated at approval, not analysis)", () => {
+  const c = requireCore();
+  const out = c.normalizeAnalysis({
+    affected: "yes",
+    impactLevel: "high",
+    emailDraft: { subject: "x", body: "y" },
+  });
+  expect(out.emailDraft, "analysis-time normalize must not carry an email").toBeUndefined();
+});
+
+test("synthesizeEmailDraft: non-empty five-section email; never throws on sparse input", () => {
+  const c = requireCore();
+  const out = c.synthesizeEmailDraft({
+    clientName: "Acme Corp",
+    billNumber: "C-99",
+    billTitle: "An Act respecting widgets",
+    whyItAffectsClient: "Acme imports widgets that the bill would regulate.",
+    affectedClientAreas: ["Imports", "Compliance"],
+  });
+  expect(out.subject).toContain("C-99");
+  expect(out.subject).toContain("Acme Corp");
+  expect(out.body.length).toBeGreaterThan(100);
+  for (const section of ["What the bill proposes", "Potential areas to watch", "How we can help"]) {
+    expect(out.body, `missing section: ${section}`).toContain(section);
+  }
+  expect(() =>
+    c.synthesizeEmailDraft({ clientName: "", billNumber: "", billTitle: "" }),
+  ).not.toThrow();
 });
 
 test("coverageNote: null when nothing was dropped, names anchors when something was", () => {

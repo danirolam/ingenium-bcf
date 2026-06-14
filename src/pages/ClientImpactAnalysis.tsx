@@ -173,7 +173,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     try {
       const updated = await api.clientImpact.save(analysis.id);
       setAnalysis(updated);
-      nav.toast("Brief approved — email and download unlocked.");
+      nav.toast("Brief approved — client email drafted; email and download unlocked.");
     } finally {
       setBusy(false);
     }
@@ -291,7 +291,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
         affectedActs.length ? ` · affecting ${esc(affectedActs.join(", "))}` : ""
       }</p>
       <h2>Assessment</h2>
-      <p><b>Affected:</b> ${esc(a.affected)} &nbsp;·&nbsp; <b>Impact:</b> ${esc(a.impactLevel)} &nbsp;·&nbsp; <b>Urgency:</b> ${esc(a.urgency)} &nbsp;·&nbsp; <b>Timing:</b> ${esc(a.timing)}</p>
+      <p><b>Affected:</b> ${esc(a.affected)} &nbsp;·&nbsp; <b>Impact:</b> ${esc(a.impactLevel)} &nbsp;·&nbsp; <b>Timing:</b> ${esc(a.timing)}</p>
       <p>${esc(a.whyItAffectsClient)}</p>
       ${recs ? `<h2>Recommended actions</h2>${recs}` : ""}
       ${questions ? `<h2>For counsel to verify</h2><ul>${questions}</ul>` : ""}
@@ -375,7 +375,11 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
               onClick={approve}
             >
               <FontAwesomeIcon icon={faFloppyDisk} aria-hidden="true" />
-              {analysis.saved ? "Approved" : "Approve brief"}
+              {analysis.saved
+                ? "Approved"
+                : busy
+                  ? "Generating email…"
+                  : "Approve & generate email"}
             </button>
           </>
         }
@@ -459,10 +463,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
             />
           </div>
           <div className="cia-summary-scale">
-            <ImpactScale
-              level={analysis.impactLevel}
-              urgency={analysis.urgency}
-            />
+            <ImpactScale level={analysis.impactLevel} />
           </div>
         </div>
 
@@ -611,16 +612,31 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
               onToggle={toggleSection}
               icon={<FontAwesomeIcon icon={faEnvelope} aria-hidden="true" />}
               title="Email draft"
-              summary={analysis.emailDraft.subject}
+              summary={
+                analysis.emailDraft
+                  ? analysis.emailDraft.subject
+                  : "Generated when you approve the brief"
+              }
             >
               <div className="email-card-body">
-                <div className="kv kv-compact kv-email">
-                  <div className="k">Subject</div>
-                  <div className="v">{analysis.emailDraft.subject}</div>
-                </div>
-                <pre className="email-draft">
+                {analysis.emailDraft ? (
+                  <div data-testid="email-draft-content">
+                    <div className="kv kv-compact kv-email">
+                      <div className="k">Subject</div>
+                      <div className="v">{analysis.emailDraft.subject}</div>
+                    </div>
+                    <pre className="email-draft">
 {analysis.emailDraft.body}
-                </pre>
+                    </pre>
+                  </div>
+                ) : (
+                  <p className="email-draft-pending" data-testid="email-draft-pending">
+                    The client-facing email draft is generated when you{" "}
+                    <b>approve</b> this brief (the <em>Approve &amp; generate email</em>{" "}
+                    button above). Deferring it means regenerating the brief never spends
+                    tokens on an email that would be discarded.
+                  </p>
+                )}
               </div>
             </InsightSection>
 

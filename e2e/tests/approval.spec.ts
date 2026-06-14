@@ -6,8 +6,9 @@
  * repurposes the stored `saved` flag):
  *
  *  - A fresh keyless brief is UNAPPROVED: "Needs review" badge, `approve-brief`
- *    enabled ("Approve brief"), and the two export actions — Download brief +
- *    Email lawyer — DISABLED. Unapproved AI output cannot be sent or exported.
+ *    enabled ("Approve & generate email"), and the two export actions — Download
+ *    brief + Email lawyer — DISABLED. Unapproved AI output cannot be sent or
+ *    exported. The client email draft is deferred to approval.
  *  - Approving flips the gate: `approved-badge` ("Counsel approved") replaces
  *    the review badge, Download/Email enable, the button reads "Approved" and
  *    disables, and the /brief library tags the entry `brief-tag-approved`.
@@ -79,9 +80,15 @@ test("approval gates export; answered review regenerates a new unapproved versio
   await expect(page.getByText("Needs review").first()).toBeVisible();
   await expect(approvedBadge).toHaveCount(0);
   await expect(approve).toBeEnabled();
-  await expect(approve).toContainText("Approve brief");
+  await expect(approve).toContainText("Approve & generate email");
   await expect(download, "unapproved briefs must not download").toBeDisabled();
   await expect(email, "unapproved briefs must not be emailed").toBeDisabled();
+  // The client email draft is deferred: pre-approval the section header shows
+  // the pending placeholder, not a draft.
+  await expect(
+    page.getByText("Generated when you approve the brief"),
+    "email draft is deferred until approval",
+  ).toBeVisible();
 
   // Answerable review renders with the brief — and with every answer box
   // empty, regen-with-answers must be disabled.
@@ -100,6 +107,11 @@ test("approval gates export; answered review regenerates a new unapproved versio
   await expect(email).toBeEnabled();
   await expect(approve).toBeDisabled();
   await expect(approve).toContainText("Approved");
+  // Approving GENERATED the client email draft — the placeholder is replaced.
+  await expect(
+    page.getByText("Generated when you approve the brief"),
+    "approval replaces the email placeholder with the generated draft",
+  ).toHaveCount(0);
 
   // ── The library reflects the approval.
   await page.goto("/brief");
@@ -133,7 +145,12 @@ test("approval gates export; answered review regenerates a new unapproved versio
   await expect(download, "regeneration must re-lock the download").toBeDisabled();
   await expect(email, "regeneration must re-lock the email").toBeDisabled();
   await expect(approve).toBeEnabled();
-  await expect(approve).toContainText("Approve brief");
+  await expect(approve).toContainText("Approve & generate email");
+  // The regenerated version's email is deferred again — placeholder returns.
+  await expect(
+    page.getByText("Generated when you approve the brief"),
+    "regeneration defers the email again",
+  ).toBeVisible();
   // The submitted answers cleared with the new version — button disarmed again.
   await expect(answers.first()).toHaveValue("");
   await expect(regenWithAnswers).toBeDisabled();

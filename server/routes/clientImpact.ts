@@ -10,6 +10,7 @@ import {
   SCANS_FILE,
   analyzeClientFromChanges,
   findRecord,
+  generateClientEmailDraft,
   loadApprovedChanges,
   safe,
   scoreClientAgainstChanges,
@@ -83,10 +84,6 @@ function synthesizeFallback(bill: Bill, client: Client): ClientImpactAnalysis {
       `What would the cost and lead time be if operations had to align with a revised ${actName}?`,
       `Are there client communications (T&Cs, policies, product labels) that might need review?`,
     ],
-    emailDraft: {
-      subject: `${bill.billNumber} — monitoring update for ${client.name}`,
-      body: `Hello,\n\nWe are monitoring Bill ${bill.billNumber} (${bill.title}), which, if enacted, may be relevant to ${client.name}.\n\nWhat the bill proposes\nThe bill would amend ${actList}. The changes remain proposals — the bill has not received royal assent and may be amended or may not pass.\n\nPotential areas to watch for ${client.name}\nBased on the client profile (${client.industry}), areas that might warrant attention include contractual terms, operational compliance, and disclosure or labelling practices.\n\nHow we can help\nWe could review your terms and conditions or contracts to identify potential exposures, and provide ongoing regulatory monitoring as the bill progresses through Parliament.\n\nWe would welcome a conversation about whether any of these areas merit a closer look.\n\n— Ingenium`,
-    },
     confidence: 0.55,
     humanReviewRequired: true,
     humanReviewReason:
@@ -171,6 +168,9 @@ clientImpactRouter.post(
       humanReviewRequired: result.humanReviewRequired || review.required,
       humanReviewReason: result.humanReviewReason ?? review.reason,
     };
+    // The client email draft is generated only at APPROVAL (POST /:id/save),
+    // never at analyze time — so regenerations don't pay for a discarded draft.
+    delete analysis.emailDraft;
 
     // One critical section per store mutation: concurrent /analyze calls each
     // do readAll → mutate → writeAll, so without the lock the last writer
@@ -503,10 +503,31 @@ clientImpactRouter.post(
   safe(async (req, res) => {
     // find + upsert is a read-modify-write: take the impacts lock so a
     // concurrent /analyze prune can't clobber (or be clobbered by) the save.
+    const id = String(req.params.id);
+    const existing = await findRecord<ClientImpactAnalysis>(FILES.impacts, id);
+    if (!existing) return res.status(404).json({ error: "not_found" });
+
+    // Generate the client-facing email draft ONCE, at approval — not on every
+    // /analyze regeneration. Done OUTSIDE the file lock (it may be a multi-second
+    // AI call) so it doesn't serialize concurrent impact writes. Idempotent:
+    // skip if a draft is already present (e.g. re-approving without a regen).
+    let emailDraft = existing.emailDraft;
+    if (!emailDraft?.body?.trim()) {
+      const client = await findRecord<Client>(FILES.clients, existing.clientId);
+      const bill = await findRecord<Bill>(FILES.bills, existing.billId);
+      if (client && bill) {
+        emailDraft = await generateClientEmailDraft(
+          { bill, client, analysis: existing },
+          createAiBudget(),
+        );
+      }
+    }
+
     const saved = await withFileLock(FILES.impacts, async () => {
-      const a = await findRecord<ClientImpactAnalysis>(FILES.impacts, String(req.params.id));
+      const a = await findRecord<ClientImpactAnalysis>(FILES.impacts, id);
       if (!a) return null;
       a.saved = true;
+      if (emailDraft) a.emailDraft = emailDraft;
       await upsert(FILES.impacts, a);
       return a;
     });

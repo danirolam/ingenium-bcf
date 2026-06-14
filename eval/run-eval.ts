@@ -183,8 +183,18 @@ async function main(): Promise<void> {
         { clientId: client.id, billId: g.assignedBill.billId },
         ANALYZE_TIMEOUT_MS,
       );
-      briefs.set(client.id, analysis);
-      console.log(`  ${client.id} × ${g.assignedBill.billNumber} → ${analysis.impactLevel} (${analysis.affected})`);
+      // The email draft is deferred to APPROVAL — approve the brief so the email
+      // gets generated, then use the saved analysis (now carrying emailDraft).
+      const approved = await postJson<ClientImpactAnalysis>(
+        `/api/client-impact/${analysis.id}/save`,
+        {},
+        ANALYZE_TIMEOUT_MS,
+      );
+      briefs.set(client.id, approved);
+      console.log(
+        `  ${client.id} × ${g.assignedBill.billNumber} → ${approved.impactLevel} (${approved.affected}); ` +
+          `email ${approved.emailDraft?.body ? "drafted" : "MISSING"}`,
+      );
     } catch (err) {
       briefs.set(client.id, { error: (err as Error).message });
       console.log(`  ${client.id} × ${g.assignedBill.billNumber} → ERROR: ${(err as Error).message}`);

@@ -403,6 +403,9 @@ test.describe("analyze", () => {
     expect(analysis.billId).toBe(st.billId);
     expect(email).toBeTruthy();
     expect(email.simulated).toBe(true); // RESEND_API_KEY is blanked
+    // The client email draft is deferred to approval (POST /:id/save) — a fresh
+    // analysis carries none, so regenerations don't pay to draft it.
+    expect(analysis.emailDraft, "email draft must be deferred to approval").toBeFalsy();
 
     const byPair = await request.get(
       `${API}/api/client-impact/by-pair?clientId=client-corebloom&billId=${st.billId}`,
@@ -607,6 +610,10 @@ test.describe.serial("brief library", () => {
     const body = await saved.json();
     expect(body.id).toBe(latest.id);
     expect(body.saved, "/save must flip the stored saved flag").toBe(true);
+    // Approval GENERATES the client email draft (deferred from /analyze). Keys
+    // are blanked, so this is the deterministic fallback — but it must exist.
+    expect(body.emailDraft?.subject, "approval must generate an email subject").toBeTruthy();
+    expect(body.emailDraft?.body, "approval must generate an email body").toBeTruthy();
 
     const briefs = await request.get(`${API}/api/client-impact/briefs`);
     expect(briefs.status()).toBe(200);

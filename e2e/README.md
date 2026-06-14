@@ -162,16 +162,28 @@ cell is gone ("Why it matters" remains).
 `saved` flag via the existing `POST /:id/save` route:
 
 - A fresh (or regenerated) brief is **unapproved**: the `Needs review` badge
-  shows, `approve-brief` is enabled with the text "Approve brief", and the
-  **Download brief / Email lawyer buttons are `disabled`** — unapproved AI
-  output cannot leave the building.
-- Clicking `approve-brief` flips the gate: `approved-badge`
-  ("Counsel approved") replaces the review badge, Download/Email enable, and
-  the button reads "Approved" (disabled). The `/brief` library tags the entry
+  shows, `approve-brief` is enabled with the text "Approve & generate email",
+  and the **Download brief / Email lawyer buttons are `disabled`** — unapproved
+  AI output cannot leave the building.
+- The **client email draft is deferred to approval** (so regenerations don't
+  spend tokens drafting an email that gets discarded). Pre-approval the Email
+  draft section shows a placeholder (`email-draft-pending`, summary "Generated
+  when you approve the brief"), and `analysis.emailDraft` is absent on the
+  `/analyze` response.
+- Clicking `approve-brief` flips the gate **and generates the email**: `POST
+  /:id/save` returns the analysis with a populated `emailDraft` (a focused AI
+  call; the deterministic fallback when keyless). `approved-badge` ("Counsel
+  approved") replaces the review badge, Download/Email enable, the button reads
+  "Approved" (disabled), and the Email draft section shows the draft
+  (`email-draft-content`). The `/brief` library tags the entry
   `brief-tag-approved`.
 - Approval is **per-version**: any regeneration (plain, with guidance, or with
-  answers) produces a new unapproved analysis, so the badge, the export locks
-  and the library tag all revert until counsel approves again.
+  answers) produces a new unapproved analysis, so the badge, the export locks,
+  the library tag and the (deferred-again) email draft all revert until counsel
+  approves again.
+- The brief summary's `ImpactScale` shows **Impact level** only — with an
+  `impact-level-info` hover explaining how it's computed; the Urgency readout
+  was removed.
 
 ### The answerable Lawyer Review (answers ride the guidance channel)
 

@@ -437,6 +437,13 @@ export function mergeAnalyses(parts: AnalysisBody[]): AnalysisBody {
     parts.map((p) => p.humanReviewReason ?? "").filter(Boolean),
   );
 
+  // The email is generated at APPROVAL (POST /:id/save), not during analysis —
+  // so parts normally carry none. If one does (legacy/canned), keep the first
+  // non-empty rather than fabricating an empty draft.
+  const withEmail = parts.find(
+    (p) => p.emailDraft?.subject?.trim() || p.emailDraft?.body?.trim(),
+  );
+
   return {
     affected: maxBy(parts.map((p) => p.affected), AFFECTED_ORD),
     impactLevel: maxBy(parts.map((p) => p.impactLevel), IMPACT_ORD),
@@ -452,13 +459,7 @@ export function mergeAnalyses(parts: AnalysisBody[]): AnalysisBody {
     lawyerVerificationQuestions: dedupCI(
       parts.flatMap((p) => p.lawyerVerificationQuestions),
     ).slice(0, 10),
-    emailDraft: {
-      subject: primary.emailDraft.subject,
-      body:
-        parts.length > 1
-          ? `${primary.emailDraft.body}\n\nNote: this analysis covered ${parts.length} batches of approved amendments.`
-          : primary.emailDraft.body,
-    },
+    ...(withEmail?.emailDraft ? { emailDraft: withEmail.emailDraft } : {}),
     confidence: Math.min(...parts.map((p) => p.confidence)),
     humanReviewRequired: parts.some((p) => p.humanReviewRequired),
     humanReviewReason: reasons.length > 0 ? reasons.join("; ") : null,
@@ -536,6 +537,60 @@ function asClientText(v: unknown): AnalysisBody["relevantClientText"] {
   return out;
 }
 
+// ── Deterministic email draft (approval-time fallback when AI is unavailable) ──
+/**
+ * Build the prescribed five-section client monitoring email deterministically
+ * from an already-computed analysis — the keyless / AI-failure fallback for the
+ * approval-time email generation. Pure; never throws. Conditional, non-advisory
+ * tone (the firm is liable for definitive statements).
+ */
+export function synthesizeEmailDraft(args: {
+  clientName: string;
+  billNumber: string;
+  billTitle: string;
+  billStatus?: string;
+  industry?: string;
+  whyItAffectsClient?: string;
+  affectedClientAreas?: string[];
+}): { subject: string; body: string } {
+  const client = (args.clientName || "the client").trim();
+  const billNo = (args.billNumber || "the bill").trim();
+  const title = (args.billTitle || "").trim();
+  const areas = (args.affectedClientAreas ?? [])
+    .map((a) => a.trim())
+    .filter(Boolean)
+    .slice(0, 5);
+  const why = (args.whyItAffectsClient || "").trim();
+  const watch = areas.length
+    ? areas.map((a) => `• ${a}`).join("\n")
+    : "• Areas of your operations that the bill's subject-matter touches.";
+  const subject = `${billNo} — monitoring update for ${client}`;
+  const body = headOnly(
+    [
+      `Hello,`,
+      ``,
+      `We are monitoring Bill ${billNo}${title ? ` (${title})` : ""}, which, if enacted, may be relevant to ${client}.`,
+      ``,
+      `What the bill proposes`,
+      `The bill remains a proposal${args.billStatus ? ` (current status: ${args.billStatus})` : ""} — it is not law and may be amended or may not pass. If enacted, it would change the obligations relevant to the areas below.`,
+      ``,
+      `Potential areas to watch for ${client}`,
+      why ||
+        `Based on the client profile${args.industry ? ` (${args.industry})` : ""}, the proposed changes could touch the following areas:`,
+      watch,
+      ``,
+      `How we can help`,
+      `We could review your terms, contracts and policies to identify potential exposures, run a focused compliance gap assessment, and provide ongoing monitoring as the bill progresses through Parliament.`,
+      ``,
+      `We would welcome a conversation about whether any of these areas merit a closer look.`,
+      ``,
+      `— Ingenium`,
+    ].join("\n"),
+    NORMALIZE_EMAIL_BODY_MAX_CHARS,
+  );
+  return { subject, body };
+}
+
 /**
  * Coerce ANY value (null, arrays, strings, garbage) into a valid AnalysisBody.
  * Never throws. Garbage defaults are conservative: unclear/medium/medium,
@@ -550,8 +605,6 @@ export function normalizeAnalysis(raw: unknown): AnalysisBody {
       ? Math.min(1, Math.max(0, confidenceRaw))
       : 0.5;
 
-  const emailRec = isRecord(rec?.emailDraft) ? (rec?.emailDraft as Record<string, unknown>) : undefined;
-
   return {
     affected: oneOf(rec?.affected, ["yes", "no", "unclear"] as const, "unclear"),
     impactLevel: oneOf(rec?.impactLevel, ["low", "medium", "high", "critical"] as const, "medium"),
@@ -562,10 +615,6 @@ export function normalizeAnalysis(raw: unknown): AnalysisBody {
     requiredAdaptations: asAdaptations(rec?.requiredAdaptations),
     relevantClientText: asClientText(rec?.relevantClientText),
     lawyerVerificationQuestions: asStrArray(rec?.lawyerVerificationQuestions),
-    emailDraft: {
-      subject: asStr(emailRec?.subject),
-      body: headOnly(asStr(emailRec?.body), NORMALIZE_EMAIL_BODY_MAX_CHARS),
-    },
     confidence,
     // Conservative: anything other than an explicit boolean means "review it".
     humanReviewRequired:

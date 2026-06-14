@@ -175,7 +175,10 @@ export interface ClientImpactAnalysis {
 
   lawyerVerificationQuestions: string[];
 
-  emailDraft: {
+  // Generated only when the brief is APPROVED (POST /:id/save), not during
+  // /analyze — so regenerations don't burn tokens on a draft that's discarded.
+  // Absent until approval.
+  emailDraft?: {
     subject: string;
     body: string;
   };
