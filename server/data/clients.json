@@ -43,5 +43,130 @@
     "operations": "3 blending plants (Regina, Brandon, Lethbridge). 14 SKUs of fertilizer blends, 47 SKUs of certified seed. Currently no GM seed product line, but expansion under board review for 2026.",
     "riskTolerance": "medium",
     "createdAt": "2026-05-27T03:38:00.367Z"
+  },
+  {
+    "id": "client-aurelia-thx",
+    "name": "Aurelia Therapeutics Inc.",
+    "industry": "Specialty pharmaceutical import & distribution",
+    "jurisdictions": [
+      "Toronto, ON",
+      "Canada"
+    ],
+    "description": "Importer-distributor of non-marketed specialty therapeutics (oncology, rare disease) supplied to roughly forty hospital pharmacy accounts across Canada, exclusively through Health Canada's Special Access Programme (SAP). Holds a Health Canada establishment licence covering import, storage and distribution of drugs in dosage form.",
+    "termsAndConditions": "Hospital Supply Terms (v4.2, in force) — 1. Authorization-gated supply: Aurelia will accept a purchase order for a non-marketed product only upon receipt of a Special Access Programme authorization letter issued by Health Canada that names the requesting practitioner and the individual patient. 2. No anticipatory supply: Aurelia does not sell, ship, reserve or hold inventory of any non-marketed product in anticipation of an authorization; each shipment corresponds to one patient-named authorization. 3. Import on authorization: import of the authorized quantity is initiated only after the authorization letter is received, and customs entries reference the authorization number. 4. Records: Aurelia maintains shipment records keyed to the patient-named authorization number and retains them for 5 years. 5. Returns of unused special-access stock are mandatory on treatment discontinuation.",
+    "policies": "SAP Request Handling SOP: completed practitioner SAP forms are processed within 48 hours; files are indexed by patient identity and authorization number. Inventory Policy: zero on-hand inventory of non-marketed products (no stocking ahead of a named authorization). Pharmacovigilance Policy: adverse drug reactions reported to the manufacturer and Health Canada within 15 days. Regulatory Pathway Policy: any product distributed under special access for more than 24 consecutive months without a New Drug Submission being filed triggers executive review to document why full market authorization is not being sought.",
+    "operations": "Operates a bonded GMP warehouse in Mississauga; customs broker files per-shipment import entries only after an authorization letter is on file. Intake desk receives SAP authorization letters by secure fax and email during business hours. Order-management system requires a patient name and SAP authorization number to open a shipment record. Quarterly compliance reviews reconcile every shipment against its authorization letter. No notice of individual sales is currently submitted to Health Canada beyond the SAP paperwork itself.",
+    "riskTolerance": "low",
+    "createdAt": "2026-06-11T14:05:00.000Z"
+  },
+  {
+    "id": "client-lakehead-health",
+    "name": "Lakehead Regional Health Network",
+    "industry": "Hospital network / acute & cancer care",
+    "jurisdictions": [
+      "Thunder Bay, ON",
+      "Canada"
+    ],
+    "description": "Three-hospital regional network serving Northwestern Ontario, including a regional cancer centre and the area's only Level III emergency department. Central pharmacy manages all drug procurement; a Pharmacy & Therapeutics (P&T) committee governs the formulary and all non-formulary or emergency drug use.",
+    "termsAndConditions": "Medical Staff Rules and Supplier Purchasing Terms (extracts) — R7.3 Emergency use of unapproved drugs: a physician may administer a drug that lacks Canadian market authorization only after a Special Access Programme authorization letter for the named patient is on file with Pharmacy, except under the Crash Protocol (R7.4), which requires contemporaneous sign-off by two attending physicians and next-business-day notification to the P&T chair. P12.1 Procurement: Pharmacy may purchase non-marketed drugs only against a patient-specific authorization; standing inventory of non-marketed drugs is prohibited. S4.2 Suppliers must warrant that every non-marketed product shipped is matched to a Health Canada authorization document.",
+    "policies": "Emergency Drug Access Policy: SAP requests are prepared by oncology pharmacists and submitted by the central Drug Access Desk, which operates Monday to Friday, 08:00–16:00; after-hours requests wait for the next business day unless the Crash Protocol applies. Documentation Policy: the administering physician files an internal outcome report to the P&T committee within 30 days of any special-access administration; no external report is filed unless requested by Health Canada. Formulary Policy: only products with Canadian market authorization are stocked; special-access drugs are dispensed one patient at a time.",
+    "operations": "Central pharmacy in Thunder Bay distributes to the two community sites twice weekly. The Drug Access Desk (2 FTE pharmacists) handles roughly 150 SAP requests a year, with a median 4-business-day turnaround from physician request to drug-in-hand. The emergency department maintains the Crash Protocol kit but holds no non-marketed drugs. Physician onboarding includes annual training on R7.3/R7.4 and SAP paperwork.",
+    "riskTolerance": "medium",
+    "createdAt": "2026-06-11T14:05:00.000Z"
+  },
+  {
+    "id": "client-nutrien",
+    "name": "Nutrien Ltd.",
+    "industry": "Agricultural inputs and agribusiness industry (Global crop nutrition (fertilizers: potash, nitrogen, phosphate); Crop protection product distribution; Agricultural retail and farm services; Precision agriculture and digital farming technologies; Integrated agribusiness supply chain services).",
+    "jurisdictions": [
+      "Saskatoon, SK",
+      "Canada"
+    ],
+    "description": "Nutrien Ltd. is a Canadian-based global agricultural inputs company and one of the world's largest providers of crop nutrients and farming solutions. It operates across the agricultural value chain, supplying essential fertilizers, seed products, and crop protection solutions, while also delivering agronomic advisory services and digital agriculture tools. The company plays a central role in supporting global food production through its integrated network of production, distribution, and retail agricultural services.",
+    "operations": "Nutrien's Canadian operations include the production, procurement, and distribution of crop inputs such as potash, nitrogen, and phosphate fertilizers, as well as seeds and crop protection products. The company operates an extensive retail network serving farmers with agronomic consulting, precision agriculture tools, and crop management services. Its activities also include supply chain logistics, fertilizer manufacturing, data-driven farming technologies, and field-level agronomic support aimed at improving productivity, efficiency, and sustainable agricultural practices.",
+    "riskTolerance": "medium",
+    "createdAt": "2026-06-13T12:00:00.000Z"
+  },
+  {
+    "id": "client-bayer",
+    "name": "Bayer Inc.",
+    "industry": "Agricultural biotechnology and agrochemical industry (Genetically modified seeds and plant traits; Crop protection products (herbicides, fungicides, insecticides); Agricultural biotechnology and data-driven farming technologies).",
+    "jurisdictions": [
+      "Mississauga, ON",
+      "Canada"
+    ],
+    "description": "Bayer is a multinational life sciences company operating in both the healthcare and agriculture sectors. In agriculture, its Crop Science division focuses on improving agricultural productivity through seed innovation, biotechnology, and chemical crop protection products. The company develops and commercializes genetically modified crop traits, seeds, and crop protection solutions designed to increase yields, manage pests and weeds, and support modern farming practices.",
+    "operations": "Bayer's Canadian agricultural operations include the development, testing, and commercialization of seeds and crop protection products, as well as digital and precision agriculture technologies. Activities involve biotechnology and trait research, seed development and distribution, herbicide and pesticide product management, field trials, agronomic advisory services, and data-driven farming tools aimed at improving productivity, sustainability, and farm efficiency.",
+    "riskTolerance": "medium",
+    "createdAt": "2026-06-13T12:00:00.000Z"
+  },
+  {
+    "id": "client-canneberges",
+    "name": "Canneberges Bieler Inc.",
+    "industry": "Agricultural production and agri-food industry (Specialty crop farming (horticulture); Cranberry cultivation and production; Post-harvest processing and agri-food supply chain integration; Primary agricultural production (soft fruit sector)).",
+    "jurisdictions": [
+      "Québec",
+      "Canada"
+    ],
+    "description": "Canneberges Bieler Inc. is a Québec-based agricultural producer and one of Canada's leading cranberry farming companies. Established in the mid-1980s, it specializes in large-scale cranberry cultivation and operates multiple production sites. The company manages the full cultivation cycle, from bog development and field preparation to harvesting, storage, and shipment, supplying cranberries to major processors and cooperatives such as Ocean Spray. Its operations are supported by agronomic expertise and a focus on sustainable agricultural practices and long-term land stewardship.",
+    "operations": "Canneberges Bieler Inc.'s operations include the cultivation of cranberries in engineered bog systems, seasonal harvesting activities such as flooding and berry collection, and post-harvest handling including storage and transport. The company also engages in agricultural land management and development, supply chain coordination with processors and distributors, and agronomic practices aimed at improving crop yield, operational efficiency, and environmental sustainability in cranberry production.",
+    "riskTolerance": "medium",
+    "createdAt": "2026-06-13T12:00:00.000Z"
+  },
+  {
+    "id": "client-gdms-canada",
+    "name": "General Dynamics Mission Systems–Canada",
+    "industry": "Defence technology and aerospace industry (Military communications systems; Command, control, communications, computers, intelligence, surveillance and reconnaissance (C4ISR) solutions; Cybersecurity systems; Naval and land defence electronics; Tactical data networks; Intelligence and mission systems integration; Defence software and secure communications technologies).",
+    "jurisdictions": [
+      "Montreal, QC",
+      "Canada"
+    ],
+    "description": "General Dynamics Mission Systems–Canada (GDMS-C) is a Canadian defence technology company headquartered in Montreal, Quebec, and a subsidiary of General Dynamics Corporation. The company develops advanced communications, command-and-control, intelligence, cybersecurity, and mission-critical technologies for the Canadian Armed Forces, allied militaries, and government agencies. Its products and services support military operations, national security objectives, and defence modernization programs in Canada and internationally.",
+    "policies": "Subject to Canadian export-control laws, defence procurement requirements, national security regulations, and international trade compliance frameworks governing military goods and technologies.",
+    "operations": "GDMS-C's Canadian operations include the design, development, manufacturing, integration, and export of defence-related technologies and systems. The company produces secure communications equipment, tactical radios, naval combat management systems, intelligence platforms, cybersecurity solutions, and command-and-control technologies. It also participates in defence research and development, systems engineering, military modernization projects, and cross-border defence supply chains involving Canadian and allied defence partners.",
+    "riskTolerance": "low",
+    "createdAt": "2026-06-13T12:00:00.000Z"
+  },
+  {
+    "id": "client-westjet",
+    "name": "WestJet Airlines Ltd.",
+    "industry": "Commercial aviation and air transportation industry (Passenger air transportation; Domestic and international airline services; Flight operations; Flight attendant and cabin crew services; Aviation safety and training; Tourism and travel services).",
+    "jurisdictions": [
+      "Calgary, AB",
+      "Canada"
+    ],
+    "description": "WestJet Airlines Ltd. is one of Canada's largest airlines and operates under federal jurisdiction as an air carrier. Headquartered in Calgary, Alberta, the company provides scheduled passenger services throughout Canada, the United States, Europe, Mexico, Central America, and the Caribbean. WestJet employs thousands of flight attendants, pilots, maintenance personnel, and customer service employees and is subject to the Canada Labour Code and federal labour standards governing airline operations.",
+    "policies": "Subject to the Canada Labour Code, occupational health and safety requirements, collective agreements, aviation labour regulations, and Canadian aviation safety regulations.",
+    "operations": "WestJet's operations include passenger air transportation, flight operations, cabin crew management, aircraft maintenance, aviation safety compliance, flight attendant training, customer service, baggage handling, and international route management. Flight attendants perform numerous operational and safety-related duties before, during, and after flights, including boarding assistance, safety demonstrations, cabin inspections, emergency preparedness activities, passenger service, deplaning assistance, and mandatory recurrent training programs.",
+    "riskTolerance": "medium",
+    "createdAt": "2026-06-13T12:00:00.000Z"
+  },
+  {
+    "id": "client-dollarama",
+    "name": "Dollarama Inc.",
+    "industry": "Retail and consumer goods industry (Discount retail; Household products; Seasonal merchandise; Food and confectionery products; Health and beauty products; General merchandise; Global sourcing and supply chain management).",
+    "jurisdictions": [
+      "Montreal, QC",
+      "Canada"
+    ],
+    "description": "Dollarama Inc. is a Canadian discount retail chain headquartered in Montreal, Quebec. The company operates thousands of stores across Canada and offers a wide range of low-cost consumer products, including household goods, food items, cleaning products, stationery, seasonal merchandise, toys, and personal care products. A significant portion of its merchandise is sourced through complex international supply chains involving manufacturers and suppliers located in various regions around the world.",
+    "policies": "Subject to the Customs Act, Customs Tariff, Fighting Against Forced Labour and Child Labour in Supply Chains Act, consumer protection legislation, import regulations, and corporate supply chain compliance policies.",
+    "operations": "Dollarama's operations include the sourcing, procurement, importation, distribution, warehousing, and retail sale of consumer products. The company relies extensively on global supply chains to obtain merchandise from foreign manufacturers and suppliers. Its activities include supplier management, logistics coordination, customs compliance, inventory management, and retail distribution throughout Canada.",
+    "riskTolerance": "medium",
+    "createdAt": "2026-06-13T12:00:00.000Z"
+  },
+  {
+    "id": "client-air-canada",
+    "name": "Air Canada",
+    "industry": "Commercial aviation and air transportation industry (Passenger air transportation; Cargo transportation; Flight operations; Ground services; Customer service operations; Aviation maintenance and support services).",
+    "jurisdictions": [
+      "Montreal, QC",
+      "Canada"
+    ],
+    "description": "Air Canada is Canada's largest airline and flag carrier. Headquartered in Montreal, Quebec, the company operates domestic and international passenger and cargo services across six continents. As an employer in the federally regulated transportation sector, Air Canada is governed by the Canada Labour Code for labour relations matters. The company employs tens of thousands of workers, including flight attendants, pilots, mechanics, baggage handlers, customer service agents, and administrative personnel represented by various unions or bargaining agents.",
+    "policies": "Subject to the Canada Labour Code, Canada Industrial Relations Board (CIRB) requirements, collective bargaining agreements, occupational health and safety regulations, and federal labour relations legislation.",
+    "operations": "Air Canada's operations include passenger transportation, cargo services, airport operations, maintenance and engineering services, flight operations, customer service activities, and corporate administration. The company manages a large workforce across numerous bargaining units and works regularly with unions and employee representatives on collective bargaining, workplace policies, and labour relations matters.",
+    "riskTolerance": "low",
+    "createdAt": "2026-06-13T12:00:00.000Z"
   }
 ]

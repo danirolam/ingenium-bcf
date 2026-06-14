@@ -1,0 +1,162 @@
+/* Stage 4 — Brief library (flat, filterable). Imported only by
+   src/components/BriefPicker.tsx; everything is namespaced `bp-` so nothing
+   leaks into other pages. Mirrors the app's card/list aesthetics (lpg cards,
+   cs scoreboard rows) on the shared tokens. */
+
+.bp-count {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.bp-empty-cta {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+}
+
+/* ── Filters ──────────────────────────────────────────────────────────── */
+.bp-filters {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.bp-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.bp-filter-label {
+  font: 600 11px/1.4 var(--sans);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.bp-filter select {
+  font: 500 12.5px/1.4 var(--sans);
+  color: var(--ink);
+  background: var(--panel-2);
+  border: 1px solid var(--border-2);
+  border-radius: 7px;
+  padding: 6px 10px;
+  max-width: 320px;
+  cursor: pointer;
+}
+.bp-filter select:hover {
+  border-color: var(--border);
+}
+
+/* ── Entries (flat chronological list) ────────────────────────────────── */
+.bp-entry-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-3);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.bp-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border-3);
+  cursor: pointer;
+}
+.bp-entry:last-child {
+  border-bottom: none;
+}
+.bp-entry:hover {
+  background: var(--panel-2);
+}
+.bp-entry-main {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+.bp-bill-num {
+  flex: none;
+  font: 700 12px/1.4 var(--mono);
+  color: var(--accent-warm, var(--ink));
+}
+.bp-entry-client {
+  flex: none;
+  font: 600 13px/1.4 var(--sans);
+  color: var(--ink);
+  white-space: nowrap;
+}
+.bp-entry-title {
+  font: 400 12px/1.4 var(--sans);
+  color: var(--ink-4);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.bp-entry-meta {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.bp-entry-when {
+  font: 500 11px/1.4 var(--mono);
+  color: var(--ink-4);
+  white-space: nowrap;
+}
+.bp-entry-go {
+  color: var(--ink-4);
+  font-size: 11px;
+}
+.bp-entry:hover .bp-entry-go {
+  color: var(--ink);
+}
+
+/* ── Approval / review tags ───────────────────────────────────────────── */
+.bp-tag {
+  flex: none;
+  font: 700 10.5px/1 var(--sans);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.bp-tag.bp-approved {
+  color: var(--ok);
+  background: var(--ok-bg);
+}
+.bp-tag.bp-review {
+  color: var(--high);
+  background: var(--high-bg);
+}
+
+/* ── Impact-band pill (same escalation as the scanner's cs-band) ──────── */
+.bp-band {
+  flex: none;
+  font: 700 10.5px/1 var(--sans);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+.bp-band.is-low {
+  color: var(--low);
+  background: var(--low-bg);
+}
+.bp-band.is-medium {
+  color: var(--high);
+  background: var(--high-bg);
+}
+.bp-band.is-high {
+  color: var(--crit);
+  background: var(--crit-bg);
+}
+.bp-band.is-critical {
+  color: #ffffff;
+  background: var(--crit);
+}

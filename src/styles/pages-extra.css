@@ -167,19 +167,6 @@
 .is-labels span.active.s-high { color: var(--high); }
 .is-labels span.active.s-critical { color: var(--crit); }
 
-.is-urgency {
-  margin-top: 8px;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0;
-  text-transform: uppercase;
-  font-variant-numeric: tabular-nums;
-}
-.is-urgency.u-low { color: var(--low); }
-.is-urgency.u-medium { color: var(--med); }
-.is-urgency.u-high { color: var(--high); }
-.is-urgency.u-immediate { color: var(--crit); }
-
 /* ───────── LawPickerGrid ───────── */
 .lpg-grid {
   display: grid;
