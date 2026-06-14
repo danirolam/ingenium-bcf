@@ -7,6 +7,7 @@ import {
   faFileLines,
   faFloppyDisk,
   faPaperPlane,
+  faRotateRight,
   faScaleBalanced,
   faShieldHalved,
   faTriangleExclamation,
@@ -16,6 +17,7 @@ import {
   AffectedBadge,
   ReviewBadge,
 } from "../components/badges";
+import { BriefPicker } from "../components/BriefPicker";
 import { ImpactScale } from "../components/ImpactScale";
 import { PageHeader } from "../components/PageHeader";
 import {
@@ -26,6 +28,7 @@ import {
   AlertTitle,
 } from "../components/ui/alert-1";
 import { api } from "../lib/api";
+import { analyzeWithGuidance } from "../lib/clientScan";
 import { downloadDoc, esc } from "../lib/export";
 import type { Bill, Client, ClientImpactAnalysis } from "../types";
 
@@ -34,6 +37,13 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
   const [client, setClient] = useState<Client | null>(null);
   const [bill, setBill] = useState<Bill | null>(null);
   const [busy, setBusy] = useState(false);
+  // Regenerate-with-instructions panel (only offered once a brief exists).
+  const [regenOpen, setRegenOpen] = useState(false);
+  const [regenText, setRegenText] = useState("");
+  const [regenBusy, setRegenBusy] = useState(false);
+  // Counsel's answers to the brief's verification questions, keyed by index.
+  // Transient like guidance — they ride the same regen channel, never stored.
+  const [reviewAnswers, setReviewAnswers] = useState<Record<number, string>>({});
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     why: true,
     adaptations: true,
@@ -46,6 +56,12 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
   const { clientId, billId } = nav.params;
 
   useEffect(() => {
+    // A different pair owns the page now — its regen draft AND its question
+    // answers die with it (the page never unmounts across SPA navigation, so
+    // stale answers would otherwise pair with the NEXT brief's questions).
+    setRegenOpen(false);
+    setRegenText("");
+    setReviewAnswers({});
     if (!clientId || !billId) return;
     let cancelled = false;
     (async () => {
@@ -85,7 +101,9 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     if (!clientId || !billId) return;
     setBusy(true);
     try {
-      const { analysis: a, email } = await api.clientImpact.analyze(
+      // Same endpoint as before — routed through the guidance-capable helper
+      // (no guidance here), so stage 4 has a single analyze entry point.
+      const { analysis: a, email } = await analyzeWithGuidance(
         clientId,
         billId,
       );
@@ -102,63 +120,70 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     }
   }
 
-  if (!analysis) {
-    // A client+bill pair is addressed but no brief exists yet → offer to generate
-    // it here, so the URL is directly actionable. No pair → point back to scan.
-    const hasPair = Boolean(clientId && billId);
+  // No (client, bill) pair addressed → the brief-library picker owns the
+  // content area: pick a bill, then a briefed client.
+  if (!clientId || !billId) {
     return (
       <>
         <PageHeader
           crumbs={["Workspace", "Client Brief"]}
           title="Client Brief"
-          sub={
-            hasPair
-              ? `No brief yet for ${client?.name ?? "this client"} on ${bill?.billNumber ?? "this bill"}.`
-              : "Pick a client and a bill in Client Scan to generate a brief."
-          }
+          sub="Browse generated briefs — pick a bill, then the client whose brief to open."
+        />
+        <div className="body">
+          <BriefPicker nav={nav} />
+        </div>
+      </>
+    );
+  }
+
+  if (!analysis) {
+    // A client+bill pair is addressed but no brief exists yet → offer to
+    // generate it here, so the URL is directly actionable.
+    return (
+      <>
+        <PageHeader
+          crumbs={["Workspace", "Client Brief"]}
+          title="Client Brief"
+          sub={`No brief yet for ${client?.name ?? "this client"} on ${bill?.billNumber ?? "this bill"}.`}
           actions={
-            hasPair ? (
-              <button className="btn primary" disabled={busy} onClick={generate}>
-                {busy ? "Generating…" : "Generate brief"}
-              </button>
-            ) : undefined
+            <button className="btn primary" disabled={busy} onClick={generate}>
+              {busy ? "Generating…" : "Generate brief"}
+            </button>
           }
         />
         <div className="body">
           <div className="rd-empty">
-            {hasPair ? (
-              <>
-                No brief has been generated for{" "}
-                <b>{client?.name ?? "this client"}</b> on{" "}
-                <b>{bill?.billNumber ?? "this bill"}</b> yet. Click{" "}
-                <b>Generate brief</b> to create one.
-              </>
-            ) : (
-              <>
-                No brief loaded. Open <b>Client Scan</b>, pick a client and a
-                bill, and click <b>Analyze client impact</b>.
-              </>
-            )}
+            No brief has been generated for{" "}
+            <b>{client?.name ?? "this client"}</b> on{" "}
+            <b>{bill?.billNumber ?? "this bill"}</b> yet. Click{" "}
+            <b>Generate brief</b> to create one.
           </div>
         </div>
       </>
     );
   }
 
-  async function save() {
+  // Counsel approval — repurposes the stored `saved` flag (and the existing
+  // /save route). Approval is per-version: regenerating creates a fresh,
+  // unapproved analysis, so the gate re-engages automatically.
+  async function approve() {
     if (!analysis) return;
     setBusy(true);
     try {
       const updated = await api.clientImpact.save(analysis.id);
       setAnalysis(updated);
-      nav.toast("Analysis saved to matter history.");
+      nav.toast("Brief approved — client email drafted; email and download unlocked.");
     } finally {
       setBusy(false);
     }
   }
 
   async function emailLawyer() {
-    if (!analysis) return;
+    // Defense-in-depth: the button is disabled pre-approval, but the gate
+    // ("unapproved AI output cannot leave the building") must hold even if
+    // this handler is ever reached another way.
+    if (!analysis?.saved) return;
     setBusy(true);
     try {
       const { email } = await api.clientImpact.emailLawyer(analysis.id);
@@ -168,8 +193,87 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     }
   }
 
+  // Regenerate the brief, optionally steered by reviewing-lawyer instructions
+  // (transient — never persisted). An empty textarea is a plain regen.
+  async function regenerate() {
+    if (!clientId || !billId || regenBusy) return;
+    setRegenBusy(true);
+    try {
+      const { analysis: fresh } = await analyzeWithGuidance(
+        clientId,
+        billId,
+        regenText,
+      );
+      // Reload through the page's by-pair path; fall back to the response if
+      // that cosmetic re-fetch fails (the regen itself already succeeded).
+      const reloaded = await api.clientImpact
+        .byPair(clientId, billId)
+        .catch(() => fresh);
+      setAnalysis(reloaded);
+      setRegenOpen(false);
+      setRegenText("");
+      // The new version has NEW questions — typed answers no longer pair.
+      setReviewAnswers({});
+      nav.toast("Brief regenerated.");
+    } catch (err: any) {
+      // Keep the panel (and the typed guidance) so the lawyer can retry.
+      nav.toast(`Could not regenerate brief: ${err.message ?? err}`);
+    } finally {
+      setRegenBusy(false);
+    }
+  }
+
+  // Regenerate using counsel's ANSWERS to the brief's verification questions.
+  // Same transient guidance channel as free-form feedback — each answer is
+  // sent with its question's FULL TEXT so the agent reads the resolution in
+  // context (the questions also reach it inside the PREVIOUS BRIEF block).
+  async function regenerateWithAnswers() {
+    if (!clientId || !billId || regenBusy || !analysis) return;
+    const questions = analysis.lawyerVerificationQuestions ?? [];
+    const pairs = questions
+      .map((q, i) => ({ q, a: (reviewAnswers[i] ?? "").trim() }))
+      .filter((p) => p.a.length > 0);
+    if (pairs.length === 0) return;
+    let composed =
+      "COUNSEL ANSWERS TO THE BRIEF'S VERIFICATION QUESTIONS:\n" +
+      pairs.map((p, i) => `Q${i + 1}: ${p.q}\nA${i + 1}: ${p.a}`).join("\n");
+    if (composed.length > 2000) {
+      // The guidance channel caps at 2000 chars server-side — truncate at a
+      // pair boundary so no half-answer goes through, and say so.
+      const header = "COUNSEL ANSWERS TO THE BRIEF'S VERIFICATION QUESTIONS:\n";
+      let cut = header;
+      for (let i = 0; i < pairs.length; i++) {
+        const next = `Q${i + 1}: ${pairs[i].q}\nA${i + 1}: ${pairs[i].a}\n`;
+        if (cut.length + next.length > 2000) break;
+        cut += next;
+      }
+      if (cut === header) {
+        // Even the first pair doesn't fit — don't fire an answer-less regen.
+        nav.toast("That answer is too long for one regeneration — please shorten it.");
+        return;
+      }
+      composed = cut.trimEnd();
+      nav.toast("Answers exceed the feedback limit — sending the first answers that fit.");
+    }
+    setRegenBusy(true);
+    try {
+      const { analysis: fresh } = await analyzeWithGuidance(clientId, billId, composed);
+      const reloaded = await api.clientImpact
+        .byPair(clientId, billId)
+        .catch(() => fresh);
+      setAnalysis(reloaded);
+      setReviewAnswers({});
+      nav.toast("Brief regenerated with counsel's answers.");
+    } catch (err: any) {
+      // Keep the typed answers so the lawyer can retry.
+      nav.toast(`Could not regenerate brief: ${err.message ?? err}`);
+    } finally {
+      setRegenBusy(false);
+    }
+  }
+
   function downloadBrief() {
-    if (!analysis) return;
+    if (!analysis?.saved) return; // same gate as the disabled button
     const a = analysis;
     const recs = (a.requiredAdaptations ?? [])
       .map(
@@ -187,7 +291,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
         affectedActs.length ? ` · affecting ${esc(affectedActs.join(", "))}` : ""
       }</p>
       <h2>Assessment</h2>
-      <p><b>Affected:</b> ${esc(a.affected)} &nbsp;·&nbsp; <b>Impact:</b> ${esc(a.impactLevel)} &nbsp;·&nbsp; <b>Urgency:</b> ${esc(a.urgency)} &nbsp;·&nbsp; <b>Timing:</b> ${esc(a.timing)}</p>
+      <p><b>Affected:</b> ${esc(a.affected)} &nbsp;·&nbsp; <b>Impact:</b> ${esc(a.impactLevel)} &nbsp;·&nbsp; <b>Timing:</b> ${esc(a.timing)}</p>
       <p>${esc(a.whyItAffectsClient)}</p>
       ${recs ? `<h2>Recommended actions</h2>${recs}` : ""}
       ${questions ? `<h2>For counsel to verify</h2><ul>${questions}</ul>` : ""}
@@ -232,26 +336,101 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
         }
         actions={
           <>
-            <button className="btn" onClick={downloadBrief}>
+            <button
+              className="btn ghost"
+              data-testid="regen-toggle"
+              aria-expanded={regenOpen}
+              disabled={regenBusy}
+              onClick={() => setRegenOpen((open) => !open)}
+            >
+              <FontAwesomeIcon icon={faRotateRight} aria-hidden="true" />
+              Regenerate with feedback…
+            </button>
+            {/* Unapproved AI output cannot leave the building: download and
+                email unlock only once counsel approves this version. */}
+            <button
+              className="btn"
+              disabled={!analysis.saved}
+              title={analysis.saved ? undefined : "Requires counsel approval"}
+              onClick={downloadBrief}
+            >
               <FontAwesomeIcon icon={faFileArrowDown} aria-hidden="true" />
               Download brief
             </button>
-            <button className="btn" disabled={busy} onClick={emailLawyer}>
+            <button
+              className="btn"
+              disabled={busy || !analysis.saved}
+              title={analysis.saved ? undefined : "Requires counsel approval"}
+              onClick={emailLawyer}
+            >
               <FontAwesomeIcon icon={faEnvelope} aria-hidden="true" />
               Email lawyer
             </button>
             <button
               className="btn primary"
-              disabled={busy || analysis.saved}
-              onClick={save}
+              data-testid="approve-brief"
+              // regenBusy too: approving mid-regeneration would sign off the
+              // OLD version while a new one is about to replace it.
+              disabled={busy || regenBusy || analysis.saved}
+              onClick={approve}
             >
               <FontAwesomeIcon icon={faFloppyDisk} aria-hidden="true" />
-              {analysis.saved ? "Saved" : "Save analysis"}
+              {analysis.saved
+                ? "Approved"
+                : busy
+                  ? "Generating email…"
+                  : "Approve & generate email"}
             </button>
           </>
         }
       />
       <div className="body">
+        {regenOpen && (
+          /* Page-scoped CSS lives elsewhere, so this panel composes shared
+             primitives (card / rd-field / actions-row) + two inline margins. */
+          <div className="card" style={{ marginBottom: 18 }}>
+            <div className="card-h">
+              <div className="card-title-row">
+                <FontAwesomeIcon icon={faRotateRight} aria-hidden="true" />
+                <div className="card-title">Regenerate with feedback</div>
+              </div>
+              <div className="card-sub">
+                The analyst revises THIS brief (it travels along as context) —
+                your notes can be instructions or feedback on it. Not stored.
+                Regenerating creates a new, unapproved version.
+              </div>
+            </div>
+            <div className="card-pad">
+              <div className="rd-field">
+                <label>Feedback / instructions for the analyst (optional)</label>
+                <textarea
+                  data-testid="regen-context-input"
+                  value={regenText}
+                  disabled={regenBusy}
+                  placeholder="e.g. “the timeline is too vague”, “focus on supplier obligations”, “drop the labelling section”…"
+                  onChange={(e) => setRegenText(e.target.value)}
+                />
+              </div>
+              <div className="actions-row" style={{ marginTop: 12 }}>
+                <button
+                  className="btn ghost"
+                  disabled={regenBusy}
+                  onClick={() => setRegenOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="btn primary"
+                  data-testid="regen-brief"
+                  disabled={regenBusy}
+                  onClick={() => void regenerate()}
+                >
+                  {regenBusy ? "Regenerating…" : "Regenerate brief"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         <div className="card impact-summary-card">
           <div className="card-h">
             <div>
@@ -265,7 +444,13 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
                 {client?.name ?? "-"} · {bill?.billNumber ?? "-"}
               </div>
             </div>
-            <ReviewBadge required={analysis.humanReviewRequired} />
+            {analysis.saved ? (
+              <span className="badge ok" data-testid="approved-badge">
+                Counsel approved
+              </span>
+            ) : (
+              <ReviewBadge required={analysis.humanReviewRequired} />
+            )}
           </div>
           <div className="cia-summary-top">
             <SummaryCell
@@ -278,14 +463,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
             />
           </div>
           <div className="cia-summary-scale">
-            <ImpactScale
-              level={analysis.impactLevel}
-              urgency={analysis.urgency}
-            />
-          </div>
-          <div className="cia-brief">
-            <div className="cia-brief-label">Executive read</div>
-            <p>{analysis.whyItAffectsClient}</p>
+            <ImpactScale level={analysis.impactLevel} />
           </div>
         </div>
 
@@ -388,9 +566,40 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
                     </div>
                     <ul className="review-question-list">
                       {lawyerVerificationQuestions.map((q, i) => (
-                        <li key={i}>{q}</li>
+                        <li key={i}>
+                          <div>{q}</div>
+                          <textarea
+                            className="review-answer-input"
+                            data-testid="review-answer-input"
+                            rows={2}
+                            style={{ width: "100%", marginTop: 6 }}
+                            value={reviewAnswers[i] ?? ""}
+                            disabled={regenBusy}
+                            placeholder="Counsel's answer (optional) — feeds the next regeneration"
+                            onChange={(e) =>
+                              setReviewAnswers((cur) => ({
+                                ...cur,
+                                [i]: e.target.value,
+                              }))
+                            }
+                          />
+                        </li>
                       ))}
                     </ul>
+                    <div className="actions-row" style={{ marginTop: 10 }}>
+                      <button
+                        className="btn primary"
+                        data-testid="regen-with-answers"
+                        disabled={
+                          regenBusy ||
+                          !Object.values(reviewAnswers).some((a) => a.trim().length > 0)
+                        }
+                        onClick={() => void regenerateWithAnswers()}
+                      >
+                        <FontAwesomeIcon icon={faRotateRight} aria-hidden="true" />
+                        {regenBusy ? "Regenerating…" : "Regenerate with answers"}
+                      </button>
+                    </div>
                     </AlertDescription>
                   </AlertContent>
                 </Alert>
@@ -403,16 +612,31 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
               onToggle={toggleSection}
               icon={<FontAwesomeIcon icon={faEnvelope} aria-hidden="true" />}
               title="Email draft"
-              summary={analysis.emailDraft.subject}
+              summary={
+                analysis.emailDraft
+                  ? analysis.emailDraft.subject
+                  : "Generated when you approve the brief"
+              }
             >
               <div className="email-card-body">
-                <div className="kv kv-compact kv-email">
-                  <div className="k">Subject</div>
-                  <div className="v">{analysis.emailDraft.subject}</div>
-                </div>
-                <pre className="email-draft">
+                {analysis.emailDraft ? (
+                  <div data-testid="email-draft-content">
+                    <div className="kv kv-compact kv-email">
+                      <div className="k">Subject</div>
+                      <div className="v">{analysis.emailDraft.subject}</div>
+                    </div>
+                    <pre className="email-draft">
 {analysis.emailDraft.body}
-                </pre>
+                    </pre>
+                  </div>
+                ) : (
+                  <p className="email-draft-pending" data-testid="email-draft-pending">
+                    The client-facing email draft is generated when you{" "}
+                    <b>approve</b> this brief (the <em>Approve &amp; generate email</em>{" "}
+                    button above). Deferring it means regenerating the brief never spends
+                    tokens on an email that would be discarded.
+                  </p>
+                )}
               </div>
             </InsightSection>
 

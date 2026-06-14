@@ -1,0 +1,443 @@
+/* Stage 3 — Client Scan (bill-first batch scanner). Imported only by
+   src/pages/ClientLawScanner.tsx; everything is namespaced `cs-` (plus a few
+   modifiers on the shared .client-row) so nothing leaks into other pages. */
+
+/* ── Ready-to-scan bill cards ─────────────────────────────────────────── */
+.cs-ready-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cs-ready-acts {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  line-height: 1.45;
+}
+.cs-ready-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--ink-4);
+}
+.cs-ops-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font: 600 11px/1.4 var(--sans);
+  color: var(--ok);
+  background: var(--ok-bg);
+  border-radius: 999px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+.cs-empty-cta {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+}
+
+/* ── Approved-changes summary ─────────────────────────────────────────── */
+.cs-act {
+  border: 1px solid var(--border-3);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.cs-act + .cs-act {
+  margin-top: 12px;
+}
+.cs-act-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border-3);
+  background: var(--panel-2);
+}
+.cs-act-title {
+  font: 600 13px/1.4 var(--sans);
+  color: var(--ink);
+}
+.cs-act-citation {
+  font: 500 11px/1.4 var(--mono);
+  color: var(--ink-4);
+}
+.cs-op {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border-3);
+}
+.cs-op:last-child {
+  border-bottom: none;
+}
+.cs-op-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.cs-op-anchor {
+  font: 600 12px/1.4 var(--sans);
+  color: var(--ink);
+}
+.cs-op-note {
+  font-size: 11px;
+  color: var(--ink-4);
+  font-style: italic;
+}
+.cs-op-instruction {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink-2, var(--ink));
+}
+.cs-op-diff {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cs-snippet {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  font: 400 11.5px/1.5 var(--mono);
+  border-radius: 6px;
+  padding: 6px 9px;
+}
+.cs-snippet .cs-snippet-sign {
+  flex: none;
+  font-weight: 700;
+}
+.cs-snippet.is-before {
+  color: var(--crit);
+  background: var(--crit-bg);
+}
+.cs-snippet.is-before .cs-snippet-text {
+  color: var(--ink-3);
+  text-decoration: line-through;
+}
+.cs-snippet.is-after {
+  color: var(--ok);
+  background: var(--ok-bg);
+}
+.cs-snippet.is-after .cs-snippet-text {
+  color: var(--ink-2, var(--ink));
+}
+
+/* ── Client multi-select rows ─────────────────────────────────────────── */
+.client-row.cs-client-row {
+  flex-direction: column;
+  gap: 0;
+}
+.cs-client-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.cs-client-check {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  accent-color: var(--accent-warm);
+  cursor: pointer;
+}
+.cs-client-check:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.cs-client-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.cs-client-actions {
+  flex: none;
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+.client-row.cs-client-row:hover .cs-client-actions,
+.client-row.cs-client-row.confirming .cs-client-actions {
+  opacity: 1;
+}
+.cs-icon-btn {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--ink-4);
+  font-size: 11.5px;
+  padding: 5px 7px;
+  cursor: pointer;
+  line-height: 1;
+}
+.cs-icon-btn:hover:not(:disabled) {
+  color: var(--ink);
+  background: var(--panel-2);
+  border-color: var(--border-2);
+}
+.cs-icon-btn.danger:hover:not(:disabled) {
+  color: var(--crit);
+  background: var(--crit-bg);
+}
+.cs-icon-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.cs-confirm {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 9px;
+  padding: 8px 10px;
+  border: 1px solid rgba(207, 34, 46, 0.3);
+  background: var(--crit-bg);
+  border-radius: 7px;
+  font-size: 11.5px;
+  color: var(--ink-3);
+  line-height: 1.45;
+}
+.cs-confirm .btn.danger {
+  color: #fff;
+  background: var(--crit);
+  border-color: var(--crit);
+}
+.cs-confirm .btn.danger:hover {
+  filter: brightness(1.08);
+}
+
+.cs-modal-error {
+  border: 1px solid rgba(207, 34, 46, 0.3);
+  background: var(--crit-bg);
+  color: var(--crit);
+  border-radius: 7px;
+  padding: 8px 10px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+/* ── Scoreboard rows (fast-scan bands + per-row analyze) ──────────────── */
+.cs-scan-rows {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-3);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.cs-scan-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-3);
+}
+.cs-scan-row:last-child {
+  border-bottom: none;
+}
+/* Fixed five-column grid — name | status | band | chevron | action — so the
+   pills and the single action slot line up across every row. Each cell is
+   always rendered (empty when inapplicable); the action column is fixed-width
+   and right-aligned, so swapping Analyze ↔ View brief never shifts columns. */
+.cs-scan-line {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 92px 84px 28px 132px;
+  align-items: center;
+  column-gap: 10px;
+  min-width: 0;
+}
+.cs-cell-name {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cs-scan-client {
+  min-width: 0;
+  font: 500 13px/1.4 var(--sans);
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cs-scan-reason {
+  font-size: 11px;
+  color: var(--crit);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cs-cell-band {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.cs-cell-chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* The single action slot: buttons stretch to the column so Analyze,
+   Analyzing… and View brief all render at identical geometry; the Retry
+   link keeps its natural width, right-aligned. */
+.cs-slot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+}
+.cs-slot .btn {
+  flex: 1 1 auto;
+  min-width: 0;
+  justify-content: center;
+  padding: 0 8px;
+  white-space: nowrap;
+}
+.cs-status {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 600 11px/1.4 var(--mono);
+  letter-spacing: 0.02em;
+  border-radius: 999px;
+  padding: 2px 9px;
+  color: var(--ink-3);
+  background: var(--panel-2);
+}
+.cs-status::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.85;
+}
+.cs-status.is-scoring {
+  color: var(--med);
+  background: var(--med-bg);
+}
+.cs-status.is-scoring::before {
+  animation: cs-pulse 1s ease-in-out infinite;
+}
+.cs-status.is-scored {
+  color: var(--ok);
+  background: var(--ok-bg);
+}
+.cs-status.is-failed {
+  color: var(--crit);
+  background: var(--crit-bg);
+}
+@keyframes cs-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Impact-band pill — same pill aesthetics as .dr-op, escalating severity:
+   low muted, medium amber (the palette's amber token is --high), high a
+   strong red tint, critical filled red. */
+.cs-band {
+  flex: none;
+  font: 700 10.5px/1 var(--sans);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+.cs-band.is-low {
+  color: var(--low);
+  background: var(--low-bg);
+}
+.cs-band.is-medium {
+  color: var(--high);
+  background: var(--high-bg);
+}
+.cs-band.is-high {
+  color: var(--crit);
+  background: var(--crit-bg);
+}
+.cs-band.is-critical {
+  color: #ffffff;
+  background: var(--crit);
+}
+
+/* Rationale accordion: chevron toggle + the per-row panel. */
+.cs-rationale-toggle .svg-inline--fa {
+  transition: transform 0.15s ease;
+}
+.cs-rationale-toggle.open .svg-inline--fa {
+  transform: rotate(180deg);
+}
+.cs-rationale {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 9px;
+  padding: 9px 11px;
+  border: 1px solid var(--border-3);
+  background: var(--panel-2);
+  border-radius: 7px;
+}
+.cs-rationale-text {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--ink-2, var(--ink));
+}
+.cs-rationale-areas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.cs-area-chip {
+  font: 600 10.5px/1.5 var(--sans);
+  color: var(--ink-3);
+  background: var(--panel);
+  border: 1px solid var(--border-2);
+  border-radius: 999px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+.cs-rationale-meta {
+  font-size: 10.5px;
+  color: var(--ink-4);
+}
+
+/* Retry link on failed rows. */
+.cs-retry {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 4px 6px;
+  font: 600 11.5px/1 var(--sans);
+  color: var(--accent-warm);
+  cursor: pointer;
+}
+.cs-retry:hover:not(:disabled) {
+  text-decoration: underline;
+}
+.cs-retry:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cs-analyze-error {
+  margin-top: 7px;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--crit);
+}

@@ -1,61 +1,467 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,
-  faScroll,
+  faChevronDown,
+  faListCheck,
+  faPen,
+  faPlay,
   faPlus,
-  faScaleBalanced,
+  faRotateRight,
+  faTrash,
+  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import type { Nav } from "../App";
-import { ClientSelector } from "../components/ClientSelector";
-import { BillPickerGrid } from "../components/BillPickerGrid";
 import { PageHeader } from "../components/PageHeader";
 import { api } from "../lib/api";
-import type { Bill, Client } from "../types";
+import {
+  deleteClient,
+  fetchScanReady,
+  fetchScanReadyDetail,
+  fetchScans,
+  runScan as requestScan,
+  updateClient,
+  type ApprovedOpSummary,
+  type ImpactScanView,
+  type ScanReadyBill,
+  type ScanReadyDetail,
+} from "../lib/clientScan";
+import type { Client } from "../types";
+import "../styles/clientscan.css";
 
+const OP_LABEL: Record<ApprovedOpSummary["op"], string> = {
+  add: "Add",
+  replace: "Replace",
+  repeal: "Repeal",
+  amend: "Amend",
+};
+
+type ScanStatus = "queued" | "scoring" | "scored" | "failed";
+
+/** One scoreboard row, keyed by clientId (one scan per (client, bill) pair). */
+interface ScanRow {
+  clientId: string;
+  status: ScanStatus;
+  scan?: ImpactScanView; // present once "scored"
+  reason?: string; // why the scan failed
+  analyzing?: boolean; // per-row brief generation in flight
+  analyzeError?: string;
+}
+
+/**
+ * Fold the server's ranked scan list (hidden score desc, name asc) back into
+ * the scoreboard: scored rows adopt the fresh server view (order + hasBrief),
+ * non-scored local rows (e.g. failed) keep their status — a stale stored scan
+ * must not paper over a failure — and rows the server never stored (failed
+ * with no prior scan) trail in their local order.
+ */
+function mergeRanked(prev: ScanRow[], ranked: ImpactScanView[]): ScanRow[] {
+  const leftover = new Map(prev.map((r) => [r.clientId, r]));
+  const out: ScanRow[] = [];
+  for (const scan of ranked) {
+    const local = leftover.get(scan.clientId);
+    if (local && local.status !== "scored") {
+      out.push(local);
+    } else {
+      out.push({
+        clientId: scan.clientId,
+        status: "scored",
+        scan,
+        analyzing: local?.analyzing,
+        analyzeError: local?.analyzeError,
+      });
+    }
+    leftover.delete(scan.clientId);
+  }
+  for (const r of prev) {
+    if (leftover.has(r.clientId)) out.push(r);
+  }
+  return out;
+}
+
+function truncate(text: string, max = 200): string {
+  return text.length <= max ? text : `${text.slice(0, max).trimEnd()}…`;
+}
+
+function fmtWhen(iso: string): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  return d.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+}
+
+// Stage 3 — bill-first batch scanner, two-phase. Pick a bill whose amendments
+// counsel approved in stage 2, select the clients to test it against, and run
+// a sequential FAST scan: every client gets an impact band on the scoreboard
+// (the numeric score stays server-side). The full ~30s brief (stage 4) is then
+// generated per-row on demand via Analyze, soft-gated by band.
 export function ClientLawScanner({ nav }: { nav: Nav }) {
   const [clients, setClients] = useState<Client[]>([]);
-  const [bills, setBills] = useState<Bill[]>([]);
-  const [activeClient, setActiveClient] = useState<Client | null>(null);
-  const [activeBillId, setActiveBillId] = useState<string>("");
-  const [busy, setBusy] = useState(false);
-  const [showNew, setShowNew] = useState(false);
+  const [clientsLoaded, setClientsLoaded] = useState(false);
+  const [readyBills, setReadyBills] = useState<ScanReadyBill[]>([]);
+  const [readyLoaded, setReadyLoaded] = useState(false);
+
+  const [selectedBillId, setSelectedBillId] = useState("");
+  const [detail, setDetail] = useState<ScanReadyDetail | null>(null);
+  const [detailLoading, setDetailLoading] = useState(false);
+
+  const [selectedClientIds, setSelectedClientIds] = useState<Set<string>>(
+    () => new Set(),
+  );
+  const [modal, setModal] = useState<
+    null | { mode: "create" } | { mode: "edit"; client: Client }
+  >(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
+  const [scanning, setScanning] = useState(false);
+  const [scanBillId, setScanBillId] = useState("");
+  const [scanRows, setScanRows] = useState<ScanRow[]>([]);
+  const [scansLoading, setScansLoading] = useState(false);
+  // Accordion: the clientId whose rationale panel is open — at most ONE.
+  const [openRationaleId, setOpenRationaleId] = useState<string | null>(null);
+  // Clients in the ACTIVE run: their Analyze stays locked until the loop ends
+  // (rows already scored from persistence remain analyzable mid-run).
+  const [scanRunIds, setScanRunIds] = useState<ReadonlySet<string>>(
+    () => new Set(),
+  );
+
+  // Guards for the sequential scan loop: ignore completions after unmount,
+  // after a newer run started, or after the user switched bills mid-scan.
+  const mountedRef = useRef(true);
+  const scanRunRef = useRef(0);
+  const selectedBillIdRef = useRef("");
 
   useEffect(() => {
-    Promise.all([api.clients.list(), api.bills.list()])
-      .then(([cs, bs]) => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    selectedBillIdRef.current = selectedBillId;
+  }, [selectedBillId]);
+
+  // ── Initial data: clients + the scan-ready shortlist ──
+  useEffect(() => {
+    const ac = new AbortController();
+    Promise.all([api.clients.list(), fetchScanReady(ac.signal)])
+      .then(([cs, ready]) => {
         setClients(cs);
-        setBills(bs);
-        if (!activeClient && cs.length > 0) setActiveClient(cs[0]);
+        setReadyBills(ready);
       })
-      .catch((err) => {
+      .catch((err: unknown) => {
+        if (ac.signal.aborted) return;
         console.error(err);
-        nav.toast(`Could not load scanner data: ${err.message ?? err}`);
+        const msg = err instanceof Error ? err.message : String(err);
+        nav.toast(`Could not load scanner data: ${msg}`);
+      })
+      .finally(() => {
+        // Mark loaded even on failure so the panes show their empty states
+        // instead of a forever "Loading…".
+        if (!ac.signal.aborted) {
+          setClientsLoaded(true);
+          setReadyLoaded(true);
+        }
       });
+    return () => ac.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const activeBill = bills.find((b) => b.id === activeBillId) ?? null;
+  const selectedReady =
+    readyBills.find((b) => b.billId === selectedBillId) ?? null;
 
-  async function analyze() {
-    if (!activeClient || !activeBill) return;
-    setBusy(true);
-    try {
-      const { email } = await api.clientImpact.analyze(
-        activeClient.id,
-        activeBill.id,
-      );
-      nav.toast(
-        email.simulated
-          ? "Analysis ready · Email simulated."
-          : "Analysis ready · Email sent.",
-      );
-      nav.go("impact", { clientId: activeClient.id, billId: activeBill.id });
-    } catch (err: any) {
-      nav.toast(`Analysis failed: ${err.message ?? err}`);
-    } finally {
-      setBusy(false);
+  // ── Approved-changes detail for the selected ready bill ──
+  useEffect(() => {
+    setDetail(null);
+    if (!selectedBillId || !readyBills.some((b) => b.billId === selectedBillId)) {
+      // Early-out (e.g. switching ready → non-ready): clear any loading state
+      // left by an aborted in-flight fetch, whose .finally skips it.
+      setDetailLoading(false);
+      return;
     }
+    const ac = new AbortController();
+    setDetailLoading(true);
+    fetchScanReadyDetail(selectedBillId, ac.signal)
+      .then((d) => {
+        if (!ac.signal.aborted) setDetail(d);
+      })
+      .catch((err: unknown) => {
+        if (ac.signal.aborted) return;
+        console.error(err);
+        const msg = err instanceof Error ? err.message : String(err);
+        nav.toast(`Could not load approved changes: ${msg}`);
+      })
+      .finally(() => {
+        if (!ac.signal.aborted) setDetailLoading(false);
+      });
+    return () => ac.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedBillId, readyBills]);
+
+  // Scoreboard rows belong to the bill they were run against — switching bills
+  // clears them (rationale accordion and per-row analyzing flags die with the
+  // rows) and retires the run. Bumping scanRunRef makes the orphaned loop
+  // PERMANENTLY stale: without it, switching away and back to the same bill
+  // would let the old loop resume issuing scan calls.
+  useEffect(() => {
+    if (scanRows.length > 0 && scanBillId && selectedBillId !== scanBillId) {
+      scanRunRef.current += 1;
+      setScanRows([]);
+      setScanBillId("");
+      setScanning(false);
+      setOpenRationaleId(null);
+      setScanRunIds(new Set());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedBillId]);
+
+  // ── Persisted scoreboard for the selected ready bill ──
+  // Scans are stored latest-wins per (client, bill); selecting a bill restores
+  // its scoreboard in the server's ranked order (hidden score desc, name asc).
+  useEffect(() => {
+    if (!selectedBillId || !readyBills.some((b) => b.billId === selectedBillId)) {
+      setScansLoading(false);
+      return;
+    }
+    const ac = new AbortController();
+    const runAtFetch = scanRunRef.current;
+    setScansLoading(true);
+    fetchScans(selectedBillId, ac.signal)
+      .then((scans) => {
+        // A run that started while this fetch was in flight owns the rows now.
+        if (ac.signal.aborted || scanRunRef.current !== runAtFetch) return;
+        if (scans.length === 0) return;
+        setScanBillId(selectedBillId);
+        setScanRows(
+          scans.map((scan) => ({
+            clientId: scan.clientId,
+            status: "scored" as const,
+            scan,
+          })),
+        );
+      })
+      .catch((err: unknown) => {
+        if (ac.signal.aborted) return;
+        console.error(err);
+        const msg = err instanceof Error ? err.message : String(err);
+        nav.toast(`Could not load stored scans: ${msg}`);
+      })
+      .finally(() => {
+        if (!ac.signal.aborted) setScansLoading(false);
+      });
+    return () => ac.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedBillId, readyBills]);
+
+  // ── Client selection ──
+  const allSelected =
+    clients.length > 0 && clients.every((c) => selectedClientIds.has(c.id));
+
+  function toggleClient(id: string) {
+    if (scanning) return;
+    setSelectedClientIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function toggleAllClients() {
+    if (scanning) return;
+    setSelectedClientIds(
+      allSelected ? new Set() : new Set(clients.map((c) => c.id)),
+    );
+  }
+
+  // ── Client CRUD ──
+  function onModalSaved(c: Client, mode: "create" | "edit") {
+    setModal(null);
+    if (mode === "create") {
+      setClients((arr) => [c, ...arr]);
+      setSelectedClientIds((prev) => {
+        const next = new Set(prev);
+        next.add(c.id);
+        return next;
+      });
+      nav.toast("Client added.");
+    } else {
+      setClients((arr) => arr.map((x) => (x.id === c.id ? c : x)));
+      nav.toast("Client updated.");
+    }
+  }
+
+  async function confirmDelete(id: string) {
+    if (scanning || deleting) return;
+    setDeleting(true);
+    try {
+      await deleteClient(id);
+      if (!mountedRef.current) return;
+      setClients((arr) => arr.filter((c) => c.id !== id));
+      setSelectedClientIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+      // Drop the deleted client's scoreboard row too (its scans were
+      // cascade-deleted server-side; a leftover row would render the raw id
+      // and 404 on Analyze).
+      setScanRows((rows) => rows.filter((r) => r.clientId !== id));
+      setOpenRationaleId((cur) => (cur === id ? null : cur));
+      setConfirmDeleteId(null);
+      nav.toast("Client deleted · its stored briefs were removed.");
+      // Refresh from the server so the list reflects the cascade.
+      api.clients
+        .list()
+        .then((cs) => {
+          if (mountedRef.current) setClients(cs);
+        })
+        .catch(() => {});
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      nav.toast(`Delete failed: ${msg}`);
+    } finally {
+      if (mountedRef.current) setDeleting(false);
+    }
+  }
+
+  // ── The scan loop: sequential fast scoring, snapshot-guarded ──
+  const canRun = !scanning && !!selectedReady && selectedClientIds.size > 0;
+
+  const patchRow = (clientId: string, patch: Partial<ScanRow>) =>
+    setScanRows((rows) =>
+      rows.map((r) => (r.clientId === clientId ? { ...r, ...patch } : r)),
+    );
+
+  async function runScan() {
+    if (!canRun || !selectedReady) return;
+    const billId = selectedReady.billId;
+    // Snapshot the selection in list order — edits during the run can't shift rows.
+    const ids = clients
+      .filter((c) => selectedClientIds.has(c.id))
+      .map((c) => c.id);
+    if (ids.length === 0) return;
+
+    const runId = ++scanRunRef.current;
+    const stale = () =>
+      !mountedRef.current ||
+      scanRunRef.current !== runId ||
+      selectedBillIdRef.current !== billId;
+
+    const selectedSet = new Set(ids);
+    setScanning(true);
+    setScanBillId(billId);
+    setScanRunIds(selectedSet);
+    // Merge with whatever the scoreboard already shows: selected clients reset
+    // to fresh "queued" rows (in place, dropping their old scan), unselected
+    // persisted rows REMAIN, first-time clients append in list order.
+    setScanRows((prev) => {
+      const present = new Set(prev.map((r) => r.clientId));
+      const reset: ScanRow[] = prev.map((r) =>
+        selectedSet.has(r.clientId)
+          ? { clientId: r.clientId, status: "queued" as const }
+          : r,
+      );
+      const added: ScanRow[] = ids
+        .filter((id) => !present.has(id))
+        .map((clientId) => ({ clientId, status: "queued" as const }));
+      return [...reset, ...added];
+    });
+
+    let scored = 0;
+    let failed = 0;
+    for (const clientId of ids) {
+      if (stale()) return;
+      patchRow(clientId, { status: "scoring" });
+      try {
+        const { scan } = await requestScan(clientId, billId);
+        if (stale()) return;
+        patchRow(clientId, { status: "scored", scan, reason: undefined });
+        scored += 1;
+      } catch (err: unknown) {
+        if (stale()) return;
+        const msg = err instanceof Error ? err.message : String(err);
+        patchRow(clientId, { status: "failed", reason: truncate(msg, 140) });
+        failed += 1;
+      }
+    }
+    if (stale()) return;
+
+    // One refresh to adopt the server's ranking (hidden score desc, name asc)
+    // and any hasBrief changes; failed rows keep their local status/order.
+    try {
+      const ranked = await fetchScans(billId);
+      if (stale()) return;
+      setScanRows((prev) => mergeRanked(prev, ranked));
+    } catch {
+      // Ranking refresh is cosmetic — keep the local order if it fails.
+    }
+    if (stale()) return;
+    setScanning(false);
+    nav.toast(
+      failed === 0
+        ? `Scan complete · ${scored} scored`
+        : `Scan complete · ${scored} scored · ${failed} failed`,
+    );
+  }
+
+  // Re-run the fast scan for ONE failed row (no batch loop, no run takeover).
+  async function retryScan(clientId: string) {
+    const billId = scanBillId;
+    if (!billId || scanning) return;
+    const runId = scanRunRef.current;
+    const stale = () =>
+      !mountedRef.current ||
+      scanRunRef.current !== runId ||
+      selectedBillIdRef.current !== billId;
+
+    patchRow(clientId, { status: "scoring", reason: undefined });
+    try {
+      const { scan } = await requestScan(clientId, billId);
+      if (stale()) return;
+      patchRow(clientId, { status: "scored", scan, reason: undefined });
+    } catch (err: unknown) {
+      if (stale()) return;
+      const msg = err instanceof Error ? err.message : String(err);
+      patchRow(clientId, { status: "failed", reason: truncate(msg, 140) });
+    }
+  }
+
+  // ── Per-row brief generation (the slow ~30s agent), soft-gated by band ──
+  async function analyzeRow(clientId: string) {
+    const billId = scanBillId;
+    if (!billId) return;
+    patchRow(clientId, { analyzing: true, analyzeError: undefined });
+    try {
+      const { analysis } = await api.clientImpact.analyze(clientId, billId);
+      // Rows only survive while their bill stays selected — if it changed,
+      // drop the patch (the brief is persisted; hasBrief returns on re-seed).
+      if (!mountedRef.current || selectedBillIdRef.current !== billId) return;
+      setScanRows((rows) =>
+        rows.map((r) =>
+          r.clientId === clientId
+            ? {
+                ...r,
+                analyzing: false,
+                analyzeError: undefined,
+                scan: r.scan
+                  ? { ...r.scan, hasBrief: true, analysisId: analysis.id }
+                  : r.scan,
+              }
+            : r,
+        ),
+      );
+    } catch (err: unknown) {
+      if (!mountedRef.current || selectedBillIdRef.current !== billId) return;
+      const msg = err instanceof Error ? err.message : String(err);
+      patchRow(clientId, { analyzing: false, analyzeError: truncate(msg, 140) });
+    }
+  }
+
+  function toggleRationale(clientId: string) {
+    setOpenRationaleId((cur) => (cur === clientId ? null : clientId));
   }
 
   return (
@@ -63,9 +469,18 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
       <PageHeader
         crumbs={["Workspace", "Client Scan"]}
         title="Client Scan"
-        sub="Pair a bill with a client to generate a client-specific impact brief."
+        sub="Scan counsel-approved bill changes against your client base — every selected client gets an impact brief."
+        hint={{
+          title: "Stage 3 — Client scan",
+          body: "Pick a bill whose amendments counsel approved in stage 2, select the clients to test it against, then run the scan. Each client gets its own impact brief.",
+        }}
         actions={
-          <button className="btn primary" onClick={() => setShowNew(true)}>
+          <button
+            className="btn primary"
+            data-testid="new-client-button"
+            disabled={scanning}
+            onClick={() => setModal({ mode: "create" })}
+          >
             <FontAwesomeIcon icon={faPlus} aria-hidden="true" />
             New client
           </button>
@@ -73,125 +488,513 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
       />
       <div className="body">
         <div className="scanner-grid">
-          <ClientSelector
-            clients={clients}
-            activeId={activeClient?.id}
-            onSelect={setActiveClient}
-          />
+          {/* ── Clients: multi-select + manage ── */}
+          <div className="card">
+            <div className="card-h">
+              <div className="card-title-row">
+                <FontAwesomeIcon icon={faUsers} aria-hidden="true" />
+                <div className="card-title">Clients</div>
+              </div>
+              <button
+                className="btn ghost sm"
+                data-testid="select-all-clients"
+                disabled={scanning || clients.length === 0}
+                onClick={toggleAllClients}
+              >
+                {allSelected ? "Clear all" : "Select all"}
+              </button>
+            </div>
+            <div className="client-list" data-testid="client-list">
+              {!clientsLoaded && (
+                <div className="empty-small">Loading clients…</div>
+              )}
+              {clientsLoaded && clients.length === 0 && (
+                <div className="empty-small">
+                  No clients yet — add one with “New client”.
+                </div>
+              )}
+              {clients.map((c) => {
+                const selected = selectedClientIds.has(c.id);
+                const confirming = confirmDeleteId === c.id;
+                return (
+                  <div
+                    key={c.id}
+                    className={`client-row cs-client-row${selected ? " active" : ""}${confirming ? " confirming" : ""}`}
+                    data-testid="client-row"
+                    data-client-id={c.id}
+                    onClick={() => toggleClient(c.id)}
+                  >
+                    <div className="cs-client-main">
+                      <input
+                        type="checkbox"
+                        className="cs-client-check"
+                        data-testid="client-checkbox"
+                        checked={selected}
+                        disabled={scanning}
+                        aria-label={`Include ${c.name} in the scan`}
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={() => toggleClient(c.id)}
+                      />
+                      <div className="cs-client-info">
+                        <div className="nm">{c.name}</div>
+                        <div className="meta">
+                          {c.industry || "—"}
+                          {(c.jurisdictions?.length ?? 0) > 0 &&
+                            ` · ${(c.jurisdictions ?? []).join(", ")}`}
+                        </div>
+                      </div>
+                      <div className="cs-client-actions">
+                        <button
+                          className="cs-icon-btn"
+                          data-testid="edit-client"
+                          title="Edit client"
+                          disabled={scanning}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setModal({ mode: "edit", client: c });
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faPen} aria-hidden="true" />
+                        </button>
+                        <button
+                          className="cs-icon-btn danger"
+                          data-testid="delete-client"
+                          title="Delete client"
+                          disabled={scanning}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setConfirmDeleteId(confirming ? null : c.id);
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faTrash} aria-hidden="true" />
+                        </button>
+                      </div>
+                    </div>
+                    {confirming && (
+                      <div
+                        className="cs-confirm"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <span>
+                          Delete {c.name}? Its stored briefs are removed too.
+                        </span>
+                        <button
+                          className="btn sm danger"
+                          data-testid="confirm-delete-client"
+                          disabled={deleting || scanning}
+                          onClick={() => void confirmDelete(c.id)}
+                        >
+                          {deleting ? "Deleting…" : "Delete"}
+                        </button>
+                        <button
+                          className="btn ghost sm"
+                          disabled={deleting}
+                          onClick={() => setConfirmDeleteId(null)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
 
           <div className="scanner-stack">
+            {/* ── 1. Ready-to-scan bills ── */}
             <div className="card">
               <div className="card-h">
                 <div className="card-title-row">
-                  <FontAwesomeIcon icon={faScroll} aria-hidden="true" />
-                  <div className="card-title">Pick a bill to match</div>
+                  <FontAwesomeIcon icon={faListCheck} aria-hidden="true" />
+                  <div className="card-title">Ready to scan</div>
                 </div>
-                <span className="cs-count">({bills.length})</span>
+                <span className="cs-count">({readyBills.length})</span>
               </div>
               <div className="card-pad">
-                <BillPickerGrid
-                  bills={bills}
-                  activeId={activeBillId}
-                  onSelect={setActiveBillId}
-                />
+                {!readyLoaded && (
+                  <div className="empty-small">
+                    Checking for scan-ready bills…
+                  </div>
+                )}
+                {readyLoaded && readyBills.length === 0 && (
+                  <div className="rd-empty" data-testid="ready-empty">
+                    No bills have approved changes yet — complete stage 2
+                    (Legal delta) first.
+                    <div className="cs-empty-cta">
+                      <button className="btn" onClick={() => nav.go("delta")}>
+                        Open Legal delta
+                        <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+                {readyLoaded && readyBills.length > 0 && (
+                  <div
+                    className="lpg-grid bpg-grid"
+                    data-testid="ready-bill-list"
+                  >
+                    {readyBills.map((b) => {
+                      const isActive = b.billId === selectedBillId;
+                      return (
+                        <div
+                          key={b.billId}
+                          className={`card lpg-card cs-ready-card${isActive ? " active" : ""}`}
+                          data-testid="ready-bill-card"
+                          data-bill-id={b.billId}
+                          role="button"
+                          tabIndex={0}
+                          onClick={() => setSelectedBillId(b.billId)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              setSelectedBillId(b.billId);
+                            }
+                          }}
+                        >
+                          <div className="lpg-top">
+                            <span className="lpg-bill">{b.billNumber}</span>
+                            <span className="cs-ops-pill">
+                              {b.approvedOpCount} approved change
+                              {b.approvedOpCount === 1 ? "" : "s"}
+                            </span>
+                          </div>
+                          <div className="lpg-title">
+                            {b.shortTitle || b.title}
+                          </div>
+                          <div className="cs-ready-acts">
+                            Amends: {b.actTitles.join(" · ")}
+                          </div>
+                          <div className="cs-ready-foot">
+                            <span>
+                              {b.status}
+                              {b.session ? ` · ${b.session}` : ""}
+                            </span>
+                            {fmtWhen(b.computedAt) && (
+                              <span>Delta {fmtWhen(b.computedAt)}</span>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </div>
 
+            {/* ── 2. Approved changes for the selected bill ── */}
+            {selectedBillId && selectedReady && (
+              <div className="card" data-testid="approved-summary">
+                <div className="card-h">
+                  <div className="card-title-row">
+                    <FontAwesomeIcon icon={faListCheck} aria-hidden="true" />
+                    <div className="card-title">
+                      Approved changes — {selectedReady.billNumber}
+                    </div>
+                  </div>
+                  <span className="cs-count">
+                    ({detail?.approvedCount ?? selectedReady.approvedOpCount})
+                  </span>
+                </div>
+                <div className="card-pad">
+                  {detailLoading && (
+                    <div className="empty-small">Loading approved changes…</div>
+                  )}
+                  {!detailLoading && detail && detail.changes.length === 0 && (
+                    <div className="empty-small">
+                      No approved changes resolved for this bill.
+                    </div>
+                  )}
+                  {detail?.changes.map((change) => (
+                    <div
+                      key={change.slug}
+                      className="cs-act"
+                      data-testid="approved-act"
+                      data-slug={change.slug}
+                    >
+                      <div className="cs-act-head">
+                        <span className="cs-act-title">{change.actTitle}</span>
+                        <span className="cs-act-citation">
+                          {change.citation}
+                        </span>
+                      </div>
+                      {change.ops.map((op) => (
+                        <div
+                          key={op.key}
+                          className="cs-op"
+                          data-testid="approved-op"
+                          data-key={op.key}
+                        >
+                          <div className="cs-op-head">
+                            <span className={`dr-op is-${op.op}`}>
+                              {OP_LABEL[op.op]}
+                            </span>
+                            <span className="cs-op-anchor">
+                              {op.anchor ??
+                                (op.op === "add"
+                                  ? "(new provision)"
+                                  : "(unresolved location)")}
+                            </span>
+                            {op.marginalNote && (
+                              <span className="cs-op-note">
+                                {op.marginalNote}
+                              </span>
+                            )}
+                          </div>
+                          <div className="cs-op-instruction">
+                            {op.instruction}
+                          </div>
+                          {(op.beforeText || op.afterText) && (
+                            <div className="cs-op-diff">
+                              {op.beforeText && (
+                                <div className="cs-snippet is-before">
+                                  <span className="cs-snippet-sign">−</span>
+                                  <span className="cs-snippet-text">
+                                    {truncate(op.beforeText)}
+                                  </span>
+                                </div>
+                              )}
+                              {op.afterText && (
+                                <div className="cs-snippet is-after">
+                                  <span className="cs-snippet-sign">+</span>
+                                  <span className="cs-snippet-text">
+                                    {truncate(op.afterText)}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {/* ── 3. Run the scan + live progress ── */}
             <div className="card">
               <div className="card-h">
                 <div className="card-title-row">
-                  <FontAwesomeIcon icon={faScaleBalanced} aria-hidden="true" />
-                  <div className="card-title">Generate client impact</div>
+                  <FontAwesomeIcon icon={faPlay} aria-hidden="true" />
+                  <div className="card-title">Run scan</div>
                 </div>
+                {scanning && <span className="cs-count">scanning…</span>}
               </div>
               <div className="scanner-card-body">
-                <div>
-                  <div className="section-label">
-                    Client materials included in analysis
-                  </div>
-                  {activeClient ? (
-                    <div className="kv kv-compact">
-                      <div className="k">Client</div>
-                      <div className="v">{activeClient.name}</div>
-                      <div className="k">Industry</div>
-                      <div className="v">{activeClient.industry}</div>
-                      <div className="k">Jurisdictions</div>
-                      <div className="v">{(activeClient.jurisdictions ?? []).join(", ") || "—"}</div>
-                      <div className="k">T&amp;C</div>
-                      <div className="v">{activeClient.termsAndConditions ? "Included" : "Not provided"}</div>
-                      <div className="k">Policies</div>
-                      <div className="v">{activeClient.policies ? "Included" : "Not provided"}</div>
-                      <div className="k">Operations</div>
-                      <div className="v">{activeClient.operations ? "Included" : "Not provided"}</div>
-                    </div>
-                  ) : (
-                    <div className="empty-small">
-                      Select a client from the list.
-                    </div>
-                  )}
-                </div>
-
-                <div className="hr" />
-
                 <div className="kv kv-compact">
                   <div className="k">Bill</div>
                   <div className="v">
-                    {activeBill
-                      ? `${activeBill.billNumber} — ${activeBill.title}`
-                      : "Select a bill above."}
+                    {selectedReady
+                      ? `${selectedReady.billNumber} — ${selectedReady.shortTitle || selectedReady.title}`
+                      : "Select a ready bill above."}
                   </div>
                 </div>
-
-                <div className="hr" />
-
                 <div className="actions-row">
                   <button
                     className="btn primary"
-                    disabled={busy || !activeClient || !activeBill}
-                    onClick={analyze}
+                    data-testid="run-scan"
+                    disabled={!canRun}
+                    onClick={() => void runScan()}
                   >
-                    {busy ? "Analyzing..." : "Analyze client impact"}
+                    {scanning ? "Scanning…" : "Run scan"}
                     <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
                   </button>
                 </div>
+                {selectedReady && scanRows.length === 0 && (
+                  <div className="empty-small">
+                    {scansLoading
+                      ? "Checking for stored scans…"
+                      : "No scan yet — select clients and run a scan."}
+                  </div>
+                )}
+                {scanRows.length > 0 && (
+                  <div className="cs-scan-rows">
+                    {scanRows.map((r) => {
+                      const c = clients.find((x) => x.id === r.clientId);
+                      const scan = r.status === "scored" ? r.scan : undefined;
+                      const open = openRationaleId === r.clientId;
+                      // Mid-run rows stay locked until the loop finishes;
+                      // rows scored from persistence remain analyzable.
+                      const lockedByRun =
+                        scanning && scanRunIds.has(r.clientId);
+                      return (
+                        <div
+                          key={r.clientId}
+                          className="cs-scan-row"
+                          data-testid="scan-row"
+                          data-client-id={r.clientId}
+                        >
+                          {/* Fixed five-column grid — every cell is ALWAYS
+                              rendered (empty when inapplicable) so the
+                              columns never shift between rows. */}
+                          <div className="cs-scan-line">
+                            <div className="cs-cell-name">
+                              <span className="cs-scan-client">
+                                {c?.name ?? r.clientId}
+                              </span>
+                              {r.status === "failed" && r.reason && (
+                                <span
+                                  className="cs-scan-reason"
+                                  title={r.reason}
+                                >
+                                  {r.reason}
+                                </span>
+                              )}
+                            </div>
+                            <span
+                              className={`cs-status is-${r.status}`}
+                              data-testid="scan-status"
+                            >
+                              {r.status}
+                            </span>
+                            <span className="cs-cell-band">
+                              {scan && (
+                                <span
+                                  className={`cs-band is-${scan.band}`}
+                                  data-testid="scan-band"
+                                  data-band={scan.band}
+                                >
+                                  {scan.band}
+                                </span>
+                              )}
+                            </span>
+                            <span className="cs-cell-chevron">
+                              {scan && (
+                                <button
+                                  className={`cs-icon-btn cs-rationale-toggle${open ? " open" : ""}`}
+                                  data-testid="scan-rationale-toggle"
+                                  title={
+                                    open ? "Hide rationale" : "Why this band?"
+                                  }
+                                  aria-expanded={open}
+                                  onClick={() => toggleRationale(r.clientId)}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faChevronDown}
+                                    aria-hidden="true"
+                                  />
+                                </button>
+                              )}
+                            </span>
+                            {/* The action slot — EXACTLY ONE control: Retry on
+                                failed rows, Analyze until a brief exists, then
+                                View brief. Queued/scoring rows leave it empty
+                                (the status pill already says so). */}
+                            <span className="cs-slot">
+                              {r.status === "failed" && (
+                                <button
+                                  className="cs-retry"
+                                  data-testid="scan-retry"
+                                  disabled={scanning}
+                                  onClick={() => void retryScan(r.clientId)}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faRotateRight}
+                                    aria-hidden="true"
+                                  />
+                                  Retry
+                                </button>
+                              )}
+                              {scan && scan.hasBrief && (
+                                <button
+                                  className="btn sm"
+                                  data-testid="view-brief"
+                                  onClick={() =>
+                                    nav.go("impact", {
+                                      clientId: r.clientId,
+                                      billId: scanBillId,
+                                    })
+                                  }
+                                >
+                                  View brief
+                                </button>
+                              )}
+                              {scan && !scan.hasBrief && (
+                                <button
+                                  className="btn primary sm"
+                                  data-testid="analyze-client"
+                                  disabled={!!r.analyzing || lockedByRun}
+                                  onClick={() => void analyzeRow(r.clientId)}
+                                >
+                                  {r.analyzing ? "Analyzing…" : "Analyze"}
+                                </button>
+                              )}
+                            </span>
+                          </div>
+                          {r.analyzeError && (
+                            <div className="cs-analyze-error">
+                              Analyze failed: {r.analyzeError}
+                            </div>
+                          )}
+                          {open && scan && (
+                            <div
+                              className="cs-rationale"
+                              data-testid="scan-rationale"
+                            >
+                              <div className="cs-rationale-text">
+                                {scan.rationale}
+                              </div>
+                              {scan.topAreas.length > 0 && (
+                                <div className="cs-rationale-areas">
+                                  {scan.topAreas.map((area) => (
+                                    <span key={area} className="cs-area-chip">
+                                      {area}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                              <div className="cs-rationale-meta">
+                                {scan.source === "ai"
+                                  ? "AI triage"
+                                  : "Heuristic triage"}
+                                {fmtWhen(scan.scannedAt) &&
+                                  ` · ${fmtWhen(scan.scannedAt)}`}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {showNew && (
-        <NewClientModal
-          onClose={() => setShowNew(false)}
-          onCreated={(c) => {
-            setClients((arr) => [c, ...arr]);
-            setActiveClient(c);
-            setShowNew(false);
-            nav.toast("Client added.");
-          }}
+      {modal && (
+        <ClientModal
+          client={modal.mode === "edit" ? modal.client : null}
+          onClose={() => setModal(null)}
+          onSaved={onModalSaved}
         />
       )}
     </>
   );
 }
 
-function NewClientModal({
+// Create/edit modal — create posts a new client, edit pre-fills and PUTs.
+function ClientModal({
+  client,
   onClose,
-  onCreated,
+  onSaved,
 }: {
+  client: Client | null;
   onClose: () => void;
-  onCreated: (c: Client) => void;
+  onSaved: (c: Client, mode: "create" | "edit") => void;
 }) {
-  const [form, setForm] = useState({
-    name: "",
-    industry: "",
-    jurisdictions: "",
-    description: "",
-    termsAndConditions: "",
-    policies: "",
-    operations: "",
-  });
+  const [form, setForm] = useState(() => ({
+    name: client?.name ?? "",
+    industry: client?.industry ?? "",
+    jurisdictions: (client?.jurisdictions ?? []).join(", "),
+    description: client?.description ?? "",
+    termsAndConditions: client?.termsAndConditions ?? "",
+    policies: client?.policies ?? "",
+    operations: client?.operations ?? "",
+  }));
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
   const canSubmit = form.name.trim().length > 0 && !busy;
 
   // Esc to close
@@ -206,25 +1009,44 @@ function NewClientModal({
   async function submit() {
     if (!canSubmit) return;
     setBusy(true);
+    setError("");
     try {
-      const c = await api.clients.create(form as unknown as Partial<Client>);
-      onCreated(c);
+      const payload: Partial<Client> = {
+        name: form.name.trim(),
+        industry: form.industry,
+        jurisdictions: form.jurisdictions
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean),
+        description: form.description,
+        termsAndConditions: form.termsAndConditions,
+        policies: form.policies,
+        operations: form.operations,
+      };
+      const saved = client
+        ? await updateClient(client.id, payload)
+        : await api.clients.create(payload);
+      onSaved(saved, client ? "edit" : "create");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
-      alert(`Could not add client: ${msg}`);
-    } finally {
+      setError(`Could not save client: ${msg}`);
       setBusy(false);
     }
   }
 
   return (
     <div className="rd-modal-backdrop" onClick={onClose}>
-      <div className="rd-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="rd-modal-h">New client</div>
+      <div
+        className="rd-modal"
+        data-testid="client-modal"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="rd-modal-h">{client ? "Edit client" : "New client"}</div>
         <div className="rd-modal-b">
           <div className="rd-field">
             <label>Name</label>
             <input
+              data-testid="client-name-input"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               placeholder="Corebloom Health Inc."
@@ -234,6 +1056,7 @@ function NewClientModal({
             <div className="rd-field">
               <label>Industry</label>
               <input
+                data-testid="client-industry-input"
                 value={form.industry}
                 onChange={(e) => setForm({ ...form, industry: e.target.value })}
               />
@@ -241,6 +1064,7 @@ function NewClientModal({
             <div className="rd-field">
               <label>Jurisdictions (comma-sep)</label>
               <input
+                data-testid="client-jurisdictions-input"
                 value={form.jurisdictions}
                 onChange={(e) =>
                   setForm({ ...form, jurisdictions: e.target.value })
@@ -251,6 +1075,7 @@ function NewClientModal({
           <div className="rd-field">
             <label>Description</label>
             <textarea
+              data-testid="client-description-input"
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
             />
@@ -258,6 +1083,7 @@ function NewClientModal({
           <div className="rd-field">
             <label>Terms &amp; Conditions</label>
             <textarea
+              data-testid="client-tc-input"
               value={form.termsAndConditions}
               onChange={(e) =>
                 setForm({ ...form, termsAndConditions: e.target.value })
@@ -267,6 +1093,7 @@ function NewClientModal({
           <div className="rd-field">
             <label>Policies</label>
             <textarea
+              data-testid="client-policies-input"
               value={form.policies}
               onChange={(e) => setForm({ ...form, policies: e.target.value })}
             />
@@ -274,17 +1101,24 @@ function NewClientModal({
           <div className="rd-field">
             <label>Operations</label>
             <textarea
+              data-testid="client-operations-input"
               value={form.operations}
               onChange={(e) => setForm({ ...form, operations: e.target.value })}
             />
           </div>
+          {error && <div className="cs-modal-error">{error}</div>}
         </div>
         <div className="rd-modal-f">
           <button className="btn" onClick={onClose}>
             Cancel
           </button>
-          <button className="btn primary" disabled={!canSubmit} onClick={submit}>
-            {busy ? "Saving…" : "Add client"}
+          <button
+            className="btn primary"
+            data-testid="client-modal-save"
+            disabled={!canSubmit}
+            onClick={() => void submit()}
+          >
+            {busy ? "Saving…" : client ? "Save changes" : "Add client"}
           </button>
         </div>
       </div>

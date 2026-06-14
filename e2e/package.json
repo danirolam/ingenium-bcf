@@ -1,0 +1,19 @@
+{
+  "name": "injenium-e2e",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Isolated Playwright E2E harness for the Injenium client pipeline (stages 3-4).",
+  "scripts": {
+    "test": "playwright test",
+    "test:live": "RUN_LIVE=1 playwright test --grep @live",
+    "seed:setup": "tsx seed.ts setup",
+    "seed:teardown": "tsx seed.ts teardown",
+    "seed:demo": "tsx seed-demo.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^24.0.0",
+    "tsx": "^4.22.4"
+  }
+}

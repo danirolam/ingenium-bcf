@@ -8,6 +8,9 @@ dev-server*.log
 .vercel
 .claude
 
+# Eval harness output (generated our-vs-gold side-by-sides)
+eval/out/
+
 # Design reference archives (not part of the app)
 *.zip
 references/
