@@ -1,15 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "./api";
-import type { Bill, ProvisionDelta } from "../types";
+import type { AmendmentFailure, Bill, ProvisionDelta } from "../types";
 
 export interface ProvisionDeltaState {
   bill: Bill | null;
   deltas: ProvisionDelta[];
   errors: string[];
+  /** Amendments the locator couldn't place — shown subtly, never dropped. */
+  failures: AmendmentFailure[];
   cached: boolean;
   /** An AI call was cut short (rate limit / failure) so the result may be partial. */
   incomplete: boolean;
   incompleteReason: "rate-limit" | "ai-error" | null;
+  /** Times the AI was rate-limited and auto-retried (0 = never). */
+  rateLimited: number;
   /** First load, before any data is shown. */
   loading: boolean;
   /** A recompute is in flight while existing data stays on screen. */
@@ -25,9 +29,11 @@ export function useProvisionDelta(billId: string | null): ProvisionDeltaState {
   const [bill, setBill] = useState<Bill | null>(null);
   const [deltas, setDeltas] = useState<ProvisionDelta[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
+  const [failures, setFailures] = useState<AmendmentFailure[]>([]);
   const [cached, setCached] = useState(false);
   const [incomplete, setIncomplete] = useState(false);
   const [incompleteReason, setIncompleteReason] = useState<"rate-limit" | "ai-error" | null>(null);
+  const [rateLimited, setRateLimited] = useState(0);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -41,7 +47,7 @@ export function useProvisionDelta(billId: string | null): ProvisionDeltaState {
 
   useEffect(() => {
     if (!billId) {
-      setBill(null); setDeltas([]); setErrors([]);
+      setBill(null); setDeltas([]); setErrors([]); setFailures([]); setRateLimited(0);
       setLoading(false); setRefreshing(false);
       return;
     }
@@ -61,9 +67,11 @@ export function useProvisionDelta(billId: string | null): ProvisionDeltaState {
       if (res) {
         setDeltas(res.deltas ?? []);
         setErrors(res.errors ?? []);
+        setFailures(res.failures ?? []);
         setCached(!!res.cached);
         setIncomplete(!!res.aiIncomplete);
         setIncompleteReason(res.aiIncompleteReason ?? null);
+        setRateLimited(res.rateLimited ?? 0);
       }
       setLoading(false); setRefreshing(false);
     })().catch((e) => {
@@ -75,5 +83,5 @@ export function useProvisionDelta(billId: string | null): ProvisionDeltaState {
     // forceRef is read, not a dep; nonce drives forced re-runs.
   }, [billId, nonce]);
 
-  return { bill, deltas, errors, cached, incomplete, incompleteReason, loading, refreshing, recompute };
+  return { bill, deltas, errors, failures, cached, incomplete, incompleteReason, rateLimited, loading, refreshing, recompute };
 }

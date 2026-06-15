@@ -3,8 +3,8 @@
 // edit, or locating where an unmatched anchor belongs. All tasks for one bill×Act
 // go in a SINGLE request (cheap, rate-limit friendly); outputs are short.
 import type { AiBudget } from "./aiBudget.js";
+import { anthropicMessages } from "./anthropic.js";
 
-const API = "https://api.anthropic.com/v1/messages";
 const MODEL = process.env.ANTHROPIC_SCALPEL_MODEL || "claude-haiku-4-5";
 
 // Each "edit" task makes the model echo back the FULL edited provision, so the
@@ -86,12 +86,7 @@ async function sendBatch(
     messages: [{ role: "user", content: `ACT: ${actTitle}\n\nTASKS (JSON):\n${JSON.stringify(tasks)}` }],
   };
   try {
-    const res = await fetch(API, {
-      method: "POST",
-      headers: { "x-api-key": key, "anthropic-version": "2023-06-01", "content-type": "application/json" },
-      body: JSON.stringify(body),
-      signal: budget?.signal,
-    });
+    const res = await anthropicMessages(body, key, budget, "[scalpel]");
     if (!res.ok) {
       budget?.trip(res.status === 429 ? "rate-limit" : "ai-error");
       console.log(`[scalpel] ${res.status} ${await res.text()}`);

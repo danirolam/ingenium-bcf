@@ -1,4 +1,7 @@
 import { Router } from "express";
+import { promises as fsp } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import type {
   AmendmentExtraction,
   BaseLaw,
@@ -12,19 +15,12 @@ import { sendBillUploadedEmail } from "../services/email.js";
 import {
   extractAmendmentsFromBill,
   generateUpdatedLawText,
-  interpretAmendmentsTooled,
 } from "../services/gemini.js";
-import {
-  applyAmendments,
-  attachRowLinks,
-  diffProvisions,
-  diffSummary,
-  findByPath,
-  provKey,
-} from "../services/amendmentEngine.js";
-import { interpretAmendmentsClaude } from "../services/claude.js";
-import { applyGroups, parseBillAmendments } from "../services/billAmendments.js";
-import { loadActProvisions } from "../services/lawProvisions.js";
+import { attachRowLinks, diffProvisions, diffSummary } from "../services/amendmentEngine.js";
+import { extractAmendmentUnits } from "../services/billAmendments.js";
+import { loadActTree, type ActTree, type LawNavigator } from "../services/lawTree.js";
+import { locateAmendments, type LocatedOp, type LocatorCtx } from "../services/amendmentLocator.js";
+import { applyOperations, type ApplyOp } from "../services/amendmentApply.js";
 import { resolveBatch, type ScalpelTask } from "../services/scalpel.js";
 import { createAiBudget } from "../services/aiBudget.js";
 import { flagAmendmentReview } from "../services/humanReview.js";
@@ -42,6 +38,17 @@ import {
 import { loadSeedSnapshot } from "../seed/seedDemo.js";
 
 export const billsRouter = Router();
+
+const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
+
+// Compose an ancestor path back into a citation label for display, e.g.
+// [section 30, subsection 1, paragraph j.01] → "30(1)(j.01)".
+function composeAnchor(ancestors: { kind: string; label: string }[]): string | null {
+  if (!ancestors.length) return null;
+  return ancestors
+    .map((a, i) => (a.kind === "definition" ? `“${a.label}”` : i === 0 || a.kind === "section" ? a.label : `(${a.label})`))
+    .join("");
+}
 
 // The list view never needs the heavy per-bill payload (full clause text, the
 // legislative path, recorded divisions, or the raw source record). Stripping
@@ -339,174 +346,132 @@ billsRouter.post("/:id/extract-delta", async (req, res) => {
   res.json({ lawVersions: result, errors });
 });
 
-// Grounded provision-level delta: for each REGISTERED Act the bill amends, have
-// the AI interpret the amending instructions into operations, verify each anchor
-// against the real Act, apply them, and diff before/after by provision. Returns
-// only the changed provisions (a bill touches a handful), with verification.
+// Grounded provision-level delta. Extract each amendment from the bill's XML, have
+// the AI LOCATE its target by ancestor path against the real Act (verifying every
+// step with tools), apply the change deterministically to the Act tree, and diff.
+// The AI never writes statutory text — it only points. Amendments it can't place
+// are returned as `failures` (surfaced subtly), never silently mis-placed.
 billsRouter.post("/:id/provision-delta", async (req, res) => {
   const bill = await findById<Bill>(FILES.bills, req.params.id);
   if (!bill) return res.status(404).json({ error: "bill not_found" });
 
-  // Cache: a bill's delta is interpreted once, then served instantly. Pass
-  // ?refresh=1 to recompute (e.g. after re-ingesting the Act).
-  type CachedDelta = { id: string; deltas: unknown[]; errors: string[]; createdAt: string };
+  try {
+  // Cache: a bill's delta is computed once, then served instantly. ?refresh=1 recomputes.
+  type CachedDelta = { id: string; deltas: unknown[]; errors: string[]; failures: unknown[]; createdAt: string };
   if (req.query.refresh !== "1") {
     const cached = await findById<CachedDelta>(FILES.provisionDeltas, bill.id);
     if (cached) {
-      return res.json({
-        deltas: cached.deltas,
-        errors: cached.errors,
-        cached: true,
-        computedAt: cached.createdAt,
-      });
+      return res.json({ deltas: cached.deltas, errors: cached.errors, failures: cached.failures ?? [], cached: true, computedAt: cached.createdAt });
     }
   }
 
   const registry = await loadActRegistry();
-  const acts = actsAffectedByBill(bill, registry).filter((a) => a.slug);
-  // Fallback: clause-level targetActs are often missing (lossy ingestion), so
-  // also pull in any registered Act whose registry entry lists this bill.
-  const have = new Set(acts.map((a) => a.slug));
-  for (const [slug, entry] of Object.entries(registry)) {
-    if (!have.has(slug) && (entry.relatedBills ?? []).includes(bill.billNumber)) {
-      acts.push({ title: entry.title, slug, clauseIds: (bill.clauses ?? []).map((c) => c.id) });
-      have.add(slug);
-    }
-  }
   const errors: string[] = [];
 
-  // Preferred path: parse the bill's own XML — the inserted statutory text is
-  // already structured in <AmendedText>, so we read op+anchor and splice the
-  // text deterministically. Partial in-provision edits go to the AI scalpel.
-  let parsed: ReturnType<typeof parseBillAmendments> = { groups: new Map(), edits: new Map() };
+  // 1) Load the bill's amending XML — the network copy (with a timeout so a slow
+  //    or throttling parl.ca can't hang the request), then the committed local one.
+  let xml: string | null = null;
   if (bill.textSourceUrl) {
     try {
-      const xmlRes = await fetch(bill.textSourceUrl, { headers: { "user-agent": "Ingenium-Delta/0.1" } });
-      if (xmlRes.ok) parsed = parseBillAmendments(await xmlRes.text(), registry);
-    } catch {
-      /* network/parse failure → AI fallback below */
-    }
+      const r = await fetch(bill.textSourceUrl, { headers: { "user-agent": "Ingenium-Delta/0.1" }, signal: AbortSignal.timeout(10_000) });
+      if (r.ok) xml = await r.text();
+    } catch { /* fall back to local */ }
+  }
+  if (!xml) {
+    try { xml = await fsp.readFile(path.join(REPO_ROOT, "data/bills", bill.session ?? "45-1", bill.billNumber, "bill.xml"), "utf8"); } catch { /* none */ }
+  }
+  if (!xml) {
+    return res.json({ deltas: [], errors: ["Could not load the bill's amending text (XML)."], failures: [], cached: false });
   }
 
-  // Also diff any Act the bill's own XML amends (resolved from <XRefExternal>),
-  // not just the tagged ones — clause `targetActs` is only ~23% populated, so
-  // this rescues untagged amending bills (e.g. C-25 → Canada Elections Act)
-  // that would otherwise show no delta.
-  for (const slug of new Set([...parsed.groups.keys(), ...parsed.edits.keys()])) {
-    if (!have.has(slug) && registry[slug]) {
-      acts.push({ title: registry[slug].title, slug, clauseIds: (bill.clauses ?? []).map((c) => c.id) });
-      have.add(slug);
-    }
+  // 2) Extract the discrete amendments (structural, no regex locating). Keep the
+  //    ones that actually change a provision (drop short-title / coming-into-force).
+  const CHANGES = /repeal|replac|strik|amend|\badd(?:ing|ed|s)?\b/i;
+  const units = extractAmendmentUnits(xml, registry).filter((u) => u.inserts.length > 0 || CHANGES.test(u.instructionText));
+
+  if (!process.env.ANTHROPIC_API_KEY) {
+    const failures = units.map((u) => ({ clause: u.clause, actSlug: u.actSlugHint, instruction: u.instructionText, reason: "AI key missing — set ANTHROPIC_API_KEY to locate amendments" }));
+    return res.json({ deltas: [], errors: ["AI key missing — cannot locate amendments."], failures, cached: false });
   }
 
-  // One shared budget for every Anthropic call this request makes: the first
-  // rate-limit/failure trips it, aborting in-flight sibling calls and skipping
-  // pending ones, so we degrade to a partial result instead of hammering the
-  // 50k-token/min limit.
+  // 3) Locate each amendment against the real Act (AI + verification tools), then
+  //    group the located ops by Act. One shared rate-limit budget aborts the rest.
+  const navigators = new Map<string, LawNavigator | null>();
+  const ctx: LocatorCtx = {
+    navigators,
+    loadTree: loadActTree,
+    catalog: Object.entries(registry).map(([slug, entry]) => ({ slug, title: entry.title })),
+  };
   const aiBudget = createAiBudget();
+  const { located, failures, incomplete } = await locateAmendments(units, ctx, aiBudget);
 
-  const results = await Promise.all(
-    acts.map(async (act) => {
-      const slug = act.slug as string;
-      const actData = await loadActProvisions(slug);
-      if (!actData) {
-        errors.push(`No structured text ingested for ${act.title}.`);
-        return null;
+  const bySlug = new Map<string, LocatedOp[]>();
+  for (const l of located) { const a = bySlug.get(l.actSlug); if (a) a.push(l); else bySlug.set(l.actSlug, [l]); }
+
+  // 4) Per Act: compute amend text via the grounded scalpel, apply deterministically,
+  //    diff, and link each op to the rows it produced.
+  const deltas: unknown[] = [];
+  for (const [slug, ops] of bySlug) {
+    const nav = navigators.get(slug) ?? null;
+    const tree: ActTree | null = nav?.tree ?? (await loadActTree(slug));
+    if (!tree) { errors.push(`No structured text ingested for ${slug}.`); continue; }
+
+    // Amend ops are in-place edits: feed the verified provision text + the
+    // instruction to the scalpel to get the full edited text (the only place the
+    // model touches wording, and only on text we already verified).
+    const editText = new Map<LocatedOp, string>();
+    if (nav) {
+      const amendOps = ops.filter((o) => o.op === "amend");
+      const tasks: ScalpelTask[] = [];
+      const byTaskId = new Map<string, LocatedOp>();
+      amendOps.forEach((o, i) => {
+        const got = nav.getProvision(o.ancestors);
+        if (got.ok) { const id = `a${i}`; tasks.push({ id, kind: "edit", instruction: o.instruction, currentText: got.text }); byTaskId.set(id, o); }
+      });
+      if (tasks.length) {
+        const { results } = await resolveBatch(tree.title, tasks, aiBudget);
+        for (const [id, o] of byTaskId) { const r = results.get(id); if (r?.newText) editText.set(o, r.newText); }
       }
-      const groups = parsed.groups.get(slug) ?? [];
-      const edits = parsed.edits.get(slug) ?? [];
+    }
 
-      // Path A — deterministic structure (+ scalpel for partial edits).
-      if (groups.length > 0 || edits.length > 0) {
-        // 1) Whole-provision adds/replaces/repeals from <AmendedText>.
-        const { after, verified } = applyGroups(actData.provisions, groups);
-
-        // 2) Partial edits: resolve each target, batch them into AI calls,
-        //    then splice the edited text back in.
-        let usedAi = false;
-        let incomplete = false;
-        if (edits.length > 0) {
-          const tasks: ScalpelTask[] = [];
-          const targets: { provIndex: number; anchorFound: boolean; instruction: string }[] = [];
-          edits.forEach((e, i) => {
-            const hit = findByPath(after, e.sectionHint);
-            if (hit.index >= 0) {
-              tasks.push({ id: `e${i}`, kind: "edit", instruction: e.instruction, currentText: after[hit.index].text });
-              targets.push({ provIndex: hit.index, anchorFound: hit.matched === "exact", instruction: e.instruction });
-            } else {
-              verified.push({ op: "amend", anchor: e.sectionHint, position: null, count: 0, anchorFound: false, note: `(target not found) ${e.instruction.slice(0, 140)}`, instruction: e.instruction, producedKeys: [], resolution: "ai" });
-            }
-          });
-          if (tasks.length > 0) {
-            usedAi = true;
-            const { results: res, incomplete: scalpelIncomplete } = await resolveBatch(actData.title, tasks, aiBudget);
-            incomplete = scalpelIncomplete;
-            targets.forEach((t, i) => {
-              const r = res.get(`e${i}`);
-              if (r?.newText) after[t.provIndex] = { ...after[t.provIndex], text: r.newText };
-              verified.push({
-                op: "amend", anchor: after[t.provIndex].label, position: null, count: r?.newText ? 1 : 0,
-                anchorFound: t.anchorFound, note: t.instruction.slice(0, 160),
-                instruction: t.instruction,
-                producedKeys: r?.newText ? [provKey(after[t.provIndex])] : [],
-                resolution: "ai",
-              });
-            });
-          }
-        }
-
-        const rows = diffProvisions(actData.provisions, after);
-        return {
-          slug: actData.slug, title: actData.title, citation: actData.citation,
-          summary: diffSummary(rows), operations: attachRowLinks(slug, verified, rows),
-          rows,
-          source: usedAi ? "ai-assisted" : "bill-xml",
-          incomplete,
-        };
-      }
-
-      // Path B — fallback: let the AI interpret the whole bill for this Act.
-      // The Claude path shares the rate-limit budget; the Gemini fallback
-      // (used only when no Anthropic key is set) doesn't need it.
-      const args = { bill, actTitle: actData.title, provisions: actData.provisions };
-      const ai = process.env.ANTHROPIC_API_KEY
-        ? await interpretAmendmentsClaude(args, aiBudget)
-        : await interpretAmendmentsTooled(args);
-      if (!ai) {
-        errors.push(
-          process.env.ANTHROPIC_API_KEY || process.env.GEMINI_API_KEY
-            ? `AI interpretation failed for ${act.title} — try again in a moment.`
-            : `AI key missing — cannot interpret ${act.title}.`,
-        );
-        return null;
-      }
-      const { after, verified } = applyAmendments(actData.provisions, ai.operations);
-      const rows = diffProvisions(actData.provisions, after);
-      return {
-        slug: actData.slug, title: actData.title, citation: actData.citation,
-        summary: diffSummary(rows), operations: verified,
-        rows,
-        source: "ai",
-        incomplete: "incomplete" in ai ? ai.incomplete : false,
-      };
-    }),
-  );
-
-  const deltas = results.filter(Boolean);
-  // If an AI call was rate-limited/failed mid-run, the result is partial.
-  const aiIncomplete = aiBudget.reason !== null || deltas.some((d) => d && (d as { incomplete?: boolean }).incomplete);
-  const aiIncompleteReason = aiBudget.reason;
-  // Only cache COMPLETE interpretations, so a rate-limited/partial run retries
-  // next time (e.g. once the per-minute limit resets) instead of sticking.
-  if (deltas.length > 0 && !aiIncomplete) {
-    await upsert(FILES.provisionDeltas, {
-      id: bill.id,
-      deltas,
-      errors,
-      createdAt: new Date().toISOString(),
-    });
+    const applyOps: ApplyOp[] = ops.map((o) => ({
+      clause: o.clause, op: o.op, ancestors: o.ancestors, instruction: o.instruction,
+      confirmed: o.confirmed, inserts: o.inserts, editedText: editText.get(o),
+    }));
+    const { before, after, applied } = applyOperations(tree, applyOps);
+    const rows = diffProvisions(before, after);
+    const linked = attachRowLinks(slug, applied, rows);
+    const operations = linked.map((o) => ({
+      key: o.key,
+      clause: o.clause,
+      op: o.op,
+      ancestors: o.ancestors,
+      anchor: composeAnchor(o.ancestors),
+      anchorFound: o.located,
+      confirmed: o.confirmed,
+      count: o.producedRowIndices.length,
+      instruction: o.instruction,
+      note: o.instruction,
+      resolution: "ai" as const,
+      producedRowIndices: o.producedRowIndices,
+      contextRowIndices: o.contextRowIndices,
+    }));
+    deltas.push({ slug, title: tree.title, citation: tree.citation, summary: diffSummary(rows), operations, rows, source: "ai-located" });
   }
-  res.json({ deltas, errors, cached: false, aiIncomplete, aiIncompleteReason });
+
+  console.log(`[provision-delta] ${bill.billNumber}: ${deltas.length} act(s), ${located.length} located, ${failures.length} unlocatable`);
+
+  // 5) Cache only a COMPLETE run, so a rate-limited one retries next time.
+  if (deltas.length > 0 && !incomplete) {
+    await upsert(FILES.provisionDeltas, { id: bill.id, deltas, errors, failures, createdAt: new Date().toISOString() });
+  }
+  res.json({ deltas, errors, failures, cached: false, aiIncomplete: incomplete, aiIncompleteReason: aiBudget.reason, rateLimited: aiBudget.rateLimitHits });
+  } catch (err) {
+    console.error("[provision-delta]", err instanceof Error ? err.stack : err);
+    if (!res.headersSent) {
+      res.status(500).json({ deltas: [], errors: [`Delta computation failed: ${err instanceof Error ? err.message : String(err)}`], failures: [], cached: false });
+    }
+  }
 });
 
 // ── Per-amendment approvals (the phase-2 gate) ──────────────────────────────

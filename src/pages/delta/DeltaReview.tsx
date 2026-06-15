@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties, MouseEvent as ReactMouseEvent } from "react";
-import type { Bill, BillAmendmentOp, ProvisionDelta } from "../../types";
+import type { AmendmentFailure, Bill, BillAmendmentOp, ProvisionDelta } from "../../types";
 import type { ApprovalsState } from "../../lib/useApprovals";
 import { BillPdfPane } from "../../components/delta/BillPdfPane";
 import { AmendmentCard } from "../../components/delta/AmendmentCard";
@@ -16,6 +16,7 @@ type Item = { delta: ProvisionDelta; op: BillAmendmentOp };
 export function DeltaReview({
   bill,
   deltas,
+  failures,
   approvals,
   incomplete,
   incompleteReason,
@@ -25,6 +26,7 @@ export function DeltaReview({
 }: {
   bill: Bill | null;
   deltas: ProvisionDelta[];
+  failures: AmendmentFailure[];
   approvals: ApprovalsState;
   incomplete: boolean;
   incompleteReason: "rate-limit" | "ai-error" | null;
@@ -38,6 +40,7 @@ export function DeltaReview({
   );
 
   const [idx, setIdx] = useState(0);
+  const [showFails, setShowFails] = useState(false);
   const at = Math.min(idx, Math.max(0, items.length - 1));
   const go = (step: number) => setIdx(() => Math.max(0, Math.min(items.length - 1, at + step)));
 
@@ -100,6 +103,28 @@ export function DeltaReview({
           <button className="btn ghost sm" onClick={onRecompute} disabled={refreshing}>
             {refreshing ? "Recomputing…" : "Recompute"}
           </button>
+        </div>
+      )}
+      {failures.length > 0 && (
+        <div className="dr-fails">
+          <button className="dr-fails-bar" onClick={() => setShowFails((v) => !v)} aria-expanded={showFails}>
+            <span className="dr-fails-ic">⚠</span>
+            <span>
+              {failures.length} amendment{failures.length === 1 ? "" : "s"} couldn’t be located — verify against the bill PDF
+            </span>
+            <span className="dr-fails-chev">{showFails ? "▾" : "▸"}</span>
+          </button>
+          {showFails && (
+            <ul className="dr-fails-list">
+              {failures.map((f, i) => (
+                <li key={i}>
+                  <span className="dr-fails-clause">cl {f.clause}</span>
+                  <span className="dr-fails-instr">{f.instruction}</span>
+                  <span className="dr-fails-reason">{f.reason}</span>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       )}
       <div className="dr-grid" ref={gridRef} style={{ "--pdf-w": `${pdfPx}px` } as CSSProperties}>
