@@ -49,7 +49,19 @@ function Cell({
       <span className="dr-cell-label">{leafLabel(prov)}</span>
       <span className="dr-cell-main">
         {prov.marginalNote && <span className="dr-cell-mn">{prov.marginalNote}</span>}
-        <span className="dr-cell-text">{parts ? <Words parts={parts} /> : prov.text}</span>
+        <span className="dr-cell-text">
+          {parts ? (
+            <Words parts={parts} />
+          ) : prov.lines && prov.lines.length ? (
+            prov.lines.map((l, i) => (
+              <span key={i} className="dr-cell-line" style={{ paddingLeft: l.depth * 16 }}>
+                {l.text}
+              </span>
+            ))
+          ) : (
+            prov.text
+          )}
+        </span>
       </span>
     </div>
   );

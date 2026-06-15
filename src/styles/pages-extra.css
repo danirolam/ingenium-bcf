@@ -599,6 +599,9 @@
   flex: 1;
   min-height: 0;
   display: grid;
+  grid-template-columns: minmax(0, 1fr); /* default: comparator full width (bill PDF hidden) */
+}
+.dr-grid.is-pdf-open {
   grid-template-columns: var(--pdf-w, 33%) 6px minmax(0, 1fr);
 }
 
@@ -872,6 +875,14 @@
 .dr-cell-text {
   color: var(--ink-2);
 }
+/* Formatter agent's statute layout: each subsection/paragraph on its own line,
+   indented by depth (paddingLeft set inline). Absent ⇒ the flat text renders. */
+.dr-cell-line {
+  display: block;
+}
+.dr-cell-line + .dr-cell-line {
+  margin-top: 3px;
+}
 /* Word-level highlight inside a changed provision (CanLII style). */
 .dr-wd-del {
   background: var(--diff-del-word);
@@ -887,6 +898,65 @@
   padding: 0 1px;
   text-decoration: none;
 }
+
+/* ── CanLII-style continuous comparator (.dr-main / .dr-cmp) ── */
+.dr-main { display: flex; flex-direction: column; min-height: 0; min-width: 0; }
+.dr-main-bar {
+  flex: none; display: flex; align-items: center; gap: 10px;
+  padding: 8px 14px; border-bottom: 1px solid var(--border);
+}
+.dr-main-export { margin-left: auto; }
+
+.dr-cmp { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.dr-cmp-nav {
+  flex: none; display: flex; align-items: center; gap: 10px;
+  padding: 7px 14px; background: var(--panel-2); border-bottom: 1px solid var(--border);
+  font-size: 12.5px; color: var(--ink-2);
+}
+.dr-cmp-nav-pos b { color: var(--ink); }
+.dr-cmp-cols { margin-left: auto; display: flex; width: min(58%, 640px); }
+.dr-cmp-cols span {
+  flex: 1; padding-left: 12px;
+  font: 700 10.5px/1 var(--sans); text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-4);
+}
+.dr-cmp-body { flex: 1; min-height: 0; overflow-y: auto; padding: 0 14px 60px; }
+
+.dr-cmp-act { margin-top: 14px; }
+.dr-cmp-act-head { display: flex; align-items: baseline; gap: 10px; padding: 8px 2px 6px; }
+.dr-cmp-act-title { font-weight: 700; font-size: 14px; color: var(--ink); }
+.dr-cmp-act-cite { font-size: 11.5px; color: var(--ink-4); font-style: italic; }
+.dr-cmp-act-approved { margin-left: auto; font-size: 11.5px; color: var(--ink-3); }
+
+.dr-cmp-gap { }
+.dr-cmp-fold {
+  display: block; width: 100%; text-align: center; cursor: pointer;
+  padding: 5px 0; margin: 2px 0; font-size: 11.5px; color: var(--ink-3);
+  border: 0; border-top: 1px dashed var(--border); border-bottom: 1px dashed var(--border);
+  background: var(--panel-2);
+}
+.dr-cmp-fold:hover { background: var(--panel-3); color: var(--ink); }
+
+.dr-cmp-change { margin: 10px 0; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.dr-cmp-change.is-approved { border-color: var(--ok); box-shadow: inset 0 0 0 1px var(--ok); }
+.dr-cmp-change-head {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 10px; background: var(--panel-2); border-bottom: 1px solid var(--border);
+}
+.dr-cmp-change-anchor { font-family: var(--mono); font-size: 12px; color: var(--ink-2); }
+.dr-cmp-change-actions { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.dr-cmp-says-btn {
+  border: 1px solid var(--border); background: var(--panel); color: var(--ink-3);
+  border-radius: 6px; padding: 3px 9px; font-size: 11.5px; cursor: pointer;
+}
+.dr-cmp-says-btn:hover { color: var(--ink); }
+.dr-cmp-says {
+  padding: 8px 12px; background: var(--panel-2); border-bottom: 1px solid var(--border);
+  font-size: 12.5px; line-height: 1.55; color: var(--ink-2);
+}
+.dr-cmp-says p { margin: 0 0 6px; }
+.dr-cmp-says p:last-child { margin: 0; }
+.dr-cmp-anc { padding: 4px 0; background: var(--panel); border-bottom: 1px solid var(--border); opacity: 0.82; }
+.dr-cmp-rows { background: var(--panel); }
 /* Boundary marker when the amendment appends text at the very end of the Act. */
 .dr-diff-end {
   display: flex;
