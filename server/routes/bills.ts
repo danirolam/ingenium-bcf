@@ -405,8 +405,21 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
   // 50k-token/min limit.
   const aiBudget = createAiBudget();
 
+  // Over-inclusion guard: a bill that only REFERENCES an Act in a definition
+  // ("…has the same meaning as in section 2 of the X Act") records X in the
+  // clause's targetActs, but does not amend it. parseBillAmendments emits
+  // groups/edits ONLY for Acts the bill's XML actually amends, so when it parsed
+  // any structured amendment, treat that as the authoritative amended set and
+  // drop reference-only Acts — otherwise each falls to a hallucinated Path-B
+  // delta (e.g. C-251 spuriously "amending" the Special Economic Measures Act).
+  // Only when nothing parsed at all do we keep the broad targetActs/relatedBills
+  // set so the agentic fallback can still interpret an unstructured bill.
+  const amendedSlugs = new Set([...parsed.groups.keys(), ...parsed.edits.keys()]);
+  const actsToProcess =
+    amendedSlugs.size > 0 ? acts.filter((a) => amendedSlugs.has(a.slug as string)) : acts;
+
   const results = await Promise.all(
-    acts.map(async (act) => {
+    actsToProcess.map(async (act) => {
       const slug = act.slug as string;
       const actData = await loadActProvisions(slug);
       if (!actData) {

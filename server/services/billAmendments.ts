@@ -210,6 +210,15 @@ function parseInstruction(text: string): { op: "add" | "replace" | "repeal"; anc
   if (m) return { op: "add", anchor: compose(m[1]), position: "after" };
   m = text.match(new RegExp(`adding the following before (?:section|subsection|paragraph|subparagraph|clause)\\s+${REF}`, "i"));
   if (m) return { op: "add", anchor: compose(m[1]), position: "before" };
+  // "Section N of the Act is amended by adding …" with no explicit after/before
+  // target — e.g. a definition added "in alphabetical order", or a section
+  // "renumbered as N(1) and … amended by adding (2)". Anchor the addition at the
+  // section being amended instead of appending at the end of the Act (anchor=null,
+  // which the engine treats as an append and which reads as a placement miss).
+  if (/\bamended by adding\b/i.test(text)) {
+    const at = container || firstRef();
+    if (at) return { op: "add", anchor: at, position: "after" };
+  }
   return { op: "add", anchor: null, position: "after" }; // append-style add
 }
 
