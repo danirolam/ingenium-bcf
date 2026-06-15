@@ -21,7 +21,9 @@ import {
   diffSummary,
   findByPath,
   provKey,
+  slimUnchangedText,
 } from "../services/amendmentEngine.js";
+import { formatProvisions, type FormatItem } from "../services/lawFormat.js";
 import { interpretAmendmentsClaude } from "../services/claude.js";
 import { applyGroups, parseBillAmendments } from "../services/billAmendments.js";
 import { loadActProvisions } from "../services/lawProvisions.js";
@@ -405,8 +407,21 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
   // 50k-token/min limit.
   const aiBudget = createAiBudget();
 
+  // Over-inclusion guard: a bill that only REFERENCES an Act in a definition
+  // ("…has the same meaning as in section 2 of the X Act") records X in the
+  // clause's targetActs, but does not amend it. parseBillAmendments emits
+  // groups/edits ONLY for Acts the bill's XML actually amends, so when it parsed
+  // any structured amendment, treat that as the authoritative amended set and
+  // drop reference-only Acts — otherwise each falls to a hallucinated Path-B
+  // delta (e.g. C-251 spuriously "amending" the Special Economic Measures Act).
+  // Only when nothing parsed at all do we keep the broad targetActs/relatedBills
+  // set so the agentic fallback can still interpret an unstructured bill.
+  const amendedSlugs = new Set([...parsed.groups.keys(), ...parsed.edits.keys()]);
+  const actsToProcess =
+    amendedSlugs.size > 0 ? acts.filter((a) => amendedSlugs.has(a.slug as string)) : acts;
+
   const results = await Promise.all(
-    acts.map(async (act) => {
+    actsToProcess.map(async (act) => {
       const slug = act.slug as string;
       const actData = await loadActProvisions(slug);
       if (!actData) {
@@ -456,10 +471,11 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
         }
 
         const rows = diffProvisions(actData.provisions, after);
+        const operations = attachRowLinks(slug, verified, rows);
         return {
           slug: actData.slug, title: actData.title, citation: actData.citation,
-          summary: diffSummary(rows), operations: attachRowLinks(slug, verified, rows),
-          rows,
+          summary: diffSummary(rows), operations,
+          rows: slimUnchangedText(rows, operations),
           source: usedAi ? "ai-assisted" : "bill-xml",
           incomplete,
         };
@@ -485,7 +501,7 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
       return {
         slug: actData.slug, title: actData.title, citation: actData.citation,
         summary: diffSummary(rows), operations: verified,
-        rows,
+        rows: slimUnchangedText(rows, verified),
         source: "ai",
         incomplete: "incomplete" in ai ? ai.incomplete : false,
       };
@@ -493,6 +509,41 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
   );
 
   const deltas = results.filter(Boolean);
+
+  // Step 2 — formatter agent: re-lay-out each added/repealed provision into its
+  // statute lines (subsection/paragraph/subparagraph), display-only. Runs with its
+  // OWN budget (best-effort) so a formatting hiccup never blocks caching the
+  // correct extraction; formatProvisions' word-preservation guard prevents any
+  // content change — worst case the provision just stays flat.
+  if (process.env.ANTHROPIC_API_KEY && deltas.length > 0) {
+    type Prov = { id?: string; text?: string; lines?: unknown };
+    type Row = { status: string; before?: Prov; after?: Prov };
+    const seen = new Set<string>();
+    const items: FormatItem[] = [];
+    for (const d of deltas as Array<{ rows?: Row[] }>) {
+      for (const r of d.rows ?? []) {
+        if (r.status !== "added" && r.status !== "repealed") continue;
+        const p = r.status === "added" ? r.after : r.before;
+        if (p?.id && p.text && !seen.has(p.id)) {
+          seen.add(p.id);
+          items.push({ id: p.id, text: p.text });
+        }
+      }
+    }
+    if (items.length > 0) {
+      const { lines } = await formatProvisions(items, createAiBudget());
+      if (lines.size > 0) {
+        for (const d of deltas as Array<{ rows?: Row[] }>) {
+          for (const r of d.rows ?? []) {
+            for (const p of [r.before, r.after]) {
+              if (p?.id && lines.has(p.id)) p.lines = lines.get(p.id);
+            }
+          }
+        }
+      }
+    }
+  }
+
   // If an AI call was rate-limited/failed mid-run, the result is partial.
   const aiIncomplete = aiBudget.reason !== null || deltas.some((d) => d && (d as { incomplete?: boolean }).incomplete);
   const aiIncompleteReason = aiBudget.reason;

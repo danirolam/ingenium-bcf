@@ -1,9 +1,5 @@
-import { useEffect, useState } from "react";
 import type { Nav } from "../App";
-import type { Bill } from "../types";
-import { MomentumBadge } from "../components/badges";
-import { PageHeader } from "../components/PageHeader";
-import { api } from "../lib/api";
+import { DeltaLibrary } from "../components/DeltaLibrary";
 import { useApprovals } from "../lib/useApprovals";
 import { useProvisionDelta } from "../lib/useProvisionDelta";
 import { DeltaReview } from "./delta/DeltaReview";
@@ -16,7 +12,7 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
   const delta = useProvisionDelta(billId);
   const approvals = useApprovals(billId);
 
-  if (!billId) return <BillChooser nav={nav} />;
+  if (!billId) return <DeltaLibrary nav={nav} />;
 
   const allOps = delta.deltas.flatMap((d) => d.operations);
   const total = allOps.length;
@@ -71,45 +67,5 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
         />
       )}
     </div>
-  );
-}
-
-function BillChooser({ nav }: { nav: Nav }) {
-  const [bills, setBills] = useState<Bill[]>([]);
-  useEffect(() => {
-    const ac = new AbortController();
-    api.bills.list(ac.signal).then(setBills).catch(() => {});
-    return () => ac.abort();
-  }, []);
-
-  const candidates = bills.filter((b) => /\bamend/i.test(b.title)).slice(0, 24);
-
-  return (
-    <>
-      <PageHeader
-        title="Legal delta"
-        sub="Choose a bill to review the changes it makes to existing law."
-      />
-      <div className="body">
-        <div className="card" style={{ padding: "22px 24px" }}>
-          <h3 style={{ margin: "0 0 14px", fontSize: 15, fontWeight: 700 }}>Pick a bill to review</h3>
-          {candidates.length === 0 ? (
-            <div className="rd-empty">Loading bills…</div>
-          ) : (
-            <div className="dr-pick">
-              {candidates.map((b) => (
-                <button key={b.id} className="dr-pick-item" onClick={() => nav.go("delta", { billId: b.id })}>
-                  <span className="dr-pick-top">
-                    <span className="tnum dr-pick-num">{b.billNumber}</span>
-                    <MomentumBadge value={b.legislativeMomentum} />
-                  </span>
-                  <span className="dr-pick-title">{b.title}</span>
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-    </>
   );
 }

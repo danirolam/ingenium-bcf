@@ -2,6 +2,7 @@ import type {
   Bill,
   Client,
   ClientImpactAnalysis,
+  DeltaIndexEntry,
   LawVersion,
   ProvisionDelta,
 } from "../types";
@@ -24,6 +25,10 @@ export const api = {
   bills: {
     list: (signal?: AbortSignal) => j<Bill[]>("/api/bills", { signal }),
     get: (id: string, signal?: AbortSignal) => j<Bill>(`/api/bills/${id}`, { signal }),
+    // Stage-2 Delta Library: every bill that already has a generated provision
+    // delta (its own isolated read-only route, not under the bills router).
+    deltas: (signal?: AbortSignal) =>
+      j<DeltaIndexEntry[]>("/api/provision-deltas", { signal }),
     upload: (raw: unknown) =>
       j<{ bill: Bill; email: EmailResult }>("/api/bills/upload", {
         method: "POST",

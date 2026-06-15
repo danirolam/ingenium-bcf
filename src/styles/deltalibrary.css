@@ -1,0 +1,245 @@
+/* Stage 2 — Delta library (flat, filterable, paginated) + the "New delta"
+   picker modal. Imported only by src/components/DeltaLibrary.tsx; everything is
+   namespaced `dl-` so nothing leaks. Mirrors the Stage-4 brief library (bp-*)
+   on the shared tokens. */
+
+.dl-count {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  margin-left: 8px;
+}
+
+.dl-empty-cta {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+}
+
+/* ── Filters ──────────────────────────────────────────────────────────── */
+.dl-filters {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.dl-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dl-filter-label {
+  font: 600 11px/1.4 var(--sans);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.dl-filter select {
+  font: 500 12.5px/1.4 var(--sans);
+  color: var(--ink);
+  background: var(--panel-2);
+  border: 1px solid var(--border-2);
+  border-radius: 7px;
+  padding: 6px 10px;
+  max-width: 280px;
+  cursor: pointer;
+}
+.dl-filter select:hover {
+  border-color: var(--border);
+}
+
+.dl-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--panel-2);
+  border: 1px solid var(--border-2);
+  border-radius: 8px;
+  padding: 7px 12px;
+  color: var(--ink-4);
+  flex: 1;
+  min-width: 220px;
+}
+.dl-search-icon {
+  font-size: 12px;
+}
+.dl-search input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--ink);
+  font: 400 13px/1.4 var(--sans);
+}
+
+/* ── Entries (flat newest-first list) ─────────────────────────────────── */
+.dl-entry-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-3);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.dl-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border-3);
+  cursor: pointer;
+}
+.dl-entry:last-child {
+  border-bottom: none;
+}
+.dl-entry:hover {
+  background: var(--panel-2);
+}
+.dl-entry-main {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+.dl-bill-num {
+  flex: none;
+  font: 700 12px/1.4 var(--mono);
+  color: var(--accent-warm, var(--ink));
+}
+.dl-entry-title {
+  flex: none;
+  font: 600 13px/1.4 var(--sans);
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 46%;
+}
+.dl-entry-acts {
+  font: 400 12px/1.4 var(--sans);
+  color: var(--ink-4);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.dl-entry-meta {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.dl-summary {
+  display: inline-flex;
+  gap: 6px;
+  font: 700 11px/1 var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+.dl-summary .dl-add {
+  color: var(--ok);
+}
+.dl-summary .dl-chg {
+  color: var(--high);
+}
+.dl-summary .dl-del {
+  color: var(--crit);
+}
+.dl-entry-when {
+  font: 500 11px/1.4 var(--mono);
+  color: var(--ink-4);
+  white-space: nowrap;
+}
+.dl-entry-go {
+  color: var(--ink-4);
+  font-size: 11px;
+}
+.dl-entry:hover .dl-entry-go {
+  color: var(--ink);
+}
+
+/* ── Approval tags (same escalation as the brief library) ─────────────── */
+.dl-tag {
+  flex: none;
+  font: 700 10.5px/1 var(--sans);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.dl-tag.dl-approved {
+  color: var(--ok);
+  background: var(--ok-bg);
+}
+.dl-tag.dl-partial,
+.dl-tag.dl-review {
+  color: var(--high);
+  background: var(--high-bg);
+}
+
+/* ── Pager ────────────────────────────────────────────────────────────── */
+.dl-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 14px;
+}
+.dl-page-status {
+  font: 500 12px/1.4 var(--mono);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── "New delta" picker modal ─────────────────────────────────────────── */
+.dl-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 24px;
+}
+.dl-modal {
+  background: var(--panel);
+  border: 1px solid var(--border-2);
+  border-radius: 12px;
+  width: min(720px, 100%);
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+}
+.dl-modal-h {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border-3);
+}
+.dl-modal-close {
+  border: none;
+  background: none;
+  color: var(--ink-4);
+  cursor: pointer;
+  font-size: 16px;
+}
+.dl-modal-close:hover {
+  color: var(--ink);
+}
+.dl-modal-search {
+  padding: 14px 18px 0;
+}
+.dl-modal-body {
+  padding: 14px 18px;
+  overflow-y: auto;
+}
+.dl-modal .dl-pager {
+  padding: 0 18px 16px;
+  margin-top: 0;
+}
