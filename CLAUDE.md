@@ -72,8 +72,7 @@ npx tsx eval/run-eval.ts           # scan matrix + briefs → eval/out/*.md side
 pairing is **withheld** from `clients.json` (the `Client` type has no bill field). Success = each
 client's assigned bill lands in its top band/score and the negative control (Canneberges) stays
 low across all 5 bills. The 7 eval client ids are protected in `e2e/seed.ts`'s
-`PROTECTED_CLIENT_IDS`. Resumption/design notes live in
-`~/.claude/plans/yes-and-also-rememebr-merry-hartmanis.md`.
+`PROTECTED_CLIENT_IDS`.
 
 ### Data refresh pipeline
 
@@ -108,7 +107,8 @@ A Vite + React 18 + TypeScript SPA on top of an Express API. **No database** —
   with wire types mirrored from the server by sync-comments. `src/types.ts` holds the shared
   domain types (`Bill`, `Client`, `ProvisionDelta`, `ClientImpactAnalysis`).
 - Styling is a custom CSS design system (`src/styles/injenium.css` + page-scoped files —
-  `clientscan.css`, `briefpicker.css`); page CSS is imported only by its page/component.
+  `clientscan.css`, `briefpicker.css`, `pages-extra.css`); page CSS is imported only by its
+  page/component.
 
 ### Backend (`server/`)
 
@@ -143,7 +143,12 @@ A Vite + React 18 + TypeScript SPA on top of an Express API. **No database** —
    in `clientImpactAnalyses.json` (pruned to 3 per pair). `GET /briefs` powers the `/brief`
    drill-down library (`src/components/BriefPicker.tsx`). Regeneration hands the agent the pair's
    **previous brief** (revise-not-restart) plus optional transient `guidance` — the reviewing
-   lawyer's instructions/feedback channel, never persisted.
+   lawyer's instructions/feedback channel, never persisted. A **counsel-approval gate** (the
+   repurposed `saved` flag, set by `POST /:id/save`) blocks brief export/email until a lawyer
+   approves; approval is per-version, so regenerating re-engages it. The client-facing **email
+   draft is generated once, at approval** (`generateClientEmailDraft`, a focused Anthropic call
+   with a deterministic `synthesizeEmailDraft` fallback) — NOT in the analyze tool and never on
+   regenerations — so `emailDraft` is optional on a brief until it is approved.
 4. **Pure vs IO split**: all scan/brief pure logic (triage, chunking, merging, normalizers,
    `bandFromScore`, `heuristicScore`, `serializePriorBrief`) lives in
    `server/services/clientScanCore.ts` — dependency-free and unit-tested directly by
@@ -189,13 +194,15 @@ See `AI_INTEGRATION.md` for the full AI/provider handoff guide.
   (see `SCANS_FILE`). Register specific routes (e.g. `/scan-ready`, `/briefs`) **before**
   `/:id` catch-alls. Under `safe()`, coerce params with `String(req.params.x)`
   (@types/express v5 widens them to `string | string[]`).
-- **Stage ownership (merge safety)**: stages 1–2 (bills/delta machinery: `server/routes/bills.ts`,
-  `server/services/{claude,gemini,scalpel,amendmentEngine,jsonStore,aiBudget}.ts`) are developed
-  on `jim/delta`; stages 3–4 own `server/routes/{clientImpact,clients}.ts`, the clientScan
-  services, and their pages. Cross-stage needs are met by new files and read-only store access,
-  not edits to the other stage's modules. Broadly-shared files (`src/types.ts`, `src/lib/api.ts`,
-  root `package.json`) change only with good reason — e2e keeps its own package/lockfile under
-  `e2e/` for exactly this reason.
+- **Stage ownership (merge safety)**: the four stages share one tree, so a module map keeps
+  parallel work mergeable. Stages 1–2 (bills/delta machinery: `server/routes/bills.ts`,
+  `server/services/{claude,gemini,scalpel,amendmentEngine,lawProvisions,jsonStore,aiBudget}.ts`)
+  are Jim's domain, developed on `jim/delta`; stages 3–4 (now merged to `main`) own
+  `server/routes/{clientImpact,clients}.ts`, the `clientScan{,Core}` services, and their pages
+  (`ClientLawScanner`, `ClientImpactAnalysis`, `BriefPicker`). Meet cross-stage needs with new
+  files and read-only store access, not edits to the other stage's modules. Broadly-shared files
+  (`src/types.ts`, `src/lib/api.ts`, root `package.json`) change only with good reason — e2e keeps
+  its own package/lockfile under `e2e/` for exactly this reason.
 - **Demo fixture**: `cd e2e && npm run seed:demo` makes the real Bill C-265 scan-ready (six
   approved ops anchored to genuine Food and Drugs Act provisions) and upserts the two demo
   clients (Aurelia Therapeutics, Lakehead Regional Health Network). Its records carry

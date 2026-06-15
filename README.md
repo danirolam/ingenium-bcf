@@ -1,27 +1,27 @@
 # Ingenium
 
 Legislative intelligence for BCF. Ingenium turns Canadian federal legislative change
-into clear, client‑specific advice. It follows every federal bill through Parliament,
+into clear, client-specific advice. It follows every federal bill through Parliament,
 pinpoints the exact statutory change a bill makes, matches that change against a
-client's operations, and produces a counsel‑reviewed exposure memo.
+client's operations, and produces a counsel-reviewed exposure memo.
 
 **Live:** https://ingenium-bcf.vercel.app
 
 The workspace is one continuous flow:
 
 1. **Monitor** — browse every federal bill, by session, practice area, momentum, or search.
-2. **Legal delta** — see exactly which sections of which Acts a bill adds, repeals, or replaces, side by side.
-3. **Client scan** — match an approved change against a client's operations, contracts, and policies.
-4. **Client brief** — generate a client‑specific exposure memo, ready for a lawyer to review and send.
+2. **Legal delta** — see exactly which sections of which Acts a bill adds, repeals, or replaces, side by side; counsel approves each change before it flows downstream.
+3. **Client scan** — score an approved change against a client's operations, contracts, and policies, banding the impact from low to critical.
+4. **Client brief** — generate a client-specific exposure memo; once a lawyer approves it, a ready-to-send client email is drafted automatically.
 
 ---
 
 ## Tech stack
 
-- **Frontend:** Vite + React 18 + TypeScript single‑page app (`src/`), with a small Tailwind layer on top of a custom CSS design system.
+- **Frontend:** Vite + React 18 + TypeScript single-page app (`src/`), with a small Tailwind layer on top of a custom CSS design system.
 - **Backend:** Express API (`server/`), served as a Vercel serverless function in production (`api/index.ts`) and a local dev server (`server/index.ts`).
 - **Data store:** committed JSON snapshot (`server/data/*.json`) — no database. In production it hydrates into the writable `/tmp` directory on cold start, so the app works online with **no setup step**.
-- **Optional AI:** Google Gemini powers the live client‑impact memo and registered‑Act diff synthesis. Everything works without it (deterministic fallbacks); adding a key just upgrades those two steps.
+- **AI:** Anthropic Claude is the primary engine — it interprets the legal delta (stage 2), scores client impact (stage 3), and writes the client brief plus its approval email (stage 4). Google Gemini remains as a legacy / fallback path. Everything works with **no keys** thanks to deterministic fallbacks; a key just upgrades the live synthesis.
 
 ---
 
@@ -44,15 +44,15 @@ npm run server   # run only the API (tsx watch)
 
 ---
 
-## Configuration — where the API key goes
+## Configuration — where the API keys go
 
 **The app runs fully without any keys.** Keys only enable the live AI synthesis steps;
-without them, Ingenium falls back to deterministic, real‑looking output, so the only
+without them, Ingenium falls back to deterministic, real-looking output, so the only
 remaining step to "turn on" AI is adding the key.
 
 > **Wiring the AI? See [`AI_INTEGRATION.md`](AI_INTEGRATION.md)** — the full handoff
-> guide: where the key goes, how to verify it took (`npm run verify:gemini`,
-> `/api/health`), the three AI touchpoints, and how to expand registered Acts.
+> guide: where the key goes, how to verify it took (`/api/health`), the AI touchpoints,
+> and how to expand the registered-Act corpus.
 
 Copy the template and fill in what you want:
 
@@ -62,16 +62,19 @@ cp .env.example .env
 
 | Variable | Required? | What it does |
 | --- | --- | --- |
-| `GEMINI_API_KEY` | Optional | Enables live client‑impact memos and the before/after diff for registered Acts. Without it, the app uses a deterministic synthesized analysis. Get a free key at https://aistudio.google.com/apikey |
-| `GEMINI_MODEL` | Optional | Overrides the model (default `gemini-2.5-flash`). |
-| `RESEND_API_KEY` | Optional | Sends the lawyer‑notification email for real. Without it, emails are simulated (logged, not sent). |
+| `ANTHROPIC_API_KEY` | Optional (primary) | The main AI engine: the legal-delta interpreter, the client-impact scorer, and the client brief + approval email. Without it, every step falls back to deterministic output. |
+| `ANTHROPIC_MODEL` | Optional | Overrides the model (default `claude-haiku-4-5`). `ANTHROPIC_SCALPEL_MODEL` overrides the partial-edit "scalpel" model. |
+| `GEMINI_API_KEY` | Optional (legacy) | The legacy full-text delta path and the keyless-Anthropic fallback interpreter. Free key at https://aistudio.google.com/apikey |
+| `GEMINI_MODEL` | Optional | Overrides the Gemini model (default `gemini-2.5-flash`). |
+| `RESEND_API_KEY` | Optional | Sends the lawyer-notification email for real (`RESEND_FROM` / `NOTIFY_EMAIL` set the addresses). Without it, emails are simulated (logged, not sent). |
+| `BLOB_READ_WRITE_TOKEN` | Optional | Serves the full 964-Act federal corpus from Vercel Blob for two-sided diffs. Without it, the 5 bundled demo Acts still resolve. *Sensitive* — copy it from the Vercel dashboard. |
 | `PORT` | Optional | API port (default `8787`). |
 
-**Local:** put the key in `.env` (already git‑ignored).
+**Local:** put the keys in `.env` (already git-ignored).
 
-**Production (Vercel):** add it under **Project → Settings → Environment Variables**
-(`GEMINI_API_KEY`), then redeploy. Nothing else changes — the same code reads
-`process.env.GEMINI_API_KEY`.
+**Production (Vercel):** add them under **Project → Settings → Environment Variables**
+(`ANTHROPIC_API_KEY`, etc.), then redeploy. Nothing else changes — the same code reads
+`process.env`.
 
 ---
 
@@ -87,12 +90,12 @@ from the records below.
 
 | Source | URL pattern | What it provides |
 | --- | --- | --- |
-| **LEGISinfo — per‑bill detail JSON** | `https://www.parl.ca/legisinfo/en/bill/{session}/{number}/json` | The rich record for one bill: House / Senate / Royal Assent stages, committees, sittings, recorded divisions, sponsor, status, publications, statute citation, summary. |
-| **LEGISinfo — bulk per‑session JSON** | `https://www.parl.ca/legisinfo/en/bills/json?parlsession={session}` | One call returns every bill in a session with sponsor, current status, and latest activity — used to enrich thousands of older bills cheaply. |
-| **parl.ca DocumentViewer → structured bill XML** | `https://www.parl.ca/DocumentViewer/en/{publicationId}` (embeds a link to `…_E.xml`) | The official structured XML of the bill, parsed into ordered clauses (the full clause‑by‑clause text). |
-| **OpenParliament API** | `https://api.openparliament.ca/bills/?format=json` | A lightweight cross‑session index of every bill in Parliament's history, plus a flag for which became law. |
+| **LEGISinfo — per-bill detail JSON** | `https://www.parl.ca/legisinfo/en/bill/{session}/{number}/json` | The rich record for one bill: House / Senate / Royal Assent stages, committees, sittings, recorded divisions, sponsor, status, publications, statute citation, summary. |
+| **LEGISinfo — bulk per-session JSON** | `https://www.parl.ca/legisinfo/en/bills/json?parlsession={session}` | One call returns every bill in a session with sponsor, current status, and latest activity — used to enrich thousands of older bills cheaply. |
+| **parl.ca DocumentViewer → structured bill XML** | `https://www.parl.ca/DocumentViewer/en/{publicationId}` (embeds a link to `…_E.xml`) | The official structured XML of the bill, parsed into ordered clauses (the full clause-by-clause text). |
+| **OpenParliament API** | `https://api.openparliament.ca/bills/?format=json` | A lightweight cross-session index of every bill in Parliament's history, plus a flag for which became law. |
 
-All fetchers send a descriptive user‑agent and retry with backoff. Because parl.ca and
+All fetchers send a descriptive user-agent and retry with backoff. Because parl.ca and
 OpenParliament serve over TLS chains Node's bundled CA set does not always trust, the
 network scripts must run with **`node --use-system-ca`**.
 
@@ -101,34 +104,43 @@ network scripts must run with **`node --use-system-ca`**.
 Scripts live in `scripts/`. The first group writes intermediates under `data/`; the last
 three fold everything into the committed snapshot at `server/data/bills.json`.
 
-1. **`fetch-bill-metadata.mjs`** — fetches the LEGISinfo per‑bill detail JSON for the current session and caches it at `data/bills/45-1/{NUMBER}/metadata.json` (the authoritative source for the legislative path).
-2. **`fetch-bill-texts.mjs`** — for each bill, opens its DocumentViewer page, extracts the structured‑XML link, downloads it, and parses it into ordered clauses (`bill.xml` + `bill.normalized.json`).
+1. **`fetch-bill-metadata.mjs`** — fetches the LEGISinfo per-bill detail JSON for the current session and caches it at `data/bills/45-1/{NUMBER}/metadata.json` (the authoritative source for the legislative path).
+2. **`fetch-bill-texts.mjs`** — for each bill, opens its DocumentViewer page, extracts the structured-XML link, downloads it, and parses it into ordered clauses (`bill.xml` + `bill.normalized.json`).
 3. **`fetch-all-sessions.mjs`** — pages the OpenParliament `/bills/` endpoint for every bill across all 16 sessions and writes `data/all-sessions.json`.
-4. **`fetch-sessions-detail.mjs`** — calls the LEGISinfo bulk per‑session JSON (one request per session) for real sponsor, precise status, and latest activity → `data/sessions-detail.json`.
+4. **`fetch-sessions-detail.mjs`** — calls the LEGISinfo bulk per-session JSON (one request per session) for real sponsor, precise status, and latest activity → `data/sessions-detail.json`.
 5. **`build-bills-snapshot.ts`** — bakes legislative path, recorded divisions, sponsor, statute citation, summary, dates, status/momentum, and the full clause text into `server/data/bills.json` for the current session. Bill **ids are never changed** and curated demo bills are preserved.
-6. **`merge-all-sessions.ts`** — folds `all-sessions.json` into the snapshot as lightweight records for every session/number not already present (status, source URL, practice‑area tags). The rich current‑session set is never overwritten.
-7. **`enrich-bills.ts`** — overlays `sessions-detail.json` onto those cross‑session bills (real sponsor, precise status, momentum).
+6. **`merge-all-sessions.ts`** — folds `all-sessions.json` into the snapshot as lightweight records for every session/number not already present (status, source URL, practice-area tags). The rich current-session set is never overwritten.
+7. **`enrich-bills.ts`** — overlays `sessions-detail.json` onto those cross-session bills (real sponsor, precise status, momentum).
 
-Result: `server/data/bills.json` holds **5,694 bills across 16 sessions** (45‑1 is the
+Result: `server/data/bills.json` holds **5,694 bills across 16 sessions** (45-1 is the
 current session). 160 carry full clause text and a parsed legislative path; the rest are
 searchable index records with real sponsor / status / momentum.
 
 ### How each field is derived
 
-- **Bill text / clauses** — from the official DocumentViewer XML: `<Section>` → clause number, marginal‑note heading, body text, and every `<XRefExternal reference-type="act">` as the Acts that clause amends.
-- **Sponsor** — `sponsorFrom()` in `src/lib/legislativePath.ts` (name, honorific, role, constituency, party). Cross‑session bills get their sponsor from the bulk per‑session JSON.
+- **Bill text / clauses** — from the official DocumentViewer XML: `<Section>` → clause number, marginal-note heading, body text, and every `<XRefExternal reference-type="act">` as the Acts that clause amends.
+- **Sponsor** — `sponsorFrom()` in `src/lib/legislativePath.ts` (name, honorific, role, constituency, party). Cross-session bills get their sponsor from the bulk per-session JSON.
 - **Status & momentum** — `status` is LEGISinfo's status text; the coarse `legislativeMomentum` bucket (`early → active → advanced → passed → in_force`) is computed by `mapMomentum()` in `server/services/billNormalizer.ts`.
 - **Legislative path** — `parseBillDetail()` in `src/lib/legislativePath.ts` normalizes the House, Senate, and Royal Assent stages into an ordered timeline (stage, state, date, committee, sittings, recorded divisions with yeas / nays / paired).
-- **Practice‑area tags** — `derivePracticeAreas()` in `src/lib/practiceAreas.ts`, a deterministic keyword classifier (no model calls) mapping each bill to BCF practice groups.
+- **Practice-area tags** — `derivePracticeAreas()` in `src/lib/practiceAreas.ts`, a deterministic keyword classifier (no model calls) mapping each bill to BCF practice groups.
+
+### The legal corpus (two-sided diffs)
+
+Stage 2 resolves each amendment against the consolidated Act it edits. All **964 federal
+Acts** are registered in `data/laws/registry.json` and served from Vercel Blob;
+`server/services/lawProvisions.ts` reads the local file first (dev + the 5 bundled demo
+Acts), then `acts/<slug>.json` from Blob via the committed `data/laws/blob-manifest.json`.
+Re-ingest with `scripts/ingest-acts.mjs --all --write-registry` and re-upload with
+`scripts/upload-acts-blob.mjs` (needs `BLOB_READ_WRITE_TOKEN`).
 
 ### The committed snapshot and online hydration
 
-`server/data/bills.json` (plus `clients.json`, `lawVersions.json`, `baseLaws.json`) is
-committed to the repo — the complete curated state the app serves. `jsonStore.ts` reads
-and writes `server/data/` locally, and `/tmp/ingenium-data` on Vercel (the only writable
-path). On a cold start, `seedDemo()` calls `hydrateFromSnapshot()`, which copies the
-committed snapshot into `/tmp`. **Production serves the identical 5,694‑bill state with no
-seed/build step at request time, no database, and no keys required.**
+`server/data/bills.json` (plus `clients.json`, `lawVersions.json`) is committed to the
+repo — the curated state the app serves. `jsonStore.ts` reads and writes `server/data/`
+locally, and `/tmp/ingenium-data` on Vercel (the only writable path). On a cold start,
+`seedDemo()` calls `hydrateFromSnapshot()`, which copies the committed snapshot into
+`/tmp`. **Production serves the identical 5,694-bill state with no seed/build step at
+request time, no database, and no keys required.**
 
 ### Refreshing the data
 
@@ -148,6 +160,19 @@ session to add.)
 
 ---
 
+## Testing & evaluation
+
+Two isolated harnesses, both kept out of the app's own package:
+
+- **`e2e/` — Playwright (keyless, deterministic, CI).** Boots its own dev stack with the AI keys blanked, so every assertion rides the deterministic fallbacks. `e2e/README.md` is the authoritative contract (the `data-testid` surface, endpoint shapes, seed/teardown).
+  ```bash
+  cd e2e && npm install && npx playwright install chromium   # once
+  npx playwright test                                        # ports 5173/8787 must be free
+  ```
+- **`eval/` — lawyer-gold benchmark (keyed).** Grades stages 3–4 against a practicing BCF lawyer's answer key (7 company × bill pairs) by running the real Anthropic output against your **keyed** local server, emitting side-by-side reports to `eval/out/`. See `eval/README.md`.
+
+---
+
 ## Deployment
 
 Production runs on Vercel as a serverless function. Deploy from the repo root:
@@ -157,59 +182,39 @@ npx vercel deploy --prod --yes
 ```
 
 The build runs `npm run build`; the API is served from `api/index.ts`. To enable live AI,
-set `GEMINI_API_KEY` in the Vercel project's Environment Variables first.
+set `ANTHROPIC_API_KEY` in the Vercel project's Environment Variables first.
 
 ---
 
-## Repository workflow (two repos)
+## Repository workflow
 
-There are two GitHub repositories:
-
-- **`origin` → `danirolam/ingenium-bcf`** — **your** repository. This is where your work
-  and your full commit history live, and it is the repository connected to Vercel.
-- **`team` → `Lil-Chen05/project-injenium`** — the **shared team** repository (think of it
-  as the upstream everyone collaborates through). It is not a different kind of object —
-  it is just another GitHub repo; your repo relates to it the way a fork relates to its
-  upstream.
-
-Your default branch is **`master`**. The remotes are already configured:
+This repository is **`Lil-Chen05/project-injenium`**; its default branch is **`main`**,
+and `origin` points at it:
 
 ```bash
 git remote -v
-# origin  https://github.com/danirolam/ingenium-bcf.git   (yours — branch: master)
-# team    https://github.com/Lil-Chen05/project-injenium.git  (shared — branch: main)
+# origin  https://github.com/Lil-Chen05/project-injenium.git  (fetch / push)
 ```
 
-> Your repo uses `master`; the team repo uses `main`. That difference is fine — git
-> maps them explicitly in the sync commands below.
-
-### Day to day — work on your repo
+Work happens on short-lived feature branches off `main`, landed through pull requests:
 
 ```bash
-git add -A
-git commit -m "…"
-git push origin master      # your history; this is what deploys
+git switch -c my-feature origin/main          # branch off the current main
+# …commit your work…
+git push -u origin my-feature                 # publish the branch
+gh pr create --base main --head my-feature    # open a PR (or use the GitHub web UI)
 ```
 
-### Pull in what the team did on the shared repo
+After the PR merges, sync local main and prune the merged branch:
 
 ```bash
-git fetch team
-git merge team/main         # or: git rebase team/main — merges their main into your master
-# resolve any conflicts, then
-git push origin master
+git switch main && git pull    # fast-forward to the merged state
+git branch -d my-feature       # delete the merged local branch
 ```
 
-### Push your work up to the shared team repo
-
-```bash
-git push team master:main                      # push your master onto the team's main, or
-git push team master:feature/your-change       # then open a Pull Request on the team repo
-```
-
-This keeps a clean separation: you always work and deploy from your own repo with your own
-history, you can pull the team's progress in whenever you want, and you can hand work back
-to the team without losing your independent timeline.
+The stage 1–2 engine (bill monitoring + legal delta) is also developed on the `jim/delta`
+branch. Keep stage-specific edits in their own modules (see `CLAUDE.md` → "Stage
+ownership") so parallel branches merge cleanly.
 
 ---
 
@@ -217,15 +222,19 @@ to the team without losing your independent timeline.
 
 ```
 src/                 React SPA
-  pages/             Monitor, BillDetail, DeltaWorkspace, ClientLawScanner, ClientImpactAnalysis, Overview, Landing
-  components/        WorkflowNav, Tooltip, DiffViewer, badges, StatsRibbon, …
-  lib/               legislativePath, practiceAreas, api, export, utils
+  pages/             BillMonitor, BillDetail, DeltaWorkspace, delta/DeltaReview,
+                     ClientLawScanner, ClientImpactAnalysis, Overview, Landing
+  components/        WorkflowNav, BriefPicker, ImpactScale, Tooltip, DiffViewer, badges, …
+  lib/               routes, workflow, api, clientScan, legislativePath, practiceAreas, export
   styles/            design system (injenium.css) + per-area CSS
 server/              Express API
-  routes/            bills (incl. extract-delta), clientImpact, …
-  services/          jsonStore (hydration), gemini (optional), email, billNormalizer
+  routes/            bills (incl. provision-delta), clientImpact, clients, lawVersions
+  services/          jsonStore (hydration), claude (primary AI), gemini (legacy),
+                     clientScan{,Core}, scalpel, lawProvisions, aiBudget, email, billNormalizer
   seed/              seedDemo (hydrateFromSnapshot on boot)
   data/              committed JSON snapshot (5,694 bills, clients, law versions)
-scripts/             data-fetch + snapshot-build pipeline
+scripts/             data-fetch + snapshot-build pipeline; Act-corpus ingest/upload
+e2e/                 Playwright suite (keyless, isolated package)
+eval/                lawyer-gold benchmark for stages 3–4 (keyed)
 api/index.ts         Vercel serverless entry
 ```
