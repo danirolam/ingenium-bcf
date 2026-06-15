@@ -30,6 +30,30 @@ open eval/out/INDEX.md
 `eval/out/` is generated (gitignored). Cost per run ≈ 35 scorer calls (~600 tokens each) + 7 briefs
 (~10k tokens each).
 
+## Stage-2 fidelity (generated delta vs gold)
+
+`run-eval.ts` above *trusts* the seeded delta and grades stages 3-4. The stage-2 fidelity eval does
+the opposite: it runs the **real** stage-1/2 pipeline on the 5 bills and scores its output against
+the same gold, so you can see whether the pipeline reproduces the hand-authored deltas.
+
+```bash
+# Needs the KEYED server up (npm run dev). From the repo root:
+npx tsx eval/run-delta-eval.ts            # default base http://localhost:8787
+npx tsx eval/run-delta-eval.ts --selftest # score gold vs gold (no server) → must be 100%
+open eval/out/delta-INDEX.md
+```
+
+It POSTs `…/provision-delta?refresh=1` per bill, scores the response op-by-op (joined by normalized
+`anchor`), and writes `delta-INDEX.md` (scoreboard) + `delta__<billNumber>.md` (gold op ↔ generated
+op). Two recalls are reported because they fail differently: **anchor recall** (gold ops placed at
+the right provision) vs **content recall** (gold ops whose text was produced anywhere in the Act,
+anchor-agnostic). High content + low anchor ⇒ an anchoring bug; low content ⇒ an interpretation gap.
+
+**Non-destructive:** `?refresh=1` overwrites the bill's record in `provisionDeltas.json`; the runner
+snapshots the 5 gold records up front and restores them on exit (it prints `faithful ✓`). If it ever
+prints a mismatch, re-run `npx tsx eval/seed-eval.ts`. The pure scorer lives in `delta-score.ts`
+(imports nothing from `server/`, so the leakage contract holds).
+
 ## The 7 pairs
 
 The client→bill pairing is the **answer** — it is withheld from `clients.json` and lives only in
@@ -81,6 +105,8 @@ low even on its own assigned bill.
 | `gold/profiles.json` | The lawyer's **answer key** (per client: assigned bill + impact + services). |
 | `seed-eval.ts` | Writes the fixtures to the stores + upserts the clients. Idempotent. |
 | `run-eval.ts` | Drives the keyed server; writes the matrix + side-by-sides to `out/`. |
+| `delta-score.ts` | **Pure** stage-2 fidelity scorer (generated `ProvisionDelta[]` vs gold). No `server/` import. |
+| `run-delta-eval.ts` | Runs the real pipeline (`?refresh=1`) on the 5 bills, scores it, writes `delta-INDEX.md` + per-bill side-by-sides. Non-destructive. |
 
 ## Gold cleaning log
 
