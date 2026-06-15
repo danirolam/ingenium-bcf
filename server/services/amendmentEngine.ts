@@ -45,6 +45,10 @@ export interface DiffRow {
 
 export const squish = (s: string) => (s ?? "").replace(/\s+/g, " ").trim();
 
+/** Sentinel anchor for "The <Act> is repealed." — names no provision, so it
+ *  repeals every provision of the Act (a whole-Act repeal). */
+export const WHOLE_ACT = "__whole_act__";
+
 // Normalize a provision label/anchor for matching: drop the word "section" etc.
 // and whitespace so "section 2.4", "Section 2.4", "2.4" all compare equal.
 export function normLabel(s: string | null | undefined): string {
@@ -134,6 +138,7 @@ export function findByPath(
 // container instead of a single row.
 export function findAllUnder(provisions: Provision[], anchorLabel: string | null): number[] {
   if (!anchorLabel) return [];
+  if (anchorLabel === WHOLE_ACT) return provisions.map((_, i) => i); // whole-Act repeal
   if (/^\s*schedule\b/i.test(anchorLabel)) {
     const want = normLabel(anchorLabel); // "Schedule IV" → "scheduleiv"
     return provisions.flatMap((p, i) => (normLabel(p.heading ?? "") === want ? [i] : []));

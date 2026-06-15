@@ -6,7 +6,7 @@
 //   </Section>
 // So we read the OPERATION + ANCHOR from the instruction <Text> (regex), and
 // pull the inserted provisions verbatim from <AmendedText> (no AI generation).
-import { findAllUnder, findByPath, labelToPath, provKey, type Provision } from "./amendmentEngine.js";
+import { findAllUnder, findByPath, labelToPath, provKey, WHOLE_ACT, type Provision } from "./amendmentEngine.js";
 import { resolveActSlug, type RegistryEntry } from "./seedSource.js";
 
 const ENT: Record<string, string> = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " " };
@@ -196,7 +196,7 @@ const REF = "([0-9]+(?:\\.[0-9]+)*[A-Za-z]?(?:\\([^)]+\\))*|\\([^)]+\\))";
 function parseInstruction(text: string): { op: "add" | "replace" | "repeal"; anchor: string | null; position: "after" | "before" | null } {
   // The container being amended ("Subsection 30(1) of the Act…") prefixes a bare
   // leaf anchor, so "after paragraph (j)" of subsection 30(1) -> "30(1)(j)".
-  const container = text.match(/\b(?:sections?|subsections?)\s+([0-9]+(?:\.[0-9]+)*(?:\([^)]+\))*)\s+of\b/i)?.[1] ?? "";
+  const container = text.match(/\b(?:sections?|subsections?|paragraphs?|subparagraphs?)\s+([0-9]+(?:\.[0-9]+)*(?:\([^)]+\))*)\s+of\b/i)?.[1] ?? "";
   const compose = (ref: string | null) =>
     ref && /^\(/.test(ref) && container ? container + ref : ref;
   const firstRef = () =>
@@ -205,7 +205,11 @@ function parseInstruction(text: string): { op: "add" | "replace" | "repeal"; anc
   const sched = text.match(/\bschedule\s+(?:[IVXLCDM]+|[0-9]+[A-Za-z]?)\b/i)?.[0] ?? null;
 
   if (/replaced by the following/i.test(text)) return { op: "replace", anchor: sched ?? compose(firstRef()), position: null };
-  if (/\b(?:is|are)\s+repealed\b/i.test(text)) return { op: "repeal", anchor: sched ?? compose(firstRef()), position: null };
+  if (/\b(?:is|are)\s+repealed\b/i.test(text)) {
+    const ref = sched ?? compose(firstRef());
+    // "The <Act> is repealed." names no provision — repeal the whole Act.
+    return { op: "repeal", anchor: ref ?? (/\bact\b/i.test(text) ? WHOLE_ACT : null), position: null };
+  }
   let m = text.match(new RegExp(`adding the following after (?:section|subsection|paragraph|subparagraph|clause)\\s+${REF}`, "i"));
   if (m) return { op: "add", anchor: compose(m[1]), position: "after" };
   m = text.match(new RegExp(`adding the following before (?:section|subsection|paragraph|subparagraph|clause)\\s+${REF}`, "i"));
