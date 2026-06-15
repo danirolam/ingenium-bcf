@@ -4,6 +4,7 @@ import {
   faArrowRight,
   faChevronDown,
   faListCheck,
+  faMagnifyingGlass,
   faPen,
   faPlay,
   faPlus,
@@ -108,6 +109,8 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
   const [selectedClientIds, setSelectedClientIds] = useState<Set<string>>(
     () => new Set(),
   );
+  const [clientQuery, setClientQuery] = useState(""); // pre-scan client picker search
+  const [billQuery, setBillQuery] = useState(""); // ready-to-scan list search
   const [modal, setModal] = useState<
     null | { mode: "create" } | { mode: "edit"; client: Client }
   >(null);
@@ -256,8 +259,23 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
   }, [selectedBillId, readyBills]);
 
   // ── Client selection ──
+  // Pre-scan picker: filter by name/industry, ordered A→Z. (The post-scan
+  // scoreboard keeps its server score-ranking — this only sorts the picker.)
+  const clientQ = clientQuery.trim().toLowerCase();
+  const visibleClients = [...clients]
+    .filter(
+      (c) =>
+        !clientQ ||
+        c.name.toLowerCase().includes(clientQ) ||
+        (c.industry ?? "").toLowerCase().includes(clientQ),
+    )
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  // "Select all" operates on the VISIBLE set, so it never silently selects
+  // clients hidden by the search.
   const allSelected =
-    clients.length > 0 && clients.every((c) => selectedClientIds.has(c.id));
+    visibleClients.length > 0 &&
+    visibleClients.every((c) => selectedClientIds.has(c.id));
 
   function toggleClient(id: string) {
     if (scanning) return;
@@ -271,10 +289,25 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
 
   function toggleAllClients() {
     if (scanning) return;
-    setSelectedClientIds(
-      allSelected ? new Set() : new Set(clients.map((c) => c.id)),
-    );
+    setSelectedClientIds((prev) => {
+      const next = new Set(prev);
+      if (allSelected) for (const c of visibleClients) next.delete(c.id);
+      else for (const c of visibleClients) next.add(c.id);
+      return next;
+    });
   }
+
+  // Ready-to-scan search (keeps the API's newest-first order).
+  const billQ = billQuery.trim().toLowerCase();
+  const filteredReady = billQ
+    ? readyBills.filter(
+        (b) =>
+          b.billNumber.toLowerCase().includes(billQ) ||
+          b.title.toLowerCase().includes(billQ) ||
+          (b.shortTitle?.toLowerCase().includes(billQ) ?? false) ||
+          b.actTitles.some((t) => t.toLowerCase().includes(billQ)),
+      )
+    : readyBills;
 
   // ── Client CRUD ──
   function onModalSaved(c: Client, mode: "create" | "edit") {
@@ -504,6 +537,25 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                 {allSelected ? "Clear all" : "Select all"}
               </button>
             </div>
+            {clientsLoaded && clients.length > 0 && (
+              <div className="client-search-wrap">
+                <div className="search">
+                  <FontAwesomeIcon
+                    icon={faMagnifyingGlass}
+                    className="search-icon"
+                    aria-hidden="true"
+                  />
+                  <input
+                    type="search"
+                    data-testid="client-search"
+                    value={clientQuery}
+                    onChange={(e) => setClientQuery(e.target.value)}
+                    placeholder="Search clients"
+                    aria-label="Search clients"
+                  />
+                </div>
+              </div>
+            )}
             <div className="client-list" data-testid="client-list">
               {!clientsLoaded && (
                 <div className="empty-small">Loading clients…</div>
@@ -513,7 +565,14 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                   No clients yet — add one with “New client”.
                 </div>
               )}
-              {clients.map((c) => {
+              {clientsLoaded &&
+                clients.length > 0 &&
+                visibleClients.length === 0 && (
+                  <div className="empty-small">
+                    No clients match “{clientQuery}”.
+                  </div>
+                )}
+              {visibleClients.map((c) => {
                 const selected = selectedClientIds.has(c.id);
                 const confirming = confirmDeleteId === c.id;
                 return (
@@ -609,7 +668,13 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                   <FontAwesomeIcon icon={faListCheck} aria-hidden="true" />
                   <div className="card-title">Ready to scan</div>
                 </div>
-                <span className="cs-count">({readyBills.length})</span>
+                <span className="cs-count">
+                  (
+                  {filteredReady.length === readyBills.length
+                    ? readyBills.length
+                    : `${filteredReady.length} of ${readyBills.length}`}
+                  )
+                </span>
               </div>
               <div className="card-pad">
                 {!readyLoaded && (
@@ -630,11 +695,31 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                   </div>
                 )}
                 {readyLoaded && readyBills.length > 0 && (
+                  <div className="bpg-search" style={{ marginBottom: 12 }}>
+                    <FontAwesomeIcon icon={faMagnifyingGlass} aria-hidden="true" />
+                    <input
+                      type="search"
+                      data-testid="ready-bill-search"
+                      value={billQuery}
+                      onChange={(e) => setBillQuery(e.target.value)}
+                      placeholder="Search bills by number, title, or Act…"
+                      aria-label="Search ready bills"
+                    />
+                  </div>
+                )}
+                {readyLoaded &&
+                  readyBills.length > 0 &&
+                  filteredReady.length === 0 && (
+                    <div className="empty-small">
+                      No bills match “{billQuery}”.
+                    </div>
+                  )}
+                {readyLoaded && filteredReady.length > 0 && (
                   <div
                     className="lpg-grid bpg-grid"
                     data-testid="ready-bill-list"
                   >
-                    {readyBills.map((b) => {
+                    {filteredReady.map((b) => {
                       const isActive = b.billId === selectedBillId;
                       return (
                         <div
