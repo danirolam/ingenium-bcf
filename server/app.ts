@@ -5,6 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { billsRouter } from "./routes/bills.js";
+import { deltaIndexRouter } from "./routes/deltaIndex.js";
 import { lawVersionsRouter } from "./routes/lawVersions.js";
 import { clientsRouter } from "./routes/clients.js";
 import { clientImpactRouter } from "./routes/clientImpact.js";
@@ -64,6 +65,7 @@ export async function createApp(): Promise<Express> {
     }),
   );
   app.use("/api/bills", billsRouter);
+  app.use("/api/provision-deltas", deltaIndexRouter);
   app.use("/api/law-versions", lawVersionsRouter);
   app.use("/api/clients", clientsRouter);
   app.use("/api/client-impact", clientImpactRouter);

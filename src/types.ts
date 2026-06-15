@@ -208,6 +208,10 @@ export interface ActProvision {
   text: string;
   /** Structured hierarchy path (section → subsection → paragraph → …). */
   path?: { kind: string; label: string }[];
+  /** Optional display layout from the formatter agent: the provision split into
+   *  its statute lines (subsection/paragraph/subparagraph), each with a depth.
+   *  Absent ⇒ render the flat `text`. Display-only — does not affect scoring. */
+  lines?: { depth: number; text: string }[];
 }
 
 export interface ProvisionDiffRow {
@@ -258,4 +262,27 @@ export interface ProvisionDelta {
   /** True when an AI call was cut short (rate limit / failure) so this Act's
    *  changes may be partial. */
   incomplete?: boolean;
+}
+
+/** One row in the Stage-2 "Delta Library" — a bill that already has a generated
+ *  provision delta (GET /api/provision-deltas). The symmetric mirror of the
+ *  Stage-4 brief index entry. */
+export interface DeltaIndexEntry {
+  billId: string;
+  billNumber: string;
+  billTitle: string;
+  billShortTitle?: string;
+  session?: string;
+  momentum: LegislativeMomentum;
+  practiceAreas: string[];
+  /** Titles of the Acts this bill amends (one per affected Act in the delta). */
+  actTitles: string[];
+  /** Total amendment operations across all affected Acts. */
+  opCount: number;
+  /** How many of those ops counsel has approved (for the approved/needs-review tag). */
+  approvedOpCount: number;
+  summary: { added: number; changed: number; repealed: number };
+  source?: "bill-xml" | "ai-assisted" | "ai";
+  /** ISO timestamp the delta was computed/cached. */
+  generatedAt: string;
 }
