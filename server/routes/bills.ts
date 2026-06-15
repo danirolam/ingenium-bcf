@@ -21,6 +21,7 @@ import {
   diffSummary,
   findByPath,
   provKey,
+  slimUnchangedText,
 } from "../services/amendmentEngine.js";
 import { interpretAmendmentsClaude } from "../services/claude.js";
 import { applyGroups, parseBillAmendments } from "../services/billAmendments.js";
@@ -469,10 +470,11 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
         }
 
         const rows = diffProvisions(actData.provisions, after);
+        const operations = attachRowLinks(slug, verified, rows);
         return {
           slug: actData.slug, title: actData.title, citation: actData.citation,
-          summary: diffSummary(rows), operations: attachRowLinks(slug, verified, rows),
-          rows,
+          summary: diffSummary(rows), operations,
+          rows: slimUnchangedText(rows, operations),
           source: usedAi ? "ai-assisted" : "bill-xml",
           incomplete,
         };
@@ -498,7 +500,7 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
       return {
         slug: actData.slug, title: actData.title, citation: actData.citation,
         summary: diffSummary(rows), operations: verified,
-        rows,
+        rows: slimUnchangedText(rows, verified),
         source: "ai",
         incomplete: "incomplete" in ai ? ai.incomplete : false,
       };

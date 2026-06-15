@@ -273,6 +273,40 @@ export function diffProvisions(before: Provision[], after: Provision[]): DiffRow
   return rows;
 }
 
+// The delta carries EVERY provision as a row (the UI windows around changes; the
+// PDF export renders the whole amended Act). For a multi-thousand-provision Act
+// (Income Tax, Criminal Code) that is a 50MB+ response and cache record. For such
+// HUGE Acts only, blank the `text` of UNCHANGED provisions outside each op's
+// window — keeping label/marginalNote/path so structure + headers still render,
+// and keeping every changed/added/repealed row's text in full. The rows array and
+// its indices are PRESERVED (no re-indexing), so producedRowIndices /
+// contextRowIndices and stage-3/4's row lookups stay valid. Normal-size Acts pass
+// through untouched. Trade-off, for huge Acts only: deep "show more" context and
+// the full-Act PDF render far-unchanged provisions label-only.
+const SLIM_TEXT_THRESHOLD = 6_000_000; // total before+after chars above which we slim
+const SLIM_WINDOW = 12; // keep full text ±this around each produced row (UI's BASE is 10)
+export function slimUnchangedText(rows: DiffRow[], ops: ReadonlyArray<unknown>): DiffRow[] {
+  let total = 0;
+  for (const r of rows) total += (r.before?.text?.length ?? 0) + (r.after?.text?.length ?? 0);
+  if (total <= SLIM_TEXT_THRESHOLD) return rows; // normal Act — untouched
+
+  const keep = new Set<number>();
+  // Path A ops carry producedRowIndices/contextRowIndices (attachRowLinks); Path B
+  // VerifiedOps don't — that's fine, their changed rows are kept by status below.
+  for (const op of ops as ReadonlyArray<{ producedRowIndices?: number[]; contextRowIndices?: number[] }>) {
+    for (const i of op.contextRowIndices ?? []) keep.add(i);
+    for (const pi of op.producedRowIndices ?? []) {
+      for (let j = pi - SLIM_WINDOW; j <= pi + SLIM_WINDOW; j++) {
+        if (j >= 0 && j < rows.length) keep.add(j);
+      }
+    }
+  }
+  const blank = (p?: Provision): Provision | undefined => (p ? { ...p, text: "" } : p);
+  return rows.map((r, i) =>
+    r.status === "unchanged" && !keep.has(i) ? { ...r, before: blank(r.before), after: blank(r.after) } : r,
+  );
+}
+
 // Resolve each op's produced provisions to indices into `rows` and a ±contextN
 // document-order window, and stamp the stable approval `key` ("<slug>#<i>").
 // Rows must be in document order (diffProvisions guarantees it). This is the one
