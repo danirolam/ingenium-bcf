@@ -175,7 +175,16 @@ export function ProvisionDiff({ delta, op }: { delta: ProvisionDelta; op: BillAm
   for (const w of pairReplacements(items, produced)) {
     const h = provOf(w.row)?.heading ?? null;
     if (h && h !== prevHeading) {
-      windowRows.push(<div className="dr-diff-heading" key={`h-${w.key}`}>{h}</div>);
+      // The Part/Division title, mirrored across the split like every other row —
+      // blanked on the side where the section doesn't exist (added → not in Current,
+      // repealed → not in As amended).
+      const st = w.row.status;
+      windowRows.push(
+        <div className="dr-heading-row" key={`h-${w.key}`}>
+          <div className={`dr-heading-cell${st === "added" ? " is-empty" : ""}`}>{st === "added" ? "" : h}</div>
+          <div className={`dr-heading-cell${st === "repealed" ? " is-empty" : ""}`}>{st === "repealed" ? "" : h}</div>
+        </div>,
+      );
     }
     prevHeading = h;
     windowRows.push(<SplitRow key={w.key} row={w.row} focus={w.focus} baseDepth={baseDepth} />);
