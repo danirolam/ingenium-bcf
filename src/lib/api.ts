@@ -5,6 +5,7 @@ import type {
   ClientImpactAnalysis,
   DeltaIndexEntry,
   LawVersion,
+  LocatorTrace,
   ProvisionDelta,
 } from "../types";
 
@@ -49,6 +50,8 @@ export const api = {
         deltas: ProvisionDelta[];
         errors: string[];
         failures?: AmendmentFailure[];
+        /** The AI's locating steps per amendment, for the Inspect panel. */
+        traces?: LocatorTrace[];
         cached?: boolean;
         computedAt?: string;
         aiIncomplete?: boolean;

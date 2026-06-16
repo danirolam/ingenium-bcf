@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "./api";
-import type { AmendmentFailure, Bill, ProvisionDelta } from "../types";
+import type { AmendmentFailure, Bill, LocatorTrace, ProvisionDelta } from "../types";
 
 export interface ProvisionDeltaState {
   bill: Bill | null;
@@ -8,6 +8,8 @@ export interface ProvisionDeltaState {
   errors: string[];
   /** Amendments the locator couldn't place — shown subtly, never dropped. */
   failures: AmendmentFailure[];
+  /** The AI's locating steps per amendment, for the Inspect panel. */
+  traces: LocatorTrace[];
   cached: boolean;
   /** An AI call was cut short (rate limit / failure) so the result may be partial. */
   incomplete: boolean;
@@ -30,6 +32,7 @@ export function useProvisionDelta(billId: string | null): ProvisionDeltaState {
   const [deltas, setDeltas] = useState<ProvisionDelta[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
   const [failures, setFailures] = useState<AmendmentFailure[]>([]);
+  const [traces, setTraces] = useState<LocatorTrace[]>([]);
   const [cached, setCached] = useState(false);
   const [incomplete, setIncomplete] = useState(false);
   const [incompleteReason, setIncompleteReason] = useState<"rate-limit" | "ai-error" | null>(null);
@@ -47,7 +50,7 @@ export function useProvisionDelta(billId: string | null): ProvisionDeltaState {
 
   useEffect(() => {
     if (!billId) {
-      setBill(null); setDeltas([]); setErrors([]); setFailures([]); setRateLimited(0);
+      setBill(null); setDeltas([]); setErrors([]); setFailures([]); setTraces([]); setRateLimited(0);
       setLoading(false); setRefreshing(false);
       return;
     }
@@ -68,6 +71,7 @@ export function useProvisionDelta(billId: string | null): ProvisionDeltaState {
         setDeltas(res.deltas ?? []);
         setErrors(res.errors ?? []);
         setFailures(res.failures ?? []);
+        setTraces(res.traces ?? []);
         setCached(!!res.cached);
         setIncomplete(!!res.aiIncomplete);
         setIncompleteReason(res.aiIncompleteReason ?? null);
@@ -83,5 +87,5 @@ export function useProvisionDelta(billId: string | null): ProvisionDeltaState {
     // forceRef is read, not a dep; nonce drives forced re-runs.
   }, [billId, nonce]);
 
-  return { bill, deltas, errors, failures, cached, incomplete, incompleteReason, rateLimited, loading, refreshing, recompute };
+  return { bill, deltas, errors, failures, traces, cached, incomplete, incompleteReason, rateLimited, loading, refreshing, recompute };
 }

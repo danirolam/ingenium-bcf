@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Nav } from "../App";
 import { DeltaLibrary } from "../components/DeltaLibrary";
+import { InspectPanel } from "../components/delta/InspectPanel";
 import { useApprovals } from "../lib/useApprovals";
 import { useProvisionDelta } from "../lib/useProvisionDelta";
 import { DeltaReview } from "./delta/DeltaReview";
@@ -13,6 +14,7 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
   const billId = nav.params.billId ?? null;
   const delta = useProvisionDelta(billId);
   const approvals = useApprovals(billId);
+  const [inspectOpen, setInspectOpen] = useState(false);
 
   // A finished recompute clears approvals server-side (new delta ⇒ new placements
   // to approve) — re-pull so the UI shows them reset.
@@ -54,6 +56,14 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
           )}
           <button
             className="btn ghost sm"
+            onClick={() => setInspectOpen(true)}
+            disabled={delta.deltas.length === 0 && delta.traces.length === 0}
+            title="Watch how the AI located each amendment"
+          >
+            Inspect
+          </button>
+          <button
+            className="btn ghost sm"
             onClick={delta.recompute}
             disabled={delta.refreshing || delta.loading}
           >
@@ -91,6 +101,8 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
           toast={nav.toast}
         />
       )}
+
+      {inspectOpen && <InspectPanel traces={delta.traces} onClose={() => setInspectOpen(false)} />}
     </div>
   );
 }

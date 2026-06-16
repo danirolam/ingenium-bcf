@@ -358,11 +358,11 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
 
   try {
   // Cache: a bill's delta is computed once, then served instantly. ?refresh=1 recomputes.
-  type CachedDelta = { id: string; deltas: unknown[]; errors: string[]; failures: unknown[]; createdAt: string };
+  type CachedDelta = { id: string; deltas: unknown[]; errors: string[]; failures: unknown[]; traces?: unknown[]; createdAt: string };
   if (req.query.refresh !== "1") {
     const cached = await findById<CachedDelta>(FILES.provisionDeltas, bill.id);
     if (cached) {
-      return res.json({ deltas: cached.deltas, errors: cached.errors, failures: cached.failures ?? [], cached: true, computedAt: cached.createdAt });
+      return res.json({ deltas: cached.deltas, errors: cached.errors, failures: cached.failures ?? [], traces: cached.traces ?? [], cached: true, computedAt: cached.createdAt });
     }
   }
 
@@ -404,7 +404,7 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
     catalog: Object.entries(registry).map(([slug, entry]) => ({ slug, title: entry.title })),
   };
   const aiBudget = createAiBudget();
-  const { located, failures, incomplete } = await locateAmendments(units, ctx, aiBudget);
+  const { located, failures, incomplete, traces } = await locateAmendments(units, ctx, aiBudget);
 
   const bySlug = new Map<string, LocatedOp[]>();
   for (const l of located) { const a = bySlug.get(l.actSlug); if (a) a.push(l); else bySlug.set(l.actSlug, [l]); }
@@ -471,10 +471,10 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
   //    delta supersedes any prior one, so its op keys may have shifted — clear the
   //    bill's approvals so counsel re-approves the new placements from scratch.
   if (deltas.length > 0 && !incomplete) {
-    await upsert(FILES.provisionDeltas, { id: bill.id, deltas, errors, failures, createdAt: new Date().toISOString() });
+    await upsert(FILES.provisionDeltas, { id: bill.id, deltas, errors, failures, traces, createdAt: new Date().toISOString() });
     await removeById(FILES.approvals, bill.id);
   }
-  res.json({ deltas, errors, failures, cached: false, aiIncomplete: incomplete, aiIncompleteReason: aiBudget.reason, rateLimited: aiBudget.rateLimitHits });
+  res.json({ deltas, errors, failures, traces, cached: false, aiIncomplete: incomplete, aiIncompleteReason: aiBudget.reason, rateLimited: aiBudget.rateLimitHits });
   } catch (err) {
     console.error("[provision-delta]", err instanceof Error ? err.stack : err);
     if (!res.headersSent) {
