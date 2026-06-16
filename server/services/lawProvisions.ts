@@ -98,7 +98,10 @@ function cachePut(slug: string, value: ActProvisions | null) {
   actCache.set(slug, value);
 }
 
-async function readActJson(slug: string): Promise<any | null> {
+// Read an Act's normalized JSON: local file first (dev + the 5 bundled demo Acts),
+// then Vercel Blob (the full corpus in production). Shared by the flattened loader
+// here and the tree loader in lawTree.ts, so both reach the Blob corpus identically.
+export async function readActJson(slug: string): Promise<any | null> {
   // 1. Local file (dev machine after ingest; the 5 bundled demo Acts in prod).
   try {
     const p = path.join(REPO_ROOT, "data/laws/current/federal", slug, "current.normalized.json");

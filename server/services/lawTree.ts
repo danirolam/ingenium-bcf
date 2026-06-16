@@ -7,13 +7,8 @@
 // path, and `LawNavigator.resolve` either finds the provision or reports the
 // EXACT level that failed ("section 30 exists but has no subsection (4)"), so the
 // model can self-correct. Insert/replace/repeal are then applied to this tree.
-import { promises as fs } from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { labelToPath, normLabel, type PositionStep, type Provision } from "./amendmentEngine.js";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = path.resolve(__dirname, "..", "..");
+import { readActJson } from "./lawProvisions.js";
 
 // One node of the stored Act tree (as produced by scripts/ingest-acts.mjs). `num`
 // is the provision's OWN label segment only ("30", "(1)", "(a)", or a quoted
@@ -138,8 +133,11 @@ function groupSchedules(rows: ActNode[]): ActNode[] {
 
 export async function loadActTree(slug: string): Promise<ActTree | null> {
   try {
-    const p = path.join(REPO_ROOT, "data/laws/current/federal", slug, "current.normalized.json");
-    const j = JSON.parse(await fs.readFile(p, "utf8"));
+    // Local file first, then the Vercel Blob corpus — same source as the flattened
+    // loader, so the locator reaches all ~964 Acts in production, not just the
+    // 5 bundled ones.
+    const j = await readActJson(slug);
+    if (!j) return null;
     const sections: ActNode[] = Array.isArray(j.sections) ? j.sections : [];
     const scheduleRows: ActNode[] = Array.isArray(j.schedules) ? j.schedules : [];
     if (!sections.length && !scheduleRows.length) return null;
