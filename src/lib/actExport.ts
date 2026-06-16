@@ -1,5 +1,5 @@
 import type { Bill, ProvisionDelta } from "../types";
-import { leafLabel as leaf, segments } from "../components/delta/provisionShape";
+import { displayText, leafLabel as leaf, segments } from "../components/delta/provisionShape";
 
 const esc = (s: string) =>
   (s ?? "").replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c] as string);
@@ -17,7 +17,7 @@ export function exportActAsPdf(delta: ProvisionDelta, bill: Bill | null): boolea
       const depth = Math.max(0, segments(p).length - 1);
       const amended = r.status === "added" || r.status === "changed";
       const mn = p.marginalNote ? `<div class="mn">${esc(p.marginalNote)}</div>` : "";
-      return `<div class="prov${amended ? " amended" : ""}" style="margin-left:${depth * 20}px">${mn}<div class="ptext"><span class="plabel">${esc(leaf(p))}</span>${esc(p.text)}</div></div>`;
+      return `<div class="prov${amended ? " amended" : ""}" style="margin-left:${depth * 20}px">${mn}<div class="ptext"><span class="plabel">${esc(leaf(p))}</span>${esc(displayText(p))}</div></div>`;
     })
     .join("");
 

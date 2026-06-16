@@ -1,5 +1,5 @@
 import type { ActProvision, ProvisionDiffRow } from "../../types";
-import { leafLabel, provDepthOf } from "./provisionShape";
+import { displayText, leafLabel, provDepthOf } from "./provisionShape";
 
 // A single provision as one full-width line: its own leaf label ("(c)", "(1)",
 // "5.3") indented by its depth in the Act hierarchy. Used for the ancestor
@@ -41,7 +41,7 @@ export function ProvisionBlock({
       <span className="dr-prov-label">{leafLabel(prov)}</span>
       <span className="dr-prov-main">
         {prov.marginalNote && <span className="dr-prov-mn">{prov.marginalNote}</span>}
-        <span className="dr-prov-text">{prov.text}</span>
+        <span className="dr-prov-text">{displayText(prov)}</span>
       </span>
     </div>
   );

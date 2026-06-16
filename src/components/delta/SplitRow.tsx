@@ -1,5 +1,5 @@
 import type { ActProvision, ProvisionDiffRow } from "../../types";
-import { leafLabel, provDepthOf } from "./provisionShape";
+import { displayText, leafLabel, provDepthOf } from "./provisionShape";
 import { wordDiff, type WordPart } from "../../lib/wordDiff";
 
 // One diff row rendered GitHub-split / CanLII style: the current text on the
@@ -49,7 +49,7 @@ function Cell({
       <span className="dr-cell-label">{leafLabel(prov)}</span>
       <span className="dr-cell-main">
         {prov.marginalNote && <span className="dr-cell-mn">{prov.marginalNote}</span>}
-        <span className="dr-cell-text">{parts ? <Words parts={parts} /> : prov.text}</span>
+        <span className="dr-cell-text">{parts ? <Words parts={parts} /> : displayText(prov)}</span>
       </span>
     </div>
   );
@@ -83,7 +83,7 @@ export function SplitRow({
     case "changed": {
       leftIntent = "del";
       rightIntent = "add";
-      const wd = wordDiff(row.before?.text ?? "", row.after?.text ?? "");
+      const wd = wordDiff(row.before ? displayText(row.before) : "", row.after ? displayText(row.after) : "");
       leftParts = wd.left;
       rightParts = wd.right;
       break;

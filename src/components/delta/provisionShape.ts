@@ -29,11 +29,25 @@ export function segments(prov: ActProvision): Step[] {
 export const provDepthOf = (prov: ActProvision): number => Math.max(0, segments(prov).length - 1);
 
 // The leaf label as it appears in the Act: sections keep their number ("5.3"),
-// definitions their quoted term, everything else is bracketed ("(c)").
+// definitions their bare term ("pharmacist", bolded by the label style — like the
+// Act), everything else is bracketed ("(c)").
 export function leafLabel(prov: ActProvision): string {
   if (prov.kind === "schedule") return prov.label; // e.g. "SCHEDULE IV row 2222" (don't normalize)
   const segs = segments(prov);
   const last = segs[segs.length - 1];
   if (!last) return prov.label;
-  return last.kind === "section" || last.kind === "definition" ? last.label : `(${last.label})`;
+  if (last.kind === "definition") return last.label.replace(/[“”"']/g, "").trim();
+  return last.kind === "section" ? last.label : `(${last.label})`;
+}
+
+// The text to render. A definition opens with its own term ("pharmacist means a
+// person who"), which is already shown as the bold leaf label — so drop the leading
+// term, matching how the Act prints it (term, then "means …", not repeated).
+export function displayText(prov: ActProvision): string {
+  const text = prov.text ?? "";
+  if (prov.kind !== "definition") return text;
+  const term = leafLabel(prov).trim();
+  if (!term) return text;
+  const esc = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return text.replace(new RegExp("^\\s*" + esc + "\\b[\\s,]*", "i"), "") || text;
 }

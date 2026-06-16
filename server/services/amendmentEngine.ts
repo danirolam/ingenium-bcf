@@ -73,7 +73,17 @@ const STEP_KINDS = ["subsection", "paragraph", "subparagraph", "clause"];
 export function labelToPath(label: string): PositionStep[] {
   const raw = (label ?? "").trim();
   if (!raw) return [];
-  if (/^[“"']/.test(raw)) return [{ kind: "definition", label: raw }];
+  if (/^[“"']/.test(raw)) {
+    // A definition: «term»  or  «term»(a)(i)… — split the term from its bracketed
+    // children so a child renders as an indented "(a)", not the term repeated
+    // ("pharmacist"(a)), exactly as the Act prints it.
+    const m = raw.match(/^([“"'].*?[”"'])(.*)$/);
+    if (!m) return [{ kind: "definition", label: raw }];
+    const out: PositionStep[] = [{ kind: "definition", label: m[1] }];
+    (m[2].match(/\(([^)]+)\)/g) ?? []).forEach((g, i) =>
+      out.push({ kind: STEP_KINDS[i] ?? "clause", label: g.replace(/[()]/g, "") }));
+    return out;
+  }
   const secMatch = raw.match(/^([0-9]+(?:\.[0-9]+)*[A-Za-z]?)/);
   const path: PositionStep[] = [];
   let rest = raw;
