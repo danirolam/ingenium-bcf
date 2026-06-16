@@ -38,6 +38,16 @@ function Cell({
 }) {
   if (!prov || intent === "empty") return <div className="dr-cell is-empty" aria-hidden="true" />;
   const indent = Math.max(0, provDepthOf(prov) - baseDepth);
+  // A Part/Division title: the text IS the heading — render it big with no label.
+  // The row's add/del tint still applies, so a bill-added heading shows green.
+  if (prov.kind === "heading") {
+    return (
+      <div className={`dr-cell dr-cell-heading is-${intent}`}>
+        <span className="dr-cell-sign" aria-hidden="true">{intent === "add" ? "+" : intent === "del" ? "−" : ""}</span>
+        <span className="dr-cell-heading-text">{prov.text}</span>
+      </div>
+    );
+  }
   // A wholesale add/del (no word parts) tints the entire line; a changed cell
   // carries the soft line tint and lets the word spans do the strong highlight.
   const whole = (intent === "add" || intent === "del") && !parts;

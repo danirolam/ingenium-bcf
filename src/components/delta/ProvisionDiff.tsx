@@ -170,25 +170,9 @@ export function ProvisionDiff({ delta, op }: { delta: ProvisionDelta; op: BillAm
   // Render the rows, dropping a Part/Division heading in whenever it changes (the
   // big title the Act prints between sections). Seed from the row just above the
   // window so an unchanged heading isn't repeated at the top.
-  let prevHeading = lo > 0 ? provOf(delta.rows[lo - 1])?.heading ?? null : null;
-  const windowRows: JSX.Element[] = [];
-  for (const w of pairReplacements(items, produced)) {
-    const h = provOf(w.row)?.heading ?? null;
-    if (h && h !== prevHeading) {
-      // The Part/Division title, mirrored across the split like every other row —
-      // blanked on the side where the section doesn't exist (added → not in Current,
-      // repealed → not in As amended).
-      const st = w.row.status;
-      windowRows.push(
-        <div className="dr-heading-row" key={`h-${w.key}`}>
-          <div className={`dr-heading-cell${st === "added" ? " is-empty" : ""}`}>{st === "added" ? "" : h}</div>
-          <div className={`dr-heading-cell${st === "repealed" ? " is-empty" : ""}`}>{st === "repealed" ? "" : h}</div>
-        </div>,
-      );
-    }
-    prevHeading = h;
-    windowRows.push(<SplitRow key={w.key} row={w.row} focus={w.focus} baseDepth={baseDepth} />);
-  }
+  const windowRows = pairReplacements(items, produced).map((w) => (
+    <SplitRow key={w.key} row={w.row} focus={w.focus} baseDepth={baseDepth} />
+  ));
 
   const moreAbove = lo > 0;
   const moreBelow = hi < delta.rows.length - 1;

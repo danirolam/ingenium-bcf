@@ -71,7 +71,10 @@ export function applyOperations(
 
   // Insert nodes into a sibling array at the position the comparator dictates.
   const sortIn = (arr: ActNode[], ins: ActNode[]) => {
-    const key = ins[0].num, kind = ins[0].kind;
+    // Sort by the first NUMBERED insert — a leading heading node (num "") is decoration
+    // and carries no sort position; it rides along with the section it precedes.
+    const anchor = ins.find((n) => n.num) ?? ins[0];
+    const key = anchor.num, kind = anchor.kind;
     let pos = arr.length;
     for (let i = 0; i < arr.length; i++) {
       if (arr[i].kind === kind && compareLabels(kind, arr[i].num, key) > 0) { pos = i; break; }

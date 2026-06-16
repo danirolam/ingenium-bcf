@@ -183,7 +183,8 @@ export function flattenActTree(tree: ActTree): Provision[] {
       const segNodes = (defAt >= 0 ? lineage.slice(defAt) : lineage).filter((n) => n.num);
       const chain = segNodes.map((n) => n.num).join("");
       const heading = ancestors.length ? ancestors[0].heading ?? null : node.heading ?? null;
-      const label = chain || node.marginalNote || `¶${flat.length + 1}`;
+      // A heading node (a Part/Division title) carries only its text, no label.
+      const label = node.kind === "heading" ? "" : chain || node.marginalNote || `¶${flat.length + 1}`;
       // Display path built straight from the REAL tree kinds — no re-parsing the
       // composed string to guess structure. Section/definition segments stay
       // verbatim; bracketed kinds drop their parens so leafLabel re-wraps "(a)".

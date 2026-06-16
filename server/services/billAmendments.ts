@@ -269,7 +269,6 @@ function splitAmended(amended: DomNode): { inserts: ActNode[]; nested: RawUnit[]
   // then that instruction — whose content is its FOLLOWING SIBLINGS (e.g. "(2) …
   // is replaced:" followed by the new subsection (7)).
   let current = outer;
-  const headingByLevel: string[] = []; // Part/Division titles by <Heading level=…>
   const walk = (parent: DomNode) => {
     for (const c of childEls(parent)) {
       if (attr(c.attrs, "type") === "amending") {
@@ -279,17 +278,15 @@ function splitAmended(amended: DomNode): { inserts: ActNode[]; nested: RawUnit[]
         if (own) { const sub = splitAmended(own); unit.inserts.push(...sub.inserts); nested.push(...sub.nested); }
         current = unit.inserts;
       } else if (c.name === "Heading") {
-        // A Part/Division title sits between sections — keep it (deepest level wins)
-        // so the new provision shows under its heading, the way the Act prints it.
-        const lvl = parseInt(attr(c.attrs, "level") ?? "1", 10) || 1;
+        // A Part/Division title between sections — emit it as its OWN node so it
+        // flows through the diff like any other content (green when the bill adds
+        // it). Each level becomes its own heading row, the way the Act prints them.
         const title = squish(childEls(c, "TitleText").map(elText).join(""));
-        if (title) { headingByLevel[lvl - 1] = title; headingByLevel.length = lvl; }
+        const text = [labelOf(c), title].filter(Boolean).join(" — "); // "PART I.1 — …"
+        if (text) current.push({ id: `bill:${domSerial++}`, num: "", kind: "heading", text, children: [] });
       } else if (KIND[c.name]) {
         const n = domToActNode(c);
-        if (n) {
-          if (!n.heading) n.heading = headingByLevel.filter(Boolean).slice(-1)[0] ?? null;
-          current.push(n);
-        }
+        if (n) current.push(n);
       } else if (c.name === "BilingualGroup") {
         for (const e of bilingualEntries(c)) current.push(e); // schedule entries (en + fr)
       } else if (!["Text", "Label", "MarginalNote", "HistoricalNote"].includes(c.name)) {
