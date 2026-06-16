@@ -31,6 +31,12 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
           <span className="dr-topbar-title">{delta.bill?.title ?? "Legal delta"}</span>
         </div>
         <div className="dr-topbar-actions">
+          {delta.refreshing && (
+            <span className="dr-ai-chip" title="The AI is re-resolving this bill's amendments against the Act">
+              <span className="dr-ai-dots" aria-hidden="true"><i /><i /><i /></span>
+              computing with AI…
+            </span>
+          )}
           {delta.rateLimited > 0 && (
             <span
               className="dr-topbar-rl"
