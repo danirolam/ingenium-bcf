@@ -1,6 +1,5 @@
 import type { ActProvision, ProvisionDiffRow } from "../../types";
 import { leafLabel, provDepthOf } from "./provisionShape";
-import { provNote, provText, useLang } from "./lang";
 
 // A single provision as one full-width line: its own leaf label ("(c)", "(1)",
 // "5.3") indented by its depth in the Act hierarchy. Used for the ancestor
@@ -30,11 +29,9 @@ export function ProvisionBlock({
    *  float at a large indent — they nest relative to the shallowest row shown. */
   baseDepth?: number;
 }) {
-  const lang = useLang();
   const prov: ActProvision | undefined = row.after ?? row.before;
   if (!prov) return null;
   const indent = Math.max(0, provDepth(row) - baseDepth);
-  const note = provNote(prov, lang);
 
   return (
     <div className={`dr-prov is-${row.status}${focus ? " is-focus" : ""}`} style={{ paddingLeft: indent * 22 }}>
@@ -43,8 +40,8 @@ export function ProvisionBlock({
       </span>
       <span className="dr-prov-label">{leafLabel(prov)}</span>
       <span className="dr-prov-main">
-        {note && <span className="dr-prov-mn">{note}</span>}
-        <span className="dr-prov-text">{provText(prov, lang)}</span>
+        {prov.marginalNote && <span className="dr-prov-mn">{prov.marginalNote}</span>}
+        <span className="dr-prov-text">{prov.text}</span>
       </span>
     </div>
   );

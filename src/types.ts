@@ -206,9 +206,6 @@ export interface ActProvision {
   heading?: string | null;
   marginalNote?: string | null;
   text: string;
-  /** French text/marginal note (v2 bilingual ingest), for the EN/FR toggle. */
-  textFr?: string;
-  marginalNoteFr?: string | null;
   /** Structured hierarchy path (section → subsection → paragraph → …). */
   path?: { kind: string; label: string }[];
   /** Optional display layout from the formatter agent: the provision split into

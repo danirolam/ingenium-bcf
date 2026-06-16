@@ -4,7 +4,6 @@ import type { AmendmentFailure, Bill, BillAmendmentOp, ProvisionDelta } from "..
 import type { ApprovalsState } from "../../lib/useApprovals";
 import { BillPdfPane } from "../../components/delta/BillPdfPane";
 import { AmendmentCard } from "../../components/delta/AmendmentCard";
-import { LangContext, type Lang } from "../../components/delta/lang";
 import { exportActAsPdf } from "../../lib/actExport";
 
 type Item = { delta: ProvisionDelta; op: BillAmendmentOp };
@@ -42,7 +41,6 @@ export function DeltaReview({
 
   const [idx, setIdx] = useState(0);
   const [showFails, setShowFails] = useState(false);
-  const [lang, setLang] = useState<Lang>("en");
   const at = Math.min(idx, Math.max(0, items.length - 1));
   const go = (step: number) => setIdx(() => Math.max(0, Math.min(items.length - 1, at + step)));
 
@@ -93,7 +91,7 @@ export function DeltaReview({
   };
 
   return (
-    <LangContext.Provider value={lang}>
+    <>
       {incomplete && (
         <div className="dr-banner" role="alert">
           <span>
@@ -162,10 +160,6 @@ export function DeltaReview({
             <button className="dr-nav" onClick={() => go(1)} disabled={at >= items.length - 1} title="Next (→)">
               →
             </button>
-            <div className="dr-lang" role="group" aria-label="Display language">
-              <button className={lang === "en" ? "is-on" : ""} onClick={() => setLang("en")} title="English">EN</button>
-              <button className={lang === "fr" ? "is-on" : ""} onClick={() => setLang("fr")} title="Français">FR</button>
-            </div>
             <button
               className="btn primary sm dr-pager-export"
               disabled={!actAllApproved}
@@ -186,6 +180,6 @@ export function DeltaReview({
           </div>
         </div>
       </div>
-    </LangContext.Provider>
+    </>
   );
 }

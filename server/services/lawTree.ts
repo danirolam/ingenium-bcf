@@ -21,10 +21,6 @@ export interface ActNode {
   marginalNote?: string | null;
   text?: string;
   closingText?: string;
-  // v2 bilingual + structured-schedule fields.
-  textFr?: string;
-  closingTextFr?: string;
-  marginalNoteFr?: string | null;
   title?: string | null; // schedule nodes: the schedule's title
   children?: ActNode[];
 }
@@ -180,16 +176,13 @@ export function flattenActTree(tree: ActTree): Provision[] {
     const chain = (defAt >= 0 ? lineage.slice(defAt) : lineage).map((n) => n.num ?? "").filter(Boolean).join("");
     const heading = ancestors.length ? ancestors[0].heading ?? null : node.heading ?? null;
     const label = chain || node.marginalNote || `¶${flat.length + 1}`;
-    const textFr = [(node.textFr ?? "").trim(), (node.closingTextFr ?? "").trim()].filter(Boolean).join(" ") || undefined;
     flat.push({
       id: node.id,
       label,
       kind: node.kind,
       heading,
       marginalNote: node.marginalNote ?? null,
-      marginalNoteFr: node.marginalNoteFr ?? null,
       text,
-      textFr,
       path: labelToPath(label),
     });
   };
@@ -208,7 +201,6 @@ export function flattenActTree(tree: ActTree): Provision[] {
           heading: `Schedule ${sc.num}`,
           marginalNote: group ?? node.marginalNote ?? null,
           text: txt,
-          textFr: node.textFr,
           path: [{ kind: "schedule", label: sc.num }, ...(group ? [{ kind: "scheduleGroup", label: group }] : []), { kind: node.kind || "scheduleItem", label: node.num }],
         });
         return;
