@@ -584,6 +584,24 @@
 .dr-topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; }
 .dr-topbar-progress { font-size: 12px; color: var(--ink-3); white-space: nowrap; }
 .dr-topbar-progress b { color: var(--ink); }
+.dr-topbar-rl {
+  font-size: 11.5px; white-space: nowrap; color: var(--high);
+  background: var(--high-bg); border: 1px solid var(--high);
+  border-radius: 999px; padding: 2px 9px;
+}
+.dr-outdated {
+  margin-left: 8px; font-size: 10.5px; white-space: nowrap; cursor: help;
+  color: var(--high); background: var(--high-bg); border: 1px solid var(--high);
+  border-radius: 999px; padding: 1px 7px;
+}
+/* EN/FR language toggle in the pager bar. */
+.dr-lang { display: inline-flex; border: 1px solid var(--border); border-radius: 7px; overflow: hidden; flex: none; }
+.dr-lang button {
+  background: var(--panel-2); border: 0; padding: 3px 9px;
+  font: inherit; font-size: 11px; font-weight: 700; color: var(--ink-3); cursor: pointer;
+}
+.dr-lang button.is-on { background: var(--accent-warm); color: #fff; }
+.dr-lang button:not(.is-on):hover { background: rgba(0, 0, 0, 0.05); }
 
 .dr-state {
   flex: 1; min-height: 0;
@@ -591,6 +609,7 @@
   gap: 6px; padding: 40px; text-align: center; color: var(--ink-3); font-size: 13.5px;
 }
 .dr-state-err { color: var(--high); font-size: 12.5px; }
+.dr-state-sub { color: var(--ink-3); font-size: 12px; max-width: 440px; opacity: 0.85; }
 
 /* Two-pane body: PDF | draggable divider | review. The PDF width lives in a CSS
    var (default a third of the viewport, set inline) so the responsive query can
@@ -653,6 +672,22 @@
   background: var(--high-bg); color: var(--ink-2); font-size: 12.5px;
 }
 .dr-banner button { margin-left: auto; flex: none; }
+
+/* Unresolved amendments — a quiet, collapsible strip (never a hard error). */
+.dr-fails { flex: none; border-bottom: 1px solid var(--border); background: var(--panel-2); }
+.dr-fails-bar {
+  width: 100%; display: flex; align-items: center; gap: 8px;
+  padding: 7px 16px; background: none; border: 0; cursor: pointer;
+  font: inherit; font-size: 12px; color: var(--ink-2); text-align: left;
+}
+.dr-fails-bar:hover { background: rgba(0, 0, 0, 0.03); }
+.dr-fails-ic { color: var(--high); flex: none; }
+.dr-fails-chev { margin-left: auto; flex: none; opacity: 0.7; }
+.dr-fails-list { margin: 0; padding: 2px 16px 10px 38px; list-style: none; display: grid; gap: 6px; }
+.dr-fails-list li { display: grid; gap: 2px; font-size: 11.5px; }
+.dr-fails-clause { font-weight: 700; color: var(--ink-2); }
+.dr-fails-instr { color: var(--ink); }
+.dr-fails-reason { color: var(--crit); opacity: 0.85; }
 
 /* Pager: one full-height amendment with prev/next navigation. */
 .dr-pager { display: flex; flex-direction: column; min-height: 0; }

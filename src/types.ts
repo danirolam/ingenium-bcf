@@ -206,6 +206,9 @@ export interface ActProvision {
   heading?: string | null;
   marginalNote?: string | null;
   text: string;
+  /** French text/marginal note (v2 bilingual ingest), for the EN/FR toggle. */
+  textFr?: string;
+  marginalNoteFr?: string | null;
   /** Structured hierarchy path (section → subsection → paragraph → …). */
   path?: { kind: string; label: string }[];
   /** Optional display layout from the formatter agent: the provision split into
@@ -226,24 +229,38 @@ export interface BillAmendmentOp {
   key: string;
   clause?: string;
   op: "add" | "replace" | "repeal" | "amend";
+  /** Structured address of the target — the source of truth for location. For an
+   *  add it is the new provision's full path (incl. its bill-given leaf label). */
+  ancestors: { kind: string; label: string }[];
+  /** Composed display label derived from `ancestors` (e.g. "30(1)(j.01)"). */
   anchor: string | null;
   position?: string | null;
-  /** Number of provisions inserted/replaced (bill-xml path only). */
+  /** Number of provisions inserted/replaced. */
   count?: number;
   newLabel?: string | null;
   newMarginalNote?: string | null;
   newText?: string | null;
   note?: string | null;
+  /** The target resolved against the real Act tree. */
   anchorFound: boolean;
-  /** How this op was resolved: deterministically from the bill XML ("structured")
-   *  or via the AI scalpel/interpreter ("ai"). */
+  /** The AI read the resolved provision back and confirmed it matches. */
+  confirmed: boolean;
+  /** How this op was resolved. "ai" = AI-located + deterministically applied. */
   resolution?: "structured" | "ai";
-  /** Full instruction text — what the bill says (no longer truncated). */
+  /** Full instruction text — what the bill says. */
   instruction: string;
   /** Indices into `ProvisionDelta.rows` of the provisions this op produced. */
   producedRowIndices: number[];
   /** Indices into `ProvisionDelta.rows` for the ±5 document-order context window. */
   contextRowIndices: number[];
+}
+
+/** An amendment the locator could not place — surfaced subtly, never dropped. */
+export interface AmendmentFailure {
+  clause: string;
+  actSlug: string | null;
+  instruction: string;
+  reason: string;
 }
 
 export interface ProvisionDelta {
@@ -256,12 +273,15 @@ export interface ProvisionDelta {
   /** Full Act text before/after the bill — the two sides of the diff. */
   oldText?: string;
   newText?: string;
-  /** How the delta was produced: deterministic from the bill XML, partly via the
-   *  AI scalpel (partial edits), or fully AI-interpreted. */
-  source?: "bill-xml" | "ai-assisted" | "ai";
+  /** How the delta was produced. "ai-located" = AI ancestor-path locating +
+   *  deterministic apply (the current pipeline). */
+  source?: "bill-xml" | "ai-assisted" | "ai" | "ai-located";
   /** True when an AI call was cut short (rate limit / failure) so this Act's
    *  changes may be partial. */
   incomplete?: boolean;
+  /** The ingested Act text predates the current format (not yet re-ingested to
+   *  bilingual + structured schedules) — shown as a temporary warning in the UI. */
+  outdated?: boolean;
 }
 
 /** One row in the Stage-2 "Delta Library" — a bill that already has a generated
@@ -282,7 +302,7 @@ export interface DeltaIndexEntry {
   /** How many of those ops counsel has approved (for the approved/needs-review tag). */
   approvedOpCount: number;
   summary: { added: number; changed: number; repealed: number };
-  source?: "bill-xml" | "ai-assisted" | "ai";
+  source?: "bill-xml" | "ai-assisted" | "ai" | "ai-located";
   /** ISO timestamp the delta was computed/cached. */
   generatedAt: string;
 }

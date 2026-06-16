@@ -1,4 +1,5 @@
 import type {
+  AmendmentFailure,
   Bill,
   Client,
   ClientImpactAnalysis,
@@ -47,10 +48,13 @@ export const api = {
       j<{
         deltas: ProvisionDelta[];
         errors: string[];
+        failures?: AmendmentFailure[];
         cached?: boolean;
         computedAt?: string;
         aiIncomplete?: boolean;
         aiIncompleteReason?: "rate-limit" | "ai-error" | null;
+        /** How many times the AI was rate-limited and auto-retried this run. */
+        rateLimited?: number;
       }>(
         `/api/bills/${id}/provision-delta${refresh ? "?refresh=1" : ""}`,
         { method: "POST", signal },

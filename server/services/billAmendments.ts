@@ -6,7 +6,8 @@
 //   </Section>
 // So we read the OPERATION + ANCHOR from the instruction <Text> (regex), and
 // pull the inserted provisions verbatim from <AmendedText> (no AI generation).
-import { findAllUnder, findByPath, labelToPath, provKey, WHOLE_ACT, type Provision } from "./amendmentEngine.js";
+import { labelToPath, type Provision } from "./amendmentEngine.js";
+import type { ActNode } from "./lawTree.js";
 import { resolveActSlug, type RegistryEntry } from "./seedSource.js";
 
 const ENT: Record<string, string> = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " " };
@@ -143,13 +144,174 @@ export function parseProvisions(xml: string): Provision[] {
   return out;
 }
 
-export interface AmendGroup {
-  actSlug: string;
-  op: "add" | "replace" | "repeal";
-  anchor: string | null;
-  position: "after" | "before" | null;
-  provisions: Provision[];
-  instruction: string;
+// One discrete amendment from the bill: the instruction sentence plus the
+// fully-structured provisions the bill inserts (empty for repeals / in-place
+// edits). The locator turns each unit into { op, ancestors } against the real Act.
+// `actSlugHint` is the registered Act slug the clause's <XRefExternal> named (or
+// null → an untagged clause the AI must attribute via the list_acts tool).
+export interface AmendmentUnit {
+  clause: string;
+  actSlugHint: string | null;
+  instructionText: string;
+  inserts: ActNode[]; // nested, so an add can splice the whole subtree into the Act
+}
+
+// ── DOM-based bill parsing ──────────────────────────────────────────────────
+// A LIGHT element tree, so we can reason about the bill's structure directly.
+// This is what lets us honour `type="amending"`: a follow-on amending instruction
+// (e.g. a repeal) is sometimes nested INSIDE another amendment's <AmendedText> and
+// flagged type="amending" — it is an instruction, NOT inserted content.
+interface DomNode {
+  name: string;
+  attrs: string;
+  kids: (DomNode | string)[];
+}
+
+function buildDom(xml: string): DomNode[] {
+  const roots: (DomNode | string)[] = [];
+  const stack: DomNode[] = [];
+  const push = (x: DomNode | string) => (stack.length ? stack[stack.length - 1].kids : roots).push(x);
+  for (const t of tokens(xml)) {
+    if (t.type === "text") { push(t.value); continue; }
+    if (t.type === "open") {
+      const node: DomNode = { name: t.name, attrs: t.attrs, kids: [] };
+      push(node);
+      if (!t.self) stack.push(node);
+      continue;
+    }
+    for (let i = stack.length - 1; i >= 0; i--) if (stack[i].name === t.name) { stack.length = i; break; }
+  }
+  return roots.filter((r): r is DomNode => typeof r !== "string");
+}
+
+const childEls = (n: DomNode, name?: string): DomNode[] =>
+  n.kids.filter((k): k is DomNode => typeof k !== "string" && (!name || k.name === name));
+
+// All text inside an element (skipping editorial HistoricalNote citations).
+function elText(n: DomNode): string {
+  let s = "";
+  for (const k of n.kids) s += typeof k === "string" ? k : k.name === "HistoricalNote" ? "" : elText(k);
+  return s;
+}
+const labelOf = (n: DomNode) => squish(childEls(n, "Label").map(elText).join(""));
+const directText = (n: DomNode) => squish(childEls(n, "Text").map(elText).join(" "));
+
+// Build an ActNode subtree from an inserted CONTENT element (a Subsection /
+// Paragraph / Definition …), mirroring the Act's stored shape. Non-structural
+// wrappers (e.g. SectionPiece) are unwrapped; a nested <AmendedText> is not content.
+let domSerial = 0;
+function domToActNode(el: DomNode): ActNode | null {
+  const kind = KIND[el.name];
+  if (!kind) return null;
+  let num = labelOf(el);
+  if (kind === "definition") {
+    const term = squish(childEls(el, "DefinedTermEn").map(elText).join(""));
+    if (term) num = `“${term}”`;
+  }
+  const children: ActNode[] = [];
+  const collect = (parent: DomNode) => {
+    for (const c of childEls(parent)) {
+      if (KIND[c.name]) { const n = domToActNode(c); if (n) children.push(n); }
+      else if (!["Text", "Label", "MarginalNote", "AmendedText", "HistoricalNote"].includes(c.name)) collect(c);
+    }
+  };
+  collect(el);
+  return {
+    id: `bill:${domSerial++}`,
+    num,
+    kind,
+    marginalNote: squish(childEls(el, "MarginalNote").map(elText).join(" ")) || null,
+    text: directText(el),
+    children,
+  };
+}
+
+// A <BilingualGroup> in an <AmendedText> is a schedule insert: pair its
+// <BilingualItemEn>/<BilingualItemFr> children into scheduleEntry nodes (en + fr),
+// so "Schedule I … add the following in alphabetical order" yields real entries.
+function bilingualEntries(group: DomNode): ActNode[] {
+  const out: ActNode[] = [];
+  let en: string | null = null;
+  for (const c of childEls(group)) {
+    if (c.name === "BilingualItemEn") en = squish(elText(c));
+    else if (c.name === "BilingualItemFr") {
+      const fr = squish(elText(c));
+      if (en) out.push({ id: `bill:${domSerial++}`, num: en.length > 90 ? en.slice(0, 90) : en, kind: "scheduleEntry", text: en, ...(fr ? { textFr: fr } : {}), children: [] });
+      en = null;
+    }
+  }
+  if (en) out.push({ id: `bill:${domSerial++}`, num: en, kind: "scheduleEntry", text: en, children: [] });
+  return out;
+}
+
+// One discrete amending instruction, pre-extraction.
+interface RawUnit { instruction: string; inserts: ActNode[] }
+
+// Split an <AmendedText> into the provisions it INSERTS and the amending
+// INSTRUCTIONS nested inside it (type="amending"). The latter become their own
+// ops — this is the fix for a repeal/replace bundled inside another amendment's
+// content (e.g. "(4) Subsection 12(7) … is repealed" inside the 12(6) replacement).
+function splitAmended(amended: DomNode): { inserts: ActNode[]; nested: RawUnit[] } {
+  const outer: ActNode[] = [];
+  const nested: RawUnit[] = [];
+  // Content nodes accumulate into the CURRENT instruction, in document order: the
+  // outer (parent) instruction until a nested type="amending" instruction appears,
+  // then that instruction — whose content is its FOLLOWING SIBLINGS (e.g. "(2) …
+  // is replaced:" followed by the new subsection (7)).
+  let current = outer;
+  const walk = (parent: DomNode) => {
+    for (const c of childEls(parent)) {
+      if (attr(c.attrs, "type") === "amending") {
+        const unit: RawUnit = { instruction: [labelOf(c), directText(c)].filter(Boolean).join(" "), inserts: [] };
+        nested.push(unit);
+        const own = childEls(c, "AmendedText")[0];
+        if (own) { const sub = splitAmended(own); unit.inserts.push(...sub.inserts); nested.push(...sub.nested); }
+        current = unit.inserts;
+      } else if (KIND[c.name]) {
+        const n = domToActNode(c);
+        if (n) current.push(n);
+      } else if (c.name === "BilingualGroup") {
+        for (const e of bilingualEntries(c)) current.push(e); // schedule entries (en + fr)
+      } else if (!["Text", "Label", "MarginalNote", "HistoricalNote"].includes(c.name)) {
+        walk(c); // unwrap SectionPiece etc., preserving the current instruction
+      }
+    }
+  };
+  walk(amended);
+  return { inserts: outer, nested };
+}
+
+// One amending-instruction element (a sub-amendment Subsection, or a type="amending"
+// element): its direct <Text> is the instruction; its <AmendedText> (if any) is the
+// content, which may itself carry further nested instructions.
+function unitsInInstruction(el: DomNode): RawUnit[] {
+  const instruction = [labelOf(el), directText(el)].filter(Boolean).join(" ");
+  const amended = childEls(el, "AmendedText")[0];
+  if (amended) {
+    const { inserts, nested } = splitAmended(amended);
+    return [{ instruction, inserts }, ...nested];
+  }
+  return [{ instruction, inserts: [] }];
+}
+
+// Every amendment a clause makes. A clause is either ONE instruction with its own
+// <AmendedText> ("Section 12.6 … is replaced by the following:"), a set of
+// sub-amendment Subsections ("3 (1) … (2) …"), or instruction-only ("… is repealed").
+function unitsInClause(clause: DomNode): RawUnit[] {
+  const out: RawUnit[] = [];
+  const directAmended = childEls(clause, "AmendedText")[0];
+  if (directAmended) {
+    const { inserts, nested } = splitAmended(directAmended);
+    out.push({ instruction: [labelOf(clause), directText(clause)].filter(Boolean).join(" "), inserts }, ...nested);
+    return out;
+  }
+  for (const sub of childEls(clause)) {
+    if ((sub.name === "Subsection" || sub.name === "Section") && (childEls(sub, "AmendedText").length || directText(sub))) {
+      out.push(...unitsInInstruction(sub));
+    }
+  }
+  if (!out.length && directText(clause)) out.push({ instruction: [labelOf(clause), directText(clause)].filter(Boolean).join(" "), inserts: [] });
+  return out;
 }
 
 // Top-level <Section> spans within the Body (the amending clauses). Sections
@@ -168,229 +330,68 @@ function topLevelSections(xml: string): string[] {
   return out;
 }
 
-// Split a clause into (instruction, AmendedText) units — one per AmendedText —
-// so a clause with several sub-amendments yields several operations. Each unit's
-// instruction is the text since the previous AmendedText. A clause with no
-// AmendedText (e.g. a repeal) is one instruction-only unit.
-function splitAmendmentUnits(clause: string): { instruction: string; amendedXml: string | null }[] {
-  const re = /<AmendedText\b[^>]*>([\s\S]*?)<\/AmendedText>/g;
-  const units: { instruction: string; amendedXml: string | null }[] = [];
-  let last = 0;
-  let m: RegExpExecArray | null;
-  while ((m = re.exec(clause))) {
-    units.push({ instruction: squish(clause.slice(last, m.index)), amendedXml: m[1] });
-    last = re.lastIndex;
-  }
-  if (units.length === 0) return [{ instruction: squish(clause), amendedXml: null }];
-  const tail = squish(clause.slice(last));
-  if (/\b(?:repealed|replaced|amended|striking out)\b/i.test(tail)) {
-    units.push({ instruction: tail, amendedXml: null });
-  }
-  return units;
-}
-
-// A provision reference: a section number ("30", "2.4", "21.9702(1)") or a bare
-// bracketed leaf ("(j)").
-const REF = "([0-9]+(?:\\.[0-9]+)*[A-Za-z]?(?:\\([^)]+\\))*|\\([^)]+\\))";
-
-function parseInstruction(text: string): { op: "add" | "replace" | "repeal"; anchor: string | null; position: "after" | "before" | null } {
-  // The container being amended ("Subsection 30(1) of the Act…") prefixes a bare
-  // leaf anchor, so "after paragraph (j)" of subsection 30(1) -> "30(1)(j)".
-  const container = text.match(/\b(?:sections?|subsections?|paragraphs?|subparagraphs?)\s+([0-9]+(?:\.[0-9]+)*(?:\([^)]+\))*)\s+of\b/i)?.[1] ?? "";
-  const compose = (ref: string | null) =>
-    ref && /^\(/.test(ref) && container ? container + ref : ref;
-  const firstRef = () =>
-    text.match(new RegExp(`(?:sections?|subsections?|paragraphs?|subparagraphs?|clauses?)\\s+${REF}`, "i"))?.[1] ?? null;
-  // A whole schedule named as the target ("Schedule IV to the Act is repealed").
-  const sched = text.match(/\bschedule\s+(?:[IVXLCDM]+|[0-9]+[A-Za-z]?)\b/i)?.[0] ?? null;
-
-  if (/replaced by the following/i.test(text)) return { op: "replace", anchor: sched ?? compose(firstRef()), position: null };
-  if (/\b(?:is|are)\s+repealed\b/i.test(text)) {
-    const ref = sched ?? compose(firstRef());
-    // "The <Act> is repealed." names no provision — repeal the whole Act.
-    return { op: "repeal", anchor: ref ?? (/\bact\b/i.test(text) ? WHOLE_ACT : null), position: null };
-  }
-  let m = text.match(new RegExp(`adding the following after (?:section|subsection|paragraph|subparagraph|clause)\\s+${REF}`, "i"));
-  if (m) return { op: "add", anchor: compose(m[1]), position: "after" };
-  m = text.match(new RegExp(`adding the following before (?:section|subsection|paragraph|subparagraph|clause)\\s+${REF}`, "i"));
-  if (m) return { op: "add", anchor: compose(m[1]), position: "before" };
-  // "Section N of the Act is amended by adding …" with no explicit after/before
-  // target — e.g. a definition added "in alphabetical order", or a section
-  // "renumbered as N(1) and … amended by adding (2)". Anchor the addition at the
-  // section being amended instead of appending at the end of the Act (anchor=null,
-  // which the engine treats as an append and which reads as a placement miss).
-  if (/\bamended by adding\b/i.test(text)) {
-    const at = container || firstRef();
-    if (at) return { op: "add", anchor: at, position: "after" };
-  }
-  return { op: "add", anchor: null, position: "after" }; // append-style add
-}
-
-// A clause (or sub-clause) that edits text *inside* an existing provision —
-// "striking out 'or' at the end of paragraph (b)", "replacing the expression
-// X with Y". No full replacement text; the AI applies it to the current text.
-export interface PartialEdit {
-  actSlug: string;
-  instruction: string;
-  sectionHint: string | null; // the provision label the clause names, if any
-}
-
-// Edit-verb phrases that signal a partial (in-provision) text change rather
-// than a whole-provision add/replace/repeal.
-const PARTIAL_EDIT =
-  /striking out|by replacing the (?:word|words|expression|portion|reference)|by adding the (?:word|words|expression)|wherever it occurs/i;
-
 /**
- * Parse an amending bill into structured operations, grouped by the registered
- * Act slug they target. Clauses that don't name an Act inherit the last named
- * one ("The Act is amended..."). Only registered Acts are returned.
- *
- * Returns both whole-provision `groups` (applied deterministically) and
- * `edits` — partial in-provision edits the AI scalpel resolves.
+ * Extract every discrete amendment a bill makes as a flat, ordered list of
+ * AmendmentUnits — the reliable, structural half of the pipeline (element
+ * boundaries, not prose). We honour `type="amending"`, so a repeal/replace nested
+ * inside another amendment's <AmendedText> becomes its own unit. The locator turns
+ * each unit's instruction into { op, ancestors } against the real Act; inserted
+ * text is taken verbatim from <AmendedText> (no AI generation).
  */
-export function parseBillAmendments(
+export function extractAmendmentUnits(
   xml: string,
   registry: Record<string, RegistryEntry>,
-): { groups: Map<string, AmendGroup[]>; edits: Map<string, PartialEdit[]> } {
+): AmendmentUnit[] {
   const bodyStart = xml.indexOf("<Body");
   const bodyEnd = xml.lastIndexOf("</Body>");
   const body = bodyStart >= 0 && bodyEnd > bodyStart ? xml.slice(bodyStart, bodyEnd) : xml;
 
-  const groups = new Map<string, AmendGroup[]>();
-  const edits = new Map<string, PartialEdit[]>();
+  const units: AmendmentUnit[] = [];
   let currentSlug: string | null = null;
 
-  for (const clause of topLevelSections(body)) {
+  for (const clauseXml of topLevelSections(body)) {
+    const clause = buildDom(clauseXml)[0];
+    if (!clause) continue;
+    const clauseLabel = labelOf(clause);
+
     // Which Act? The first act cross-reference in the clause's instruction text
-    // (outside any AmendedText), else carry over from a previous clause.
-    const instrOnly = clause.replace(/<AmendedText\b[^>]*>[\s\S]*?<\/AmendedText>/g, " ");
+    // (outside any AmendedText). A clause with no <XRefExternal> ("The Act is
+    // amended…") carries over the last named Act; a clause naming an Act we don't
+    // have registered resets the hint to null (the locator then can't place it,
+    // unless the AI attributes it to a registered Act via list_acts).
+    const instrOnly = clauseXml.replace(/<AmendedText\b[^>]*>[\s\S]*?<\/AmendedText>/g, " ");
     const actRef = /<XRefExternal\b[^>]*reference-type="act"[^>]*>([\s\S]*?)<\/XRefExternal>/i.exec(instrOnly);
-    if (actRef) {
-      const slug = resolveActSlug(squish(actRef[1]), registry);
-      if (slug) currentSlug = slug;
-    }
-    if (!currentSlug || !registry[currentSlug]) continue; // unregistered Act → no diff target
+    if (actRef) currentSlug = resolveActSlug(squish(actRef[1]), registry);
 
-    // A clause can bundle several sub-amendments (e.g. 3(1) after (j); 3(2) after
-    // (o)) — one per AmendedText. Split so each gets its own op + anchor.
-    for (const unit of splitAmendmentUnits(clause)) {
-      const instruction = unit.instruction;
-      if (!instruction) continue;
-
-      // Partial edit (text surgery inside a provision) → hand to the AI scalpel.
-      if (PARTIAL_EDIT.test(instruction)) {
-        const hint = instruction.match(/(?:section|subsection|paragraph|subparagraph)\s+([\w.()]+)/i);
-        const list = edits.get(currentSlug) ?? [];
-        list.push({ actSlug: currentSlug, instruction, sectionHint: hint ? hint[1] : null });
-        edits.set(currentSlug, list);
-      }
-
-      // Whole-provision add/replace/repeal applied deterministically from <AmendedText>.
-      const provisions = unit.amendedXml ? parseProvisions(unit.amendedXml) : [];
-      if (provisions.length > 0 || /repealed/i.test(instruction)) {
-        const { op, anchor, position } = parseInstruction(instruction);
-        const list = groups.get(currentSlug) ?? [];
-        list.push({ actSlug: currentSlug, op, anchor, position, provisions, instruction });
-        groups.set(currentSlug, list);
-      }
+    for (const ru of unitsInClause(clause)) {
+      if (!ru.instruction) continue;
+      units.push({ clause: clauseLabel, actSlugHint: currentSlug, instructionText: ru.instruction, inserts: ru.inserts });
     }
   }
-  return { groups, edits };
+  return units;
 }
 
-export interface AppliedOp {
-  op: "add" | "replace" | "repeal" | "amend";
-  anchor: string | null;
-  position: "after" | "before" | null;
-  count: number;
-  anchorFound: boolean;
-  note: string;
-  /** Full instruction text ("Bill says"). */
-  instruction: string;
-  /** Identity keys of the provisions this op produced — resolved to row indices
-   *  by attachRowLinks (see amendmentEngine). */
-  producedKeys: string[];
-  /** "structured" for these deterministic groups; the union lets the route mix in
-   *  the AI scalpel's "amend" ops (resolution "ai") in the same verified array. */
-  resolution: "structured" | "ai";
-}
-
-// Apply structured amendment groups to an Act's provisions (block inserts), in
-// document order. Anchors are matched by label against the (mutating) result.
-export function applyGroups(
-  before: Provision[],
-  groups: AmendGroup[],
-): { after: Provision[]; verified: AppliedOp[] } {
-  const after: Provision[] = before.map((p) => ({ ...p }));
-  const verified: AppliedOp[] = [];
-  let serial = 0;
-
-  // The anchor's container (its path minus the leaf), e.g. "30(1)(j)" → "30(1)".
-  const containerOf = (anchor: string | null) =>
-    !anchor
-      ? ""
-      : labelToPath(anchor)
-          .slice(0, -1)
-          .map((s) => (s.kind === "section" ? s.label : `(${s.label})`))
-          .join("");
-
-  // Prepare inserted provisions for splicing: (1) restamp a unique id —
-  // parseProvisions numbers per <AmendedText> unit so "ins:0" collides across
-  // ops; (2) for a sub-provision inserted as a sibling (a bracketed leaf like
-  // "(j.01)"), prefix the anchor's container so its label is the full path
-  // "30(1)(j.01)" — otherwise it renders at the wrong depth, detached from its
-  // siblings.
-  const prepare = (provs: Provision[], anchor: string | null) => {
-    const container = containerOf(anchor);
-    return provs.map((p) => {
-      const id = `ins:${serial++}`;
-      if (container && p.label.startsWith("(")) {
-        const label = container + p.label;
-        return { ...p, id, label, path: labelToPath(label) };
-      }
-      return { ...p, id };
-    });
+// Overlay the French bill's inserted text onto the English units so added/replaced
+// provisions render in French too. The EN and FR bills mirror each other, so we
+// pair the k-th unit of each clause and walk the insert trees in parallel by
+// position, copying text → textFr. Schedule entries already carry French inline.
+export function overlayFrenchInserts(enUnits: AmendmentUnit[], frXml: string, registry: Record<string, RegistryEntry>): void {
+  const frUnits = extractAmendmentUnits(frXml, registry);
+  const frByClause = new Map<string, AmendmentUnit[]>();
+  for (const u of frUnits) { const a = frByClause.get(u.clause) ?? []; a.push(u); frByClause.set(u.clause, a); }
+  const seen = new Map<string, number>();
+  const pair = (en: ActNode[], fr: ActNode[]) => {
+    const n = Math.min(en.length, fr.length);
+    for (let i = 0; i < n; i++) {
+      if (!en[i].textFr && en[i].text && fr[i].text) en[i].textFr = fr[i].text;
+      if (!en[i].marginalNoteFr && en[i].marginalNote && fr[i].marginalNote) en[i].marginalNoteFr = fr[i].marginalNote;
+      pair(en[i].children ?? [], fr[i].children ?? []);
+    }
   };
-
-  for (const g of groups) {
-    let producedKeys: string[] = [];
-    let anchorFound = false;
-
-    if (g.op === "repeal") {
-      // Remove every provision under the anchor — one leaf, or a whole section /
-      // schedule when the bill repeals the container. Splice high-to-low so the
-      // indices stay valid.
-      const idxs = findAllUnder(after, g.anchor);
-      anchorFound = idxs.length > 0;
-      producedKeys = idxs.map((k) => provKey(after[k]));
-      for (const k of [...idxs].sort((a, b) => b - a)) after.splice(k, 1);
-    } else if (g.op === "replace") {
-      // The old provision becomes a repealed row, the inserts become added rows —
-      // both are this op's product, so the card shows the whole replacement.
-      const hit = findByPath(after, g.anchor);
-      anchorFound = hit.matched === "exact";
-      if (hit.index >= 0) {
-        const ins = prepare(g.provisions, g.anchor);
-        producedKeys = [provKey(after[hit.index]), ...ins.map(provKey)];
-        after.splice(hit.index, 1, ...ins);
-      }
-    } else {
-      const hit = findByPath(after, g.anchor);
-      anchorFound = hit.matched === "exact" || !g.anchor;
-      const ins = prepare(g.provisions, g.anchor);
-      const at = hit.index < 0 ? after.length : g.position === "before" ? hit.index : hit.index + 1;
-      after.splice(at, 0, ...ins);
-      producedKeys = ins.map(provKey);
-    }
-
-    verified.push({
-      op: g.op, anchor: g.anchor, position: g.position,
-      count: g.provisions.length, anchorFound,
-      instruction: g.instruction,
-      note: g.instruction.slice(0, 160),
-      producedKeys,
-      resolution: "structured",
-    });
+  for (const u of enUnits) {
+    const k = seen.get(u.clause) ?? 0;
+    seen.set(u.clause, k + 1);
+    const fr = frByClause.get(u.clause)?.[k];
+    if (fr) pair(u.inserts, fr.inserts);
   }
-  return { after, verified };
 }

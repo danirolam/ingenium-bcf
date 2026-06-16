@@ -1,90 +1,40 @@
-import type { ActProvision, Bill, ProvisionDelta, ProvisionDiffRow } from "../types";
+import type { Bill, ProvisionDelta } from "../types";
 import { leafLabel as leaf, segments } from "../components/delta/provisionShape";
-import { segmentDelta } from "../components/delta/deltaWindow";
-import { wordDiff, type WordPart } from "./wordDiff";
 
 const esc = (s: string) =>
   (s ?? "").replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c] as string);
 
-// Branded, print-ready **redline**: each affected Act rendered in document order
-// with changes in context — added/changed/repealed provisions marked and word-
-// diffed, runs of unchanged provisions collapsed to "⋯ N unchanged provisions ⋯"
-// (a few rows of immediate context kept on each side). Opens a print window — the
-// browser's "Save as PDF" produces the file. Returns false if the pop-up blocked.
-const EDGE = 2;
-const COLLAPSE_MIN = 2 * EDGE + 1;
-
-const renderParts = (ps: WordPart[]) =>
-  ps
-    .map((p) =>
-      p.kind === "same" ? esc(p.text) : p.kind === "del" ? `<del>${esc(p.text)}</del>` : `<ins>${esc(p.text)}</ins>`,
-    )
-    .join("");
-
-// The provision body: the formatter's indented statute lines when present, else
-// the flat text. (Display layout only — words are identical, guard-enforced.)
-const provBody = (p: ActProvision): string =>
-  p.lines && p.lines.length
-    ? p.lines.map((l) => `<div class="pline" style="margin-left:${l.depth * 18}px">${esc(l.text)}</div>`).join("")
-    : esc(p.text);
-
-function provLine(r: ProvisionDiffRow): string {
-  const p = r.after ?? r.before;
-  if (!p) return "";
-  const depth = Math.max(0, segments(p).length - 1);
-  const indent = `margin-left:${depth * 20}px`;
-  const mn = p.marginalNote ? `<div class="mn">${esc(p.marginalNote)}</div>` : "";
-
-  if (r.status === "unchanged") {
-    return `<div class="prov" style="${indent}">${mn}<div class="ptext"><span class="plabel">${esc(leaf(p))}</span>${provBody(p)}</div></div>`;
-  }
-  if (r.status === "added") {
-    return `<div class="prov amended add" style="${indent}">${mn}<div class="ptext"><span class="plabel">+ ${esc(leaf(p))}</span>${provBody(p)}</div></div>`;
-  }
-  if (r.status === "repealed") {
-    const b = r.before;
-    return `<div class="prov amended del" style="${indent}"><div class="ptext"><span class="plabel">− ${esc(leaf(b ?? p))}</span><del>${provBody(b ?? p)}</del></div></div>`;
-  }
-  // changed — show current (with deletions struck) over amended (with insertions)
-  const wd = wordDiff(r.before?.text ?? "", r.after?.text ?? "");
-  return (
-    `<div class="prov amended" style="${indent}">${mn}` +
-    `<div class="ptext"><span class="plabel">~ ${esc(leaf(p))}</span></div>` +
-    `<div class="side"><span class="tag">current</span>${renderParts(wd.left)}</div>` +
-    `<div class="side"><span class="tag">amended</span>${renderParts(wd.right)}</div></div>`
-  );
-}
-
-export function exportActAsPdf(deltas: ProvisionDelta[], bill: Bill | null): boolean {
-  const sections = (deltas ?? [])
-    .map((delta) => {
-      const rows = delta.rows ?? [];
-      const body = segmentDelta(delta)
-        .map((seg) => {
-          if (seg.kind === "change") return seg.indices.map((i) => provLine(rows[i])).join("");
-          const idxs = seg.indices;
-          if (idxs.length <= COLLAPSE_MIN) return idxs.map((i) => provLine(rows[i])).join("");
-          const top = idxs.slice(0, EDGE).map((i) => provLine(rows[i])).join("");
-          const bottom = idxs.slice(-EDGE).map((i) => provLine(rows[i])).join("");
-          return `${top}<div class="gap">⋯ ${idxs.length - 2 * EDGE} unchanged provisions ⋯</div>${bottom}`;
-        })
-        .join("");
-      return `<section class="act"><h2>${esc(delta.title)}</h2><div class="cite">${esc(delta.citation)}</div><div class="provs">${body}</div></section>`;
+// Branded, print-ready rendering of the amended Act: the after-side of the delta
+// (skip repealed, keep document order), amended provisions subtly marked. Opens a
+// print window — the browser's "Save as PDF" produces the file. Returns false if
+// the pop-up was blocked. One call = one Act = one PDF.
+export function exportActAsPdf(delta: ProvisionDelta, bill: Bill | null): boolean {
+  const body = delta.rows
+    .filter((r) => r.status !== "repealed")
+    .map((r) => {
+      const p = r.after ?? r.before;
+      if (!p) return "";
+      const depth = Math.max(0, segments(p).length - 1);
+      const amended = r.status === "added" || r.status === "changed";
+      const mn = p.marginalNote ? `<div class="mn">${esc(p.marginalNote)}</div>` : "";
+      return `<div class="prov${amended ? " amended" : ""}" style="margin-left:${depth * 20}px">${mn}<div class="ptext"><span class="plabel">${esc(leaf(p))}</span>${esc(p.text)}</div></div>`;
     })
     .join("");
 
-  const amendedBy = bill ? `as amended by Bill ${esc(bill.billNumber)} — ${esc(bill.title)}` : "as amended";
-  const title = deltas.length === 1 ? esc(deltas[0].title) : `${deltas.length} Acts`;
+  const amendedBy = bill
+    ? `as amended by Bill ${esc(bill.billNumber)} — ${esc(bill.title)}`
+    : "as amended";
 
   const html = `<!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>${title} — changes in context</title><style>${PRINT_CSS}</style></head>
+<title>${esc(delta.title)} — as amended</title><style>${PRINT_CSS}</style></head>
 <body>
   <header class="doc-head">
     <div class="brand">INGENIUM <span>· BCF</span></div>
-    <h1>${title} — changes in context</h1>
+    <h1>${esc(delta.title)}</h1>
+    <div class="cite">${esc(delta.citation)}</div>
     <div class="amended-by">${amendedBy}</div>
   </header>
-  <main>${sections}</main>
+  <main>${body}</main>
   <footer class="doc-foot">Generated by Ingenium — counsel review required · Confidential</footer>
   <script>window.onload=function(){setTimeout(function(){window.focus();window.print();},250)}</script>
 </body></html>`;
@@ -99,24 +49,17 @@ export function exportActAsPdf(deltas: ProvisionDelta[], bill: Bill | null): boo
 const PRINT_CSS = `
   * { box-sizing: border-box; }
   body { font: 13px/1.55 Georgia, "Times New Roman", serif; color: #1a1a1a; margin: 0; padding: 48px 56px; }
-  .doc-head { border-bottom: 2px solid #1a2b4a; padding-bottom: 16px; margin-bottom: 20px; }
+  .doc-head { border-bottom: 2px solid #1a2b4a; padding-bottom: 16px; margin-bottom: 24px; }
   .brand { font: 700 12px/1 ui-sans-serif, system-ui, sans-serif; letter-spacing: .14em; color: #1a2b4a; }
   .brand span { color: #9a7b2e; font-weight: 600; }
-  .doc-head h1 { font-size: 21px; margin: 12px 0 4px; color: #111; }
-  .amended-by { margin-top: 6px; font: 600 12px/1.4 ui-sans-serif, system-ui, sans-serif; color: #9a7b2e; }
-  .act { margin-top: 18px; }
-  .act h2 { font-size: 16px; margin: 18px 0 2px; color: #1a2b4a; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
-  .act .cite { font-style: italic; color: #666; font-size: 11.5px; margin-bottom: 10px; }
-  .prov { margin: 0 0 10px; padding-left: 12px; border-left: 2px solid transparent; }
+  .doc-head h1 { font-size: 22px; margin: 12px 0 4px; color: #111; }
+  .cite { font-style: italic; color: #555; font-size: 12.5px; }
+  .amended-by { margin-top: 8px; font: 600 12px/1.4 ui-sans-serif, system-ui, sans-serif; color: #9a7b2e; }
+  main { margin-top: 8px; }
+  .prov { margin: 0 0 12px; padding-left: 12px; border-left: 2px solid transparent; }
   .prov.amended { border-left-color: #c9a227; background: #fbf6e4; padding: 6px 12px; border-radius: 2px; }
   .mn { font: 700 11px/1.3 ui-sans-serif, system-ui, sans-serif; color: #333; margin-bottom: 2px; }
   .plabel { font-weight: 700; margin-right: 8px; }
-  .pline { margin: 2px 0; }
-  .side { margin-top: 4px; padding-left: 6px; }
-  .side .tag { display: inline-block; min-width: 64px; font: 700 9.5px/1.4 ui-sans-serif, system-ui, sans-serif; text-transform: uppercase; letter-spacing: .06em; color: #888; }
-  del { color: #9b1c1c; text-decoration: line-through; }
-  ins { color: #14672f; text-decoration: none; background: #d8f0dd; }
-  .gap { margin: 8px 0; padding: 4px 0; text-align: center; color: #999; font: 11px/1.4 ui-sans-serif, system-ui, sans-serif; border-top: 1px dashed #ccc; border-bottom: 1px dashed #ccc; }
-  .doc-foot { margin-top: 36px; padding-top: 12px; border-top: 1px solid #ccc; font: 10px/1.4 ui-sans-serif, system-ui, sans-serif; color: #888; text-align: center; }
-  @media print { body { padding: 0; } @page { margin: 20mm 16mm; } .prov.amended { background: #fbf6e4 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } ins { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+  .doc-foot { margin-top: 40px; padding-top: 12px; border-top: 1px solid #ccc; font: 10px/1.4 ui-sans-serif, system-ui, sans-serif; color: #888; text-align: center; }
+  @media print { body { padding: 0; } @page { margin: 22mm 18mm; } .prov.amended { background: #fbf6e4 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
 `;

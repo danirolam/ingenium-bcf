@@ -19,6 +19,9 @@ export interface Provision {
   heading?: string | null;
   marginalNote?: string | null;
   text: string;
+  /** French text/marginal note (v2 bilingual ingest), for the UI EN/FR toggle. */
+  textFr?: string;
+  marginalNoteFr?: string | null;
   /** Structured hierarchy path (section → subsection → paragraph → …). */
   path?: PositionStep[];
 }
@@ -44,10 +47,6 @@ export interface DiffRow {
 }
 
 export const squish = (s: string) => (s ?? "").replace(/\s+/g, " ").trim();
-
-/** Sentinel anchor for "The <Act> is repealed." — names no provision, so it
- *  repeals every provision of the Act (a whole-Act repeal). */
-export const WHOLE_ACT = "__whole_act__";
 
 // Normalize a provision label/anchor for matching: drop the word "section" etc.
 // and whitespace so "section 2.4", "Section 2.4", "2.4" all compare equal.
@@ -89,149 +88,10 @@ export function labelToPath(label: string): PositionStep[] {
   return path.length ? path : [{ kind: "section", label: normLabel(raw) }];
 }
 
-const pathOf = (p: Provision) => p.path ?? labelToPath(p.label);
-const samePath = (a: PositionStep[], b: PositionStep[]) =>
-  a.length === b.length && a.every((s, i) => normLabel(s.label) === normLabel(b[i].label));
-const isPrefix = (pre: PositionStep[], full: PositionStep[]) =>
-  pre.length <= full.length && pre.every((s, i) => normLabel(s.label) === normLabel(full[i].label));
-
-// Find a provision by anchor label, matching level-by-level: exact path first,
-// then the deepest existing ancestor (e.g. anchor 30(1)(o) → fall back to 30(1)
-// → 30). Returns the match kind so the caller can route misses to the AI.
-export function findByPath(
-  provisions: Provision[],
-  anchorLabel: string | null,
-): { index: number; matched: "exact" | "ancestor" | "none"; missingDepth: number } {
-  if (!anchorLabel) return { index: -1, matched: "none", missingDepth: 0 };
-  const target = labelToPath(anchorLabel);
-  const exact = provisions.findIndex((p) => samePath(pathOf(p), target));
-  if (exact >= 0) return { index: exact, matched: "exact", missingDepth: 0 };
-
-  // Container: the anchor names a section/subsection whose own label isn't a
-  // provision because it only exists through its children (e.g. "30" -> 30(1),
-  // 30(2)…). Resolve to the LAST descendant so "add after section 30" lands
-  // after the whole section. This is a confident match, so report it as exact.
-  let lastDesc = -1;
-  for (let i = 0; i < provisions.length; i++) {
-    if (isPrefix(target, pathOf(provisions[i]))) lastDesc = i;
-  }
-  if (lastDesc >= 0) return { index: lastDesc, matched: "exact", missingDepth: 0 };
-
-  // Deepest ancestor: longest target prefix that exists as a provision path.
-  let best = -1, bestLen = 0;
-  for (let i = 0; i < provisions.length; i++) {
-    const pp = pathOf(provisions[i]);
-    if (pp.length < target.length && isPrefix(pp, target) && pp.length > bestLen) {
-      best = i;
-      bestLen = pp.length;
-    }
-  }
-  if (best >= 0) return { index: best, matched: "ancestor", missingDepth: target.length - bestLen };
-  return { index: -1, matched: "none", missingDepth: target.length };
-}
-
-// Every provision that falls under an anchor: the leaf it names, OR — when the
-// anchor names a container — everything inside it. A numeric anchor ("30",
-// "30(1)") matches itself + its descendants by path; a "Schedule IV" anchor
-// matches every provision under that schedule heading. Used by repeals, so
-// "Schedule IV … is repealed" or "section 30 is repealed" removes the whole
-// container instead of a single row.
-export function findAllUnder(provisions: Provision[], anchorLabel: string | null): number[] {
-  if (!anchorLabel) return [];
-  if (anchorLabel === WHOLE_ACT) return provisions.map((_, i) => i); // whole-Act repeal
-  if (/^\s*schedule\b/i.test(anchorLabel)) {
-    const want = normLabel(anchorLabel); // "Schedule IV" → "scheduleiv"
-    return provisions.flatMap((p, i) => (normLabel(p.heading ?? "") === want ? [i] : []));
-  }
-  const target = labelToPath(anchorLabel);
-  const out: number[] = [];
-  provisions.forEach((p, i) => {
-    const pp = pathOf(p);
-    if (samePath(pp, target) || isPrefix(target, pp)) out.push(i);
-  });
-  return out;
-}
-
-// Apply interpreted operations to the Act's provisions. Returns the resulting
-// "after" provisions plus a list of operations whose anchor we couldn't verify.
-export type VerifiedOp = Amendment & {
-  anchorFound: boolean;
-  /** Identity keys of the provisions this op produced (added/changed/repealed),
-   *  resolved to row indices by attachRowLinks. */
-  producedKeys: string[];
-  /** Full human-readable instruction ("Bill says"). */
-  instruction: string;
-  /** How this op was resolved: "structured" (deterministic from the bill XML) or
-   *  "ai" (the AI scalpel/interpreter). Per-op, so a mixed delta tags each card. */
-  resolution: "structured" | "ai";
-};
-
-export function applyAmendments(
-  before: Provision[],
-  ops: Amendment[],
-): { after: Provision[]; verified: VerifiedOp[] } {
-  const after: Provision[] = before.map((p) => ({ ...p }));
-  const verified: VerifiedOp[] = [];
-  let serial = 0; // unique ids for inserted provisions (so provKey distinguishes them)
-
-  for (const op of ops) {
-    // Resolve the anchor the SAME way the deterministic path does (level-by-level,
-    // container → last descendant) instead of a verbatim label match. This is what
-    // keeps an AI-interpreted op in document order: the new provision is spliced
-    // next to its real anchor rather than appended at the end when the label
-    // doesn't match byte-for-byte.
-    let producedKeys: string[] = [];
-    let anchorFound = false;
-
-    if (op.op === "repeal") {
-      // Repeal every provision under the anchor (leaf, whole section, or schedule),
-      // high-to-low so indices stay valid — mirrors applyGroups.
-      const idxs = findAllUnder(after, op.anchor);
-      anchorFound = idxs.length > 0;
-      producedKeys = idxs.map((k) => provKey(after[k]));
-      for (const k of [...idxs].sort((a, b) => b - a)) after.splice(k, 1);
-    } else if (op.op === "replace") {
-      const hit = findByPath(after, op.anchor);
-      anchorFound = hit.matched === "exact";
-      if (hit.index >= 0) {
-        after[hit.index] = {
-          ...after[hit.index],
-          marginalNote: op.newMarginalNote ?? after[hit.index].marginalNote,
-          text: op.newText ?? after[hit.index].text,
-        };
-        producedKeys = [provKey(after[hit.index])];
-      }
-    } else if (op.op === "amend") {
-      const hit = findByPath(after, op.anchor);
-      anchorFound = hit.matched === "exact";
-      if (hit.index >= 0) {
-        if (op.newText) after[hit.index] = { ...after[hit.index], text: op.newText };
-        producedKeys = [provKey(after[hit.index])];
-      }
-    } else {
-      // add — insert a new provision next to the resolved anchor (or append if the
-      // anchor is genuinely absent / there is no anchor).
-      const hit = findByPath(after, op.anchor);
-      anchorFound = hit.matched === "exact" || !op.anchor;
-      const newLabel = op.newLabel || "(new)";
-      const newPath = labelToPath(newLabel);
-      const newP: Provision = {
-        id: `ins:${serial++}`,
-        label: newLabel,
-        kind: newPath[newPath.length - 1]?.kind ?? "section",
-        heading: hit.index >= 0 ? after[hit.index].heading ?? null : null,
-        marginalNote: op.newMarginalNote || null,
-        text: op.newText || "",
-        path: newPath,
-      };
-      const at = hit.index < 0 ? after.length : op.position === "before" ? hit.index : hit.index + 1;
-      after.splice(at, 0, newP);
-      producedKeys = [provKey(newP)];
-    }
-    verified.push({ ...op, anchorFound, producedKeys, instruction: op.note ?? "", resolution: "ai" });
-  }
-  return { after, verified };
-}
+// NOTE: provision location is no longer done here. The AI locator returns an
+// ancestor path verified against the real Act tree (see amendmentLocator.ts), and
+// amendmentApply.ts mutates the tree + re-flattens. This module now only owns the
+// before/after DIFF and op→row linking below.
 
 // Diff before/after into rows in DOCUMENT ORDER (repealed rows interleaved at
 // their original position, not appended at the end), keyed by provKey. The
@@ -273,40 +133,6 @@ export function diffProvisions(before: Provision[], after: Provision[]): DiffRow
   return rows;
 }
 
-// The delta carries EVERY provision as a row (the UI windows around changes; the
-// PDF export renders the whole amended Act). For a multi-thousand-provision Act
-// (Income Tax, Criminal Code) that is a 50MB+ response and cache record. For such
-// HUGE Acts only, blank the `text` of UNCHANGED provisions outside each op's
-// window — keeping label/marginalNote/path so structure + headers still render,
-// and keeping every changed/added/repealed row's text in full. The rows array and
-// its indices are PRESERVED (no re-indexing), so producedRowIndices /
-// contextRowIndices and stage-3/4's row lookups stay valid. Normal-size Acts pass
-// through untouched. Trade-off, for huge Acts only: deep "show more" context and
-// the full-Act PDF render far-unchanged provisions label-only.
-const SLIM_TEXT_THRESHOLD = 6_000_000; // total before+after chars above which we slim
-const SLIM_WINDOW = 12; // keep full text ±this around each produced row (UI's BASE is 10)
-export function slimUnchangedText(rows: DiffRow[], ops: ReadonlyArray<unknown>): DiffRow[] {
-  let total = 0;
-  for (const r of rows) total += (r.before?.text?.length ?? 0) + (r.after?.text?.length ?? 0);
-  if (total <= SLIM_TEXT_THRESHOLD) return rows; // normal Act — untouched
-
-  const keep = new Set<number>();
-  // Path A ops carry producedRowIndices/contextRowIndices (attachRowLinks); Path B
-  // VerifiedOps don't — that's fine, their changed rows are kept by status below.
-  for (const op of ops as ReadonlyArray<{ producedRowIndices?: number[]; contextRowIndices?: number[] }>) {
-    for (const i of op.contextRowIndices ?? []) keep.add(i);
-    for (const pi of op.producedRowIndices ?? []) {
-      for (let j = pi - SLIM_WINDOW; j <= pi + SLIM_WINDOW; j++) {
-        if (j >= 0 && j < rows.length) keep.add(j);
-      }
-    }
-  }
-  const blank = (p?: Provision): Provision | undefined => (p ? { ...p, text: "" } : p);
-  return rows.map((r, i) =>
-    r.status === "unchanged" && !keep.has(i) ? { ...r, before: blank(r.before), after: blank(r.after) } : r,
-  );
-}
-
 // Resolve each op's produced provisions to indices into `rows` and a ±contextN
 // document-order window, and stamp the stable approval `key` ("<slug>#<i>").
 // Rows must be in document order (diffProvisions guarantees it). This is the one
@@ -345,4 +171,31 @@ export function diffSummary(rows: DiffRow[]) {
     repealed: rows.filter((r) => r.status === "repealed").length,
     unchanged: rows.filter((r) => r.status === "unchanged").length,
   };
+}
+
+const SLIM_TEXT_THRESHOLD = 6_000_000; // total before+after chars above which we slim
+const SLIM_WINDOW = 12; // keep full text ±this around each produced row (UI's BASE is 10)
+
+// For a huge Act (e.g. the Income Tax Act), blank the text of unchanged provisions
+// that are far from any change, so the response payload stays manageable. The ops'
+// producedRowIndices/contextRowIndices (from attachRowLinks) mark what to keep in
+// full; changed/added/repealed rows are always kept by status. Display-only.
+export function slimUnchangedText(rows: DiffRow[], ops: ReadonlyArray<unknown>): DiffRow[] {
+  let total = 0;
+  for (const r of rows) total += (r.before?.text?.length ?? 0) + (r.after?.text?.length ?? 0);
+  if (total <= SLIM_TEXT_THRESHOLD) return rows; // normal Act — untouched
+
+  const keep = new Set<number>();
+  for (const op of ops as ReadonlyArray<{ producedRowIndices?: number[]; contextRowIndices?: number[] }>) {
+    for (const i of op.contextRowIndices ?? []) keep.add(i);
+    for (const pi of op.producedRowIndices ?? []) {
+      for (let j = pi - SLIM_WINDOW; j <= pi + SLIM_WINDOW; j++) {
+        if (j >= 0 && j < rows.length) keep.add(j);
+      }
+    }
+  }
+  const blank = (p?: Provision): Provision | undefined => (p ? { ...p, text: "" } : p);
+  return rows.map((r, i) =>
+    r.status === "unchanged" && !keep.has(i) ? { ...r, before: blank(r.before), after: blank(r.after) } : r,
+  );
 }
