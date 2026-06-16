@@ -41,6 +41,7 @@ export function DeltaReview({
 
   const [idx, setIdx] = useState(0);
   const [showFails, setShowFails] = useState(false);
+  const [exportOpen, setExportOpen] = useState(false);
   const at = Math.min(idx, Math.max(0, items.length - 1));
   const go = (step: number) => setIdx(() => Math.max(0, Math.min(items.length - 1, at + step)));
 
@@ -85,12 +86,22 @@ export function DeltaReview({
   const approved = approvals.isApproved(cur.op.key);
   // Bill-wide progress for the header (every amendment across every Act).
   const billApproved = items.reduce((n, it) => n + (approvals.isApproved(it.op.key) ? 1 : 0), 0);
-  // Per-Act gate for export (an Act's PDF unlocks once that Act is fully approved).
-  const actApproved = cur.delta.operations.reduce((n, o) => n + (approvals.isApproved(o.key) ? 1 : 0), 0);
-  const actAllApproved = cur.delta.operations.length > 0 && actApproved === cur.delta.operations.length;
+  const billAllApproved = items.length > 0 && billApproved === items.length;
+  const multiAct = deltas.length > 1;
+  // An Act is exportable once every one of its amendments is approved.
+  const actReady = (d: ProvisionDelta) =>
+    d.operations.length > 0 && d.operations.every((o) => approvals.isApproved(o.key));
 
-  const onExport = (delta: ProvisionDelta) => {
-    if (!exportActAsPdf(delta, bill)) toast("Allow pop-ups to export the PDF.");
+  const exportOne = (d: ProvisionDelta) => {
+    if (!exportActAsPdf(d, bill)) toast("Allow pop-ups to export the PDF.");
+  };
+  // Export every Act — one print tab each. Browsers may block the extra pop-ups,
+  // so flag it if any didn't open.
+  const exportAll = () => {
+    let blocked = false;
+    for (const d of deltas) if (!exportActAsPdf(d, bill)) blocked = true;
+    if (blocked) toast("Allow pop-ups to export every Act.");
+    setExportOpen(false);
   };
 
   return (
@@ -169,14 +180,49 @@ export function DeltaReview({
                   official PDF ↗
                 </a>
               )}
-              <button
-                className="btn primary sm dr-pager-export"
-                disabled={!actAllApproved}
-                title={actAllApproved ? `Export ${cur.delta.title} as a PDF` : "Approve every amendment in this Act first"}
-                onClick={() => onExport(cur.delta)}
-              >
-                Export PDF
-              </button>
+              <div className="dr-export">
+                <button
+                  className="btn primary sm dr-export-main"
+                  disabled={!billAllApproved}
+                  title={billAllApproved ? (multiAct ? "Export every Act as a PDF" : "Export the Act as a PDF") : "Approve every amendment first"}
+                  onClick={exportAll}
+                >
+                  {multiAct ? "Export all" : "Export PDF"}
+                </button>
+                {multiAct && (
+                  <button
+                    className="btn primary sm dr-export-caret"
+                    title="Export a specific Act"
+                    aria-expanded={exportOpen}
+                    onClick={() => setExportOpen((v) => !v)}
+                  >
+                    ▾
+                  </button>
+                )}
+                {exportOpen && multiAct && (
+                  <>
+                    <div className="dr-export-backdrop" onClick={() => setExportOpen(false)} />
+                    <div className="dr-export-menu" role="menu">
+                      <div className="dr-export-menu-head">Export one Act</div>
+                      {deltas.map((d) => {
+                        const ready = actReady(d);
+                        return (
+                          <button
+                            key={d.slug}
+                            className="dr-export-item"
+                            role="menuitem"
+                            disabled={!ready}
+                            onClick={() => { exportOne(d); setExportOpen(false); }}
+                          >
+                            <span className="dr-export-item-title">{d.title}</span>
+                            <span className="dr-export-item-sub">{ready ? "ready" : "approve first"}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           </div>
           <div className="dr-pager-body">
