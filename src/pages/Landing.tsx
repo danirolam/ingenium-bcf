@@ -9,6 +9,8 @@ import {
   ArrowRight,
   Github,
 } from "lucide-react";
+import { api } from "../lib/api";
+import type { Bill } from "../types";
 
 
 function AnimatedCounter({ value }: { value: string }) {
@@ -58,15 +60,8 @@ const NAV = [
   { id: "faq", label: "FAQ" },
 ];
 
-const METRICS = [
-  { label: "Bills tracked", value: "5694", desc: "across 16 sessions of Parliament" },
-  { label: "With full text", value: "160", desc: "current session, clause by clause" },
-  { label: "Practice groups", value: "9", desc: "mapped automatically" },
-  { label: "Consolidated Acts", value: "964", desc: "the full federal statute book" },
-];
-
 const CAPS: { title: string; desc: string }[] = [
-  { title: "Monitor", desc: "Every federal bill, tracked by practice area and momentum." },
+  { title: "Monitor", desc: "Every bill, tracked by practice area and momentum." },
   { title: "Legal delta", desc: "See exactly which sections of which Acts a bill changes." },
   { title: "Client scan", desc: "Match each change against a client's operations and contracts." },
   { title: "Client brief", desc: "Produce a counsel-approved exposure memo, ready to send." },
@@ -95,6 +90,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [faq, setFaq] = useState<number | null>(0);
+  const [bills, setBills] = useState<Bill[]>([]);
   const obsRef = useRef<IntersectionObserver | null>(null);
   // Parallax targets — written to directly in a rAF-throttled scroll handler so
   // the hero drifts and the mock tilts with the scroll, with no React re-render.
@@ -138,6 +134,21 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
       obsRef.current?.disconnect();
     };
   }, []);
+
+  // Pull the live docket so every headline number is real, not hard-coded.
+  useEffect(() => {
+    api.bills.list().then(setBills).catch(() => {});
+  }, []);
+
+  const sessions = new Set(bills.map((b) => b.session).filter(Boolean)).size;
+  const withText = bills.filter((b) => b.clauses?.some((c) => c.text?.trim())).length;
+  const practices = new Set(bills.flatMap((b) => b.practiceAreas ?? [])).size;
+  const metrics = [
+    { label: "Bills tracked", value: String(bills.length), desc: `across ${sessions || "—"} sessions of Parliament` },
+    { label: "With full text", value: String(withText), desc: "parsed clause by clause" },
+    { label: "Practice groups", value: String(practices), desc: "mapped automatically" },
+    { label: "Sessions covered", value: String(sessions), desc: "of Parliament, cross-referenced" },
+  ];
 
   const go = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -241,7 +252,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
                 className="block text-5xl md:text-[76px] tracking-[-0.02em] stagger-reveal"
                 style={{ animationDelay: "60ms" }}
               >
-                Every federal bill,
+                Every bill,
               </span>
               <span
                 className="block text-5xl md:text-[76px] tracking-[-0.02em] stagger-reveal"
@@ -280,7 +291,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
           <div className="mt-6 md:mt-10" style={{ perspective: "1200px" }}>
             <div className="dashboard-image" style={{ animationDelay: "420ms" }}>
               <div ref={mockRef} style={{ transform: "rotateX(5deg)", transformStyle: "preserve-3d" }}>
-                <DashboardMock />
+                <DashboardMock bills={bills} sessions={sessions} />
               </div>
             </div>
           </div>
@@ -297,7 +308,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
             Tracked from the source, parsed to the clause, and tied to the clients it touches.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-x-16 md:gap-y-10 max-w-[820px] mx-auto">
-            {METRICS.map((m, i) => (
+            {metrics.map((m, i) => (
               <div key={i} className="p-6 md:p-8 text-center border-t border-white/10">
                 <div className="text-[13px] font-medium text-[#a1a1a6] mb-3">{m.label}</div>
                 <div className="text-[52px] md:text-[68px] leading-none font-semibold tracking-[-0.02em]">
@@ -396,7 +407,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
                 Ingenium
               </div>
               <p className="text-[13px] text-[#6e6e73] leading-relaxed max-w-[280px]">
-                Turning federal legislative change into clear, client-specific advice. Built for BCF.
+                Turning legislative change into clear, client-specific advice.
               </p>
             </div>
             <div className="flex flex-col gap-3">
@@ -413,7 +424,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
             </div>
           </div>
           <div className="border-t border-black/[0.06] pt-7 flex flex-col md:flex-row justify-between items-center gap-3 text-[13px] text-[#6e6e73]">
-            <div>© 2026 Ingenium · Built for BCF</div>
+            <div>© 2026 Ingenium</div>
             <div>Montréal</div>
           </div>
         </div>
@@ -422,8 +433,24 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
   );
 }
 
-// A live, crafted miniature of our command-center — the hero product shot.
-function DashboardMock() {
+// A miniature of the command-center — the hero product shot, fed by the live docket.
+function DashboardMock({ bills, sessions }: { bills: Bill[]; sessions: number }) {
+  const fmt = (n: number) => n.toLocaleString("en-US");
+  const active = bills.filter((b) => b.legislativeMomentum === "active" || b.legislativeMomentum === "advanced").length;
+  const withText = bills.filter((b) => b.clauses?.some((c) => c.text?.trim()));
+  const cards = [
+    { v: fmt(bills.length), l: "Bills tracked", on: true },
+    { v: fmt(active), l: "Active", on: false },
+    { v: fmt(withText.length), l: "With full text", on: false },
+    { v: String(sessions), l: "Sessions", on: false },
+  ];
+  const pill = (m: string) =>
+    m === "passed" || m === "in_force"
+      ? { label: "Passed", tone: "text-[#1a7f37] border-[#1a7f37]/30 bg-[#1a7f37]/[0.08]" }
+      : m === "active" || m === "advanced"
+        ? { label: "Active", tone: "text-[#0066cc] border-[#0071e3]/30 bg-[#0071e3]/[0.08]" }
+        : { label: "Tracked", tone: "text-[#a05a00] border-[#a05a00]/30 bg-[#a05a00]/[0.08]" };
+  const rows = withText.slice(0, 4); // the full-text bills are what the product acts on
   return (
     <div className="rounded-[18px] overflow-hidden border border-black/[0.08] bg-white shadow-[0_30px_90px_-30px_rgba(0,0,0,0.35)]">
       <div className="flex items-center gap-3 h-12 px-4 bg-[#fafafa] border-b border-black/[0.06]">
@@ -445,15 +472,10 @@ function DashboardMock() {
       </div>
       <div className="p-4 bg-white">
         <div className="text-[12px] font-medium text-[#86868b] mb-3">
-          Federal docket · 5,694 bills · 16 sessions
+          Federal docket · {fmt(bills.length)} bills · {sessions} sessions
         </div>
         <div className="grid grid-cols-4 gap-2.5 mb-3">
-          {[
-            { v: "5,694", l: "Bills tracked", on: true },
-            { v: "10", l: "Legal deltas", on: false },
-            { v: "3", l: "Clients", on: false },
-            { v: "5", l: "Ready", on: false },
-          ].map((c) => (
+          {cards.map((c) => (
             <div key={c.l} className={`rounded-[12px] border p-3 ${c.on ? "border-[#1d1d1f]/30 bg-[#fafafa]" : "border-[#e8e8ed] bg-[#fafafa]"}`}>
               <div className="text-[22px] font-semibold tracking-tight text-[#1d1d1f]">{c.v}</div>
               <div className="text-[11px] text-[#6e6e73] mt-0.5">{c.l}</div>
@@ -461,18 +483,16 @@ function DashboardMock() {
           ))}
         </div>
         <div className="rounded-[12px] border border-[#e8e8ed] overflow-hidden">
-          {[
-            { bill: "C-11", title: "An Act to amend the National Defence Act", pill: "Passed", tone: "text-[#1a7f37] border-[#1a7f37]/30 bg-[#1a7f37]/[0.08]" },
-            { bill: "C-30", title: "Spring economic update implementation", pill: "Active", tone: "text-[#0066cc] border-[#0071e3]/30 bg-[#0071e3]/[0.08]" },
-            { bill: "S-233", title: "Criminal Code (health and first responders)", pill: "Passed", tone: "text-[#1a7f37] border-[#1a7f37]/30 bg-[#1a7f37]/[0.08]" },
-            { bill: "C-27", title: "Digital Charter Implementation Act", pill: "In committee", tone: "text-[#a05a00] border-[#a05a00]/30 bg-[#a05a00]/[0.08]" },
-          ].map((r, i) => (
-            <div key={r.bill} className={`grid grid-cols-[52px_1fr_auto] gap-3 items-center px-3 py-2.5 text-[11.5px] ${i > 0 ? "border-t border-[#f0f0f2]" : ""}`}>
-              <span className="font-semibold text-[#0066cc]">{r.bill}</span>
-              <span className="text-[#424245] truncate">{r.title}</span>
-              <span className={`text-[10px] px-2 py-0.5 rounded-full border ${r.tone}`}>{r.pill}</span>
-            </div>
-          ))}
+          {rows.map((r, i) => {
+            const p = pill(r.legislativeMomentum);
+            return (
+              <div key={r.id} className={`grid grid-cols-[52px_1fr_auto] gap-3 items-center px-3 py-2.5 text-[11.5px] ${i > 0 ? "border-t border-[#f0f0f2]" : ""}`}>
+                <span className="font-semibold text-[#0066cc]">{r.billNumber}</span>
+                <span className="text-[#424245] truncate">{r.shortTitle || r.title}</span>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full border ${p.tone}`}>{p.label}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
