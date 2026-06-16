@@ -31,12 +31,6 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
           <span className="dr-topbar-title">{delta.bill?.title ?? "Legal delta"}</span>
         </div>
         <div className="dr-topbar-actions">
-          {delta.refreshing && (
-            <span className="dr-ai-chip" title="The AI is re-resolving this bill's amendments against the Act">
-              <span className="dr-ai-dots" aria-hidden="true"><i /><i /><i /></span>
-              computing with AI…
-            </span>
-          )}
           {delta.rateLimited > 0 && (
             <span
               className="dr-topbar-rl"
@@ -93,9 +87,8 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
   );
 }
 
-// First-load state: an animated "AI is working" indicator + a live elapsed timer,
-// so a long run (the AI navigating the Act, backing off through rate limits) reads
-// as "working", not "stuck".
+// First-load state with a live elapsed timer, so a long run (e.g. when the AI is
+// backing off through rate limits) reads as "working", not "stuck".
 function DeltaLoading() {
   const [secs, setSecs] = useState(0);
   useEffect(() => {
@@ -104,13 +97,12 @@ function DeltaLoading() {
   }, []);
   return (
     <div className="dr-state">
-      <div className="dr-ai-working">
-        <span className="dr-ai-dots" aria-hidden="true"><i /><i /><i /></span>
-        <span>Resolving each amendment against the Act with AI… <b>{secs}s</b></span>
-      </div>
+      <p>
+        Locating each amendment against the Act… <b>{secs}s</b>
+      </p>
       <p className="dr-state-sub">
-        The AI reads the Act, locates every amendment by its citation path, and verifies each
-        placement. Under heavy load it backs off and retries through rate limits, which can add time.
+        The AI resolves every amendment by its ancestor path and verifies it. Under heavy load it
+        automatically backs off and retries through rate limits, which can add time.
       </p>
     </div>
   );

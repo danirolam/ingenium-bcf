@@ -603,33 +603,6 @@
 .dr-state-err { color: var(--high); font-size: 12.5px; }
 .dr-state-sub { color: var(--ink-3); font-size: 12px; max-width: 440px; opacity: 0.85; }
 
-/* "AI is working" indicator — three pulsing dots that make the wait read as
-   active computation rather than a frozen screen. */
-.dr-ai-working { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--ink); }
-.dr-ai-working b { color: var(--accent-warm); font-variant-numeric: tabular-nums; }
-.dr-ai-dots { display: inline-flex; gap: 4px; }
-.dr-ai-dots i {
-  width: 7px; height: 7px; border-radius: 50%; background: var(--accent-warm);
-  animation: dr-ai-pulse 1.2s ease-in-out infinite;
-}
-.dr-ai-dots i:nth-child(2) { animation-delay: 0.2s; }
-.dr-ai-dots i:nth-child(3) { animation-delay: 0.4s; }
-@keyframes dr-ai-pulse {
-  0%, 80%, 100% { opacity: 0.25; transform: scale(0.8); }
-  40% { opacity: 1; transform: scale(1); }
-}
-@media (prefers-reduced-motion: reduce) { .dr-ai-dots i { animation: none; opacity: 0.7; } }
-
-/* Inline "computing with AI…" chip for the top bar during a recompute (existing
-   data stays on screen). Smaller dots than the full-screen indicator. */
-.dr-ai-chip {
-  display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
-  font-size: 11.5px; font-weight: 600; color: var(--accent-warm);
-  background: rgba(210, 153, 34, 0.1);
-  border: 1px solid rgba(210, 153, 34, 0.3); border-radius: 999px; padding: 3px 10px;
-}
-.dr-ai-chip .dr-ai-dots i { width: 5px; height: 5px; }
-
 /* Two-pane body: PDF | draggable divider | review. The PDF width lives in a CSS
    var (default a third of the viewport, set inline) so the responsive query can
    still collapse the grid on narrow screens. */
