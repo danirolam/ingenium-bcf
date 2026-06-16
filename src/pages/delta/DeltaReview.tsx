@@ -41,7 +41,8 @@ export function DeltaReview({
 
   const [idx, setIdx] = useState(0);
   const [showFails, setShowFails] = useState(false);
-  const [exportOpen, setExportOpen] = useState(false);
+  // Acts already exported this session — the chip dims to "done" but stays clickable.
+  const [exported, setExported] = useState<Set<string>>(new Set());
   const at = Math.min(idx, Math.max(0, items.length - 1));
   const go = (step: number) => setIdx(() => Math.max(0, Math.min(items.length - 1, at + step)));
 
@@ -80,28 +81,25 @@ export function DeltaReview({
     return () => window.removeEventListener("keydown", onKey);
   }, [items.length]);
 
+  // A fresh delta resets the export tray (recompute clears approvals anyway).
+  useEffect(() => { setExported(new Set()); }, [deltas]);
+
   const cur = items[at];
   if (!cur) return null;
 
   const approved = approvals.isApproved(cur.op.key);
   // Bill-wide progress for the header (every amendment across every Act).
   const billApproved = items.reduce((n, it) => n + (approvals.isApproved(it.op.key) ? 1 : 0), 0);
-  const billAllApproved = items.length > 0 && billApproved === items.length;
-  const multiAct = deltas.length > 1;
-  // An Act is exportable once every one of its amendments is approved.
+  // An Act becomes exportable once every one of its amendments is approved; each
+  // ready Act gets its own chip in the export tray, exported on a single click
+  // (so the browser never blocks it as a duplicate pop-up).
   const actReady = (d: ProvisionDelta) =>
     d.operations.length > 0 && d.operations.every((o) => approvals.isApproved(o.key));
+  const readyActs = deltas.filter(actReady);
 
   const exportOne = (d: ProvisionDelta) => {
-    if (!exportActAsPdf(d, bill)) toast("Allow pop-ups to export the PDF.");
-  };
-  // Export every Act — one print tab each. Browsers may block the extra pop-ups,
-  // so flag it if any didn't open.
-  const exportAll = () => {
-    let blocked = false;
-    for (const d of deltas) if (!exportActAsPdf(d, bill)) blocked = true;
-    if (blocked) toast("Allow pop-ups to export every Act.");
-    setExportOpen(false);
+    if (exportActAsPdf(d, bill)) setExported((s) => new Set(s).add(d.slug));
+    else toast("Allow pop-ups to export the PDF.");
   };
 
   return (
@@ -180,51 +178,29 @@ export function DeltaReview({
                   official PDF ↗
                 </a>
               )}
-              <div className="dr-export">
-                <button
-                  className="btn primary sm dr-export-main"
-                  disabled={!billAllApproved}
-                  title={billAllApproved ? (multiAct ? "Export every Act as a PDF" : "Export the Act as a PDF") : "Approve every amendment first"}
-                  onClick={exportAll}
-                >
-                  {multiAct ? "Export all" : "Export PDF"}
-                </button>
-                {multiAct && (
-                  <button
-                    className="btn primary sm dr-export-caret"
-                    title="Export a specific Act"
-                    aria-expanded={exportOpen}
-                    onClick={() => setExportOpen((v) => !v)}
-                  >
-                    ▾
-                  </button>
-                )}
-                {exportOpen && multiAct && (
-                  <>
-                    <div className="dr-export-backdrop" onClick={() => setExportOpen(false)} />
-                    <div className="dr-export-menu" role="menu">
-                      <div className="dr-export-menu-head">Export one Act</div>
-                      {deltas.map((d) => {
-                        const ready = actReady(d);
-                        return (
-                          <button
-                            key={d.slug}
-                            className="dr-export-item"
-                            role="menuitem"
-                            disabled={!ready}
-                            onClick={() => { exportOne(d); setExportOpen(false); }}
-                          >
-                            <span className="dr-export-item-title">{d.title}</span>
-                            <span className="dr-export-item-sub">{ready ? "ready" : "approve first"}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </>
-                )}
-              </div>
             </div>
           </div>
+
+          {readyActs.length > 0 && (
+            <div className="dr-export-tray">
+              <span className="dr-export-tray-label">Export</span>
+              {readyActs.map((d) => {
+                const done = exported.has(d.slug);
+                return (
+                  <button
+                    key={d.slug}
+                    className={`dr-export-chip${done ? " is-done" : ""}`}
+                    title={done ? `Re-export ${d.title}` : `Export ${d.title} as a PDF`}
+                    onClick={() => exportOne(d)}
+                  >
+                    <span className="dr-export-chip-ic" aria-hidden="true">{done ? "✓" : "⬇"}</span>
+                    {d.title}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
           <div className="dr-pager-body">
             <AmendmentCard
               key={cur.op.key}

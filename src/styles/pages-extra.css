@@ -716,33 +716,31 @@
 .dr-pager-actpdf { font-size: 12px; font-weight: 600; color: var(--accent-warm); text-decoration: none; white-space: nowrap; flex: none; }
 .dr-pager-actpdf:hover { text-decoration: underline; }
 
-/* Split export button: "Export all" + a caret that drops down a per-Act menu. */
-.dr-export { position: relative; display: inline-flex; flex: none; gap: 1px; }
-.dr-export-main { border-top-right-radius: 0; border-bottom-right-radius: 0; }
-.dr-export-caret {
-  border-top-left-radius: 0; border-bottom-left-radius: 0;
-  padding-left: 7px; padding-right: 7px; font-size: 10px;
+/* Export tray: a strip of per-Act export chips that appears under the pager bar as
+   Acts become fully approved. Each chip exports on its own click (so the browser
+   never blocks it as a duplicate pop-up); after exporting it dims to "done" but
+   stays clickable for a re-export. */
+.dr-export-tray {
+  flex: none; display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  padding: 8px 16px; border-bottom: 1px solid var(--border);
+  background: var(--ok-bg);
 }
-.dr-export-backdrop { position: fixed; inset: 0; z-index: 30; }
-.dr-export-menu {
-  position: absolute; top: calc(100% + 6px); right: 0; z-index: 31; min-width: 240px;
-  background: var(--panel); border: 1px solid var(--border); border-radius: 9px;
-  box-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.3); padding: 5px; overflow: hidden;
-}
-.dr-export-menu-head {
+.dr-export-tray-label {
   font: 700 10px/1 var(--sans); letter-spacing: .06em; text-transform: uppercase;
-  color: var(--ink-4); padding: 7px 9px 6px;
+  color: var(--ink-4); margin-right: 2px;
 }
-.dr-export-item {
-  display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%;
-  padding: 8px 9px; border: 0; border-radius: 6px; background: none; cursor: pointer;
-  text-align: left; font: inherit;
+.dr-export-chip {
+  display: inline-flex; align-items: center; gap: 6px; max-width: 280px;
+  padding: 5px 11px; border: 1px solid var(--ok); border-radius: 999px;
+  background: var(--panel); color: var(--ink); cursor: pointer;
+  font: 600 12px/1 var(--sans); white-space: nowrap;
 }
-.dr-export-item:not(:disabled):hover { background: var(--panel-2); }
-.dr-export-item:disabled { opacity: 0.5; cursor: default; }
-.dr-export-item-title { font-size: 12.5px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.dr-export-item-sub { font-size: 10.5px; font-weight: 700; color: var(--ink-4); flex: none; }
-.dr-export-item:not(:disabled) .dr-export-item-sub { color: var(--ok); }
+.dr-export-chip:hover { background: var(--ok); color: #fff; }
+.dr-export-chip-ic { font-weight: 700; }
+.dr-export-chip.is-done {
+  border-color: var(--border-2); color: var(--ink-4); background: var(--panel-2);
+}
+.dr-export-chip.is-done:hover { background: var(--panel-3); color: var(--ink-2); }
 .dr-pager-body { flex: 1; min-height: 0; padding: 14px 16px; }
 
 /* Amendment card — fills the pager body; approving recolours the border. */
