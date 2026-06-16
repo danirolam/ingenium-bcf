@@ -223,7 +223,18 @@ async function locateOne(unit: AmendmentUnit, ctx: LocatorCtx, budget?: AiBudget
           return fail("no parseable decision JSON");
         }
         if (parsed.unlocatable) return fail(parsed.reason || "model could not locate the amendment");
-        if (!parsed.op || !parsed.actSlug || !Array.isArray(parsed.ancestors)) return fail("decision missing op/actSlug/ancestors");
+        // The slug is usually obvious from the tagged Act — fill it from the hint
+        // when the model omits it.
+        if (!parsed.actSlug && unit.actSlugHint) parsed.actSlug = unit.actSlugHint;
+        if (!parsed.op || !parsed.actSlug || !Array.isArray(parsed.ancestors)) {
+          // A transient incomplete decision (seen occasionally on large blocks) —
+          // re-prompt for the full object rather than dropping the amendment.
+          if (hop < MAX_HOPS) {
+            messages.push({ role: "user", content: `Your decision is incomplete — it MUST include "op", "actSlug", and an "ancestors" array. Reply again with the complete JSON decision object only.` });
+            continue;
+          }
+          return fail("decision missing op/actSlug/ancestors");
+        }
         const nav = await getNav(ctx, parsed.actSlug);
         if (!nav) return fail(`model named an unavailable Act '${parsed.actSlug}'`);
         // Authoritative re-validation — the model's confirmation is not trusted.
