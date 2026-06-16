@@ -890,13 +890,17 @@
 .dr-cell.is-del .dr-cell-sign {
   color: var(--crit);
 }
+/* The leaf label runs INLINE as the bold lead-in of the text (like the Act), so a
+   long label — e.g. a multi-word definition term — never squeezes the text into a
+   narrow column. */
 .dr-cell-label {
-  flex: none;
   font-weight: 700;
-  color: var(--ink-3);
+  color: var(--ink);
+  margin-right: 5px;
 }
 .dr-cell-main {
   min-width: 0;
+  flex: 1;
 }
 .dr-cell-mn {
   display: block;
@@ -1030,8 +1034,8 @@
   flex: none; width: 10px; text-align: center;
   font-family: var(--mono); font-weight: 700; color: var(--ink-4);
 }
-.dr-prov-label { flex: none; font-family: var(--mono); font-weight: 700; color: var(--ink-3); }
-.dr-prov-main { min-width: 0; }
+.dr-prov-label { font-weight: 700; color: var(--ink-3); margin-right: 5px; }
+.dr-prov-main { min-width: 0; flex: 1; }
 .dr-prov-mn { display: block; font-weight: 700; font-size: 11px; color: var(--ink-4); margin-bottom: 1px; }
 .dr-prov-text { color: var(--ink-3); }
 

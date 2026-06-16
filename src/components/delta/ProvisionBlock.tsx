@@ -38,10 +38,12 @@ export function ProvisionBlock({
       <span className="dr-prov-sign" aria-hidden="true">
         {SIGN[row.status]}
       </span>
-      <span className="dr-prov-label">{leafLabel(prov)}</span>
       <span className="dr-prov-main">
         {prov.marginalNote && <span className="dr-prov-mn">{prov.marginalNote}</span>}
-        <span className="dr-prov-text">{displayText(prov)}</span>
+        <span className="dr-prov-text">
+          <span className="dr-prov-label">{leafLabel(prov)}</span>{" "}
+          {displayText(prov)}
+        </span>
       </span>
     </div>
   );

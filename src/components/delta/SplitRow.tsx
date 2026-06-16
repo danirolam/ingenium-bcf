@@ -46,10 +46,12 @@ function Cell({
       <span className="dr-cell-sign" aria-hidden="true">
         {intent === "add" ? "+" : intent === "del" ? "−" : ""}
       </span>
-      <span className="dr-cell-label">{leafLabel(prov)}</span>
       <span className="dr-cell-main">
         {prov.marginalNote && <span className="dr-cell-mn">{prov.marginalNote}</span>}
-        <span className="dr-cell-text">{parts ? <Words parts={parts} /> : displayText(prov)}</span>
+        <span className="dr-cell-text">
+          <span className="dr-cell-label">{leafLabel(prov)}</span>{" "}
+          {parts ? <Words parts={parts} /> : displayText(prov)}
+        </span>
       </span>
     </div>
   );
