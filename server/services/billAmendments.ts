@@ -269,6 +269,7 @@ function splitAmended(amended: DomNode): { inserts: ActNode[]; nested: RawUnit[]
   // then that instruction — whose content is its FOLLOWING SIBLINGS (e.g. "(2) …
   // is replaced:" followed by the new subsection (7)).
   let current = outer;
+  const headingByLevel: string[] = []; // Part/Division titles by <Heading level=…>
   const walk = (parent: DomNode) => {
     for (const c of childEls(parent)) {
       if (attr(c.attrs, "type") === "amending") {
@@ -277,9 +278,18 @@ function splitAmended(amended: DomNode): { inserts: ActNode[]; nested: RawUnit[]
         const own = childEls(c, "AmendedText")[0];
         if (own) { const sub = splitAmended(own); unit.inserts.push(...sub.inserts); nested.push(...sub.nested); }
         current = unit.inserts;
+      } else if (c.name === "Heading") {
+        // A Part/Division title sits between sections — keep it (deepest level wins)
+        // so the new provision shows under its heading, the way the Act prints it.
+        const lvl = parseInt(attr(c.attrs, "level") ?? "1", 10) || 1;
+        const title = squish(childEls(c, "TitleText").map(elText).join(""));
+        if (title) { headingByLevel[lvl - 1] = title; headingByLevel.length = lvl; }
       } else if (KIND[c.name]) {
         const n = domToActNode(c);
-        if (n) current.push(n);
+        if (n) {
+          if (!n.heading) n.heading = headingByLevel.filter(Boolean).slice(-1)[0] ?? null;
+          current.push(n);
+        }
       } else if (c.name === "BilingualGroup") {
         for (const e of bilingualEntries(c)) current.push(e); // schedule entries (en + fr)
       } else if (!["Text", "Label", "MarginalNote", "HistoricalNote"].includes(c.name)) {

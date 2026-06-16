@@ -826,6 +826,16 @@
 }
 
 /* The split body: each row is two equal cells. */
+/* A Part/Division title the Act prints between sections (e.g. "List of Therapeutic
+   Products Pre-approved for Special Access"), spanning both diff columns. */
+.dr-diff-heading {
+  padding: 12px 14px 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--panel);
+  border-bottom: 1px solid var(--border-3);
+}
 .dr-srow {
   display: grid;
   grid-template-columns: 1fr 1fr;
