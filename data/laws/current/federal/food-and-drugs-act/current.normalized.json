@@ -5,14 +5,13 @@
   "level": "federal",
   "code": "F-27",
   "schemaVersion": 2,
-  "bilingual": false,
   "currentPath": "data/laws/current/federal/food-and-drugs-act",
   "source": {
     "publisher": "Justice Laws Website",
     "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/F-27.xml",
     "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/F-27/index.html"
   },
-  "normalizedAt": "2026-06-16T15:38:35.321Z",
+  "normalizedAt": "2026-06-16T19:07:12.765Z",
   "coverage": {
     "ratio": 0.9299,
     "provisions": 672,
@@ -5155,204 +5154,175 @@
               "id": "F-27:sch:5",
               "num": "Acute alcoholism",
               "kind": "scheduleEntry",
-              "text": "Acute alcoholism",
-              "textFr": "Alcoolisme aigu"
+              "text": "Acute alcoholism"
             },
             {
               "id": "F-27:sch:6",
               "num": "Acute anxiety state",
               "kind": "scheduleEntry",
-              "text": "Acute anxiety state",
-              "textFr": "État anxieux aigu"
+              "text": "Acute anxiety state"
             },
             {
               "id": "F-27:sch:7",
               "num": "Acute infectious respiratory syndromes",
               "kind": "scheduleEntry",
-              "text": "Acute infectious respiratory syndromes",
-              "textFr": "Syndromes respiratoires infectieux aigus"
+              "text": "Acute infectious respiratory syndromes"
             },
             {
               "id": "F-27:sch:8",
               "num": "Acute, inflammatory and debilitating arthritis",
               "kind": "scheduleEntry",
-              "text": "Acute, inflammatory and debilitating arthritis",
-              "textFr": "Arthrite aiguë, inflammatoire et débilitante"
+              "text": "Acute, inflammatory and debilitating arthritis"
             },
             {
               "id": "F-27:sch:9",
               "num": "Acute psychotic conditions",
               "kind": "scheduleEntry",
-              "text": "Acute psychotic conditions",
-              "textFr": "Troubles psychotiques aigus"
+              "text": "Acute psychotic conditions"
             },
             {
               "id": "F-27:sch:10",
               "num": "Addiction (except nicotine addiction)",
               "kind": "scheduleEntry",
-              "text": "Addiction (except nicotine addiction)",
-              "textFr": "Dépendance (sauf la dépendance à la nicotine)"
+              "text": "Addiction (except nicotine addiction)"
             },
             {
               "id": "F-27:sch:11",
               "num": "Appendicitis",
               "kind": "scheduleEntry",
-              "text": "Appendicitis",
-              "textFr": "Appendicite"
+              "text": "Appendicitis"
             },
             {
               "id": "F-27:sch:12",
               "num": "Arteriosclerosis",
               "kind": "scheduleEntry",
-              "text": "Arteriosclerosis",
-              "textFr": "Artériosclérose"
+              "text": "Arteriosclerosis"
             },
             {
               "id": "F-27:sch:13",
               "num": "Asthma",
               "kind": "scheduleEntry",
-              "text": "Asthma",
-              "textFr": "Asthme"
+              "text": "Asthma"
             },
             {
               "id": "F-27:sch:14",
               "num": "Cancer",
               "kind": "scheduleEntry",
-              "text": "Cancer",
-              "textFr": "Cancer"
+              "text": "Cancer"
             },
             {
               "id": "F-27:sch:15",
               "num": "Congestive heart failure",
               "kind": "scheduleEntry",
-              "text": "Congestive heart failure",
-              "textFr": "Insuffisance cardiaque congestive"
+              "text": "Congestive heart failure"
             },
             {
               "id": "F-27:sch:16",
               "num": "Convulsions",
               "kind": "scheduleEntry",
-              "text": "Convulsions",
-              "textFr": "Convulsions"
+              "text": "Convulsions"
             },
             {
               "id": "F-27:sch:17",
               "num": "Dementia",
               "kind": "scheduleEntry",
-              "text": "Dementia",
-              "textFr": "Démence"
+              "text": "Dementia"
             },
             {
               "id": "F-27:sch:18",
               "num": "Depression",
               "kind": "scheduleEntry",
-              "text": "Depression",
-              "textFr": "Dépression"
+              "text": "Depression"
             },
             {
               "id": "F-27:sch:19",
               "num": "Diabetes",
               "kind": "scheduleEntry",
-              "text": "Diabetes",
-              "textFr": "Diabète"
+              "text": "Diabetes"
             },
             {
               "id": "F-27:sch:20",
               "num": "Gangrene",
               "kind": "scheduleEntry",
-              "text": "Gangrene",
-              "textFr": "Gangrène"
+              "text": "Gangrene"
             },
             {
               "id": "F-27:sch:21",
               "num": "Glaucoma",
               "kind": "scheduleEntry",
-              "text": "Glaucoma",
-              "textFr": "Glaucome"
+              "text": "Glaucoma"
             },
             {
               "id": "F-27:sch:22",
               "num": "Haematologic bleeding disorders",
               "kind": "scheduleEntry",
-              "text": "Haematologic bleeding disorders",
-              "textFr": "Affections hématologiques hémorragiques"
+              "text": "Haematologic bleeding disorders"
             },
             {
               "id": "F-27:sch:23",
               "num": "Hepatitis",
               "kind": "scheduleEntry",
-              "text": "Hepatitis",
-              "textFr": "Hépatite"
+              "text": "Hepatitis"
             },
             {
               "id": "F-27:sch:24",
               "num": "Hypertension",
               "kind": "scheduleEntry",
-              "text": "Hypertension",
-              "textFr": "Hypertension"
+              "text": "Hypertension"
             },
             {
               "id": "F-27:sch:25",
               "num": "Nausea and vomiting of pregnancy",
               "kind": "scheduleEntry",
-              "text": "Nausea and vomiting of pregnancy",
-              "textFr": "Nausées et vomissements de la grossesse"
+              "text": "Nausea and vomiting of pregnancy"
             },
             {
               "id": "F-27:sch:26",
               "num": "Obesity",
               "kind": "scheduleEntry",
-              "text": "Obesity",
-              "textFr": "Obésité"
+              "text": "Obesity"
             },
             {
               "id": "F-27:sch:27",
               "num": "Rheumatic fever",
               "kind": "scheduleEntry",
-              "text": "Rheumatic fever",
-              "textFr": "Rhumatisme articulaire aigu"
+              "text": "Rheumatic fever"
             },
             {
               "id": "F-27:sch:28",
               "num": "Septicemia",
               "kind": "scheduleEntry",
-              "text": "Septicemia",
-              "textFr": "Septicémie"
+              "text": "Septicemia"
             },
             {
               "id": "F-27:sch:29",
               "num": "Sexually transmitted diseases",
               "kind": "scheduleEntry",
-              "text": "Sexually transmitted diseases",
-              "textFr": "Maladies transmises sexuellement"
+              "text": "Sexually transmitted diseases"
             },
             {
               "id": "F-27:sch:30",
               "num": "Strangulated hernia",
               "kind": "scheduleEntry",
-              "text": "Strangulated hernia",
-              "textFr": "Hernie étranglée"
+              "text": "Strangulated hernia"
             },
             {
               "id": "F-27:sch:31",
               "num": "Thrombotic and Embolic disorders",
               "kind": "scheduleEntry",
-              "text": "Thrombotic and Embolic disorders",
-              "textFr": "Maladies thrombotiques et embolies"
+              "text": "Thrombotic and Embolic disorders"
             },
             {
               "id": "F-27:sch:32",
               "num": "Thyroid disease",
               "kind": "scheduleEntry",
-              "text": "Thyroid disease",
-              "textFr": "Glande thyroïdienne (affections)"
+              "text": "Thyroid disease"
             },
             {
               "id": "F-27:sch:33",
               "num": "Ulcer of the gastro-intestinal tract",
               "kind": "scheduleEntry",
-              "text": "Ulcer of the gastro-intestinal tract",
-              "textFr": "Ulcères des voies gastro-intestinales"
+              "text": "Ulcer of the gastro-intestinal tract"
             }
           ]
         }
@@ -5447,15 +5417,13 @@
               "id": "F-27:sch:45",
               "num": "Drugs, other than radionuclides, sold or represented for use in the preparation of radioph",
               "kind": "scheduleEntry",
-              "text": "Drugs, other than radionuclides, sold or represented for use in the preparation of radiopharmaceuticals",
-              "textFr": "Drogues..."
+              "text": "Drugs, other than radionuclides, sold or represented for use in the preparation of radiopharmaceuticals"
             },
             {
               "id": "F-27:sch:46",
               "num": "Radiopharmaceuticals",
               "kind": "scheduleEntry",
-              "text": "Radiopharmaceuticals",
-              "textFr": "Produits pharmaceutiques radioactifs"
+              "text": "Radiopharmaceuticals"
             }
           ]
         }
@@ -5476,113 +5444,97 @@
               "id": "F-27:sch:47",
               "num": "Allergenic substances used for the treatment or diagnosis of allergic or immunological dis",
               "kind": "scheduleEntry",
-              "text": "Allergenic substances used for the treatment or diagnosis of allergic or immunological diseases",
-              "textFr": "Substances..."
+              "text": "Allergenic substances used for the treatment or diagnosis of allergic or immunological diseases"
             },
             {
               "id": "F-27:sch:48",
               "num": "Anterior pituitary extracts",
               "kind": "scheduleEntry",
-              "text": "Anterior pituitary extracts",
-              "textFr": "Extraits hypophysaires (lobe antérieur)"
+              "text": "Anterior pituitary extracts"
             },
             {
               "id": "F-27:sch:49",
               "num": "Aprotinin",
               "kind": "scheduleEntry",
-              "text": "Aprotinin",
-              "textFr": "Aprotinine"
+              "text": "Aprotinin"
             },
             {
               "id": "F-27:sch:50",
               "num": "Cholecystokinin",
               "kind": "scheduleEntry",
-              "text": "Cholecystokinin",
-              "textFr": "Cholécystokinine"
+              "text": "Cholecystokinin"
             },
             {
               "id": "F-27:sch:51",
               "num": "Drugs obtained by recombinant DNA procedures",
               "kind": "scheduleEntry",
-              "text": "Drugs obtained by recombinant DNA procedures",
-              "textFr": "Drogues obtenues..."
+              "text": "Drugs obtained by recombinant DNA procedures"
             },
             {
               "id": "F-27:sch:52",
               "num": "Drugs, other than antibiotics, prepared from micro-organisms",
               "kind": "scheduleEntry",
-              "text": "Drugs, other than antibiotics, prepared from micro-organisms",
-              "textFr": "Drogues, sauf..."
+              "text": "Drugs, other than antibiotics, prepared from micro-organisms"
             },
             {
               "id": "F-27:sch:53",
               "num": "Drugs that are or are made from blood",
               "kind": "scheduleEntry",
-              "text": "Drugs that are or are made from blood",
-              "textFr": "Drogue qui est..."
+              "text": "Drugs that are or are made from blood"
             },
             {
               "id": "F-27:sch:54",
               "num": "Glucagon",
               "kind": "scheduleEntry",
-              "text": "Glucagon",
-              "textFr": "Glucagon"
+              "text": "Glucagon"
             },
             {
               "id": "F-27:sch:55",
               "num": "Gonadotrophins",
               "kind": "scheduleEntry",
-              "text": "Gonadotrophins",
-              "textFr": "Gonadotrophines"
+              "text": "Gonadotrophins"
             },
             {
               "id": "F-27:sch:56",
               "num": "Immunizing agents",
               "kind": "scheduleEntry",
-              "text": "Immunizing agents",
-              "textFr": "Agents immunisants"
+              "text": "Immunizing agents"
             },
             {
               "id": "F-27:sch:57",
               "num": "Insulin",
               "kind": "scheduleEntry",
-              "text": "Insulin",
-              "textFr": "Insuline"
+              "text": "Insulin"
             },
             {
               "id": "F-27:sch:58",
               "num": "Interferon",
               "kind": "scheduleEntry",
-              "text": "Interferon",
-              "textFr": "Interféron"
+              "text": "Interferon"
             },
             {
               "id": "F-27:sch:59",
               "num": "Monoclonal antibodies, their conjugates and derivatives",
               "kind": "scheduleEntry",
-              "text": "Monoclonal antibodies, their conjugates and derivatives",
-              "textFr": "Anticorps monoclonaux et leurs dérivés et conjugués"
+              "text": "Monoclonal antibodies, their conjugates and derivatives"
             },
             {
               "id": "F-27:sch:60",
               "num": "Secretin",
               "kind": "scheduleEntry",
-              "text": "Secretin",
-              "textFr": "Sécrétine"
+              "text": "Secretin"
             },
             {
               "id": "F-27:sch:61",
               "num": "Snake Venom",
               "kind": "scheduleEntry",
-              "text": "Snake Venom",
-              "textFr": "Venin de serpent"
+              "text": "Snake Venom"
             },
             {
               "id": "F-27:sch:62",
               "num": "Urokinase",
               "kind": "scheduleEntry",
-              "text": "Urokinase",
-              "textFr": "Urokinase"
+              "text": "Urokinase"
             }
           ]
         }

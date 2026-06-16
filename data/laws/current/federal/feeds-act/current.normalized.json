@@ -5,14 +5,13 @@
   "level": "federal",
   "code": "F-9",
   "schemaVersion": 2,
-  "bilingual": false,
   "currentPath": "data/laws/current/federal/feeds-act",
   "source": {
     "publisher": "Justice Laws Website",
     "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/F-9.xml",
     "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/F-9/index.html"
   },
-  "normalizedAt": "2026-06-16T15:38:34.708Z",
+  "normalizedAt": "2026-06-16T19:07:11.200Z",
   "coverage": {
     "ratio": 0.9296,
     "provisions": 166,

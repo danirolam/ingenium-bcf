@@ -5,14 +5,13 @@
   "level": "federal",
   "code": "F-10",
   "schemaVersion": 2,
-  "bilingual": false,
   "currentPath": "data/laws/current/federal/fertilizers-act",
   "source": {
     "publisher": "Justice Laws Website",
     "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/F-10.xml",
     "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/F-10/index.html"
   },
-  "normalizedAt": "2026-06-16T15:38:34.770Z",
+  "normalizedAt": "2026-06-16T19:07:11.471Z",
   "coverage": {
     "ratio": 0.9148,
     "provisions": 155,

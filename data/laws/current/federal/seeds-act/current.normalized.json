@@ -5,14 +5,13 @@
   "level": "federal",
   "code": "S-8",
   "schemaVersion": 2,
-  "bilingual": false,
   "currentPath": "data/laws/current/federal/seeds-act",
   "source": {
     "publisher": "Justice Laws Website",
     "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/S-8.xml",
     "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/S-8/index.html"
   },
-  "normalizedAt": "2026-06-16T15:38:36.483Z",
+  "normalizedAt": "2026-06-16T19:07:11.673Z",
   "coverage": {
     "ratio": 0.9288,
     "provisions": 141,

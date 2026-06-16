@@ -5,14 +5,13 @@
   "level": "federal",
   "code": "P-9.01",
   "schemaVersion": 2,
-  "bilingual": false,
   "currentPath": "data/laws/current/federal/pest-control-products-act",
   "source": {
     "publisher": "Justice Laws Website",
     "xmlUrl": "https://laws-lois.justice.gc.ca/eng/XML/P-9.01.xml",
     "htmlUrl": "https://laws-lois.justice.gc.ca/eng/acts/P-9.01/index.html"
   },
-  "normalizedAt": "2026-06-16T15:38:35.746Z",
+  "normalizedAt": "2026-06-16T19:07:12.383Z",
   "coverage": {
     "ratio": 0.9317,
     "provisions": 692,
