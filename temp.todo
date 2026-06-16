@@ -1,0 +1,22 @@
+done: clicking on approve should go to next amendment
+done: link to the official Act within our review delta page
+defintions go at the end of the texts that define them, so they are displayed after, just flip it around during ingestion, also for provisions maybe, maybe titles too
+C-265 Emergency Access to New Drugs (amendment 5/5) isn't showing (there's some issues with titles in general and they are super important)
+spacing in the pdf exporter is low prio
+test multiple acts affected exporter
+
+fix cases where we create a new act S-203 (low-medium prio)
+in the main page (and everywhere else) make sure all the numbers and data is real, (bill count doesn't match)
+remove Built for BCF. 
+
+
+scrap "federal" from the main main main text "Every federal bill, translated to client-ready advice."
+
+auto poll for new bills (bills can be amended too)
+
+allow for manual edits to the delta in case the user dcoesn't agree with the ai. (high prio)
+
+also high prio is the numbering and titles.
+also high prio is the fix to the main page numbers and BCF stuff.
+
+
