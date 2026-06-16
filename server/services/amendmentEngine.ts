@@ -65,12 +65,15 @@ export const provKey = (p: Provision) =>
 const STEP_KINDS = ["subsection", "paragraph", "subparagraph", "clause"];
 
 // Parse a composed label ("30(1)(o)", "2.4", "“advertisement”") into a
-// structured hierarchy path, so we can match level-by-level instead of by
-// exact string. Definitions are a single step keyed by their term.
+// structured hierarchy path for DISPLAY (leaf label, indent depth, section
+// windowing). Step labels are kept human-readable VERBATIM — a definition term
+// keeps its spaces/case ("establishment licence", not the matching-key
+// "establishmentlicence"). Matching is id-keyed / done on the tree, so nothing
+// here needs the normalized form.
 export function labelToPath(label: string): PositionStep[] {
   const raw = (label ?? "").trim();
   if (!raw) return [];
-  if (/^[“"']/.test(raw)) return [{ kind: "definition", label: normLabel(raw) }];
+  if (/^[“"']/.test(raw)) return [{ kind: "definition", label: raw }];
   const secMatch = raw.match(/^([0-9]+(?:\.[0-9]+)*[A-Za-z]?)/);
   const path: PositionStep[] = [];
   let rest = raw;
@@ -82,7 +85,7 @@ export function labelToPath(label: string): PositionStep[] {
   groups.forEach((g, i) => {
     path.push({ kind: STEP_KINDS[i] ?? "clause", label: g.replace(/[()]/g, "") });
   });
-  return path.length ? path : [{ kind: "section", label: normLabel(raw) }];
+  return path.length ? path : [{ kind: "section", label: raw }];
 }
 
 // NOTE: provision location is no longer done here. The AI locator returns an
