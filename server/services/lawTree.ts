@@ -176,14 +176,21 @@ export function flattenActTree(tree: ActTree): Provision[] {
   const walk = (node: ActNode, ancestors: ActNode[]) => {
     const lineage = [...ancestors, node];
     if (emitsRow(node)) {
-      // Compose the label from the lineage — but a definition (and anything inside
-      // it) is labelled relative to its TERM, not the section number, so a paragraph
-      // under the definition "pharmacist" reads "“pharmacist”(a)" rather than
-      // "21.9701“pharmacist”(a)".
+      // A definition (and anything inside it) is labelled relative to its TERM, not
+      // the section number, so a paragraph under the definition "pharmacist" reads
+      // "“pharmacist”(a)" rather than "21.9701“pharmacist”(a)".
       const defAt = lineage.map((n) => n.kind).lastIndexOf("definition");
-      const chain = (defAt >= 0 ? lineage.slice(defAt) : lineage).map((n) => n.num ?? "").filter(Boolean).join("");
+      const segNodes = (defAt >= 0 ? lineage.slice(defAt) : lineage).filter((n) => n.num);
+      const chain = segNodes.map((n) => n.num).join("");
       const heading = ancestors.length ? ancestors[0].heading ?? null : node.heading ?? null;
       const label = chain || node.marginalNote || `¶${flat.length + 1}`;
+      // Display path built straight from the REAL tree kinds — no re-parsing the
+      // composed string to guess structure. Section/definition segments stay
+      // verbatim; bracketed kinds drop their parens so leafLabel re-wraps "(a)".
+      const path = segNodes.map((n) => ({
+        kind: n.kind,
+        label: n.kind === "section" || n.kind === "definition" ? n.num : n.num.replace(/[()]/g, ""),
+      }));
       flat.push({
         id: node.id,
         label,
@@ -191,7 +198,7 @@ export function flattenActTree(tree: ActTree): Provision[] {
         heading,
         marginalNote: node.marginalNote ?? null,
         text: nodeOwnText(node),
-        path: labelToPath(label),
+        path: path.length ? path : labelToPath(label),
       });
     }
     for (const child of node.children ?? []) walk(child, lineage);

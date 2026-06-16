@@ -64,26 +64,15 @@ export const provKey = (p: Provision) =>
 
 const STEP_KINDS = ["subsection", "paragraph", "subparagraph", "clause"];
 
-// Parse a composed label ("30(1)(o)", "2.4", "“advertisement”") into a
-// structured hierarchy path for DISPLAY (leaf label, indent depth, section
-// windowing). Step labels are kept human-readable VERBATIM — a definition term
-// keeps its spaces/case ("establishment licence", not the matching-key
-// "establishmentlicence"). Matching is id-keyed / done on the tree, so nothing
-// here needs the normalized form.
+// Parse a composed label ("30(1)(o)", "2.4", "“advertisement”") into a hierarchy
+// path for DISPLAY, keeping labels human-readable VERBATIM. FALLBACK-ONLY now: the
+// primary display path is built structurally from the real tree kinds in
+// lawTree.flattenActTree; this only runs for a provision with no tree lineage
+// (e.g. an AI-supplied one). Matching is id-keyed, so nothing needs a normalized form.
 export function labelToPath(label: string): PositionStep[] {
   const raw = (label ?? "").trim();
   if (!raw) return [];
-  if (/^[“"']/.test(raw)) {
-    // A definition: «term»  or  «term»(a)(i)… — split the term from its bracketed
-    // children so a child renders as an indented "(a)", not the term repeated
-    // ("pharmacist"(a)), exactly as the Act prints it.
-    const m = raw.match(/^([“"'].*?[”"'])(.*)$/);
-    if (!m) return [{ kind: "definition", label: raw }];
-    const out: PositionStep[] = [{ kind: "definition", label: m[1] }];
-    (m[2].match(/\(([^)]+)\)/g) ?? []).forEach((g, i) =>
-      out.push({ kind: STEP_KINDS[i] ?? "clause", label: g.replace(/[()]/g, "") }));
-    return out;
-  }
+  if (/^[“"']/.test(raw)) return [{ kind: "definition", label: raw }];
   const secMatch = raw.match(/^([0-9]+(?:\.[0-9]+)*[A-Za-z]?)/);
   const path: PositionStep[] = [];
   let rest = raw;
