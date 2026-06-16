@@ -138,41 +138,43 @@ export function DeltaReview({
         />
         <div className="dr-pager">
           <div className="dr-pager-bar">
-            <button className="dr-nav" onClick={() => go(-1)} disabled={at <= 0} title="Previous (←)">
-              ←
-            </button>
-            <div className="dr-pager-pos">
-              <span className="dr-pager-act">
-                {cur.delta.title}
-                {cur.delta.actUrl && (
-                  <a className="dr-pager-actpdf" href={cur.delta.actUrl} target="_blank" rel="noreferrer" title="Official Act PDF (Justice Laws)">
-                    official PDF ↗
-                  </a>
-                )}
-                {cur.delta.outdated && (
-                  <span
-                    className="dr-outdated"
-                    title="This Act's text predates the current format. Re-ingest pending."
-                  >
-                    ⚠ outdated
-                  </span>
-                )}
-              </span>
+            <div className="dr-pager-left">
+              <div className="dr-nav-group">
+                <button className="dr-nav" onClick={() => go(-1)} disabled={at <= 0} title="Previous (←)">←</button>
+                <button className="dr-nav" onClick={() => go(1)} disabled={at >= items.length - 1} title="Next (→)">→</button>
+              </div>
               <span className="dr-pager-count">
-                Amendment <b>{at + 1}</b> of {items.length} · {actApproved}/{cur.delta.operations.length} approved
+                Amendment <b>{at + 1}</b> of {items.length}
               </span>
             </div>
-            <button className="dr-nav" onClick={() => go(1)} disabled={at >= items.length - 1} title="Next (→)">
-              →
-            </button>
-            <button
-              className="btn primary sm dr-pager-export"
-              disabled={!actAllApproved}
-              title={actAllApproved ? `Export ${cur.delta.title} as a PDF` : "Approve every amendment in this Act first"}
-              onClick={() => onExport(cur.delta)}
-            >
-              Export PDF
-            </button>
+
+            <div className="dr-pager-title">
+              {cur.delta.title}
+              {cur.delta.outdated && (
+                <span className="dr-outdated" title="This Act's text predates the current format. Re-ingest pending.">
+                  ⚠ outdated
+                </span>
+              )}
+            </div>
+
+            <div className="dr-pager-right">
+              <span className="dr-pager-approved">
+                <b>{actApproved}</b>/{cur.delta.operations.length} approved
+              </span>
+              {cur.delta.actUrl && (
+                <a className="dr-pager-actpdf" href={cur.delta.actUrl} target="_blank" rel="noreferrer" title="Official Act PDF (Justice Laws)">
+                  official PDF ↗
+                </a>
+              )}
+              <button
+                className="btn primary sm dr-pager-export"
+                disabled={!actAllApproved}
+                title={actAllApproved ? `Export ${cur.delta.title} as a PDF` : "Approve every amendment in this Act first"}
+                onClick={() => onExport(cur.delta)}
+              >
+                Export PDF
+              </button>
+            </div>
           </div>
           <div className="dr-pager-body">
             <AmendmentCard

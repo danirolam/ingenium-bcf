@@ -603,6 +603,23 @@
 .dr-state-err { color: var(--high); font-size: 12.5px; }
 .dr-state-sub { color: var(--ink-3); font-size: 12px; max-width: 440px; opacity: 0.85; }
 
+/* "AI is working" indicator — three pulsing dots that make the wait read as
+   active computation rather than a frozen screen. */
+.dr-ai-working { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--ink); }
+.dr-ai-working b { color: var(--accent-warm); font-variant-numeric: tabular-nums; }
+.dr-ai-dots { display: inline-flex; gap: 4px; }
+.dr-ai-dots i {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--accent-warm);
+  animation: dr-ai-pulse 1.2s ease-in-out infinite;
+}
+.dr-ai-dots i:nth-child(2) { animation-delay: 0.2s; }
+.dr-ai-dots i:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dr-ai-pulse {
+  0%, 80%, 100% { opacity: 0.25; transform: scale(0.8); }
+  40% { opacity: 1; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) { .dr-ai-dots i { animation: none; opacity: 0.7; } }
+
 /* Two-pane body: PDF | draggable divider | review. The PDF width lives in a CSS
    var (default a third of the viewport, set inline) so the responsive query can
    still collapse the grid on narrow screens. */
@@ -683,12 +700,18 @@
 
 /* Pager: one full-height amendment with prev/next navigation. */
 .dr-pager { display: flex; flex-direction: column; min-height: 0; }
+/* Three zones: nav + position (left) · Act title (centre, big) · approved + PDF +
+   export (right). A 1fr/auto/1fr grid keeps the title centred regardless of the
+   side widths. */
 .dr-pager-bar {
   flex: none;
-  display: flex; align-items: center; gap: 12px;
-  padding: 10px 16px; border-bottom: 1px solid var(--border);
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px;
+  padding: 8px 16px; border-bottom: 1px solid var(--border);
   background: var(--panel);
 }
+.dr-pager-left { justify-self: start; display: flex; align-items: center; gap: 12px; min-width: 0; }
+.dr-pager-right { justify-self: end; display: flex; align-items: center; gap: 14px; min-width: 0; }
+.dr-nav-group { display: inline-flex; gap: 4px; flex: none; }
 .dr-nav {
   flex: none; width: 32px; height: 32px;
   border: 1px solid var(--border); border-radius: 8px;
@@ -696,17 +719,19 @@
 }
 .dr-nav:hover:not(:disabled) { background: var(--panel-3); color: var(--ink); }
 .dr-nav:disabled { opacity: 0.4; cursor: default; }
-.dr-pager-pos { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; line-height: 1.35; }
-/* The Act name is the prominent, centred title of the pager bar. */
-.dr-pager-act {
-  display: flex; align-items: center; gap: 10px; max-width: 100%;
-  font-size: 14px; font-weight: 700; color: var(--ink);
+
+/* The Act name — the big, centred title, filling the bar's height. */
+.dr-pager-title {
+  justify-self: center; display: flex; align-items: center; gap: 10px; max-width: 100%;
+  font-size: 18px; font-weight: 700; color: var(--ink);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.dr-pager-actpdf { font-size: 11.5px; font-weight: 600; color: var(--accent-warm); text-decoration: none; flex: none; }
+.dr-pager-count { font-size: 12px; color: var(--ink-3); white-space: nowrap; }
+.dr-pager-count b { color: var(--ink); }
+.dr-pager-approved { font-size: 12px; color: var(--ink-3); white-space: nowrap; }
+.dr-pager-approved b { color: var(--ok); }
+.dr-pager-actpdf { font-size: 12px; font-weight: 600; color: var(--accent-warm); text-decoration: none; white-space: nowrap; flex: none; }
 .dr-pager-actpdf:hover { text-decoration: underline; }
-.dr-pager-count { font-size: 11.5px; color: var(--ink-4); }
-.dr-pager-count b { color: var(--ink-2); }
 .dr-pager-export { flex: none; }
 .dr-pager-body { flex: 1; min-height: 0; padding: 14px 16px; }
 
