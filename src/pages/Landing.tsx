@@ -241,12 +241,6 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
         <div className="absolute inset-0 bg-gradient-to-t from-white via-white/85 to-white/30 pointer-events-none" />
         <div ref={heroRef} className="max-w-[1120px] w-full mx-auto relative z-10">
           <div className="text-center mb-10">
-            <div
-              className="text-[13px] md:text-sm font-medium text-[#424245] mb-6 stagger-reveal"
-              style={{ animationDelay: "0ms" }}
-            >
-              Legislative intelligence for BCF
-            </div>
             <h1 className="font-semibold text-balance leading-[1.04]">
               <span
                 className="block text-5xl md:text-[76px] tracking-[-0.02em] stagger-reveal"
