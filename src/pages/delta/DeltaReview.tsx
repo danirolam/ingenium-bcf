@@ -83,6 +83,9 @@ export function DeltaReview({
   if (!cur) return null;
 
   const approved = approvals.isApproved(cur.op.key);
+  // Bill-wide progress for the header (every amendment across every Act).
+  const billApproved = items.reduce((n, it) => n + (approvals.isApproved(it.op.key) ? 1 : 0), 0);
+  // Per-Act gate for export (an Act's PDF unlocks once that Act is fully approved).
   const actApproved = cur.delta.operations.reduce((n, o) => n + (approvals.isApproved(o.key) ? 1 : 0), 0);
   const actAllApproved = cur.delta.operations.length > 0 && actApproved === cur.delta.operations.length;
 
@@ -159,7 +162,7 @@ export function DeltaReview({
 
             <div className="dr-pager-right">
               <span className="dr-pager-approved">
-                <b>{actApproved}</b>/{cur.delta.operations.length} approved
+                <b>{billApproved}</b>/{items.length} approved
               </span>
               {cur.delta.actUrl && (
                 <a className="dr-pager-actpdf" href={cur.delta.actUrl} target="_blank" rel="noreferrer" title="Official Act PDF (Justice Laws)">
