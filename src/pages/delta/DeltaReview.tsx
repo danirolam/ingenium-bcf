@@ -81,8 +81,19 @@ export function DeltaReview({
     return () => window.removeEventListener("keydown", onKey);
   }, [items.length]);
 
-  // A fresh delta resets the export tray (recompute clears approvals anyway).
-  useEffect(() => { setExported(new Set()); }, [deltas]);
+  // Keep the "exported" set honest: drop any Act that's no longer fully approved
+  // (unapproving an amendment, or a fresh delta) so its checkbox empties again.
+  useEffect(() => {
+    setExported((prev) => {
+      const next = new Set(
+        [...prev].filter((slug) => {
+          const d = deltas.find((x) => x.slug === slug);
+          return !!d && d.operations.length > 0 && d.operations.every((o) => approvals.isApproved(o.key));
+        }),
+      );
+      return next.size === prev.size ? prev : next;
+    });
+  }, [approvals.approvedKeys, deltas, approvals]);
 
   const cur = items[at];
   if (!cur) return null;
@@ -95,7 +106,6 @@ export function DeltaReview({
   // (so the browser never blocks it as a duplicate pop-up).
   const actReady = (d: ProvisionDelta) =>
     d.operations.length > 0 && d.operations.every((o) => approvals.isApproved(o.key));
-  const readyActs = deltas.filter(actReady);
 
   const exportOne = (d: ProvisionDelta) => {
     if (exportActAsPdf(d, bill)) setExported((s) => new Set(s).add(d.slug));
@@ -181,19 +191,21 @@ export function DeltaReview({
             </div>
           </div>
 
-          {readyActs.length > 0 && (
+          {deltas.length > 0 && (
             <div className="dr-export-tray">
               <span className="dr-export-tray-label">Export</span>
-              {readyActs.map((d) => {
-                const done = exported.has(d.slug);
+              {deltas.map((d) => {
+                const ready = actReady(d);
+                const done = ready && exported.has(d.slug);
                 return (
                   <button
                     key={d.slug}
-                    className={`dr-export-chip${done ? " is-done" : ""}`}
-                    title={done ? `Re-export ${d.title}` : `Export ${d.title} as a PDF`}
+                    className={`dr-export-chip${ready ? " is-ready" : ""}${done ? " is-done" : ""}`}
+                    disabled={!ready}
+                    title={ready ? (done ? `Re-export ${d.title}` : `Export ${d.title} as a PDF`) : "Approve every amendment in this Act first"}
                     onClick={() => exportOne(d)}
                   >
-                    <span className="dr-export-chip-ic" aria-hidden="true">{done ? "✓" : "⬇"}</span>
+                    <span className="dr-export-check" aria-hidden="true" />
                     {d.title}
                   </button>
                 );

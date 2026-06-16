@@ -716,31 +716,40 @@
 .dr-pager-actpdf { font-size: 12px; font-weight: 600; color: var(--accent-warm); text-decoration: none; white-space: nowrap; flex: none; }
 .dr-pager-actpdf:hover { text-decoration: underline; }
 
-/* Export tray: a strip of per-Act export chips that appears under the pager bar as
-   Acts become fully approved. Each chip exports on its own click (so the browser
-   never blocks it as a duplicate pop-up); after exporting it dims to "done" but
-   stays clickable for a re-export. */
+/* Export tray: a per-Act chip with a two-stage checkbox under the pager bar.
+   - not fully approved → gray, empty box, not clickable;
+   - fully approved → darker + green box (still empty), clickable to export;
+   - exported → the box fills (✓), still clickable for a re-export.
+   Each chip exports on its own click, so the browser never blocks it as a
+   duplicate pop-up. Unapproving an amendment empties the box again. */
 .dr-export-tray {
   flex: none; display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
   padding: 8px 16px; border-bottom: 1px solid var(--border);
-  background: var(--ok-bg);
+  background: var(--panel-2);
 }
 .dr-export-tray-label {
   font: 700 10px/1 var(--sans); letter-spacing: .06em; text-transform: uppercase;
   color: var(--ink-4); margin-right: 2px;
 }
 .dr-export-chip {
-  display: inline-flex; align-items: center; gap: 6px; max-width: 280px;
-  padding: 5px 11px; border: 1px solid var(--ok); border-radius: 999px;
-  background: var(--panel); color: var(--ink); cursor: pointer;
+  display: inline-flex; align-items: center; gap: 7px; max-width: 280px;
+  padding: 5px 12px 5px 9px; border: 1px solid var(--border-2); border-radius: 999px;
+  background: var(--panel); color: var(--ink-4); cursor: pointer;
   font: 600 12px/1 var(--sans); white-space: nowrap;
 }
-.dr-export-chip:hover { background: var(--ok); color: #fff; }
-.dr-export-chip-ic { font-weight: 700; }
-.dr-export-chip.is-done {
-  border-color: var(--border-2); color: var(--ink-4); background: var(--panel-2);
+.dr-export-chip:disabled { cursor: default; }
+.dr-export-chip.is-ready { border-color: var(--ok); color: var(--ink); }
+.dr-export-chip.is-ready:hover { background: var(--ok-bg); }
+/* the two-stage checkbox */
+.dr-export-check {
+  flex: none; width: 14px; height: 14px; border-radius: 4px;
+  border: 1.5px solid currentColor; display: inline-grid; place-items: center;
 }
-.dr-export-chip.is-done:hover { background: var(--panel-3); color: var(--ink-2); }
+.dr-export-chip.is-ready .dr-export-check { border-color: var(--ok); }
+.dr-export-chip.is-done .dr-export-check { background: var(--ok); border-color: var(--ok); }
+.dr-export-chip.is-done .dr-export-check::after {
+  content: "✓"; color: #fff; font-size: 9px; font-weight: 700; line-height: 1;
+}
 .dr-pager-body { flex: 1; min-height: 0; padding: 14px 16px; }
 
 /* Amendment card — fills the pager body; approving recolours the border. */
