@@ -17,7 +17,7 @@ import {
   generateUpdatedLawText,
 } from "../services/gemini.js";
 import { attachRowLinks, diffProvisions, diffSummary } from "../services/amendmentEngine.js";
-import { extractAmendmentUnits } from "../services/billAmendments.js";
+import { extractAmendmentUnits, overlayFrenchInserts } from "../services/billAmendments.js";
 import { loadActTree, type ActTree, type LawNavigator } from "../services/lawTree.js";
 import { locateAmendments, type LocatedOp, type LocatorCtx } from "../services/amendmentLocator.js";
 import { applyOperations, type ApplyOp } from "../services/amendmentApply.js";
@@ -384,10 +384,18 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
     return res.json({ deltas: [], errors: ["Could not load the bill's amending text (XML)."], failures: [], cached: false });
   }
 
-  // 2) Extract the discrete amendments (structural, no regex locating). Keep the
-  //    ones that actually change a provision (drop short-title / coming-into-force).
+  // 2) Extract the discrete amendments (structural, no regex locating), then overlay
+  //    the French bill's inserted text (best-effort), so added/replaced provisions
+  //    render in French too. Keep the units that actually change a provision.
   const CHANGES = /repeal|replac|strik|amend|\badd(?:ing|ed|s)?\b/i;
-  const units = extractAmendmentUnits(xml, registry).filter((u) => u.inserts.length > 0 || CHANGES.test(u.instructionText));
+  const allUnits = extractAmendmentUnits(xml, registry);
+  if (bill.textSourceUrl && /_E\.xml$/i.test(bill.textSourceUrl)) {
+    try {
+      const r = await fetch(bill.textSourceUrl.replace(/_E\.xml$/i, "_F.xml"), { headers: { "user-agent": "Ingenium-Delta/0.1" }, signal: AbortSignal.timeout(10_000) });
+      if (r.ok) overlayFrenchInserts(allUnits, await r.text(), registry);
+    } catch { /* French unavailable → inserts stay EN-only */ }
+  }
+  const units = allUnits.filter((u) => u.inserts.length > 0 || CHANGES.test(u.instructionText));
 
   if (!process.env.ANTHROPIC_API_KEY) {
     const failures = units.map((u) => ({ clause: u.clause, actSlug: u.actSlugHint, instruction: u.instructionText, reason: "AI key missing — set ANTHROPIC_API_KEY to locate amendments" }));
@@ -456,7 +464,7 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
       producedRowIndices: o.producedRowIndices,
       contextRowIndices: o.contextRowIndices,
     }));
-    deltas.push({ slug, title: tree.title, citation: tree.citation, summary: diffSummary(rows), operations, rows, source: "ai-located" });
+    deltas.push({ slug, title: tree.title, citation: tree.citation, summary: diffSummary(rows), operations, rows, source: "ai-located", outdated: tree.outdated });
   }
 
   console.log(`[provision-delta] ${bill.billNumber}: ${deltas.length} act(s), ${located.length} located, ${failures.length} unlocatable`);

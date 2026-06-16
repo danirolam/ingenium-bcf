@@ -66,7 +66,6 @@ export function applyOperations(
 ): { before: Provision[]; after: Provision[]; applied: AppliedOp[] } {
   const before = flattenActTree(tree);
   const clone: ActTree = structuredClone(tree);
-  const roots = clone.sections;
   let serial = 0;
   const restamp = (nodes: ActNode[]): ActNode[] =>
     nodes.map((n) => ({ ...n, id: `ins:${serial++}`, children: n.children ? restamp(n.children) : [] }));
@@ -87,6 +86,10 @@ export function applyOperations(
       clause: op.clause, op: op.op, ancestors: op.ancestors, instruction: op.instruction,
       confirmed: op.confirmed, located: false, producedKeys: [],
     };
+    // Schedule-targeted ops mutate the schedule tree; everything else the body tree.
+    const roots = op.ancestors[0] && clone.schedules.some((s) => normSeg(s.num) === normSeg(op.ancestors[0].label))
+      ? clone.schedules
+      : clone.sections;
 
     if (op.op === "add") {
       const parentAnc = op.ancestors.slice(0, -1);

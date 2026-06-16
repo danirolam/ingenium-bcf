@@ -517,6 +517,9 @@ function coverage(xml, provisions) {
   // Table cell text lives directly in <entry>, not in <Text>.
   const ere = /<entry\b[^>]*>([\s\S]*?)<\/entry>/g;
   while ((m = ere.exec(operative))) rawTextChars += squish(m[1].replace(/<[^>]+>/g, " ")).length;
+  // Schedule institution lists carry their text in <BilingualItemEn>.
+  const bre = /<BilingualItemEn\b[^>]*>([\s\S]*?)<\/BilingualItemEn>/g;
+  while ((m = bre.exec(operative))) rawTextChars += squish(m[1]).length;
   const capturedChars = provisions.reduce((n, p) => n + p.text.length, 0);
   const scheduleHasText = /<Schedule[\s\S]*?<Text\b/.test(xml);
   return {
@@ -527,37 +530,37 @@ function coverage(xml, provisions) {
   };
 }
 
-// ───────────────────────── schedules ─────────────────────────
-// Schedules (forms, tables, treaty text, designated-item lists) sit after the
-// Body and the main walk skips them. Parse them here into provisions: prose
-// units (Provision/Section/…) keep their <Text>, table rows join their <entry>
-// cells. Labelled by schedule + a counter so they stay unique and identifiable.
+// ───────────────────────── schedules (structured, bilingual) ─────────────────────────
+// Schedules sit after the Body and the main walk skips them. Parse each <Schedule>
+// into a small tree so amendments can target it like any provision:
+//   schedule { kind:"schedule", num:"I", title, children:[ group|entry ] }
+//   group    { kind:"scheduleGroup", num:"<sub-heading>", children:[ entry ] }
+//   entry    { kind:"scheduleEntry", num:"<en text>", text:"<en>", textFr:"<fr>" }
+// Institution lists (<BilingualGroup>/<BilingualItemEn|Fr>) carry BOTH languages
+// inline; tables (<row>/<entry>) and prose (<Provision>/<Text>) keep their text.
 const SCHED_UNIT = new Set([
   "Provision", "Section", "Subsection", "Paragraph", "Subparagraph", "Clause", "Definition", "Item",
 ]);
 
-function parseSchedules(xml, code, startCount = 0) {
+function parseSchedules(xml, code) {
   if (!xml.includes("<Schedule")) return [];
-  const out = [];
-  let counter = startCount;
-  let schedDepth = 0, schedLabel = "", group = "";
+  const schedules = [];
+  let counter = 0;
+  const id = (fid) => fid || `${code}:sch:${++counter}`;
+  let schedDepth = 0, sched = null, group = null;
   let headKind = null, hLabel = "", hTitle = "";
   let cap = null, capBuf = "";
-  const units = [];                 // open Provision/Section/… text frames
+  let pendingEn = null;             // a <BilingualItemEn> awaiting its Fr partner
   let inEntry = false, entryBuf = "", rowCells = null;
+  const units = [];                 // open prose <Text> frames
 
-  const push = (text, kind) => {
-    const t = squish(text);
-    if (!t) return;
-    counter++;
-    out.push({
-      id: `${code}:sch:${counter}`,
-      label: `${schedLabel || "SCHEDULE"} ${kind === "row" ? "row " : "¶"}${counter}`,
-      kind: "schedule",
-      heading: schedLabel || null,
-      marginalNote: group || null,
-      text: t,
-    });
+  const addEntry = (en, fr) => {
+    const text = squish(en);
+    if (!text || !sched) return;
+    const node = { id: id(""), num: text.length > 90 ? text.slice(0, 90) : text, kind: "scheduleEntry", text };
+    const f = squish(fr || "");
+    if (f) node.textFr = f;
+    (group ?? sched).children.push(node);
   };
 
   for (const t of tokens(xml)) {
@@ -568,34 +571,60 @@ function parseSchedules(xml, code, startCount = 0) {
       continue;
     }
     if (t.type === "open") {
-      if (t.name === "Schedule") { schedDepth++; if (schedDepth === 1) { schedLabel = ""; group = ""; } continue; }
+      if (t.name === "Schedule") {
+        schedDepth++;
+        if (schedDepth === 1) { sched = { id: id(attr(t.attrs, "lims:fid")), num: "SCHEDULE", kind: "schedule", title: null, children: [] }; group = null; schedules.push(sched); }
+        continue;
+      }
       if (schedDepth === 0) continue;
       if (t.name === "ScheduleFormHeading") { headKind = "sched"; hLabel = ""; hTitle = ""; continue; }
       if (t.name === "GroupHeading") { headKind = "group"; hLabel = ""; hTitle = ""; continue; }
-      if (!t.selfClose && (t.name === "Label" || t.name === "TitleText" || t.name === "Text")) { cap = t.name; capBuf = ""; continue; }
+      if (t.name === "BilingualGroup") { group = { id: id(attr(t.attrs, "lims:fid")), num: "", kind: "scheduleGroup", children: [] }; sched && sched.children.push(group); continue; }
+      if (!t.selfClose && (t.name === "Label" || t.name === "TitleText" || t.name === "Text" || t.name === "BilingualItemEn" || t.name === "BilingualItemFr")) { cap = t.name; capBuf = ""; continue; }
       if (t.name === "row") { rowCells = []; continue; }
       if (t.name === "entry") { if (!t.selfClose) { inEntry = true; entryBuf = ""; } continue; }
       if (!t.selfClose && SCHED_UNIT.has(t.name)) units.push({ buf: "" });
       continue;
     }
     // close
+    if (cap === "BilingualItemEn" && t.name === "BilingualItemEn") { pendingEn = capBuf; cap = null; capBuf = ""; continue; }
+    if (cap === "BilingualItemFr" && t.name === "BilingualItemFr") { addEntry(pendingEn ?? "", capBuf); pendingEn = null; cap = null; capBuf = ""; continue; }
     if (cap === "Text" && t.name === "Text") {
       if (units.length) units[units.length - 1].buf += " " + capBuf + " ";
-      else push(capBuf);
+      else addEntry(capBuf, "");
       cap = null; capBuf = ""; continue;
     }
-    if (cap && (t.name === "Label" || t.name === "TitleText")) {
-      if (headKind && t.name === "Label") hLabel = squish(capBuf);
-      else if (headKind && t.name === "TitleText") hTitle = squish(capBuf);
+    if (cap === "Label" && t.name === "Label") { if (headKind) hLabel = squish(capBuf); cap = null; capBuf = ""; continue; }
+    if (cap === "TitleText" && t.name === "TitleText") {
+      if (headKind) hTitle = squish(capBuf);
+      else if (group) group.num = squish(capBuf) || group.num; // a BilingualGroup's sub-heading
       cap = null; capBuf = ""; continue;
     }
-    if (t.name === "ScheduleFormHeading") { schedLabel = hLabel || schedLabel; headKind = null; continue; }
-    if (t.name === "GroupHeading") { group = [hLabel, hTitle].filter(Boolean).join(" — "); headKind = null; continue; }
+    if (t.name === "ScheduleFormHeading") {
+      if (sched) { sched.num = (hLabel || "").replace(/^\s*schedules?\s*/i, "").trim() || hLabel || sched.num; sched.title = hTitle || sched.title; }
+      headKind = null; continue;
+    }
+    if (t.name === "GroupHeading") {
+      if (sched) { group = { id: id(""), num: [hLabel, hTitle].filter(Boolean).join(" — "), kind: "scheduleGroup", children: [] }; sched.children.push(group); }
+      headKind = null; continue;
+    }
+    if (t.name === "BilingualGroup") { group = null; continue; }
     if (t.name === "entry" && inEntry) { rowCells && rowCells.push(squish(entryBuf)); inEntry = false; entryBuf = ""; continue; }
-    if (t.name === "row") { if (rowCells) push(rowCells.filter(Boolean).join(" · "), "row"); rowCells = null; continue; }
-    if (SCHED_UNIT.has(t.name) && units.length) { push(units.pop().buf); continue; }
-    if (t.name === "Schedule" && schedDepth > 0) schedDepth--;
+    if (t.name === "row") { if (rowCells) addEntry(rowCells.filter(Boolean).join(" · "), ""); rowCells = null; continue; }
+    if (SCHED_UNIT.has(t.name) && units.length) { addEntry(units.pop().buf, ""); continue; }
+    if (t.name === "Schedule" && schedDepth > 0) { schedDepth--; if (schedDepth === 0) { sched = null; group = null; } continue; }
   }
+  return schedules.filter((s) => s.children.length);
+}
+
+// Leaf entries of the structured schedules, for coverage / fullText / counts.
+function flattenSchedules(schedules) {
+  const out = [];
+  const walk = (n, schedNum) => {
+    if (n.kind === "scheduleEntry") out.push({ id: n.id, label: `Schedule ${schedNum} — ${n.num}`, kind: "schedule", heading: `Schedule ${schedNum}`, marginalNote: null, text: n.text });
+    for (const c of n.children ?? []) walk(c, schedNum);
+  };
+  for (const s of schedules) for (const c of s.children ?? []) walk(c, s.num);
   return out;
 }
 
@@ -669,8 +698,8 @@ async function ingestCode(code, registry, opts) {
   // Parse the hierarchical tree; flatten it the way the loader will at runtime.
   const { sections, unknown } = parseActTree(xml, code);
   const bodyFlat = flattenTree(sections);
-  const schedules = parseSchedules(xml, code, bodyFlat.length);
-  const flat = bodyFlat.concat(schedules); // leaf view for coverage / fullText / counts
+  const schedules = parseSchedules(xml, code);                  // structured + bilingual
+  const flat = bodyFlat.concat(flattenSchedules(schedules)); // leaf view for coverage / fullText / counts
   const cov = coverage(xml, flat);
   const parsed = ident(xml, code);
   const missingLabel = bodyFlat.filter((p) => /^¶/.test(p.label)).length;
@@ -684,6 +713,33 @@ async function ingestCode(code, registry, opts) {
   // Prefer the registry's curated title/citation (e.g. "R.S.C., 1985, c. F-27").
   const title = existing?.title || parsed.title;
   const citation = existing?.citation || parsed.citation;
+
+  // French overlay (best-effort): pair the /fra/ consolidation onto the English
+  // tree by the shared lims:fid so the UI can toggle EN/FR. Offline, reuse a cached
+  // current.fr.xml if present; if French is unavailable the Act still ingests (EN-only).
+  let frXml = null;
+  try {
+    frXml = opts.fromCache
+      ? await fs.readFile(path.join(OUT_BASE, slug, "current.fr.xml"), "utf8").catch(() => null)
+      : await fetchText(`${BASE}/fra/XML/${code}.xml`);
+  } catch { frXml = null; }
+  let frPaired = 0;
+  if (frXml) {
+    const { sections: frSections } = parseActTree(frXml, code);
+    const frMap = new Map();
+    const wf = (n) => { if (n.id) frMap.set(n.id, n); n.children.forEach(wf); };
+    frSections.forEach(wf);
+    const apf = (n) => {
+      const f = frMap.get(n.id);
+      if (f) {
+        if (f.text) { n.textFr = f.text; frPaired++; }
+        if (f.closingText) n.closingTextFr = f.closingText;
+        if (f.marginalNote) n.marginalNoteFr = f.marginalNote;
+      }
+      n.children.forEach(apf);
+    };
+    sections.forEach(apf);
+  }
 
   // Oracle check: the tree's flat projection must equal the legacy flat parser.
   let verifyErr = null;
@@ -702,7 +758,8 @@ async function ingestCode(code, registry, opts) {
   console.log(
     `${flag} ${code.padEnd(8)} ${slug.padEnd(34)} ` +
     `${String(flat.length).padStart(5)} provisions  ` +
-    `cov ${(cov.ratio * 100).toFixed(1)}%` +
+    `cov ${(cov.ratio * 100).toFixed(1)}%  ` +
+    `fr ${frPaired}` +
     (warn.length ? `  — ${warn.join("; ")}` : ""),
   );
 
@@ -711,6 +768,8 @@ async function ingestCode(code, registry, opts) {
   const normalized = {
     title, citation, jurisdiction: "Canada", level: "federal",
     code,
+    schemaVersion: 2,            // bilingual provisions + structured schedules
+    bilingual: frPaired > 0,
     currentPath: `data/laws/current/federal/${slug}`,
     source: { publisher: "Justice Laws Website", xmlUrl: `${BASE}/eng/XML/${code}.xml`, htmlUrl: `${BASE}/eng/acts/${code}/index.html` },
     normalizedAt: new Date().toISOString(),
@@ -723,6 +782,7 @@ async function ingestCode(code, registry, opts) {
   const dir = path.join(OUT_BASE, slug);
   await fs.mkdir(dir, { recursive: true });
   if (!opts.fromCache) await fs.writeFile(path.join(dir, "current.xml"), xml, "utf8");
+  if (!opts.fromCache && frXml) await fs.writeFile(path.join(dir, "current.fr.xml"), frXml, "utf8");
   await fs.writeFile(path.join(dir, "current.normalized.json"), JSON.stringify(normalized, null, 2), "utf8");
 
   if (opts.writeRegistry) {

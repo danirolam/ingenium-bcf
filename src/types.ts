@@ -203,6 +203,9 @@ export interface ActProvision {
   heading?: string | null;
   marginalNote?: string | null;
   text: string;
+  /** French text/marginal note (v2 bilingual ingest), for the EN/FR toggle. */
+  textFr?: string;
+  marginalNoteFr?: string | null;
   /** Structured hierarchy path (section → subsection → paragraph → …). */
   path?: { kind: string; label: string }[];
 }
@@ -269,4 +272,7 @@ export interface ProvisionDelta {
   /** True when an AI call was cut short (rate limit / failure) so this Act's
    *  changes may be partial. */
   incomplete?: boolean;
+  /** The ingested Act text predates the current format (not yet re-ingested to
+   *  bilingual + structured schedules) — shown as a temporary warning in the UI. */
+  outdated?: boolean;
 }

@@ -226,6 +226,24 @@ function domToActNode(el: DomNode): ActNode | null {
   };
 }
 
+// A <BilingualGroup> in an <AmendedText> is a schedule insert: pair its
+// <BilingualItemEn>/<BilingualItemFr> children into scheduleEntry nodes (en + fr),
+// so "Schedule I … add the following in alphabetical order" yields real entries.
+function bilingualEntries(group: DomNode): ActNode[] {
+  const out: ActNode[] = [];
+  let en: string | null = null;
+  for (const c of childEls(group)) {
+    if (c.name === "BilingualItemEn") en = squish(elText(c));
+    else if (c.name === "BilingualItemFr") {
+      const fr = squish(elText(c));
+      if (en) out.push({ id: `bill:${domSerial++}`, num: en.length > 90 ? en.slice(0, 90) : en, kind: "scheduleEntry", text: en, ...(fr ? { textFr: fr } : {}), children: [] });
+      en = null;
+    }
+  }
+  if (en) out.push({ id: `bill:${domSerial++}`, num: en, kind: "scheduleEntry", text: en, children: [] });
+  return out;
+}
+
 // One discrete amending instruction, pre-extraction.
 interface RawUnit { instruction: string; inserts: ActNode[] }
 
@@ -252,6 +270,8 @@ function splitAmended(amended: DomNode): { inserts: ActNode[]; nested: RawUnit[]
       } else if (KIND[c.name]) {
         const n = domToActNode(c);
         if (n) current.push(n);
+      } else if (c.name === "BilingualGroup") {
+        for (const e of bilingualEntries(c)) current.push(e); // schedule entries (en + fr)
       } else if (!["Text", "Label", "MarginalNote", "HistoricalNote"].includes(c.name)) {
         walk(c); // unwrap SectionPiece etc., preserving the current instruction
       }
@@ -349,4 +369,29 @@ export function extractAmendmentUnits(
     }
   }
   return units;
+}
+
+// Overlay the French bill's inserted text onto the English units so added/replaced
+// provisions render in French too. The EN and FR bills mirror each other, so we
+// pair the k-th unit of each clause and walk the insert trees in parallel by
+// position, copying text → textFr. Schedule entries already carry French inline.
+export function overlayFrenchInserts(enUnits: AmendmentUnit[], frXml: string, registry: Record<string, RegistryEntry>): void {
+  const frUnits = extractAmendmentUnits(frXml, registry);
+  const frByClause = new Map<string, AmendmentUnit[]>();
+  for (const u of frUnits) { const a = frByClause.get(u.clause) ?? []; a.push(u); frByClause.set(u.clause, a); }
+  const seen = new Map<string, number>();
+  const pair = (en: ActNode[], fr: ActNode[]) => {
+    const n = Math.min(en.length, fr.length);
+    for (let i = 0; i < n; i++) {
+      if (!en[i].textFr && en[i].text && fr[i].text) en[i].textFr = fr[i].text;
+      if (!en[i].marginalNoteFr && en[i].marginalNote && fr[i].marginalNote) en[i].marginalNoteFr = fr[i].marginalNote;
+      pair(en[i].children ?? [], fr[i].children ?? []);
+    }
+  };
+  for (const u of enUnits) {
+    const k = seen.get(u.clause) ?? 0;
+    seen.set(u.clause, k + 1);
+    const fr = frByClause.get(u.clause)?.[k];
+    if (fr) pair(u.inserts, fr.inserts);
+  }
 }

@@ -1,6 +1,7 @@
 import type { ActProvision, ProvisionDiffRow } from "../../types";
 import { leafLabel, provDepthOf } from "./provisionShape";
 import { wordDiff, type WordPart } from "../../lib/wordDiff";
+import { provNote, provText, useLang } from "./lang";
 
 // One diff row rendered GitHub-split / CanLII style: the current text on the
 // left, the amended text on the right. A changed provision is refined to the
@@ -36,11 +37,13 @@ function Cell({
   parts?: WordPart[];
   baseDepth: number;
 }) {
+  const lang = useLang();
   if (!prov || intent === "empty") return <div className="dr-cell is-empty" aria-hidden="true" />;
   const indent = Math.max(0, provDepthOf(prov) - baseDepth);
   // A wholesale add/del (no word parts) tints the entire line; a changed cell
   // carries the soft line tint and lets the word spans do the strong highlight.
   const whole = (intent === "add" || intent === "del") && !parts;
+  const note = provNote(prov, lang);
   return (
     <div className={`dr-cell is-${intent}${whole ? " is-whole" : ""}`} style={{ paddingLeft: 10 + indent * 18 }}>
       <span className="dr-cell-sign" aria-hidden="true">
@@ -48,8 +51,8 @@ function Cell({
       </span>
       <span className="dr-cell-label">{leafLabel(prov)}</span>
       <span className="dr-cell-main">
-        {prov.marginalNote && <span className="dr-cell-mn">{prov.marginalNote}</span>}
-        <span className="dr-cell-text">{parts ? <Words parts={parts} /> : prov.text}</span>
+        {note && <span className="dr-cell-mn">{note}</span>}
+        <span className="dr-cell-text">{parts ? <Words parts={parts} /> : provText(prov, lang)}</span>
       </span>
     </div>
   );
@@ -66,6 +69,7 @@ export function SplitRow({
   focus?: boolean;
   baseDepth?: number;
 }) {
+  const lang = useLang();
   let leftIntent: Intent;
   let rightIntent: Intent;
   let leftParts: WordPart[] | undefined;
@@ -83,7 +87,7 @@ export function SplitRow({
     case "changed": {
       leftIntent = "del";
       rightIntent = "add";
-      const wd = wordDiff(row.before?.text ?? "", row.after?.text ?? "");
+      const wd = wordDiff(row.before ? provText(row.before, lang) : "", row.after ? provText(row.after, lang) : "");
       leftParts = wd.left;
       rightParts = wd.right;
       break;

@@ -26,8 +26,18 @@ export interface ActNode {
   marginalNote?: string | null;
   text?: string;
   closingText?: string;
+  // v2 bilingual + structured-schedule fields.
+  textFr?: string;
+  closingTextFr?: string;
+  marginalNoteFr?: string | null;
+  title?: string | null; // schedule nodes: the schedule's title
   children?: ActNode[];
 }
+
+// Bumped when the normalized format changes shape. v2 = bilingual provisions +
+// structured schedules. An Act whose file predates the current version is shown
+// as "outdated" in the UI until it's re-ingested.
+export const CURRENT_SCHEMA = 2;
 
 export interface ActTree {
   slug: string;
@@ -35,6 +45,8 @@ export interface ActTree {
   citation: string;
   sections: ActNode[]; // the body hierarchy
   schedules: ActNode[]; // synthesized schedule containers (one per heading)
+  schemaVersion: number;
+  outdated: boolean; // file predates CURRENT_SCHEMA → re-ingest pending
 }
 
 // ── Segment normalization & the legislative comparator ──────────────────────
@@ -86,9 +98,9 @@ function compareSeg(a: string, b: string, kind: string, isFirst: boolean): numbe
 // but real Acts don't pack both, and placement is always relative to actual
 // neighbors — so this is exact for every case we observe.
 export function compareLabels(kind: string, a: string, b: string): number {
-  if (kind === "definition") {
-    // Alphabetical by the bare term — strip the curly/straight quotes first, or a
-    // trailing ”/" sorts after the space in a longer term ("food" vs "food for …").
+  if (kind === "definition" || kind === "scheduleEntry" || kind === "scheduleGroup" || kind === "scheduleItem") {
+    // Alphabetical by the bare term/name — strip the curly/straight quotes first, or
+    // a trailing ”/" sorts after the space in a longer term ("food" vs "food for …").
     const t = (s: string) => (s ?? "").toLowerCase().replace(/[“”"']/g, "").trim();
     const ta = t(a), tb = t(b);
     return ta < tb ? -1 : ta > tb ? 1 : 0;
@@ -131,12 +143,18 @@ export async function loadActTree(slug: string): Promise<ActTree | null> {
     const sections: ActNode[] = Array.isArray(j.sections) ? j.sections : [];
     const scheduleRows: ActNode[] = Array.isArray(j.schedules) ? j.schedules : [];
     if (!sections.length && !scheduleRows.length) return null;
+    const schemaVersion = typeof j.schemaVersion === "number" ? j.schemaVersion : 1;
+    // v2 schedules are already a navigable tree (schedule → group → entry); v1 are
+    // flat rows we group into synthetic containers.
+    const v2sched = scheduleRows.some((s) => s && s.kind === "schedule" && Array.isArray(s.children));
     return {
       slug,
       title: j.title,
       citation: j.citation,
       sections,
-      schedules: groupSchedules(scheduleRows),
+      schedules: v2sched ? scheduleRows : groupSchedules(scheduleRows),
+      schemaVersion,
+      outdated: schemaVersion < CURRENT_SCHEMA,
     };
   } catch {
     return null;
@@ -164,29 +182,43 @@ export function flattenActTree(tree: ActTree): Provision[] {
     const chain = (defAt >= 0 ? lineage.slice(defAt) : lineage).map((n) => n.num ?? "").filter(Boolean).join("");
     const heading = ancestors.length ? ancestors[0].heading ?? null : node.heading ?? null;
     const label = chain || node.marginalNote || `¶${flat.length + 1}`;
+    const textFr = [(node.textFr ?? "").trim(), (node.closingTextFr ?? "").trim()].filter(Boolean).join(" ") || undefined;
     flat.push({
       id: node.id,
       label,
       kind: node.kind,
       heading,
       marginalNote: node.marginalNote ?? null,
+      marginalNoteFr: node.marginalNoteFr ?? null,
       text,
+      textFr,
       path: labelToPath(label),
     });
   };
   for (const s of tree.sections) walk(s, []);
+  // Schedules — handles both v2 (schedule → group → entry) and v1 (flat rows under
+  // a synthetic container): emit each text-bearing leaf as a provision, carrying its
+  // group as the marginal note and the schedule designator as the heading.
   for (const sc of tree.schedules) {
-    for (const row of sc.children ?? []) {
-      flat.push({
-        id: row.id,
-        label: row.num || sc.num,
-        kind: row.kind ?? "scheduleItem",
-        heading: sc.heading ?? null,
-        marginalNote: row.marginalNote ?? null,
-        text: (row.text ?? "").trim(),
-        path: labelToPath(sc.num),
-      });
-    }
+    const walkSched = (node: ActNode, group: string | null) => {
+      const txt = (node.text ?? "").trim();
+      if (txt && !(node.children?.length)) {
+        flat.push({
+          id: node.id,
+          label: node.num || sc.num,
+          kind: node.kind || "scheduleItem",
+          heading: `Schedule ${sc.num}`,
+          marginalNote: group ?? node.marginalNote ?? null,
+          text: txt,
+          textFr: node.textFr,
+          path: [{ kind: "schedule", label: sc.num }, ...(group ? [{ kind: "scheduleGroup", label: group }] : []), { kind: node.kind || "scheduleItem", label: node.num }],
+        });
+        return;
+      }
+      const g = node.kind === "scheduleGroup" ? node.num : group;
+      for (const c of node.children ?? []) walkSched(c, g);
+    };
+    for (const c of sc.children ?? []) walkSched(c, null);
   }
   return flat;
 }
