@@ -276,9 +276,11 @@ export interface ProvisionDelta {
   /** True when an AI call was cut short (rate limit / failure) so this Act's
    *  changes may be partial. */
   incomplete?: boolean;
-  /** The ingested Act text predates the current format (not yet re-ingested to
-   *  bilingual + structured schedules) — shown as a temporary warning in the UI. */
+  /** The ingested Act text predates the current format — shown as a temporary
+   *  "outdated" warning in the UI. */
   outdated?: boolean;
+  /** Link to the official Act PDF on the Justice Laws website. */
+  actUrl?: string;
 }
 
 /** One row in the Stage-2 "Delta Library" — a bill that already has a generated

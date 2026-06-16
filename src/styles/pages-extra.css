@@ -696,11 +696,18 @@
 }
 .dr-nav:hover:not(:disabled) { background: var(--panel-3); color: var(--ink); }
 .dr-nav:disabled { opacity: 0.4; cursor: default; }
-.dr-pager-pos { min-width: 0; display: flex; flex-direction: column; line-height: 1.3; }
-.dr-pager-count { font-size: 12.5px; color: var(--ink-2); }
-.dr-pager-count b { color: var(--ink); }
-.dr-pager-act { font-size: 11.5px; color: var(--ink-4); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.dr-pager-export { margin-left: auto; flex: none; }
+.dr-pager-pos { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; line-height: 1.35; }
+/* The Act name is the prominent, centred title of the pager bar. */
+.dr-pager-act {
+  display: flex; align-items: center; gap: 10px; max-width: 100%;
+  font-size: 14px; font-weight: 700; color: var(--ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.dr-pager-actpdf { font-size: 11.5px; font-weight: 600; color: var(--accent-warm); text-decoration: none; flex: none; }
+.dr-pager-actpdf:hover { text-decoration: underline; }
+.dr-pager-count { font-size: 11.5px; color: var(--ink-4); }
+.dr-pager-count b { color: var(--ink-2); }
+.dr-pager-export { flex: none; }
 .dr-pager-body { flex: 1; min-height: 0; padding: 14px 16px; }
 
 /* Amendment card — fills the pager body; approving recolours the border. */
@@ -715,26 +722,17 @@
 
 .dr-card-head {
   flex: none;
-  display: flex; align-items: center; gap: 10px;
-  padding: 13px 16px; border-bottom: 1px solid var(--border-3);
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 14px 16px; border-bottom: 1px solid var(--border-3);
   color: var(--ink);
 }
-.dr-op {
-  flex: none;
-  font: 700 10.5px/1 var(--sans); letter-spacing: .04em; text-transform: uppercase;
-  padding: 4px 8px; border-radius: 5px;
+/* The card title IS the bill's instruction. */
+.dr-card-instruction {
+  margin: 0; flex: 1; min-width: 0;
+  font-size: 14px; font-weight: 600; line-height: 1.5; color: var(--ink);
 }
-.dr-op.is-add { color: var(--ok); background: var(--ok-bg); }
-.dr-op.is-replace { color: var(--med); background: var(--med-bg); }
-.dr-op.is-repeal { color: var(--crit); background: var(--crit-bg); }
-.dr-op.is-amend { color: var(--high); background: var(--high-bg); }
-
-.dr-card-anchor {
-  font-family: var(--mono); font-size: 13px; color: var(--ink);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.dr-card-warn { margin-left: 6px; color: var(--high); }
-.dr-card-meta { margin-left: auto; display: flex; align-items: center; gap: 8px; flex: none; }
+.dr-card-warn { color: var(--high); font-size: 11.5px; font-weight: 700; white-space: nowrap; }
+.dr-card-meta { display: flex; align-items: center; gap: 8px; flex: none; padding-top: 1px; }
 .dr-card-count { font-size: 11px; color: var(--ink-4); font-family: var(--mono); }
 .dr-card-approved { font-size: 11px; color: var(--ok); font-weight: 700; }
 .dr-tag {

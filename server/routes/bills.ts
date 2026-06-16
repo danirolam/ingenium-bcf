@@ -458,7 +458,10 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
     }));
     // Slim the payload for very large Acts (blank far-from-change unchanged text).
     const slimRows = slimUnchangedText(rows, operations);
-    deltas.push({ slug, title: tree.title, citation: tree.citation, summary: diffSummary(rows), operations, rows: slimRows, source: "ai-located", outdated: tree.outdated });
+    // Official Act PDF on Justice Laws: …/eng/XML/F-27.xml → …/PDF/F-27.pdf.
+    const code = registry[slug]?.source?.xmlUrl?.match(/\/XML\/([^/]+)\.xml/i)?.[1];
+    const actUrl = code ? `https://laws-lois.justice.gc.ca/PDF/${code}.pdf` : undefined;
+    deltas.push({ slug, title: tree.title, citation: tree.citation, summary: diffSummary(rows), operations, rows: slimRows, source: "ai-located", outdated: tree.outdated, actUrl });
   }
 
   console.log(`[provision-delta] ${bill.billNumber}: ${deltas.length} act(s), ${located.length} located, ${failures.length} unlocatable`);

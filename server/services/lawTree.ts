@@ -155,36 +155,46 @@ export async function loadActTree(slug: string): Promise<ActTree | null> {
   }
 }
 
-// Flatten the tree to the engine's leaf-provision view — the EXACT projection
-// `lawProvisions.flattenSections` uses (children before parents, composed labels,
-// top-section heading pushed down, chapeau+closing merged, pure containers
-// skipped), so a tree we mutate and re-flatten diffs cleanly against the original.
+// A node becomes a row if it has its own operative text, OR it is a container
+// (has children) carrying a title — so a section like 2.4 ("Classification") whose
+// text lives entirely in its subsections still shows its HEADER before them. Shared
+// with amendmentApply.textIds so produced-row linking stays in lock-step.
+export function nodeOwnText(node: ActNode): string {
+  return [(node.text ?? "").trim(), (node.closingText ?? "").trim()].filter(Boolean).join(" ");
+}
+export function emitsRow(node: ActNode): boolean {
+  return !!nodeOwnText(node) || ((node.children?.length ?? 0) > 0 && !!(node.marginalNote || node.heading));
+}
+
+// Flatten the tree to the engine's leaf-provision view in READING order (a node
+// BEFORE its children — pre-order — so a section's chapeau/header precedes its
+// subsections, and a container section's title isn't dropped). Composed labels,
+// top-section heading pushed down. `before` and `after` re-flatten with the same
+// function, so the diff stays id-keyed and stable.
 export function flattenActTree(tree: ActTree): Provision[] {
   const flat: Provision[] = [];
   const walk = (node: ActNode, ancestors: ActNode[]) => {
-    for (const child of node.children ?? []) walk(child, [...ancestors, node]);
-    const own = (node.text ?? "").trim();
-    const closing = (node.closingText ?? "").trim();
-    const text = [own, closing].filter(Boolean).join(" ");
-    if (!text) return; // pure container — its children carry the operative text
-    // Compose the label from the lineage — but a definition (and anything inside
-    // it) is labelled relative to its TERM, not the section number, so a paragraph
-    // under the definition "pharmacist" reads "“pharmacist”(a)" rather than
-    // "21.9701“pharmacist”(a)".
     const lineage = [...ancestors, node];
-    const defAt = lineage.map((n) => n.kind).lastIndexOf("definition");
-    const chain = (defAt >= 0 ? lineage.slice(defAt) : lineage).map((n) => n.num ?? "").filter(Boolean).join("");
-    const heading = ancestors.length ? ancestors[0].heading ?? null : node.heading ?? null;
-    const label = chain || node.marginalNote || `¶${flat.length + 1}`;
-    flat.push({
-      id: node.id,
-      label,
-      kind: node.kind,
-      heading,
-      marginalNote: node.marginalNote ?? null,
-      text,
-      path: labelToPath(label),
-    });
+    if (emitsRow(node)) {
+      // Compose the label from the lineage — but a definition (and anything inside
+      // it) is labelled relative to its TERM, not the section number, so a paragraph
+      // under the definition "pharmacist" reads "“pharmacist”(a)" rather than
+      // "21.9701“pharmacist”(a)".
+      const defAt = lineage.map((n) => n.kind).lastIndexOf("definition");
+      const chain = (defAt >= 0 ? lineage.slice(defAt) : lineage).map((n) => n.num ?? "").filter(Boolean).join("");
+      const heading = ancestors.length ? ancestors[0].heading ?? null : node.heading ?? null;
+      const label = chain || node.marginalNote || `¶${flat.length + 1}`;
+      flat.push({
+        id: node.id,
+        label,
+        kind: node.kind,
+        heading,
+        marginalNote: node.marginalNote ?? null,
+        text: nodeOwnText(node),
+        path: labelToPath(label),
+      });
+    }
+    for (const child of node.children ?? []) walk(child, lineage);
   };
   for (const s of tree.sections) walk(s, []);
   // Schedules — handles both v2 (schedule → group → entry) and v1 (flat rows under

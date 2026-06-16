@@ -7,7 +7,7 @@
 // The AI never reaches here: inserted/replacement text comes from the bill's
 // <AmendedText> (the `inserts` subtree); an amend's new text comes from the
 // grounded scalpel (the route fills `editedText`).
-import { compareLabels, flattenActTree, normSeg, type ActNode, type ActTree } from "./lawTree.js";
+import { compareLabels, emitsRow, flattenActTree, normSeg, type ActNode, type ActTree } from "./lawTree.js";
 import type { PositionStep, Provision } from "./amendmentEngine.js";
 
 export interface ApplyOp {
@@ -32,12 +32,11 @@ export interface AppliedOp {
   producedKeys: string[];
 }
 
-// Ids of the text-bearing nodes in a subtree — exactly the ones flattenActTree
-// emits as provisions, so they line up with the diff rows.
+// Ids of the nodes in a subtree that flattenActTree emits as provisions (same
+// predicate, so produced-row linking lines up with the diff rows exactly).
 function textIds(node: ActNode, out: string[] = []): string[] {
+  if (emitsRow(node)) out.push(node.id);
   for (const c of node.children ?? []) textIds(c, out);
-  const text = [(node.text ?? "").trim(), (node.closingText ?? "").trim()].filter(Boolean).join(" ");
-  if (text) out.push(node.id);
   return out;
 }
 

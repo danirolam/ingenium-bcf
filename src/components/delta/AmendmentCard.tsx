@@ -1,16 +1,10 @@
 import type { BillAmendmentOp, ProvisionDelta } from "../../types";
 import { ProvisionDiff } from "./ProvisionDiff";
 
-const OP_LABEL: Record<BillAmendmentOp["op"], string> = {
-  add: "Add",
-  replace: "Replace",
-  repeal: "Repeal",
-  amend: "Amend",
-};
-
-// One amendment, shown full-height in the pager. Always expanded — approving
-// doesn't collapse it, it recolours the border (see .dr-card.is-approved). The
-// "In the Act" diff fills the remaining height and scrolls within.
+// One amendment, shown full-height in the pager. The card's title IS the bill's
+// instruction (what the bill says); the diff below shows where it lands in the
+// Act. Approving doesn't collapse anything — it recolours the border and advances
+// to the next amendment (see DeltaReview).
 export function AmendmentCard({
   delta,
   op,
@@ -22,41 +16,25 @@ export function AmendmentCard({
   approved: boolean;
   onApprove: (approved: boolean) => void;
 }) {
-  // Per-op provenance: structural (deterministic from the bill XML) vs ai-located
-  // (the AI scalpel/interpreter). Falls back to the delta-level source.
-  const structured = op.resolution ? op.resolution === "structured" : delta.source === "bill-xml";
   const warn = !op.anchorFound;
 
   return (
     <div className={`dr-card is-${op.op}${approved ? " is-approved" : ""}${warn ? " is-warn" : ""}`}>
       <div className="dr-card-head">
-        <span className={`dr-op is-${op.op}`}>{OP_LABEL[op.op]}</span>
-        <span className="dr-card-anchor">
-          {op.position ? `${op.position} ` : ""}
-          {op.anchor ?? (op.op === "add" ? "(new section)" : "(unresolved location)")}
+        <p className="dr-card-instruction">{op.instruction || op.note || "(no instruction text)"}</p>
+        <div className="dr-card-meta">
           {warn && (
-            <span className="dr-card-warn" title="Anchor not verified against the Act">
-              ⚠
+            <span className="dr-card-warn" title="Location not verified against the Act — check the PDF">
+              ⚠ unverified
             </span>
           )}
-        </span>
-        <span className="dr-card-meta">
-          {op.count ? <span className="dr-card-count">{op.count} prov.</span> : null}
-          <span className={`dr-tag is-${structured ? "structured" : "ai"}`}>
-            {structured ? "structured" : "ai-located"}
-          </span>
           {approved && <span className="dr-card-approved">✓ approved</span>}
-        </span>
+        </div>
       </div>
 
-      <section className="dr-says">
-        <div className="dr-says-h">Bill says</div>
-        <p className="dr-says-text">{op.instruction || op.note || "(no instruction text)"}</p>
-        {op.newText && <p className="dr-says-new">{op.newText}</p>}
-      </section>
+      {op.newText && <p className="dr-says-new">{op.newText}</p>}
 
       <section className="dr-lands">
-        <div className="dr-lands-h">In the {delta.title}</div>
         <ProvisionDiff delta={delta} op={op} />
       </section>
 

@@ -142,19 +142,24 @@ export function DeltaReview({
               ←
             </button>
             <div className="dr-pager-pos">
-              <span className="dr-pager-count">
-                Amendment <b>{at + 1}</b> of {items.length}
-              </span>
               <span className="dr-pager-act">
-                {cur.delta.title} · {actApproved}/{cur.delta.operations.length} approved
+                {cur.delta.title}
+                {cur.delta.actUrl && (
+                  <a className="dr-pager-actpdf" href={cur.delta.actUrl} target="_blank" rel="noreferrer" title="Official Act PDF (Justice Laws)">
+                    official PDF ↗
+                  </a>
+                )}
                 {cur.delta.outdated && (
                   <span
                     className="dr-outdated"
-                    title="This Act's text predates the current format (bilingual + structured schedules). Re-ingest pending — French and schedule amendments may be incomplete."
+                    title="This Act's text predates the current format. Re-ingest pending."
                   >
                     ⚠ outdated
                   </span>
                 )}
+              </span>
+              <span className="dr-pager-count">
+                Amendment <b>{at + 1}</b> of {items.length} · {actApproved}/{cur.delta.operations.length} approved
               </span>
             </div>
             <button className="dr-nav" onClick={() => go(1)} disabled={at >= items.length - 1} title="Next (→)">
@@ -175,7 +180,10 @@ export function DeltaReview({
               delta={cur.delta}
               op={cur.op}
               approved={approved}
-              onApprove={(v) => approvals.setApproved([cur.op.key], v)}
+              onApprove={(v) => {
+                approvals.setApproved([cur.op.key], v);
+                if (v) go(1); // approving advances to the next amendment
+              }}
             />
           </div>
         </div>

@@ -271,19 +271,21 @@ export async function locateAmendments(
   ctx: LocatorCtx,
   budget?: AiBudget,
 ): Promise<{ located: LocatedOp[]; failures: LocateFailure[]; incomplete: boolean }> {
-  const located: LocatedOp[] = [];
-  const failures: LocateFailure[] = [];
+  // Results are stored BY INPUT INDEX, not completion order, so the amendments
+  // stay in document order (the units are extracted in document order) regardless
+  // of which AI call finishes first.
+  const results: (LocatedOp | LocateFailure)[] = new Array(units.length);
   let i = 0;
   const worker = async () => {
     while (i < units.length) {
-      const unit = units[i++];
-      const r = await locateOne(unit, ctx, budget);
-      if ("op" in r) located.push(r);
-      else failures.push(r);
+      const idx = i++;
+      results[idx] = await locateOne(units[idx], ctx, budget);
     }
   };
   console.log(`[locator] locating ${units.length} amendment(s), concurrency ${Math.min(CONCURRENCY, units.length)}…`);
   await Promise.all(Array.from({ length: Math.min(CONCURRENCY, units.length) }, worker));
+  const located = results.filter((r): r is LocatedOp => !!r && "op" in r);
+  const failures = results.filter((r): r is LocateFailure => !!r && !("op" in r));
   console.log(`[locator] done: ${located.length}/${units.length} located, ${failures.length} failed${budget?.reason ? ` (incomplete: ${budget.reason})` : ""}`);
   return { located, failures, incomplete: budget?.reason != null };
 }

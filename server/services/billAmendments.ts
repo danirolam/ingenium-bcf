@@ -196,6 +196,19 @@ function elText(n: DomNode): string {
 const labelOf = (n: DomNode) => squish(childEls(n, "Label").map(elText).join(""));
 const directText = (n: DomNode) => squish(childEls(n, "Text").map(elText).join(" "));
 
+// The first descendant element with the given name, at any depth (the defined
+// term sits inside <Text>, e.g. <Definition><Text><DefinedTermEn>…</DefinedTermEn>
+// means …</Text></Definition>, so a direct-child lookup misses it).
+function firstDesc(n: DomNode, name: string): DomNode | null {
+  for (const k of n.kids) {
+    if (typeof k === "string") continue;
+    if (k.name === name) return k;
+    const found = firstDesc(k, name);
+    if (found) return found;
+  }
+  return null;
+}
+
 // Build an ActNode subtree from an inserted CONTENT element (a Subsection /
 // Paragraph / Definition …), mirroring the Act's stored shape. Non-structural
 // wrappers (e.g. SectionPiece) are unwrapped; a nested <AmendedText> is not content.
@@ -205,7 +218,8 @@ function domToActNode(el: DomNode): ActNode | null {
   if (!kind) return null;
   let num = labelOf(el);
   if (kind === "definition") {
-    const term = squish(childEls(el, "DefinedTermEn").map(elText).join(""));
+    const dt = firstDesc(el, "DefinedTermEn");
+    const term = dt ? squish(elText(dt)) : "";
     if (term) num = `“${term}”`;
   }
   const children: ActNode[] = [];
