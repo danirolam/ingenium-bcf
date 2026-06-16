@@ -28,6 +28,7 @@ import {
   FILES,
   findById,
   readAll,
+  removeById,
   upsert,
 } from "../services/jsonStore.js";
 import {
@@ -466,9 +467,12 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
 
   console.log(`[provision-delta] ${bill.billNumber}: ${deltas.length} act(s), ${located.length} located, ${failures.length} unlocatable`);
 
-  // 5) Cache only a COMPLETE run, so a rate-limited one retries next time.
+  // 5) Cache only a COMPLETE run, so a rate-limited one retries next time. A fresh
+  //    delta supersedes any prior one, so its op keys may have shifted — clear the
+  //    bill's approvals so counsel re-approves the new placements from scratch.
   if (deltas.length > 0 && !incomplete) {
     await upsert(FILES.provisionDeltas, { id: bill.id, deltas, errors, failures, createdAt: new Date().toISOString() });
+    await removeById(FILES.approvals, bill.id);
   }
   res.json({ deltas, errors, failures, cached: false, aiIncomplete: incomplete, aiIncompleteReason: aiBudget.reason, rateLimited: aiBudget.rateLimitHits });
   } catch (err) {

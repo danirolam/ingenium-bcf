@@ -7,6 +7,8 @@ export interface ApprovalsState {
   isApproved: (key: string) => boolean;
   /** Approve/unapprove one or many keys. Optimistic, then reconciled with the server. */
   setApproved: (keys: string[], approved: boolean) => void;
+  /** Re-pull approvals from the server (e.g. after a recompute cleared them). */
+  refetch: () => void;
   loading: boolean;
 }
 
@@ -51,5 +53,16 @@ export function useApprovals(billId: string | null): ApprovalsState {
 
   const isApproved = useCallback((key: string) => approvedKeys.has(key), [approvedKeys]);
 
-  return { approvedKeys, isApproved, setApproved, loading };
+  // Re-pull from the server — used after a recompute, which clears approvals
+  // server-side (new delta ⇒ new placements to approve).
+  const refetch = useCallback(() => {
+    const id = billRef.current;
+    if (!id) { setApprovedKeys(new Set()); return; }
+    api.bills.approvals
+      .get(id)
+      .then((r) => { if (billRef.current === id) setApprovedKeys(new Set(r.keys)); })
+      .catch(() => {});
+  }, []);
+
+  return { approvedKeys, isApproved, setApproved, refetch, loading };
 }

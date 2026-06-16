@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Nav } from "../App";
 import { DeltaLibrary } from "../components/DeltaLibrary";
 import { useApprovals } from "../lib/useApprovals";
@@ -13,6 +13,14 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
   const billId = nav.params.billId ?? null;
   const delta = useProvisionDelta(billId);
   const approvals = useApprovals(billId);
+
+  // A finished recompute clears approvals server-side (new delta ⇒ new placements
+  // to approve) — re-pull so the UI shows them reset.
+  const wasRefreshing = useRef(false);
+  useEffect(() => {
+    if (wasRefreshing.current && !delta.refreshing) approvals.refetch();
+    wasRefreshing.current = delta.refreshing;
+  }, [delta.refreshing, approvals]);
 
   if (!billId) return <DeltaLibrary nav={nav} />;
 
