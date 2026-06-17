@@ -46,12 +46,13 @@ export function DeltaReview({
   const at = Math.min(idx, Math.max(0, items.length - 1));
   const go = (step: number) => setIdx(() => Math.max(0, Math.min(items.length - 1, at + step)));
 
-  // Resizable PDF pane: default to one third of the viewport; counsel can drag
-  // the divider. Width lives in a CSS var so the responsive media query can still
-  // collapse the two-pane grid on narrow screens.
+  // Resizable PDF pane: default to a generous ~45% of the viewport so the bill
+  // text is readable without scrolling; counsel can drag the divider either way.
+  // Width lives in a CSS var so the responsive media query can still collapse the
+  // two-pane grid on narrow screens.
   const gridRef = useRef<HTMLDivElement>(null);
   const [pdfPx, setPdfPx] = useState(() =>
-    Math.round((typeof window !== "undefined" ? window.innerWidth : 1200) / 3),
+    Math.round((typeof window !== "undefined" ? window.innerWidth : 1200) * 0.45),
   );
   const startDrag = (e: ReactMouseEvent) => {
     e.preventDefault();
@@ -149,15 +150,21 @@ export function DeltaReview({
           )}
         </div>
       )}
-      <div className="dr-grid" ref={gridRef} style={{ "--pdf-w": `${pdfPx}px` } as CSSProperties}>
-        <BillPdfPane bill={bill} />
-        <div
-          className="dr-resizer"
-          role="separator"
-          aria-orientation="vertical"
-          title="Drag to resize"
-          onMouseDown={startDrag}
-        />
+      <div
+        className={`dr-grid${bill ? " is-pdf-open" : ""}`}
+        ref={gridRef}
+        style={{ "--pdf-w": `${pdfPx}px` } as CSSProperties}
+      >
+        {bill && <BillPdfPane bill={bill} />}
+        {bill && (
+          <div
+            className="dr-resizer"
+            role="separator"
+            aria-orientation="vertical"
+            title="Drag to resize the bill PDF"
+            onMouseDown={startDrag}
+          />
+        )}
         <div className="dr-pager">
           <div className="dr-pager-bar">
             <div className="dr-pager-left">
