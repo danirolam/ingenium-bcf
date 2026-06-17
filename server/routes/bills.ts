@@ -445,8 +445,8 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
     }
 
     const applyOps: ApplyOp[] = ops.map((o) => ({
-      clause: o.clause, op: o.op, ancestors: o.ancestors, instruction: o.instruction,
-      confirmed: o.confirmed, inserts: o.inserts, editedText: editText.get(o),
+      clause: o.clause, op: o.op, ancestors: o.ancestors, newAncestors: o.newAncestors,
+      instruction: o.instruction, confirmed: o.confirmed, inserts: o.inserts, editedText: editText.get(o),
     }));
     const { before, after, applied } = applyOperations(tree, applyOps);
     const rows = diffProvisions(before, after);

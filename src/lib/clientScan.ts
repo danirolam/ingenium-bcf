@@ -33,7 +33,7 @@ export interface ScanReadyBill {
 /** One approved amendment op, summarised for the pre-scan review panel. */
 export interface ApprovedOpSummary {
   key: string;
-  op: "add" | "replace" | "repeal" | "amend";
+  op: "add" | "replace" | "repeal" | "amend" | "relabel";
   anchor: string | null;
   instruction: string;
   beforeText?: string;

@@ -23,7 +23,7 @@ export interface ApprovedActChange {
   citation: string;
   ops: {
     key: string;
-    op: "add" | "replace" | "repeal" | "amend";
+    op: "add" | "replace" | "repeal" | "amend" | "relabel";
     anchor: string | null;
     instruction: string;
     beforeText?: string;

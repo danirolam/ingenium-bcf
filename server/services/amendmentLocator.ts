@@ -16,13 +16,15 @@ const MODEL = process.env.ANTHROPIC_LOCATOR_MODEL || process.env.ANTHROPIC_MODEL
 const MAX_HOPS = 14;
 const CONCURRENCY = 4; // gentle on the 50k-tok/min limit; the budget aborts the rest
 
-export type LocateOp = "add" | "replace" | "amend" | "repeal";
+export type LocateOp = "add" | "replace" | "amend" | "repeal" | "relabel";
 
 export interface LocatedOp {
   clause: string;
   op: LocateOp;
   actSlug: string;
   ancestors: PositionStep[];
+  /** For "relabel": where the provision moves to (e.g. §101 → §101(1)). */
+  newAncestors?: PositionStep[];
   confirmed: boolean;
   note: string;
   instruction: string;
@@ -59,8 +61,16 @@ interface ValidateResult {
   available?: string[];
   provision?: { label: string; marginalNote: string | null; text: string };
 }
-export function validateOp(nav: LawNavigator, op: LocateOp, ancestors: PositionStep[]): ValidateResult {
+export function validateOp(nav: LawNavigator, op: LocateOp, ancestors: PositionStep[], newAncestors?: PositionStep[]): ValidateResult {
   if (!ancestors.length) return { ok: false, error: "ancestors path is empty" };
+  if (op === "relabel") {
+    const r = nav.resolve(ancestors);
+    if (!r.ok) return { ok: false, error: `the provision to renumber doesn't exist: ${r.reason}`, available: r.available };
+    if (!newAncestors?.length) return { ok: false, error: "relabel needs newAncestors (the destination path)" };
+    if (nav.exists(newAncestors)) return { ok: false, error: `the destination ${newAncestors[newAncestors.length - 1].label} already exists` };
+    const got = nav.getProvision(ancestors);
+    return { ok: true, provision: got.ok ? { label: got.label, marginalNote: got.marginalNote, text: got.text } : undefined };
+  }
   if (op === "add") {
     const parent = ancestors.slice(0, -1);
     const leaf = ancestors[ancestors.length - 1];
@@ -109,7 +119,7 @@ const TOOLS: any = [
   { name: "search_text", description: "Find provisions whose text or marginal note contains a phrase. Returns up to 12 {label, marginalNote, snippet}.", input_schema: { type: "object", properties: { actSlug: { type: "string" }, query: { type: "string" } }, required: ["actSlug", "query"] } },
   { name: "search_marginal_notes", description: "Find provisions by their marginal note / heading (the Act's own index). Returns up to 12 {label, marginalNote}.", input_schema: { type: "object", properties: { actSlug: { type: "string" }, query: { type: "string" } }, required: ["actSlug", "query"] } },
   { name: "find_definition", description: "Locate a defined term in the Act. Returns matching definitions {label, snippet}.", input_schema: { type: "object", properties: { actSlug: { type: "string" }, term: { type: "string" } }, required: ["actSlug", "term"] } },
-  { name: "validate_operation", description: "Check a candidate {op, actSlug, ancestors} deterministically. For add: confirms the parent exists, the new label doesn't collide, and where it sorts in. For replace/amend/repeal: confirms the target resolves and returns its current text. You MUST get ok:true before finalizing.", input_schema: { type: "object", properties: { op: { type: "string", enum: ["add", "replace", "amend", "repeal"] }, actSlug: { type: "string" }, ancestors: ANC }, required: ["op", "actSlug", "ancestors"] } },
+  { name: "validate_operation", description: "Check a candidate {op, actSlug, ancestors} deterministically. add: confirms the parent exists, the new label doesn't collide, and where it sorts. replace/amend/repeal: confirms the target resolves and returns its current text. relabel: confirms the provision to move exists (pass its current path as ancestors and the destination as newAncestors). You MUST get ok:true for every op before finalizing.", input_schema: { type: "object", properties: { op: { type: "string", enum: ["add", "replace", "amend", "repeal", "relabel"] }, actSlug: { type: "string" }, ancestors: ANC, newAncestors: ANC }, required: ["op", "actSlug", "ancestors"] } },
 ];
 
 async function runTool(ctx: LocatorCtx, name: string, input: any): Promise<unknown> {
@@ -125,32 +135,35 @@ async function runTool(ctx: LocatorCtx, name: string, input: any): Promise<unkno
     case "search_text": return { matches: nav.searchText(String(input?.query ?? "")) };
     case "search_marginal_notes": return { matches: nav.searchMarginalNotes(String(input?.query ?? "")) };
     case "find_definition": return { matches: nav.findDefinition(String(input?.term ?? "")) };
-    case "validate_operation": return validateOp(nav, input?.op as LocateOp, anc);
+    case "validate_operation": return validateOp(nav, input?.op as LocateOp, anc, (input?.newAncestors ?? undefined) as PositionStep[] | undefined);
     default: return { error: "unknown tool" };
   }
 }
 
-const SYSTEM = `You locate where a single Canadian bill amendment lands in an existing Act. You are given the amendment's instruction text and, when the bill inserts new text, the labels of the provisions it inserts. You must return the OPERATION and the target's ANCESTOR PATH — nothing else. Do NOT write or rewrite statutory text; that comes from the bill.
+const SYSTEM = `You locate where a Canadian bill amendment lands in an existing Act. You are given the amendment's instruction text and, when the bill inserts new text, the labels of the provisions it inserts. You return a LIST of OPERATIONS, each with its target's ANCESTOR PATH — nothing else. Do NOT write or rewrite statutory text; that comes from the bill.
+
+FIRST decide HOW MANY operations the amendment contains. One instruction often bundles several — e.g. "Section 101 … is renumbered as subsection 101(1) AND is amended by adding the following: (2) …" is TWO operations: a relabel (§101 → §101(1)) and an add (§101(2)). List each one, in the order they apply.
 
 OPERATIONS (classify by EFFECT, not the bill's wording — bills say "is amended by" for several):
-- "add": the bill inserts a brand-new provision. The ancestors are the NEW provision's full path INCLUDING its bill-given leaf label (e.g. inserting "(j.01)" after paragraph (j) of subsection 30(1) → [section 30, subsection 1, paragraph j.01]). The leaf must NOT already exist; its parent MUST exist.
-- "replace": the bill substitutes an ENTIRE existing provision with new full text it supplies ("X is replaced by the following:"). The ancestors are the EXISTING provision being replaced.
-- "amend": the bill makes a SURGICAL text edit INSIDE an existing provision with NO full replacement ("striking out 'or'", "replacing the expression X with Y"). The ancestors are the EXISTING provision edited.
-- "repeal": the bill deletes an existing provision (or a whole section/schedule). The ancestors are the EXISTING provision (or container) removed.
+- "add": inserts a brand-new provision. The ancestors are the NEW provision's full path INCLUDING its bill-given leaf label (inserting "(j.01)" after paragraph (j) of subsection 30(1) → [section 30, subsection 1, paragraph j.01]). The leaf must NOT already exist; its parent MUST exist.
+- "replace": substitutes an ENTIRE existing provision with new full text the bill supplies ("X is replaced by the following:"). ancestors = the existing provision.
+- "amend": a SURGICAL text edit inside an existing provision, no full replacement ("striking out 'or'"). ancestors = the existing provision.
+- "repeal": deletes an existing provision (or a whole section/schedule). ancestors = the existing provision/container.
+- "relabel": the bill renumbers/moves an existing provision to a new citation path ("Section 101 is renumbered as subsection 101(1)"; "paragraph (a) becomes paragraph (a.1)"). Give the EXISTING path as "ancestors" and the NEW path as "newAncestors". No new text — the provision keeps its content.
 
-The difference between replace and amend: replace swaps the whole provision (the bill gives the new wording); amend changes a few words in place (the bill gives an edit instruction, not new wording).
+replace vs amend: replace swaps the whole provision (bill gives new wording); amend changes a few words in place (bill gives an edit, not new wording).
 
-RANGES: an instruction can target a span ("Paragraphs 5(1)(b) to (c) are replaced by the following"). Use get_provision (its sibling list shows the full range) to confirm the span, then return a "replace" addressed at the FIRST provision of the range — the bill supplies the complete set of replacement provisions, which are applied across the span.
+RANGES: an instruction can target a span ("Paragraphs 5(1)(b) to (c) are replaced by the following"). Confirm the span with get_provision (its sibling list), then return one "replace" at the FIRST provision of the range — the bill supplies the full replacement set.
 
 HOW TO WORK:
-1. Identify the Act (use list_acts if it isn't given) and the operation.
-2. Resolve the target with the tools — read provisions, list children, search by text or marginal note, look up definitions. Never guess a label you haven't confirmed.
-3. Call validate_operation and get ok:true.
-4. Read the resolved provision (in validate_operation's reply or via get_provision) and DOUBLE-CHECK it is genuinely what the amendment targets.
+1. Identify the Act (use list_acts if it isn't given) and split the amendment into its operations.
+2. Resolve each target with the tools — read provisions, list children, search by text or marginal note, look up definitions. Never guess a label you haven't confirmed.
+3. Call validate_operation for each and get ok:true.
+4. Double-check each resolved provision is genuinely what the amendment targets.
 
 Then reply with ONLY strict JSON (no prose, no markdown):
-{"op":"add|replace|amend|repeal","actSlug":string,"ancestors":[{"kind":string,"label":string}],"confirmed":true,"note":string}
-Set "confirmed":true only after validate_operation returned ok and you verified the provision matches. If you genuinely cannot locate it, reply {"unlocatable":true,"reason":string} explaining what failed.`;
+{"operations":[{"op":"add|replace|amend|repeal|relabel","actSlug":string,"ancestors":[{"kind":string,"label":string}],"newAncestors":[…only for relabel…],"confirmed":true,"note":string}]}
+Set "confirmed":true on an op only after validate_operation returned ok and you verified it. If you genuinely cannot locate the amendment, reply {"unlocatable":true,"reason":string}.`;
 
 // First balanced {…} object in the text (brace-aware, ignores braces in strings),
 // so a stray brace in prose or a trailing token doesn't break parsing.
@@ -168,17 +181,21 @@ function extractJson(text: string): string | null {
   return null;
 }
 
-interface Final {
+interface FinalOp {
   op?: LocateOp;
   actSlug?: string;
   ancestors?: PositionStep[];
+  newAncestors?: PositionStep[];
   confirmed?: boolean;
   note?: string;
+}
+interface Final extends FinalOp {
+  operations?: FinalOp[]; // the multi-op decision; single-op fields kept for fallback
   unlocatable?: boolean;
   reason?: string;
 }
 
-async function locateOne(unit: AmendmentUnit, ctx: LocatorCtx, budget?: AiBudget): Promise<LocatedOp | LocateFailure> {
+async function locateOne(unit: AmendmentUnit, ctx: LocatorCtx, budget?: AiBudget): Promise<LocatedOp[] | LocateFailure> {
   const key = process.env.ANTHROPIC_API_KEY!;
   const collect = (nodes: ActNode[], out: string[] = []): string[] => {
     for (const n of nodes) { if (n.num) out.push(`${n.kind} ${n.num}`); collect(n.children ?? [], out); }
@@ -223,41 +240,55 @@ async function locateOne(unit: AmendmentUnit, ctx: LocatorCtx, budget?: AiBudget
           return fail("no parseable decision JSON");
         }
         if (parsed.unlocatable) return fail(parsed.reason || "model could not locate the amendment");
+        // One amendment unit decomposes into an ORDERED list of operations. Accept
+        // the new {operations:[…]} shape, and fall back to a bare single-op object
+        // for backward-compat.
+        const ops: FinalOp[] = Array.isArray(parsed.operations) && parsed.operations.length
+          ? parsed.operations
+          : [{ op: parsed.op, actSlug: parsed.actSlug, ancestors: parsed.ancestors, newAncestors: parsed.newAncestors, confirmed: parsed.confirmed, note: parsed.note }];
         // The slug is usually obvious from the tagged Act — fill it from the hint
-        // when the model omits it.
-        if (!parsed.actSlug && unit.actSlugHint) parsed.actSlug = unit.actSlugHint;
-        if (!parsed.op || !parsed.actSlug || !Array.isArray(parsed.ancestors)) {
+        // when the model omits it on any op.
+        for (const o of ops) if (!o.actSlug && unit.actSlugHint) o.actSlug = unit.actSlugHint;
+        if (ops.some((o) => !o.op || !o.actSlug || !Array.isArray(o.ancestors))) {
           // A transient incomplete decision (seen occasionally on large blocks) —
           // re-prompt for the full object rather than dropping the amendment.
           if (hop < MAX_HOPS) {
-            messages.push({ role: "user", content: `Your decision is incomplete — it MUST include "op", "actSlug", and an "ancestors" array. Reply again with the complete JSON decision object only.` });
+            messages.push({ role: "user", content: `Your decision is incomplete — reply with {"operations":[…]} where EVERY operation has "op", "actSlug", and an "ancestors" array (plus "newAncestors" for relabel). Reply with the complete JSON only.` });
             continue;
           }
           return fail("decision missing op/actSlug/ancestors");
         }
-        const nav = await getNav(ctx, parsed.actSlug);
-        if (!nav) return fail(`model named an unavailable Act '${parsed.actSlug}'`);
-        // Authoritative re-validation — the model's confirmation is not trusted.
-        const v = validateOp(nav, parsed.op, parsed.ancestors);
-        if (!v.ok) {
-          // Feed the failure back once so it can self-correct, then give up.
+        // Authoritative re-validation of EVERY op — the model's confirmation is not
+        // trusted. Collect all failures so the model can fix them in one re-prompt.
+        const errs: string[] = [];
+        for (const o of ops) {
+          const nav = await getNav(ctx, o.actSlug!);
+          if (!nav) { errs.push(`${o.op} ${o.actSlug}: that Act isn't ingested`); continue; }
+          const v = validateOp(nav, o.op!, o.ancestors!, o.newAncestors);
+          if (!v.ok) errs.push(`${o.op} ${o.ancestors!.map((a) => a.label).join("/")}: ${v.error}${v.available ? ` (present here: ${v.available.join(", ")})` : ""}`);
+        }
+        if (errs.length) {
+          // Feed the failures back once so it can self-correct, then give up.
           if (hop < MAX_HOPS - 1) {
-            messages.push({ role: "user", content: `Your answer failed validation: ${v.error}${v.available ? ` (present here: ${v.available.join(", ")})` : ""}. Fix the ancestors and reply again.` });
+            messages.push({ role: "user", content: `Validation failed:\n- ${errs.join("\n- ")}\nFix the ancestors and reply again with the full {"operations":[…]} object.` });
             continue;
           }
-          return fail(`validation failed: ${v.error}`);
+          return fail(`validation failed: ${errs.join("; ")}`);
         }
-        console.log(`${tag} ✓ ${parsed.op.toUpperCase()} ${parsed.actSlug} ${parsed.ancestors.map((a) => a.label).join("/")} ${parsed.confirmed ? "confirmed" : "unconfirmed"} (${hop + 1} hops, ${secs()}s)`);
-        return {
+        console.log(`${tag} ✓ ${ops.length} op(s): ${ops.map((o) => `${o.op!.toUpperCase()} ${o.ancestors!.map((a) => a.label).join("/")}${o.newAncestors?.length ? "→" + o.newAncestors.map((a) => a.label).join("/") : ""}`).join(" | ")} (${hop + 1} hops, ${secs()}s)`);
+        // The bill's inserted text rides with the whole unit; each op finds its own
+        // leaf by ancestor path at apply time (relabel/repeal/amend ignore inserts).
+        return ops.map<LocatedOp>((o) => ({
           clause: unit.clause,
-          op: parsed.op,
-          actSlug: parsed.actSlug,
-          ancestors: parsed.ancestors,
-          confirmed: parsed.confirmed === true,
-          note: parsed.note ?? "",
+          op: o.op!,
+          actSlug: o.actSlug!,
+          ancestors: o.ancestors!,
+          newAncestors: o.newAncestors,
+          confirmed: o.confirmed === true,
+          note: o.note ?? "",
           instruction: unit.instructionText,
           inserts: unit.inserts,
-        };
+        }));
       }
 
       // Execute tool calls (each may lazily load an Act); log each call + a short
@@ -293,7 +324,7 @@ export async function locateAmendments(
   // Results are stored BY INPUT INDEX, not completion order, so the amendments
   // stay in document order (the units are extracted in document order) regardless
   // of which AI call finishes first.
-  const results: (LocatedOp | LocateFailure)[] = new Array(units.length);
+  const results: (LocatedOp[] | LocateFailure)[] = new Array(units.length);
   let i = 0;
   const worker = async () => {
     while (i < units.length) {
@@ -303,8 +334,10 @@ export async function locateAmendments(
   };
   console.log(`[locator] locating ${units.length} amendment(s), concurrency ${Math.min(CONCURRENCY, units.length)}…`);
   await Promise.all(Array.from({ length: Math.min(CONCURRENCY, units.length) }, worker));
-  const located = results.filter((r): r is LocatedOp => !!r && "op" in r);
-  const failures = results.filter((r): r is LocateFailure => !!r && !("op" in r));
-  console.log(`[locator] done: ${located.length}/${units.length} located, ${failures.length} failed${budget?.reason ? ` (incomplete: ${budget.reason})` : ""}`);
+  // Each located unit yields one OR MORE ops (multi-op decomposition); flatten them
+  // in document order. A unit that failed yields a single LocateFailure.
+  const located = results.flatMap((r) => (Array.isArray(r) ? r : []));
+  const failures = results.filter((r): r is LocateFailure => !!r && !Array.isArray(r));
+  console.log(`[locator] done: ${located.length} op(s) from ${units.length - failures.length}/${units.length} unit(s), ${failures.length} failed${budget?.reason ? ` (incomplete: ${budget.reason})` : ""}`);
   return { located, failures, incomplete: budget?.reason != null };
 }

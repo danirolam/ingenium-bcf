@@ -225,7 +225,7 @@ export interface BillAmendmentOp {
   /** Stable approval identity, "<actSlug>#<opIndex>" — matches the approvals API. */
   key: string;
   clause?: string;
-  op: "add" | "replace" | "repeal" | "amend";
+  op: "add" | "replace" | "repeal" | "amend" | "relabel";
   /** Structured address of the target — the source of truth for location. For an
    *  add it is the new provision's full path (incl. its bill-given leaf label). */
   ancestors: { kind: string; label: string }[];

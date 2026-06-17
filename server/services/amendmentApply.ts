@@ -12,8 +12,10 @@ import type { PositionStep, Provision } from "./amendmentEngine.js";
 
 export interface ApplyOp {
   clause: string;
-  op: "add" | "replace" | "amend" | "repeal";
+  op: "add" | "replace" | "amend" | "repeal" | "relabel";
   ancestors: PositionStep[];
+  /** relabel: the provision's NEW path (e.g. §101 → §101(1)). */
+  newAncestors?: PositionStep[];
   instruction: string;
   confirmed: boolean;
   inserts: ActNode[]; // bill-parsed content for add/replace
@@ -107,6 +109,48 @@ export function applyOperations(
       sortIn(arr, ins);
       base.located = true;
       base.producedKeys = ins.flatMap((n) => textIds(n)).map(keyOf);
+    } else if (op.op === "relabel") {
+      // Move a provision to a new path (§101 → §101(1), or §30 → §30.1). Two shapes:
+      // NESTING — the new path extends the old one (the section's own text becomes
+      // its first child, and the section becomes a heading-only container) — and a
+      // SAME-LEVEL relabel (just change the number and re-sort among siblings).
+      const hit = locate(roots, op.ancestors);
+      const newLeaf = op.newAncestors?.[op.newAncestors.length - 1];
+      if (!hit || !newLeaf) { applied.push(base); continue; }
+      const src = hit.node;
+      const newParentAnc = op.newAncestors!.slice(0, -1);
+      const nestingIntoSelf =
+        newParentAnc.length === op.ancestors.length &&
+        newParentAnc.every((s, i) => normSeg(s.label) === normSeg(op.ancestors[i].label));
+      // Store `num` the way the Act does so the composed label reads "101(1)" not
+      // "1011": section/definition labels are bare; bracketed kinds (subsection,
+      // paragraph, …) wrap in parens (the AI passes the bare "1"/"a").
+      const asNum = (kind: string, label: string) =>
+        kind === "section" || kind === "definition" ? label : `(${label.replace(/[()]/g, "")})`;
+      if (nestingIntoSelf) {
+        const child: ActNode = {
+          id: `ins:${serial++}`, num: asNum(newLeaf.kind, newLeaf.label), kind: newLeaf.kind,
+          text: src.text ?? "", marginalNote: null, heading: null, children: [],
+        };
+        src.text = ""; // the section is now a pure container; its heading stays on it
+        src.children = [child, ...(src.children ?? [])];
+        base.located = true;
+        base.producedKeys = [keyOf(src.id), keyOf(child.id)];
+      } else {
+        // Detach, relabel the leaf, and re-home under the new parent (or roots).
+        hit.siblings.splice(hit.index, 1);
+        src.num = asNum(newLeaf.kind, newLeaf.label); src.kind = newLeaf.kind;
+        let arr: ActNode[];
+        if (!newParentAnc.length) arr = roots;
+        else {
+          const p = locate(roots, newParentAnc);
+          if (!p) { applied.push(base); continue; }
+          arr = p.node.children ?? (p.node.children = []);
+        }
+        sortIn(arr, [src]);
+        base.located = true;
+        base.producedKeys = textIds(src).map(keyOf);
+      }
     } else {
       const hit = locate(roots, op.ancestors);
       if (!hit) { applied.push(base); continue; }

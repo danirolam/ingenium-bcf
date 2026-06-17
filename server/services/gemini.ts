@@ -19,7 +19,8 @@ function getModel() {
     const genAI = new GoogleGenerativeAI(key);
     return genAI.getGenerativeModel({
       model: MODEL,
-      generationConfig: { responseMimeType: "application/json" },
+      // temperature 0: deterministic structured extraction, like every other call.
+      generationConfig: { responseMimeType: "application/json", temperature: 0 },
     });
   } catch {
     return null;
@@ -188,7 +189,8 @@ ${clauseText}`;
 
   try {
     const genAI = new GoogleGenerativeAI(key);
-    const model = genAI.getGenerativeModel({ model: MODEL, tools });
+    // temperature 0: deterministic tool-driven interpretation.
+    const model = genAI.getGenerativeModel({ model: MODEL, tools, generationConfig: { temperature: 0 } });
     const chat = model.startChat();
 
     let result = await chat.sendMessage(prompt);

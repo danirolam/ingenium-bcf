@@ -35,6 +35,7 @@ const OP_LABEL: Record<ApprovedOpSummary["op"], string> = {
   replace: "Replace",
   repeal: "Repeal",
   amend: "Amend",
+  relabel: "Relabel",
 };
 
 type ScanStatus = "queued" | "scoring" | "scored" | "failed";
