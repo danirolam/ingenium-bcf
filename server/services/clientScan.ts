@@ -13,6 +13,7 @@ import { FILES, readAll } from "./jsonStore.js";
 import {
   CHUNK_TOKENS,
   SCAN_BANDS,
+  assembleOpText,
   buildClientBlock,
   chunkChanges,
   coverageNote,
@@ -124,18 +125,21 @@ export async function loadApprovedChanges(
     const ops: ApprovedActChange["ops"] = [];
     for (const op of delta.operations ?? []) {
       if (!approved.has(op.key)) continue;
-      // Only the FIRST produced row supplies before/after text. Multi-row ops
-      // stay readable regardless: the instruction describes the whole change
-      // and op.newText backs the "after" side when the row is missing.
-      const rowIdx = op.producedRowIndices?.[0];
-      const row =
-        typeof rowIdx === "number" && rowIdx >= 0 && rowIdx < (delta.rows?.length ?? 0)
-          ? delta.rows[rowIdx]
+      // Assemble the COMPLETE before/after text from EVERY row the op produced —
+      // not just the first. A structural add (a whole new Division with its
+      // sections, subsections and paragraphs) produces many rows; sending only
+      // the heading made the brief AI report it "only got the anchor + heading"
+      // and refuse to assess impact. (See assembleOpText.)
+      const beforeText = assembleOpText(delta.rows, op.producedRowIndices, "before") || undefined;
+      const afterText = assembleOpText(delta.rows, op.producedRowIndices, "after") || op.newText || undefined;
+      // A quick heading for the op summary line (the full structure is in afterText).
+      const firstIdx = op.producedRowIndices?.[0];
+      const firstRow =
+        typeof firstIdx === "number" && firstIdx >= 0 && firstIdx < (delta.rows?.length ?? 0)
+          ? delta.rows[firstIdx]
           : undefined;
-      const beforeText = row?.before?.text;
-      const afterText = row?.after?.text ?? op.newText ?? undefined;
       const marginalNote =
-        row?.after?.marginalNote ?? row?.before?.marginalNote ?? op.newMarginalNote ?? null;
+        firstRow?.after?.marginalNote ?? firstRow?.before?.marginalNote ?? op.newMarginalNote ?? null;
       ops.push({
         key: op.key,
         op: op.op,

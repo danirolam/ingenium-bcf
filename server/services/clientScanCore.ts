@@ -32,6 +32,46 @@ export interface ApprovedActChange {
   }[];
 }
 
+/** Minimal diff-row shape (avoids importing the amendment engine into core). */
+interface DiffProvisionLite {
+  label?: string | null;
+  marginalNote?: string | null;
+  text?: string | null;
+}
+interface DiffRowLite {
+  before?: DiffProvisionLite | null;
+  after?: DiffProvisionLite | null;
+}
+
+/**
+ * Assemble the FULL text of an operation from EVERY row it produced, in document
+ * order, each line prefixed by its provision label + heading. A structural add (a
+ * whole new Division/section with subsections and paragraphs) produces many rows;
+ * sending only the first — the heading — is what made stage-4 briefs report that
+ * "only the anchor point and division heading were disclosed". `side` selects the
+ * amended/added text ("after") or the text being replaced/repealed ("before").
+ */
+export function assembleOpText(
+  rows: DiffRowLite[] | undefined,
+  producedRowIndices: number[] | undefined,
+  side: "before" | "after",
+): string {
+  if (!rows || !producedRowIndices) return "";
+  const lines: string[] = [];
+  for (const i of producedRowIndices) {
+    const p = side === "after" ? rows[i]?.after : rows[i]?.before;
+    if (!p) continue;
+    const label = (p.label ?? "").trim();
+    const note = (p.marginalNote ?? "").trim();
+    const text = (p.text ?? "").trim();
+    // label, then the heading/marginal note (when it isn't already the text),
+    // then the operative text: "177.01(2) Wage rate The employer must pay…".
+    const composed = [label, note && note !== text ? note : "", text].filter(Boolean).join(" ").trim();
+    if (composed) lines.push(composed);
+  }
+  return lines.join("\n");
+}
+
 /**
  * One row of the scan-ready bill list (bills with ≥1 approved op).
  * Wire type — mirrored in src/lib/clientScan.ts; keep in sync.
