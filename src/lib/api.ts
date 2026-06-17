@@ -22,6 +22,20 @@ async function j<T>(url: string, init?: RequestInit): Promise<T> {
 
 export type EmailResult = { sent: boolean; simulated: boolean; info?: string };
 
+export type ProvisionDeltaResult = {
+  deltas: ProvisionDelta[];
+  errors: string[];
+  failures?: AmendmentFailure[];
+  /** The server logs from this run, verbatim, for the Inspect panel. */
+  logs?: string[];
+  cached?: boolean;
+  computedAt?: string;
+  aiIncomplete?: boolean;
+  aiIncompleteReason?: "rate-limit" | "ai-error" | null;
+  /** How many times the AI was rate-limited and auto-retried this run. */
+  rateLimited?: number;
+};
+
 export const api = {
   bills: {
     list: (signal?: AbortSignal) => j<Bill[]>("/api/bills", { signal }),
@@ -45,22 +59,46 @@ export const api = {
     // Grounded provision-level delta for registered Acts (AI-interpreted,
     // verified against the structured Act). Pass refresh to re-run the AI.
     provisionDelta: (id: string, refresh = false, signal?: AbortSignal) =>
-      j<{
-        deltas: ProvisionDelta[];
-        errors: string[];
-        failures?: AmendmentFailure[];
-        /** The server logs from this run, verbatim, for the Inspect panel. */
-        logs?: string[];
-        cached?: boolean;
-        computedAt?: string;
-        aiIncomplete?: boolean;
-        aiIncompleteReason?: "rate-limit" | "ai-error" | null;
-        /** How many times the AI was rate-limited and auto-retried this run. */
-        rateLimited?: number;
-      }>(
+      j<ProvisionDeltaResult>(
         `/api/bills/${id}/provision-delta${refresh ? "?refresh=1" : ""}`,
         { method: "POST", signal },
       ),
+    // Streaming recompute: the server emits one NDJSON {type:"log"} per server log
+    // line as the AI works (so the Inspect panel fills live), then a final
+    // {type:"result"}. onLog is called for each line as it arrives.
+    provisionDeltaStream: async (
+      id: string,
+      onLog: (line: string) => void,
+      signal?: AbortSignal,
+    ): Promise<ProvisionDeltaResult> => {
+      const res = await fetch(`/api/bills/${id}/provision-delta?refresh=1&stream=1`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        signal,
+      });
+      if (!res.ok || !res.body) throw new Error(`${res.status} ${res.statusText}`);
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = "";
+      let result: ProvisionDeltaResult | null = null;
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        let nl: number;
+        while ((nl = buf.indexOf("\n")) >= 0) {
+          const line = buf.slice(0, nl).trim();
+          buf = buf.slice(nl + 1);
+          if (!line) continue;
+          let msg: { type?: string; line?: string; data?: ProvisionDeltaResult };
+          try { msg = JSON.parse(line); } catch { continue; }
+          if (msg.type === "log" && typeof msg.line === "string") onLog(msg.line);
+          else if (msg.type === "result" && msg.data) result = msg.data;
+        }
+      }
+      if (!result) throw new Error("stream ended without a result");
+      return result;
+    },
     // Per-amendment approvals (the phase-2 gate). Keys are "<actSlug>#<opIndex>".
     approvals: {
       get: (id: string, signal?: AbortSignal) =>

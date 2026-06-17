@@ -1,5 +1,205 @@
 [
   {
+    "id": "lv-bill-13589584-export-and-import-permits-act",
+    "baseLawId": "export-and-import-permits-act",
+    "baseLawTitle": "Export and Import Permits Act",
+    "sourceBillId": "bill-13589584",
+    "sourceBillNumber": "C-233",
+    "sourceBillTitle": "An Act to amend the Export and Import Permits Act",
+    "sourceBillStatus": "Bill defeated",
+    "legislativeMomentum": "early",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "1 — Arms, ammunition, implements or munitions of war\n1 Section 2 of the Export and Import Permits Act is amended by adding the following after subsection (1): Arms, ammunition, implements or munitions of war (1.01) For the purposes of this Act, the expression “arms, ammunition, implements or munitions of war” includes any parts, components or technology necessary for the assembly or use, in whole or in part, of arms, ammunition, implements or munitions of war.\n\n9 — Expiration of permits issued before assent\nExpiration of permits issued before assent 9 (1) Any export or brokering permit issued before the day on which this Act receives royal assent expires 180 days after that day. Deemed new application (2) If an export or brokering permit in respect of arms, ammunition, implements and munitions of war expires under subsection (1) before they are exported, a new application for the permit is deemed to be submitted. Expedited basis (3) The Minister designated for the purposes of the Export and Import Permits Act must review the deemed application in accordance with the Export and Import Permits Act as amended by this Act on an expedited basis.\n\n10 — Applications for export or brokering permits\nApplications for export or brokering permits 10 Applications for export or brokering permits made before the day on which this Act receives royal assent but for which permits have not been issued or denied are to be reviewed in accordance with the Export and Import Permits Act as amended by this Act.\n\n11 — Exports under GEP-47\nExports under GEP-47 11 Despite subsection 7(1.2) of the Export and Import Permits Act , the General Export Permit No. 47 — Export of Arms Trade Treaty Items to the United States is deemed to be valid for 180 days after the day on which this Act receives royal assent.",
+    "affectedSections": [
+      "1",
+      "9",
+      "10",
+      "11"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-233 introduces 4 clauses that target the Export and Import Permits Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-233 introduces 4 clauses that target the Export and Import Permits Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-06-16T23:46:21.983Z"
+  },
+  {
+    "id": "lv-bill-13632066-canada-labour-code",
+    "baseLawId": "canada-labour-code",
+    "baseLawTitle": "Canada Labour Code",
+    "sourceBillId": "bill-13632066",
+    "sourceBillNumber": "C-250",
+    "sourceBillTitle": "Flight Attendants’ Remuneration Act",
+    "sourceBillStatus": "Outside the Order of Precedence",
+    "legislativeMomentum": "early",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "2 — Calculation of hours of work\n2 The Canada Labour Code is amended by adding the following after section 177: DIVISION I.01 Flight Attendants Calculation of hours of work 177.01 (1) For the purposes of section 169, in calculating the time worked in a day, a week or a pay period, as the case may be, for which an employee who is a flight attendant is to be paid, the employer must include the time that the employee (a) spends carrying out all pre-flight and post-flight duties relating to aircraft security and passenger service, including assisting with embarking and disembarking and pre-flight cabin and passenger safety checks; (b) spends completing mandatory training programs; and (c) is in the work place , within the meaning of section 122, at the call of the employer and at the disposal of the employer, including during a flight delay, whether or not the delay is within the employer’s control. Wage rate (2) An employer must pay to each employee who is a flight attendant a wage at a rate not less than the employee’s regular rate of wages for the work described in subsection (1).",
+    "affectedSections": [
+      "2"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-250 introduces 1 clause that target the Canada Labour Code. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-250 introduces 1 clause that target the Canada Labour Code. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-06-16T23:43:49.184Z"
+  },
+  {
+    "id": "lv-bill-13632066-unregistered:flight-attendants-remuneration-act",
+    "baseLawId": "unregistered:flight-attendants-remuneration-act",
+    "baseLawTitle": "Flight Attendants' Remuneration Act",
+    "sourceBillId": "bill-13632066",
+    "sourceBillNumber": "C-250",
+    "sourceBillTitle": "Flight Attendants’ Remuneration Act",
+    "sourceBillStatus": "Outside the Order of Precedence",
+    "legislativeMomentum": "early",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "1 — Short title\nShort title 1 This Act may be cited as the Flight Attendants' Remuneration Act .",
+    "affectedSections": [
+      "1"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-250 introduces 1 clause that target the Flight Attendants' Remuneration Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-250 introduces 1 clause that target the Flight Attendants' Remuneration Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-06-16T23:43:49.178Z"
+  },
+  {
+    "id": "lv-bill-13569694-special-economic-measures-act",
+    "baseLawId": "special-economic-measures-act",
+    "baseLawTitle": "Special Economic Measures Act",
+    "sourceBillId": "bill-13569694",
+    "sourceBillNumber": "C-251",
+    "sourceBillTitle": "An Act to amend the Customs Act and the Customs Tariff (forced labour and child labour)",
+    "sourceBillStatus": "Outside the Order of Precedence",
+    "legislativeMomentum": "early",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "3 — Definitions\n3 The Act is amended by adding the following after section 136: Definitions 136.1 (1) The following definitions apply in this section and in section 136.2. child labour has the same meaning as in section 2 of the Fighting Against Forced Labour and Child Labour in Supply Chains Act . ( travail des enfants ) entity has the same meaning as in section 2 of the Special Economic Measures Act . ( entité ) forced labour has the same meaning as in section 2 of the Fighting Against Forced Labour and Child Labour in Supply Chains Act . ( travail forcé ) Prohibited imports — presumption (2) For the purposes of section 136, goods that are mined, manufactured or produced wholly or in part in a country or area designated as a subject of concern under section 136.2 or by an entity listed under subsection 136.3(1) are deemed to be goods of tariff item No. 9897.00.00 under the description of goods mined, manufactured or produced wholly or in part by forced labour or child labour. Rebuttable presumption (3) The presumption established by subsection (2) is rebutted if (a) the importer demonstrates to a customs officer that they have performed the prescribed supply chain monitoring and taken the prescribed supply management measures; (b) the importer provides the officer with any prescribed certification or information; (c) the importer demonstrates to the officer that they have exercised all due diligence, as prescribed, to ensure the goods are not goods mined, manufactured or produced in whole or in part by forced labour or child labour; and (d) the officer is satisfied that the goods are not goods of tariff item No. 9897.00.00 under the description of goods mined, manufactured or produced wholly or in part by forced labour or child labour.",
+    "affectedSections": [
+      "3"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-251 introduces 1 clause that target the Special Economic Measures Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-251 introduces 1 clause that target the Special Economic Measures Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-06-16T23:05:15.556Z"
+  },
+  {
+    "id": "lv-bill-13569694-fighting-against-forced-labour-and-child-labour-in-supply-chains-act",
+    "baseLawId": "fighting-against-forced-labour-and-child-labour-in-supply-chains-act",
+    "baseLawTitle": "Fighting Against Forced Labour and Child Labour in Supply Chains Act",
+    "sourceBillId": "bill-13569694",
+    "sourceBillNumber": "C-251",
+    "sourceBillTitle": "An Act to amend the Customs Act and the Customs Tariff (forced labour and child labour)",
+    "sourceBillStatus": "Outside the Order of Precedence",
+    "legislativeMomentum": "early",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "3 — Definitions\n3 The Act is amended by adding the following after section 136: Definitions 136.1 (1) The following definitions apply in this section and in section 136.2. child labour has the same meaning as in section 2 of the Fighting Against Forced Labour and Child Labour in Supply Chains Act . ( travail des enfants ) entity has the same meaning as in section 2 of the Special Economic Measures Act . ( entité ) forced labour has the same meaning as in section 2 of the Fighting Against Forced Labour and Child Labour in Supply Chains Act . ( travail forcé ) Prohibited imports — presumption (2) For the purposes of section 136, goods that are mined, manufactured or produced wholly or in part in a country or area designated as a subject of concern under section 136.2 or by an entity listed under subsection 136.3(1) are deemed to be goods of tariff item No. 9897.00.00 under the description of goods mined, manufactured or produced wholly or in part by forced labour or child labour. Rebuttable presumption (3) The presumption established by subsection (2) is rebutted if (a) the importer demonstrates to a customs officer that they have performed the prescribed supply chain monitoring and taken the prescribed supply management measures; (b) the importer provides the officer with any prescribed certification or information; (c) the importer demonstrates to the officer that they have exercised all due diligence, as prescribed, to ensure the goods are not goods mined, manufactured or produced in whole or in part by forced labour or child labour; and (d) the officer is satisfied that the goods are not goods of tariff item No. 9897.00.00 under the description of goods mined, manufactured or produced wholly or in part by forced labour or child labour.",
+    "affectedSections": [
+      "3"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-251 introduces 1 clause that target the Fighting Against Forced Labour and Child Labour in Supply Chains Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-251 introduces 1 clause that target the Fighting Against Forced Labour and Child Labour in Supply Chains Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-06-16T23:05:15.551Z"
+  },
+  {
+    "id": "lv-bill-13569694-customs-tariff",
+    "baseLawId": "customs-tariff",
+    "baseLawTitle": "Customs Tariff",
+    "sourceBillId": "bill-13569694",
+    "sourceBillNumber": "C-251",
+    "sourceBillTitle": "An Act to amend the Customs Act and the Customs Tariff (forced labour and child labour)",
+    "sourceBillStatus": "Outside the Order of Precedence",
+    "legislativeMomentum": "early",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "1 — Designated country or area or listed entity\n1 Section 101 of the Customs Act is renumbered as subsection 101(1) and is amended by adding the following: Designated country or area or listed entity (2) In respect of goods referred to in subsection 136.1(2) of the Customs Tariff , the officer shall detain the goods until the officer is satisfied that the goods are not goods the importation of which is prohibited by section 136 of the Customs Tariff .\n\n2\n2 Subsection 132(1) of the Customs Tariff is amended by adding the following after paragraph (m): (m.1) for the purposes of section 136.1, regulating (i) the supply chain tracing to be performed and supply management measures to be taken, (ii) the procedure and time limits for the certification required, (iii) the diligence required of importers, and (iv) the information to be provided, the time limits for providing it and the manner in which it is to be provided;",
+    "affectedSections": [
+      "1",
+      "2"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-251 introduces 2 clauses that target the Customs Tariff. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-251 introduces 2 clauses that target the Customs Tariff. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-06-16T23:05:15.542Z"
+  },
+  {
+    "id": "lv-bill-13569694-customs-act",
+    "baseLawId": "customs-act",
+    "baseLawTitle": "Customs Act",
+    "sourceBillId": "bill-13569694",
+    "sourceBillNumber": "C-251",
+    "sourceBillTitle": "An Act to amend the Customs Act and the Customs Tariff (forced labour and child labour)",
+    "sourceBillStatus": "Outside the Order of Precedence",
+    "legislativeMomentum": "early",
+    "versionStatus": "proposed_future",
+    "humanApproved": false,
+    "oldText": "",
+    "updatedText": "1 — Designated country or area or listed entity\n1 Section 101 of the Customs Act is renumbered as subsection 101(1) and is amended by adding the following: Designated country or area or listed entity (2) In respect of goods referred to in subsection 136.1(2) of the Customs Tariff , the officer shall detain the goods until the officer is satisfied that the goods are not goods the importation of which is prohibited by section 136 of the Customs Tariff .",
+    "affectedSections": [
+      "1"
+    ],
+    "changeTypes": [
+      "add"
+    ],
+    "deltaSummary": "Bill C-251 introduces 1 clause that target the Customs Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "detailedDelta": "Bill C-251 introduces 1 clause that target the Customs Act. The current consolidated text of this Act is not yet ingested into Ingenium, so the diff below is one-sided — it shows only the proposed amending text.",
+    "effectiveDate": null,
+    "comingIntoForceText": null,
+    "confidence": 0.4,
+    "humanReviewRequired": true,
+    "humanReviewReason": "Current consolidated text for this Act is not yet ingested. Add an entry to data/laws/registry.json and re-run the law retrieval script to enable a full diff.",
+    "createdAt": "2026-06-16T23:05:15.536Z"
+  },
+  {
     "id": "lv-bill-13608745-international-transfer-of-offenders-act",
     "baseLawId": "international-transfer-of-offenders-act",
     "baseLawTitle": "International Transfer of Offenders Act",

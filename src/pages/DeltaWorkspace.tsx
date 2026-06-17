@@ -39,6 +39,17 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
         <div className="dr-topbar-id">
           <span className="dr-topbar-num tnum">{delta.bill?.billNumber ?? "Bill"}</span>
           <span className="dr-topbar-title">{delta.bill?.title ?? "Legal delta"}</span>
+          {delta.bill?.sourceUrl && (
+            <a
+              className="dr-topbar-src"
+              href={delta.bill.sourceUrl}
+              target="_blank"
+              rel="noreferrer"
+              title="Official bill text on parl.ca"
+            >
+              parl.ca ↗
+            </a>
+          )}
         </div>
         <div className="dr-topbar-actions">
           {delta.rateLimited > 0 && (
@@ -57,8 +68,8 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
           <button
             className="btn ghost sm"
             onClick={() => setInspectOpen(true)}
-            disabled={delta.logs.length === 0}
-            title="See the AI's server logs for this run"
+            disabled={!delta.refreshing && delta.logs.length === 0}
+            title="Watch the AI's locating steps stream in (or review the last run)"
           >
             Inspect
           </button>
@@ -102,7 +113,9 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
         />
       )}
 
-      {inspectOpen && <InspectPanel logs={delta.logs} onClose={() => setInspectOpen(false)} />}
+      {inspectOpen && (
+        <InspectPanel logs={delta.logs} streaming={delta.refreshing} onClose={() => setInspectOpen(false)} />
+      )}
     </div>
   );
 }
