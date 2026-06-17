@@ -40,7 +40,18 @@ export function Overview({ nav }: { nav: Nav }) {
   }, []);
 
   const loading = bills === null;
-  const b = bills ?? [];
+  const all = bills ?? [];
+
+  // The workspace is scoped to the current parliamentary session, so every
+  // count below describes the same set of bills (no all-session totals).
+  const rank = (s: string) => {
+    const [p, n] = s.split("-").map(Number);
+    return (p || 0) * 100 + (n || 0);
+  };
+  const session = [
+    ...new Set(all.map((x) => x.session).filter(Boolean) as string[]),
+  ].sort((a, c) => rank(a) - rank(c)).at(-1);
+  const b = session ? all.filter((x) => x.session === session) : all;
 
   const isActive = (x: Bill) =>
     x.legislativeMomentum === "active" || x.legislativeMomentum === "advanced";
@@ -114,10 +125,10 @@ export function Overview({ nav }: { nav: Nav }) {
       <div className="body ov-body">
         <section className="ov-intro">
           <h1 className="ov-intro-title">
-            Turn any federal bill into client-ready advice.
+            Turn any Canadian bill into client-ready advice.
           </h1>
           <p className="ov-intro-sub">
-            Track all {fmt(total)} federal bills, see exactly what each one
+            Track every active Canadian bill, see exactly what each one
             changes in law, match it to your clients, and produce the
             counsel-approved memo — in the four steps below.
           </p>

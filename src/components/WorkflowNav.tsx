@@ -152,7 +152,7 @@ export function WorkflowNav({
                 </button>
               </div>
               <p className="shell-help-lead">
-                Ingenium turns a federal bill into a client-ready memo in four
+                Ingenium turns a Canadian bill into a client-ready memo in four
                 stages. Click any stage to jump to it.
               </p>
               <ol className="shell-help-steps">

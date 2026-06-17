@@ -29,9 +29,9 @@ export const WORKFLOW_STEPS: WorkflowStep[] = [
     id: "monitor",
     num: "01",
     label: "Monitor",
-    purpose: "Track every federal bill",
+    purpose: "Track every Canadian bill",
     detail:
-      "The starting point. Browse every federal bill the firm is tracking, filter by practice group and momentum, and open any bill to read its full path through Parliament.",
+      "The starting point. Browse every Canadian bill the firm is tracking, filter by practice group and momentum, and open any bill to read its full path through Parliament.",
     produces: "Hands a chosen bill to the legal-delta review.",
     icon: faBinoculars,
   },

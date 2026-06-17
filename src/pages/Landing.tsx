@@ -12,6 +12,43 @@ import {
 import { api } from "../lib/api";
 import type { Bill } from "../types";
 
+// Rank a "<parliament>-<session>" id so the newest session sorts last.
+const sessionRank = (s: string) => {
+  const [p, n] = s.split("-").map(Number);
+  return (p || 0) * 100 + (n || 0);
+};
+const currentSession = (bills: Bill[]) =>
+  [...new Set(bills.map((b) => b.session).filter(Boolean) as string[])].sort(
+    (a, b) => sessionRank(a) - sessionRank(b),
+  ).at(-1);
+// Bills that belong to the current parliamentary session — the workspace is
+// scoped to it, so every headline number describes the same set of bills.
+const sessionBills = (bills: Bill[]) => {
+  const cur = currentSession(bills);
+  return cur ? bills.filter((b) => b.session === cur) : bills;
+};
+// "45-1" → "45th Parliament · 1st session".
+const ordinal = (n: number) => {
+  const s = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+};
+const sessionLabel = (bills: Bill[]) => {
+  const cur = currentSession(bills);
+  if (!cur) return "current session";
+  const [p, n] = cur.split("-").map(Number);
+  return `${ordinal(p)} Parliament · ${ordinal(n)} session`;
+};
+// Active bills: in the current session and moved past first reading (not "early").
+const activeBillCount = (bills: Bill[]) =>
+  sessionBills(bills).filter(
+    (b) => b.legislativeMomentum && b.legislativeMomentum !== "early",
+  ).length;
+// Bills whose full statutory text is parsed — the set the delta engine can act
+// on. Derived from the list-safe textStage field (the list API omits clauses).
+const fullTextBillsList = (bills: Bill[]) =>
+  sessionBills(bills).filter((b) => b.textStage?.trim());
+const fullTextCount = (bills: Bill[]) => fullTextBillsList(bills).length;
 
 function AnimatedCounter({ value }: { value: string }) {
   const [shown, setShown] = useState("0");
@@ -140,14 +177,11 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
     api.bills.list().then(setBills).catch(() => {});
   }, []);
 
-  const sessions = new Set(bills.map((b) => b.session).filter(Boolean)).size;
-  const withText = bills.filter((b) => b.clauses?.some((c) => c.text?.trim())).length;
-  const practices = new Set(bills.flatMap((b) => b.practiceAreas ?? [])).size;
+  const active = activeBillCount(bills);
+  const withText = fullTextCount(bills);
   const metrics = [
-    { label: "Bills tracked", value: String(bills.length), desc: `across ${sessions || "—"} sessions of Parliament` },
-    { label: "With full text", value: String(withText), desc: "parsed clause by clause" },
-    { label: "Practice groups", value: String(practices), desc: "mapped automatically" },
-    { label: "Sessions covered", value: String(sessions), desc: "of Parliament, cross-referenced" },
+    { label: "Active bills", value: String(active), desc: "moved past first reading" },
+    { label: "With full text", value: String(withText), desc: "parsed clause by clause, ready for delta" },
   ];
 
   const go = (id: string) => {
@@ -246,7 +280,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
                 className="block text-5xl md:text-[76px] tracking-[-0.02em] stagger-reveal"
                 style={{ animationDelay: "60ms" }}
               >
-                Every bill,
+                Every Canadian bill,
               </span>
               <span
                 className="block text-5xl md:text-[76px] tracking-[-0.02em] stagger-reveal"
@@ -285,7 +319,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
           <div className="mt-6 md:mt-10" style={{ perspective: "1200px" }}>
             <div className="dashboard-image" style={{ animationDelay: "420ms" }}>
               <div ref={mockRef} style={{ transform: "rotateX(5deg)", transformStyle: "preserve-3d" }}>
-                <DashboardMock bills={bills} sessions={sessions} />
+                <DashboardMock bills={bills} />
               </div>
             </div>
           </div>
@@ -296,10 +330,11 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
       <section id="impact" className="relative py-16 md:py-24 px-5 animate-on-scroll bg-black text-white">
         <div className="max-w-[1120px] w-full mx-auto">
           <h2 className="text-[32px] md:text-[48px] font-semibold tracking-[-0.02em] mb-4 text-center text-balance leading-[1.08]">
-            The whole federal docket, <span className="grad-blue">in one place.</span>
+            The whole docket, <span className="grad-blue">in one place.</span>
           </h2>
           <p className="text-[#a1a1a6] text-[15px] md:text-[17px] mb-10 text-center max-w-[620px] mx-auto leading-relaxed">
-            Tracked from the source, parsed to the clause, and tied to the clients it touches.
+            The {sessionLabel(bills)} — tracked from the source, parsed to the
+            clause, and tied to the clients it touches.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-x-16 md:gap-y-10 max-w-[820px] mx-auto">
             {metrics.map((m, i) => (
@@ -427,16 +462,19 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
   );
 }
 
-// A miniature of the command-center — the hero product shot, fed by the live docket.
-function DashboardMock({ bills, sessions }: { bills: Bill[]; sessions: number }) {
+// A miniature of the command-center — the hero product shot, fed by the live
+// docket and scoped to the current session like the rest of the workspace.
+function DashboardMock({ bills }: { bills: Bill[] }) {
   const fmt = (n: number) => n.toLocaleString("en-US");
-  const active = bills.filter((b) => b.legislativeMomentum === "active" || b.legislativeMomentum === "advanced").length;
-  const withText = bills.filter((b) => b.clauses?.some((c) => c.text?.trim()));
+  const cur = sessionBills(bills);
+  const active = activeBillCount(bills);
+  const lateStage = cur.filter((b) => b.legislativeMomentum === "advanced").length;
+  const textBills = fullTextBillsList(bills);
   const cards = [
-    { v: fmt(bills.length), l: "Bills tracked", on: true },
+    { v: fmt(cur.length), l: "Bills this session", on: true },
     { v: fmt(active), l: "Active", on: false },
-    { v: fmt(withText.length), l: "With full text", on: false },
-    { v: String(sessions), l: "Sessions", on: false },
+    { v: fmt(textBills.length), l: "With full text", on: false },
+    { v: fmt(lateStage), l: "Late stage", on: false },
   ];
   const pill = (m: string) =>
     m === "passed" || m === "in_force"
@@ -444,7 +482,7 @@ function DashboardMock({ bills, sessions }: { bills: Bill[]; sessions: number })
       : m === "active" || m === "advanced"
         ? { label: "Active", tone: "text-[#0066cc] border-[#0071e3]/30 bg-[#0071e3]/[0.08]" }
         : { label: "Tracked", tone: "text-[#a05a00] border-[#a05a00]/30 bg-[#a05a00]/[0.08]" };
-  const rows = withText.slice(0, 4); // the full-text bills are what the product acts on
+  const rows = textBills.slice(0, 4); // the full-text bills are what the product acts on
   return (
     <div className="rounded-[18px] overflow-hidden border border-black/[0.08] bg-white shadow-[0_30px_90px_-30px_rgba(0,0,0,0.35)]">
       <div className="flex items-center gap-3 h-12 px-4 bg-[#fafafa] border-b border-black/[0.06]">
@@ -466,7 +504,7 @@ function DashboardMock({ bills, sessions }: { bills: Bill[]; sessions: number })
       </div>
       <div className="p-4 bg-white">
         <div className="text-[12px] font-medium text-[#86868b] mb-3">
-          Federal docket · {fmt(bills.length)} bills · {sessions} sessions
+          {sessionLabel(bills)} · {fmt(cur.length)} bills tracked
         </div>
         <div className="grid grid-cols-4 gap-2.5 mb-3">
           {cards.map((c) => (

@@ -205,9 +205,9 @@ export function BillMonitor({ nav }: { nav: Nav }) {
         title="Bill Monitor"
         hint={{
           title: "Bill Monitor",
-          body: "Stage 1 of 4. Every federal bill the firm tracks, filterable by practice group and momentum. Open any bill to read its full path through Parliament, then send it on to legal-delta review.",
+          body: "Stage 1 of 4. Every Canadian bill the firm tracks, filterable by practice group and momentum. Open any bill to read its full path through Parliament, then send it on to legal-delta review.",
         }}
-        sub="Every federal bill, filterable by session, practice group, and momentum. Open a bill for its full record."
+        sub="Every Canadian bill, filterable by session, practice group, and momentum. Open a bill for its full record."
         actions={
           <>
             <input
