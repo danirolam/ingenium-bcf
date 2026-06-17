@@ -4,7 +4,6 @@ import {
   faArrowRight,
   faMagnifyingGlass,
   faUpload,
-  faFileCsv,
   faArrowsRotate,
 } from "@fortawesome/free-solid-svg-icons";
 import type { Nav } from "../App";
@@ -15,7 +14,6 @@ import { Tooltip } from "../components/Tooltip";
 import { SegmentedTabs } from "../components/SegmentedTabs";
 import { StatsRibbon } from "../components/StatsRibbon";
 import { api } from "../lib/api";
-import { downloadCsv } from "../lib/export";
 import { PRACTICE_AREAS } from "../lib/practiceAreas";
 import type { Bill, LegislativeMomentum } from "../types";
 
@@ -204,25 +202,6 @@ export function BillMonitor({ nav }: { nav: Nav }) {
     { value: "defeated", label: "Defeated", count: counts.defeated },
   ];
 
-  function exportCsv() {
-    downloadCsv(
-      `ingenium-bills-${new Date().toISOString().slice(0, 10)}.csv`,
-      ["Bill", "Title", "Sponsor", "Status", "Momentum", "Practice areas", "Latest activity", "Session", "Source"],
-      matchingBills.map((b) => [
-        b.billNumber,
-        b.shortTitle || b.title,
-        b.sponsor?.name ?? "",
-        b.status,
-        b.legislativeMomentum,
-        (b.practiceAreas ?? []).join("; "),
-        b.latestActivity ?? "",
-        b.session ?? "",
-        b.textSourceUrl ?? b.sourceUrl ?? "",
-      ]),
-    );
-    nav.toast(`Exported ${matchingBills.length} bills to CSV.`);
-  }
-
   return (
     <>
       <PageHeader
@@ -244,12 +223,12 @@ export function BillMonitor({ nav }: { nav: Nav }) {
             />
             <Tooltip
               placement="bottom"
-              title="Export to CSV"
-              body="Download the bills currently shown (after your filters) as a spreadsheet."
+              title="Refresh from Parliament"
+              body="Fetch the current session's bills from LEGISinfo, add any new ones (with their text) and update changed statuses. Persists to the durable store."
             >
-              <button className="btn" disabled={!bills.length} onClick={exportCsv}>
-                <FontAwesomeIcon icon={faFileCsv} aria-hidden="true" />
-                Export CSV
+              <button className="btn" disabled={refreshing} onClick={onRefresh}>
+                <FontAwesomeIcon icon={faArrowsRotate} spin={refreshing} aria-hidden="true" />
+                {refreshing ? "Refreshing…" : "Refresh"}
               </button>
             </Tooltip>
             <Tooltip
@@ -326,16 +305,6 @@ export function BillMonitor({ nav }: { nav: Nav }) {
             />
           </div>
           <div className="bm-toolbar-right">
-            <Tooltip
-              title="Refresh from Parliament"
-              body="Fetch the current session's bills from LEGISinfo, add any new ones (with their text) and update changed statuses. Persists to the durable store."
-              placement="bottom"
-            >
-              <button className="btn ghost sm" onClick={onRefresh} disabled={refreshing}>
-                <FontAwesomeIcon icon={faArrowsRotate} spin={refreshing} aria-hidden="true" />
-                {refreshing ? "Refreshing…" : "Refresh"}
-              </button>
-            </Tooltip>
             <div className="search">
               <FontAwesomeIcon icon={faMagnifyingGlass} className="search-icon" aria-hidden="true" />
               <input

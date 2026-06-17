@@ -893,10 +893,9 @@
   border-bottom: none;
 }
 .dr-srow.is-focus {
+  /* The change being scrutinised stands out by CONTRAST — surrounding context and
+     other amendments' changes are muted; the focus rows keep full colour. */
   scroll-margin-top: 64px;
-  /* The change being scrutinised: a left accent stripe ties the produced rows
-     together and lifts them above the surrounding context + dimmed changes. */
-  box-shadow: inset 3px 0 0 0 var(--accent);
 }
 /* A change produced by a DIFFERENT amendment in this window - faded back so it
    reads as context, not as part of the change under review. Stays muted; hovering
