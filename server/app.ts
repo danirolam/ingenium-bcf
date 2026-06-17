@@ -10,23 +10,25 @@ import { lawVersionsRouter } from "./routes/lawVersions.js";
 import { clientsRouter } from "./routes/clients.js";
 import { clientImpactRouter } from "./routes/clientImpact.js";
 import { seedDemo } from "./seed/seedDemo.js";
+import { overlayBillsFromBlob } from "./services/billsBlob.js";
 
-// Load .env if present (no dotenv dep — DIY, keeps deps small).
-// On Vercel there is no .env file; env vars come from the platform, so this
-// quietly no-ops.
+// Load .env / .env.local if present (no dotenv dep — DIY, keeps deps small).
+// .env.local wins for sensitive vars (the Blob token); on Vercel there are no
+// .env files (env comes from the platform), so this quietly no-ops.
 async function loadEnv() {
-  try {
-    const __dirname = path.dirname(fileURLToPath(import.meta.url));
-    const envPath = path.resolve(__dirname, "..", ".env");
-    const txt = await fs.readFile(envPath, "utf-8");
-    for (const line of txt.split(/\r?\n/)) {
-      const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/);
-      if (!m) continue;
-      const [, k, v] = m;
-      if (process.env[k] === undefined) process.env[k] = v;
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  for (const file of [".env.local", ".env"]) {
+    try {
+      const txt = await fs.readFile(path.resolve(__dirname, "..", file), "utf-8");
+      for (const line of txt.split(/\r?\n/)) {
+        const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*"?([^"]*)"?\s*$/);
+        if (!m) continue;
+        const [, k, v] = m;
+        if (v && process.env[k] === undefined) process.env[k] = v;
+      }
+    } catch {
+      /* file absent — fine */
     }
-  } catch {
-    /* no .env, fine */
   }
 }
 
@@ -38,6 +40,8 @@ async function loadEnv() {
 export async function createApp(): Promise<Express> {
   await loadEnv();
   await seedDemo();
+  // On Vercel, prefer the latest refreshed bills from Blob over the bundled snapshot.
+  await overlayBillsFromBlob();
 
   const app = express();
   app.use(cors());

@@ -49,6 +49,17 @@ export const api = {
         method: "POST",
         body: JSON.stringify(raw),
       }),
+    // Live-refresh the current session: pull LEGISinfo, add new bills (with text)
+    // and update changed ones, persisting to the store + Blob. Slow-ish (network).
+    refresh: (session = "45-1") =>
+      j<{
+        session: string;
+        added: string[];
+        updated: string[];
+        withText: string[];
+        total: number;
+        errors: string[];
+      }>(`/api/bills/refresh?session=${encodeURIComponent(session)}`, { method: "POST" }),
     extractDelta: (id: string, signal?: AbortSignal) =>
       j<{ lawVersions: LawVersion[]; errors: string[] }>(
         `/api/bills/${id}/extract-delta`,

@@ -5,6 +5,7 @@ import {
   faMagnifyingGlass,
   faUpload,
   faFileCsv,
+  faArrowsRotate,
 } from "@fortawesome/free-solid-svg-icons";
 import type { Nav } from "../App";
 import { MomentumBadge } from "../components/badges";
@@ -82,6 +83,30 @@ export function BillMonitor({ nav }: { nav: Nav }) {
     } finally {
       setBusy(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  }
+
+  const [refreshing, setRefreshing] = useState(false);
+  async function onRefresh() {
+    // Refresh fetches the CURRENT session's docket from Parliament; "all" defaults
+    // to 45-1 (the live session). New bills are added with their text, changed
+    // ones updated, and the whole snapshot persisted (+ Blob for the deployed site).
+    const target = session === "all" ? "45-1" : session;
+    setRefreshing(true);
+    nav.toast(`Refreshing ${target} from Parliament…`);
+    try {
+      const r = await api.bills.refresh(target);
+      const fresh = await api.bills.list();
+      setBills(fresh);
+      const bits = [
+        r.added.length ? `${r.added.length} new` : "",
+        r.updated.length ? `${r.updated.length} updated` : "",
+      ].filter(Boolean);
+      nav.toast(bits.length ? `Refreshed ${target}: ${bits.join(", ")}.` : `${target} already up to date.`);
+    } catch (err: any) {
+      nav.toast(`Refresh failed: ${err.message ?? err}`);
+    } finally {
+      setRefreshing(false);
     }
   }
 
@@ -301,6 +326,16 @@ export function BillMonitor({ nav }: { nav: Nav }) {
             />
           </div>
           <div className="bm-toolbar-right">
+            <Tooltip
+              title="Refresh from Parliament"
+              body="Fetch the current session's bills from LEGISinfo, add any new ones (with their text) and update changed statuses. Persists to the durable store."
+              placement="bottom"
+            >
+              <button className="btn ghost sm" onClick={onRefresh} disabled={refreshing}>
+                <FontAwesomeIcon icon={faArrowsRotate} spin={refreshing} aria-hidden="true" />
+                {refreshing ? "Refreshing…" : "Refresh"}
+              </button>
+            </Tooltip>
             <div className="search">
               <FontAwesomeIcon icon={faMagnifyingGlass} className="search-icon" aria-hidden="true" />
               <input

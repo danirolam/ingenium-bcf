@@ -30,7 +30,10 @@ import {
   readAll,
   removeById,
   upsert,
+  writeAll,
 } from "../services/jsonStore.js";
+import { refreshSession } from "../services/billRefresh.js";
+import { writeBillsBlob } from "../services/billsBlob.js";
 import {
   actsAffectedByBill,
   loadActRegistry,
@@ -67,6 +70,41 @@ function toListItem(bill: Bill) {
 billsRouter.get("/", async (_req, res) => {
   const bills = await readAll<Bill>(FILES.bills);
   res.json(bills.map(toListItem));
+});
+
+// Live refresh of the current session: pull LEGISinfo, add new bills (with a
+// best-effort full-text fetch) and update changed ones, persist to the store
+// and to Blob (durable on Vercel). Registered before "/:id" so it isn't shadowed.
+billsRouter.post("/refresh", async (req, res) => {
+  const session = String((req.query.session as string) || "45-1");
+  try {
+    const existing = await readAll<Bill>(FILES.bills);
+    const result = await refreshSession(session, existing);
+    // Persist locally (and to /tmp on Vercel) only when something changed.
+    if (result.added.length || result.updated.length) {
+      await writeAll(FILES.bills, result.bills);
+      // Durable copy to Blob so the deployed site keeps the refresh across cold
+      // starts. Best-effort: a missing token persists locally but not to Blob.
+      let blob: string | null = null;
+      try {
+        blob = await writeBillsBlob(result.bills);
+      } catch (e) {
+        result.errors.push(`Blob persist skipped: ${e instanceof Error ? e.message : String(e)}`);
+      }
+      console.log(`[bills/refresh] ${session}: +${result.added.length} new, ~${result.updated.length} updated, ${result.withText.length} with text${blob ? " (Blob ✓)" : ""}`);
+    }
+    res.json({
+      session: result.session,
+      added: result.added,
+      updated: result.updated,
+      withText: result.withText,
+      total: result.total,
+      errors: result.errors,
+    });
+  } catch (err) {
+    console.error("[bills/refresh]", err instanceof Error ? err.stack : err);
+    res.status(502).json({ error: `Refresh failed: ${err instanceof Error ? err.message : String(err)}` });
+  }
 });
 
 billsRouter.get("/:id", async (req, res) => {
