@@ -60,6 +60,12 @@ export const api = {
         total: number;
         errors: string[];
       }>(`/api/bills/refresh?session=${encodeURIComponent(session)}`, { method: "POST" }),
+    // Remove a bill from the store (testing aid for Refresh). Persists to Blob too.
+    remove: (id: string) =>
+      j<{ ok: boolean; id: string; billNumber: string; total: number }>(
+        `/api/bills/${encodeURIComponent(id)}`,
+        { method: "DELETE" },
+      ),
     extractDelta: (id: string, signal?: AbortSignal) =>
       j<{ lawVersions: LawVersion[]; errors: string[] }>(
         `/api/bills/${id}/extract-delta`,

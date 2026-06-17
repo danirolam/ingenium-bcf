@@ -307,3 +307,25 @@
   color: var(--ink-4);
   letter-spacing: -0.005em;
 }
+
+/* Per-row actions (Open Delta + Remove), right-aligned in the action cell */
+.bm-row-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+}
+/* Square, icon-only button for the row's destructive Remove action */
+.btn.sm.icon {
+  padding: 0;
+  width: 30px;
+  justify-content: center;
+}
+.btn.sm.icon.danger {
+  color: var(--ink-4);
+}
+.btn.sm.icon.danger:hover:not(:disabled) {
+  color: var(--crit);
+  border-color: var(--crit);
+  background: var(--panel);
+}

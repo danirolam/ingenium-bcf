@@ -5,6 +5,7 @@ import {
   faMagnifyingGlass,
   faUpload,
   faArrowsRotate,
+  faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import type { Nav } from "../App";
 import { MomentumBadge } from "../components/badges";
@@ -105,6 +106,27 @@ export function BillMonitor({ nav }: { nav: Nav }) {
       nav.toast(`Refresh failed: ${err.message ?? err}`);
     } finally {
       setRefreshing(false);
+    }
+  }
+
+  async function onRemove(bill: Bill) {
+    // Testing aid: drop a bill so you can watch Refresh pull it back from
+    // Parliament. Confirm first — it persists to the durable store + Blob.
+    if (
+      !window.confirm(
+        `Remove ${bill.billNumber} from the database?\n\nRefresh re-adds current-session bills from Parliament.`,
+      )
+    )
+      return;
+    setBusy(true);
+    try {
+      await api.bills.remove(bill.id);
+      setBills((bs) => bs.filter((x) => x.id !== bill.id));
+      nav.toast(`Removed ${bill.billNumber}.`);
+    } catch (err: any) {
+      nav.toast(`Remove failed: ${err.message ?? err}`);
+    } finally {
+      setBusy(false);
     }
   }
 
@@ -425,17 +447,31 @@ export function BillMonitor({ nav }: { nav: Nav }) {
                         </div>
                       </td>
                       <td className="table-action-cell">
-                        <button
-                          className="btn sm"
-                          disabled={busy}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            openDelta(b);
-                          }}
-                        >
-                          Open Delta
-                          <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
-                        </button>
+                        <div className="bm-row-actions">
+                          <button
+                            className="btn sm"
+                            disabled={busy}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openDelta(b);
+                            }}
+                          >
+                            Open Delta
+                            <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
+                          </button>
+                          <button
+                            className="btn sm icon danger"
+                            disabled={busy}
+                            title={`Remove ${b.billNumber} from the database`}
+                            aria-label={`Remove ${b.billNumber}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onRemove(b);
+                            }}
+                          >
+                            <FontAwesomeIcon icon={faTrashCan} aria-hidden="true" />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}

@@ -113,6 +113,32 @@ billsRouter.get("/:id", async (req, res) => {
   res.json(ensurePracticeAreas(bill));
 });
 
+// Remove a bill from the store (a testing aid — drop a bill, then Refresh to
+// watch it return). Persists to the store and to Blob, like /refresh, so the
+// removal sticks on the deployed site too. Registered alongside /refresh; the
+// method differs from GET /:id so order doesn't matter.
+billsRouter.delete("/:id", async (req, res) => {
+  const id = String(req.params.id);
+  try {
+    const existing = await readAll<Bill>(FILES.bills);
+    const bill = existing.find((b) => b.id === id);
+    if (!bill) return res.status(404).json({ error: "not_found" });
+    const remaining = existing.filter((b) => b.id !== id);
+    await writeAll(FILES.bills, remaining);
+    let blob: string | null = null;
+    try {
+      blob = await writeBillsBlob(remaining);
+    } catch (e) {
+      console.warn(`[bills/delete] Blob persist skipped: ${e instanceof Error ? e.message : String(e)}`);
+    }
+    console.log(`[bills/delete] removed ${bill.billNumber} (${id}), ${remaining.length} remain${blob ? " (Blob ✓)" : ""}`);
+    res.json({ ok: true, id, billNumber: bill.billNumber, total: remaining.length });
+  } catch (err) {
+    console.error("[bills/delete]", err instanceof Error ? err.stack : err);
+    res.status(500).json({ error: `Delete failed: ${err instanceof Error ? err.message : String(err)}` });
+  }
+});
+
 billsRouter.get("/:id/law-versions", async (req, res) => {
   const all = await readAll<LawVersion>(FILES.lawVersions);
   res.json(all.filter((lv) => lv.sourceBillId === req.params.id));
