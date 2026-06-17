@@ -65,14 +65,18 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
               <b>{done}</b>/{total} approved
             </span>
           )}
-          <button
-            className="btn ghost sm"
-            onClick={() => setInspectOpen(true)}
-            disabled={!delta.refreshing && delta.logs.length === 0}
-            title="Watch the AI's locating steps stream in (or review the last run)"
-          >
-            Inspect
-          </button>
+          {/* Only shown when it does something: while a recompute streams, or once
+              a run has produced logs. Hidden during the first-ever compute (no logs
+              yet, not refreshing) rather than shown disabled. */}
+          {(delta.refreshing || delta.logs.length > 0) && (
+            <button
+              className="btn ghost sm"
+              onClick={() => setInspectOpen(true)}
+              title="Watch the AI's locating steps stream in (or review the last run)"
+            >
+              Inspect
+            </button>
+          )}
           <button
             className="btn ghost sm"
             onClick={delta.recompute}
