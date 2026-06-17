@@ -128,7 +128,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
         <PageHeader
           crumbs={["Workspace", "Client Brief"]}
           title="Client Brief"
-          sub="Browse generated briefs - pick a bill, then the client whose brief to open."
+          sub="Browse generated briefs. Pick a bill, then the client whose brief to open."
         />
         <div className="body">
           <BriefPicker nav={nav} />
@@ -173,7 +173,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     try {
       const updated = await api.clientImpact.save(analysis.id);
       setAnalysis(updated);
-      nav.toast("Brief approved - client email drafted; email and download unlocked.");
+      nav.toast("Brief approved. The client email is drafted, and email and download are now unlocked.");
     } finally {
       setBusy(false);
     }
@@ -249,11 +249,11 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
       }
       if (cut === header) {
         // Even the first pair doesn't fit - don't fire an answer-less regen.
-        nav.toast("That answer is too long for one regeneration - please shorten it.");
+        nav.toast("That answer is too long for one regeneration. Please shorten it.");
         return;
       }
       composed = cut.trimEnd();
-      nav.toast("Answers exceed the feedback limit - sending the first answers that fit.");
+      nav.toast("Answers exceed the feedback limit, so only the first answers that fit will be sent.");
     }
     setRegenBusy(true);
     try {
@@ -286,8 +286,8 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
       .join("");
     const body = `
       <div class="doc-label">Privileged &amp; confidential · Counsel work product</div>
-      <h1>Client exposure brief - ${esc(client?.name ?? "Client")}</h1>
-      <p class="doc-meta">${esc(bill?.billNumber ?? "")} - ${esc(bill?.title ?? "")}${
+      <h1>Client exposure brief for ${esc(client?.name ?? "Client")}</h1>
+      <p class="doc-meta">${esc(bill?.billNumber ?? "")} · ${esc(bill?.title ?? "")}${
         affectedActs.length ? ` · affecting ${esc(affectedActs.join(", "))}` : ""
       }</p>
       <h2>Assessment</h2>
@@ -304,7 +304,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     const slug = (client?.name ?? "client").replace(/\W+/g, "-").toLowerCase();
     downloadDoc(
       `brief-${slug}-${(bill?.billNumber ?? "bill").toLowerCase()}.doc`,
-      `Client brief - ${client?.name ?? "Client"}`,
+      `Client brief for ${client?.name ?? "Client"}`,
       body,
     );
     nav.toast("Brief downloaded (opens in Word; save as PDF from there).");
@@ -328,10 +328,10 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
           "Client Brief",
           client?.name ?? "Brief",
         ]}
-        title={`Client Brief - ${client?.name ?? "…"}`}
+        title={`Client Brief for ${client?.name ?? "…"}`}
         sub={
           bill
-            ? `Brief for ${bill.billNumber} - ${bill.title}.`
+            ? `Brief for ${bill.billNumber}, ${bill.title}.`
             : undefined
         }
         actions={
@@ -575,7 +575,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
                             style={{ width: "100%", marginTop: 6 }}
                             value={reviewAnswers[i] ?? ""}
                             disabled={regenBusy}
-                            placeholder="Counsel's answer (optional) - feeds the next regeneration"
+                            placeholder="Counsel's answer that feeds the next regeneration (optional)"
                             onChange={(e) =>
                               setReviewAnswers((cur) => ({
                                 ...cur,
@@ -650,7 +650,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
             >
               <div className="kv kv-card">
                 <div className="k">Bill</div>
-                <div className="v">{bill?.billNumber} - {bill?.title}</div>
+                <div className="v">{bill?.billNumber} · {bill?.title}</div>
                 <div className="k">Status</div>
                 <div className="v">{bill?.status}</div>
                 <div className="k">Acts amended</div>

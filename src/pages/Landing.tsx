@@ -333,7 +333,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
             The whole docket, <span className="grad-blue">in one place.</span>
           </h2>
           <p className="text-[#a1a1a6] text-[15px] md:text-[17px] mb-10 text-center max-w-[620px] mx-auto leading-relaxed">
-            The {sessionLabel(bills)} - tracked from the source, parsed to the
+            The {sessionLabel(bills)}, tracked from the source, parsed to the
             clause, and tied to the clients it touches.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-x-16 md:gap-y-10 max-w-[820px] mx-auto">

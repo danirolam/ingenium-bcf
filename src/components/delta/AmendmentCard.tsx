@@ -24,7 +24,7 @@ export function AmendmentCard({
         <p className="dr-card-instruction">{op.instruction || op.note || "(no instruction text)"}</p>
         <div className="dr-card-meta">
           {warn && (
-            <span className="dr-card-warn" title="Location not verified against the Act - check the PDF">
+            <span className="dr-card-warn" title="Location not verified against the Act. Check the PDF.">
               ⚠ unverified
             </span>
           )}
@@ -43,7 +43,7 @@ export function AmendmentCard({
           className={approved ? "btn ghost sm" : "btn primary"}
           onClick={() => onApprove(!approved)}
         >
-          {approved ? "Approved - click to undo" : "Approve placement"}
+          {approved ? "Approved (click to undo)" : "Approve placement"}
         </button>
       </div>
     </div>

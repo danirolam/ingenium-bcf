@@ -32,8 +32,8 @@ export function InspectPanel({
             </div>
             <div className="insp-sub">
               {streaming
-                ? `${logs.length} step${logs.length === 1 ? "" : "s"} so far - the AI is working…`
-                : `${logs.length} line${logs.length === 1 ? "" : "s"} - every AI step, verbatim`}
+                ? `${logs.length} step${logs.length === 1 ? "" : "s"} so far, the AI is working…`
+                : `${logs.length} line${logs.length === 1 ? "" : "s"}, every AI step, verbatim`}
             </div>
           </div>
           <button className="insp-close" onClick={onClose} aria-label="Close">×</button>
@@ -42,7 +42,7 @@ export function InspectPanel({
           {logs.length === 0
             ? streaming
               ? "Waiting for the AI's first step…"
-              : "No log captured yet - hit Recompute to generate one."
+              : "No log captured yet. Hit Recompute to generate one."
             : logs.join("\n")}
         </pre>
       </aside>

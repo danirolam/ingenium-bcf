@@ -503,9 +503,9 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
       <PageHeader
         crumbs={["Workspace", "Client Scan"]}
         title="Client Scan"
-        sub="Scan counsel-approved bill changes against your client base - every selected client gets an impact brief."
+        sub="Scan counsel-approved bill changes against your client base. Every selected client gets an impact brief."
         hint={{
-          title: "Stage 3 - Client scan",
+          title: "Stage 3: Client scan",
           body: "Pick a bill whose amendments counsel approved in stage 2, select the clients to test it against, then run the scan. Each client gets its own impact brief.",
         }}
         actions={
@@ -563,7 +563,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
               )}
               {clientsLoaded && clients.length === 0 && (
                 <div className="empty-small">
-                  No clients yet - add one with “New client”.
+                  No clients yet. Add one with “New client”.
                 </div>
               )}
               {clientsLoaded &&
@@ -685,7 +685,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                 )}
                 {readyLoaded && readyBills.length === 0 && (
                   <div className="rd-empty" data-testid="ready-empty">
-                    No bills have approved changes yet - complete stage 2
+                    No bills have approved changes yet. Complete stage 2
                     (Legal delta) first.
                     <div className="cs-empty-cta">
                       <button className="btn" onClick={() => nav.go("delta")}>
@@ -775,7 +775,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                   <div className="card-title-row">
                     <FontAwesomeIcon icon={faListCheck} aria-hidden="true" />
                     <div className="card-title">
-                      Approved changes - {selectedReady.billNumber}
+                      Approved changes for {selectedReady.billNumber}
                     </div>
                   </div>
                   <span className="cs-count">
@@ -871,7 +871,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                   <div className="k">Bill</div>
                   <div className="v">
                     {selectedReady
-                      ? `${selectedReady.billNumber} - ${selectedReady.shortTitle || selectedReady.title}`
+                      ? `${selectedReady.billNumber} · ${selectedReady.shortTitle || selectedReady.title}`
                       : "Select a ready bill above."}
                   </div>
                 </div>
@@ -890,7 +890,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                   <div className="empty-small">
                     {scansLoading
                       ? "Checking for stored scans…"
-                      : "No scan yet - select clients and run a scan."}
+                      : "No scan yet. Select clients and run a scan."}
                   </div>
                 )}
                 {scanRows.length > 0 && (

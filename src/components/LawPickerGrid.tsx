@@ -33,7 +33,7 @@ export function LawPickerGrid({
   if (lawVersions.length === 0) {
     return (
       <div className="lpg-empty">
-        No approved laws yet - open a bill in the Delta Workspace and approve it.
+        No approved laws yet. Open a bill in the Delta Workspace and approve it.
       </div>
     );
   }

@@ -124,9 +124,9 @@ export function DeltaLibrary({ nav }: { nav: Nav }) {
         title="Legal delta"
         hint={{
           title: "Delta library",
-          body: "Stage 2 of 4. Every delta Ingenium has generated - the change each bill makes to existing law. Open one to review and approve it, or start a new delta from any amending bill.",
+          body: "Stage 2 of 4. Every delta Ingenium has generated shows the change a bill makes to existing law. Open one to review and approve it, or start a new delta from any amending bill.",
         }}
-        sub="Every delta you've generated - open one to review and approve, or start a new delta."
+        sub="Every delta you've generated. Open one to review and approve, or start a new delta."
         actions={
           <button
             className="btn primary"
@@ -160,7 +160,7 @@ export function DeltaLibrary({ nav }: { nav: Nav }) {
 
             {loaded && entries.length === 0 && (
               <div className="rd-empty" data-testid="deltas-empty">
-                No deltas generated yet - pick a bill and Ingenium will compute the
+                No deltas generated yet. Pick a bill and Ingenium will compute the
                 changes it makes to existing law.
                 <div className="dl-empty-cta">
                   <button

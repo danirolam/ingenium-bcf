@@ -415,7 +415,7 @@ export function BillDetail({ nav }: { nav: Nav }) {
             <h2>Legislative path</h2>
             <InfoHint
               title="Legislative path"
-              body="The bill's route through Parliament - House of Commons, then Senate, then Royal Assent. A filled dot is a completed stage; blue is in progress. Recorded divisions show the yea / nay vote on a motion."
+              body="The bill's route through Parliament goes from the House of Commons to the Senate, then Royal Assent. A filled dot is a completed stage; blue is in progress. Recorded divisions show the yea and nay vote on a motion."
             />
             {progress.total > 0 && (
               <span className="bd-progress tnum">

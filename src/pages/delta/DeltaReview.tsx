@@ -52,8 +52,10 @@ export function DeltaReview({
   // collapse the two-pane grid on narrow screens. Default to a readable ~45%.
   const vw = () => (typeof window !== "undefined" ? window.innerWidth : 1200);
   const PDF_MIN = 320;
+  // Cap the width so the amendment panel on the right keeps enough room for its
+  // side by side diff to stay readable instead of squeezing shut.
   const [pdfPx, setPdfPx] = useState(() => Math.round(vw() * 0.45));
-  const sizePdf = (px: number) => setPdfPx(Math.max(PDF_MIN, Math.min(Math.round(vw() * 0.8), px)));
+  const sizePdf = (px: number) => setPdfPx(Math.max(PDF_MIN, Math.min(Math.round(vw() * 0.55), px)));
   const stepPdf = (delta: number) => sizePdf(pdfPx + delta);
 
   useEffect(() => {
@@ -102,8 +104,8 @@ export function DeltaReview({
         <div className="dr-banner" role="alert">
           <span>
             {incompleteReason === "rate-limit"
-              ? "Interpretation is partial - the AI hit its rate limit."
-              : "Interpretation is partial - an AI call failed."}{" "}
+              ? "Interpretation is partial. The AI hit its rate limit."
+              : "Interpretation is partial. An AI call failed."}{" "}
             Some amendments may be missing.
           </span>
           <button className="btn ghost sm" onClick={onRecompute} disabled={refreshing}>
@@ -116,7 +118,7 @@ export function DeltaReview({
           <button className="dr-fails-bar" onClick={() => setShowFails((v) => !v)} aria-expanded={showFails}>
             <span className="dr-fails-ic">⚠</span>
             <span>
-              {failures.length} amendment{failures.length === 1 ? "" : "s"} couldn’t be located - verify against the bill PDF
+              {failures.length} amendment{failures.length === 1 ? "" : "s"} couldn’t be located. Verify against the bill PDF
             </span>
             <span className="dr-fails-chev">{showFails ? "▾" : "▸"}</span>
           </button>
@@ -143,7 +145,7 @@ export function DeltaReview({
             onCollapse={() => sizePdf(PDF_MIN)}
             onNarrower={() => stepPdf(-140)}
             onWider={() => stepPdf(140)}
-            onExpand={() => sizePdf(Math.round(vw() * 0.7))}
+            onExpand={() => sizePdf(Math.round(vw() * 0.55))}
           />
         )}
         <div className="dr-pager">

@@ -62,7 +62,7 @@ export function StatsRibbon({ bills }: { bills: Bill[] }) {
       <Tooltip
         className="bm-cell"
         title="Royal assent"
-        body="Bills that have received royal assent - now in force as law."
+        body="Bills that have received royal assent and are now in force as law."
         placement="bottom"
       >
         <div className="stat-l">Royal assent</div>

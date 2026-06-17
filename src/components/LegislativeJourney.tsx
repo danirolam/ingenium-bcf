@@ -12,7 +12,7 @@ const STAGES = [
 // Plain-language explanation of each stage in the Canadian federal process,
 // surfaced on hover.
 const STAGE_INFO: Record<string, string> = {
-  "First reading": "The bill is introduced and printed. No debate yet - this is the formal start.",
+  "First reading": "The bill is introduced and printed. There is no debate yet; this is the formal start.",
   "Second reading": "The chamber debates and votes on the bill's principle and purpose, not yet its details.",
   "Committee stage": "A committee studies the bill clause by clause, hears witnesses, and may propose amendments.",
   "Report stage": "The chamber considers the committee's report and any further amendments to the bill.",

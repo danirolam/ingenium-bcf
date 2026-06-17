@@ -88,11 +88,11 @@ export function NewDeltaPicker({
         className="dl-modal"
         data-testid="new-delta-modal"
         role="dialog"
-        aria-label="New delta - pick a bill"
+        aria-label="Pick a bill to start a new delta"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="dl-modal-h">
-          <div className="card-title">New delta - pick a bill</div>
+          <div className="card-title">New delta: pick a bill</div>
           <button className="dl-modal-close" aria-label="Close" onClick={onClose}>
             <FontAwesomeIcon icon={faXmark} aria-hidden="true" />
           </button>

@@ -130,7 +130,7 @@ export function Overview({ nav }: { nav: Nav }) {
           <p className="ov-intro-sub">
             Track every active Canadian bill, see exactly what each one
             changes in law, match it to your clients, and produce the
-            counsel-approved memo - in the four steps below.
+            counsel-approved memo, all in the four steps below.
           </p>
           <div className="ov-intro-actions">
             <button className="btn primary" onClick={() => nav.go("monitor")}>

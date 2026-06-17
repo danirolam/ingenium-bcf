@@ -63,7 +63,7 @@ export function WorkflowNav({
         />
         <Tooltip
           title="Workspace overview"
-          body="The command center - pipeline status and where to start."
+          body="The command center, with pipeline status and where to start."
           placement="bottom"
         >
           <button

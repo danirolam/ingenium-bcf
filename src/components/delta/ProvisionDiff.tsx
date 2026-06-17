@@ -107,7 +107,7 @@ export function ProvisionDiff({ delta, op }: { delta: ProvisionDelta; op: BillAm
       <div className="dr-diff-empty">
         No matching provision found in {delta.title}. The bill names{" "}
         <code>{op.anchor ?? "an unspecified location"}</code>, which we couldn't resolve in the
-        ingested Act - verify against the bill PDF.
+        ingested Act. Verify against the bill PDF.
       </div>
     );
   }
