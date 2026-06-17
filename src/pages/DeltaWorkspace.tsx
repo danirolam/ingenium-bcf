@@ -57,8 +57,8 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
           <button
             className="btn ghost sm"
             onClick={() => setInspectOpen(true)}
-            disabled={delta.deltas.length === 0 && delta.traces.length === 0}
-            title="Watch how the AI located each amendment"
+            disabled={delta.logs.length === 0}
+            title="See the AI's server logs for this run"
           >
             Inspect
           </button>
@@ -102,7 +102,7 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
         />
       )}
 
-      {inspectOpen && <InspectPanel traces={delta.traces} onClose={() => setInspectOpen(false)} />}
+      {inspectOpen && <InspectPanel logs={delta.logs} onClose={() => setInspectOpen(false)} />}
     </div>
   );
 }

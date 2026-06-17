@@ -198,23 +198,6 @@ export interface BaseLaw {
   text: string;
 }
 
-// One captured step of the AI locating an amendment — for the "Inspect" panel.
-export interface LocatorStep {
-  kind: "tool" | "decision";
-  name?: string;
-  arg?: string;
-  result?: string;
-  text?: string;
-}
-export interface LocatorTrace {
-  clause: string;
-  instruction: string;
-  outcome: string;
-  hops: number;
-  seconds: number;
-  steps: LocatorStep[];
-}
-
 // ── Provision-level delta (the grounded bill→Act diff) ──
 export interface ActProvision {
   id: string;

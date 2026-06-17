@@ -18,24 +18,6 @@ const CONCURRENCY = 4; // gentle on the 50k-tok/min limit; the budget aborts the
 
 export type LocateOp = "add" | "replace" | "amend" | "repeal";
 
-// A captured step of the AI's reasoning for one amendment — surfaced in the UI's
-// "Inspect" panel so you can watch it navigate the Act (great for a demo).
-export interface LocatorStep {
-  kind: "tool" | "decision";
-  name?: string; // tool name
-  arg?: string; // short summary of the tool's input (the path / query / term)
-  result?: string; // truncated tool output
-  text?: string; // the final decision, in words
-}
-export interface LocatorTrace {
-  clause: string;
-  instruction: string;
-  outcome: string; // "ADD §30.001 · confirmed" or "couldn't locate: …"
-  hops: number;
-  seconds: number;
-  steps: LocatorStep[];
-}
-
 export interface LocatedOp {
   clause: string;
   op: LocateOp;
@@ -45,14 +27,12 @@ export interface LocatedOp {
   note: string;
   instruction: string;
   inserts: ActNode[]; // the bill's verbatim content (nested), applied deterministically
-  trace?: LocatorTrace;
 }
 export interface LocateFailure {
   clause: string;
   actSlug: string | null;
   instruction: string;
   reason: string;
-  trace?: LocatorTrace;
 }
 
 export interface LocatorCtx {
@@ -213,21 +193,14 @@ async function locateOne(unit: AmendmentUnit, ctx: LocatorCtx, budget?: AiBudget
   const t0 = Date.now();
   const secs = () => Math.round((Date.now() - t0) / 100) / 10;
   const tag = `[locator] cl${unit.clause} ${unit.actSlugHint ?? "?"}`;
-  console.log(`${tag}: "${unit.instructionText.replace(/\s+/g, " ").slice(0, 80)}"`);
-  // Capture the AI's steps for the "Inspect" panel.
-  const steps: LocatorStep[] = [];
-  let hops = 0;
-  const trace = (outcome: string): LocatorTrace => ({
-    clause: unit.clause, instruction: unit.instructionText, outcome, hops, seconds: secs(), steps,
-  });
+  console.log(`${tag}: "${unit.instructionText.replace(/\s+/g, " ").slice(0, 90)}"`);
   const fail = (reason: string): LocateFailure => {
     console.log(`${tag} ✗ ${reason} (${secs()}s)`);
-    return { clause: unit.clause, actSlug: unit.actSlugHint, instruction: unit.instructionText, reason, trace: trace(`couldn't locate: ${reason}`) };
+    return { clause: unit.clause, actSlug: unit.actSlugHint, instruction: unit.instructionText, reason };
   };
 
   try {
     for (let hop = 0; hop <= MAX_HOPS; hop++) {
-      hops = hop + 1;
       if (budget?.signal.aborted) return fail("interrupted (rate limit) before locating");
       const body: any = { model: MODEL, max_tokens: 1500, temperature: 0, system: [{ type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } }], tools: TOOLS, messages };
       if (hop === MAX_HOPS) body.tool_choice = { type: "none" };
@@ -274,9 +247,7 @@ async function locateOne(unit: AmendmentUnit, ctx: LocatorCtx, budget?: AiBudget
           }
           return fail(`validation failed: ${v.error}`);
         }
-        const verdict = `${parsed.op.toUpperCase()} ${parsed.ancestors.map((a) => a.label).join("/")}${parsed.confirmed ? " · confirmed" : ""}`;
         console.log(`${tag} ✓ ${parsed.op.toUpperCase()} ${parsed.actSlug} ${parsed.ancestors.map((a) => a.label).join("/")} ${parsed.confirmed ? "confirmed" : "unconfirmed"} (${hop + 1} hops, ${secs()}s)`);
-        steps.push({ kind: "decision", text: verdict });
         return {
           clause: unit.clause,
           op: parsed.op,
@@ -286,21 +257,20 @@ async function locateOne(unit: AmendmentUnit, ctx: LocatorCtx, budget?: AiBudget
           note: parsed.note ?? "",
           instruction: unit.instructionText,
           inserts: unit.inserts,
-          trace: trace(verdict),
         };
       }
 
-      // Execute tool calls (each may lazily load an Act), reply with one tool_result each.
+      // Execute tool calls (each may lazily load an Act); log each call + a short
+      // result on its own line (the Inspect panel mirrors these logs verbatim).
       const toolUses = data.content.filter((b: any) => b.type === "tool_use");
-      console.log(`${tag} hop${hop}: ${toolUses.map((b: any) => `${b.name}(${b.input?.ancestors ? b.input.ancestors.map((a: any) => a.label).join("/") : b.input?.query ?? b.input?.term ?? ""})`).join(", ")}`);
       const toolResults = await Promise.all(
         toolUses.map(async (block: any) => {
           const out = await runTool(ctx, block.name, block.input);
           const arg = block.input?.ancestors
-            ? block.input.ancestors.map((a: any) => `${a.kind}:${a.label}`).join(" / ")
+            ? block.input.ancestors.map((a: any) => `${a.kind}:${a.label}`).join("/")
             : block.input?.query ?? block.input?.term ?? block.input?.actSlug ?? "";
           const dump = JSON.stringify(out);
-          steps.push({ kind: "tool", name: block.name, arg: String(arg), result: dump.length > 300 ? dump.slice(0, 300) + "…" : dump });
+          console.log(`${tag}   ${block.name}(${arg}) → ${dump.length > 120 ? dump.slice(0, 120) + "…" : dump}`);
           return { type: "tool_result", tool_use_id: block.id, content: dump };
         }),
       );
@@ -319,7 +289,7 @@ export async function locateAmendments(
   units: AmendmentUnit[],
   ctx: LocatorCtx,
   budget?: AiBudget,
-): Promise<{ located: LocatedOp[]; failures: LocateFailure[]; incomplete: boolean; traces: LocatorTrace[] }> {
+): Promise<{ located: LocatedOp[]; failures: LocateFailure[]; incomplete: boolean }> {
   // Results are stored BY INPUT INDEX, not completion order, so the amendments
   // stay in document order (the units are extracted in document order) regardless
   // of which AI call finishes first.
@@ -335,7 +305,6 @@ export async function locateAmendments(
   await Promise.all(Array.from({ length: Math.min(CONCURRENCY, units.length) }, worker));
   const located = results.filter((r): r is LocatedOp => !!r && "op" in r);
   const failures = results.filter((r): r is LocateFailure => !!r && !("op" in r));
-  const traces = results.filter(Boolean).map((r) => r.trace).filter((t): t is LocatorTrace => !!t);
   console.log(`[locator] done: ${located.length}/${units.length} located, ${failures.length} failed${budget?.reason ? ` (incomplete: ${budget.reason})` : ""}`);
-  return { located, failures, incomplete: budget?.reason != null, traces };
+  return { located, failures, incomplete: budget?.reason != null };
 }
