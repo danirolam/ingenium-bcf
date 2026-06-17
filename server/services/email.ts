@@ -17,12 +17,16 @@ function getClient(): Resend | null {
   }
 }
 
+const escapeHtml = (s: string) =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
 async function send(opts: {
   subject: string;
   html: string;
+  to?: string;
 }): Promise<EmailResult> {
   const client = getClient();
-  const to = process.env.NOTIFY_EMAIL || "lawyer@example.com";
+  const to = opts.to || process.env.NOTIFY_EMAIL || "lawyer@example.com";
   const from = process.env.RESEND_FROM || "Ingenium <onboarding@resend.dev>";
 
   if (!client) {
@@ -79,6 +83,31 @@ export async function sendClientImpactCompleteEmail(args: {
       </ul>
       <p><b>Why it matters:</b> ${a.whyItAffectsClient}</p>
       <p>Open the Client Impact Analysis page in Ingenium to review and act.</p>`,
+  });
+}
+
+/**
+ * The CLIENT-facing email: the counsel-approved draft, addressed to the client.
+ * For the demo every message routes to one inbox (CLIENT_EMAIL falls back to
+ * NOTIFY_EMAIL); in production CLIENT_EMAIL would be the client contact. The
+ * draft body is plain text — render it as clean paragraphs, not a code block.
+ */
+export async function sendClientBriefEmail(args: {
+  client: Client;
+  bill: Bill;
+  draft: { subject: string; body: string };
+}): Promise<EmailResult> {
+  const html = args.draft.body
+    .split(/\n{2,}/)
+    .map(
+      (para) =>
+        `<p style="margin:0 0 14px;line-height:1.65">${escapeHtml(para.trim()).replace(/\n/g, "<br/>")}</p>`,
+    )
+    .join("");
+  return send({
+    to: process.env.CLIENT_EMAIL || process.env.NOTIFY_EMAIL || "client@example.com",
+    subject: args.draft.subject,
+    html: `<div style="font-family:Georgia,'Times New Roman',serif;font-size:15px;color:#1a1a1a;max-width:560px;margin:0 auto">${html}</div>`,
   });
 }
 

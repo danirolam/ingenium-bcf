@@ -24,7 +24,7 @@ import {
   type ScanReadyDetail,
   type ScoreBody,
 } from "../services/clientScanCore.js";
-import { sendClientImpactCompleteEmail } from "../services/email.js";
+import { sendClientBriefEmail, sendClientImpactCompleteEmail } from "../services/email.js";
 import { billAffectedActs } from "../services/gemini.js";
 import { flagImpactReview } from "../services/humanReview.js";
 import { FILES, readAll, upsert, writeAll } from "../services/jsonStore.js";
@@ -192,11 +192,14 @@ clientImpactRouter.post(
       }
     });
 
-    const email = await sendClientImpactCompleteEmail({
-      analysis,
-      client,
-      bill,
-    });
+    // Notify only when the caller explicitly opts in. The stage-3 scanner's
+    // Analyze sets notify:true — that single send is the one we keep. Stage-4
+    // generate/regenerate omit it, so opening or re-running a brief there never
+    // re-sends the "Client Impact Ready" email (the prior double-send).
+    const notify = req.body?.notify === true;
+    const email = notify
+      ? await sendClientImpactCompleteEmail({ analysis, client, bill })
+      : { sent: false, simulated: false };
     res.json({ analysis, email });
   }),
 );
@@ -537,21 +540,21 @@ clientImpactRouter.post(
 );
 
 clientImpactRouter.post(
-  "/:id/email-lawyer",
+  "/:id/email-client",
   safe(async (req, res) => {
     const a = await findRecord<ClientImpactAnalysis>(FILES.impacts, String(req.params.id));
     if (!a) return res.status(404).json({ error: "not_found" });
-    // The approval gate, enforced server-side: unapproved AI output cannot
-    // leave the building, whatever the client UI says.
+    // The approval gate, enforced server-side: an unapproved brief — and the
+    // unreviewed draft it carries — cannot be sent to a client, whatever the UI
+    // allows. The counsel notification (stage 3) is a separate, earlier email.
     if (!a.saved) return res.status(409).json({ error: "approval_required" });
+    if (!a.emailDraft?.subject || !a.emailDraft?.body?.trim()) {
+      return res.status(409).json({ error: "draft_missing" });
+    }
     const client = await findRecord<Client>(FILES.clients, a.clientId);
     const bill = await findRecord<Bill>(FILES.bills, a.billId);
     if (!client || !bill) return res.status(404).json({ error: "linked records missing" });
-    const email = await sendClientImpactCompleteEmail({
-      analysis: a,
-      client,
-      bill,
-    });
+    const email = await sendClientBriefEmail({ client, bill, draft: a.emailDraft });
     res.json({ email });
   }),
 );

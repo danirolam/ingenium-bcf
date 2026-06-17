@@ -599,32 +599,34 @@ export function synthesizeEmailDraft(args: {
   const areas = (args.affectedClientAreas ?? [])
     .map((a) => a.trim())
     .filter(Boolean)
-    .slice(0, 5);
+    .slice(0, 3);
   const why = (args.whyItAffectsClient || "").trim();
-  const watch = areas.length
-    ? areas.map((a) => `• ${a}`).join("\n")
-    : "• Areas of your operations that the bill's subject-matter touches.";
-  const subject = `${billNo} — monitoring update for ${client}`;
+  const status = (args.billStatus || "").trim().toLowerCase();
+  const areaList =
+    areas.length <= 1
+      ? areas[0] ?? ""
+      : `${areas.slice(0, -1).join(", ")} and ${areas[areas.length - 1]}`;
+  const areaPhrase = areaList
+    ? `the parts of your business that touch ${areaList}`
+    : "the parts of your operations its subject-matter reaches";
+  const whyLine = why
+    ? `In short, ${why.charAt(0).toLowerCase()}${why.slice(1)}`
+    : `If it passes in its current form, it would adjust obligations bearing on ${areaPhrase}.`;
+  const subject = `${billNo}: a federal bill worth keeping an eye on`;
   const body = headOnly(
     [
-      `Hello,`,
+      `Dear ${client} team,`,
       ``,
-      `We are monitoring Bill ${billNo}${title ? ` (${title})` : ""}, which, if enacted, may be relevant to ${client}.`,
+      `I wanted to flag a federal bill we are watching on your behalf. Bill ${billNo}${title ? ` (${title})` : ""} is currently before Parliament${status ? ` (${status})` : ""}, and although it is not yet law, if enacted it could matter to your business.`,
       ``,
-      `What the bill proposes`,
-      `The bill remains a proposal${args.billStatus ? ` (current status: ${args.billStatus})` : ""} — it is not law and may be amended or may not pass. If enacted, it would change the obligations relevant to the areas below.`,
+      whyLine,
       ``,
-      `Potential areas to watch for ${client}`,
-      why ||
-        `Based on the client profile${args.industry ? ` (${args.industry})` : ""}, the proposed changes could touch the following areas:`,
-      watch,
+      `We would be glad to look over your contracts and policies for any exposure, run a focused compliance check, and keep watch as the bill moves through Parliament so nothing catches you off guard.`,
       ``,
-      `How we can help`,
-      `We could review your terms, contracts and policies to identify potential exposures, run a focused compliance gap assessment, and provide ongoing monitoring as the bill progresses through Parliament.`,
+      `If it would help, I am happy to set up a short call to talk through what this could mean for you.`,
       ``,
-      `We would welcome a conversation about whether any of these areas merit a closer look.`,
-      ``,
-      `— Ingenium`,
+      `Kind regards,`,
+      `Legislative Monitoring`,
     ].join("\n"),
     NORMALIZE_EMAIL_BODY_MAX_CHARS,
   );

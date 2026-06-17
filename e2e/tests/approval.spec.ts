@@ -71,7 +71,7 @@ test("approval gates export; answered review regenerates a new unapproved versio
 
   const approve = page.getByTestId("approve-brief");
   const download = page.getByRole("button", { name: "Download brief" });
-  const email = page.getByRole("button", { name: "Email lawyer" });
+  const email = page.getByRole("button", { name: "Send to client" });
   const approvedBadge = page.getByTestId("approved-badge");
   const answers = page.getByTestId("review-answer-input");
   const regenWithAnswers = page.getByTestId("regen-with-answers");

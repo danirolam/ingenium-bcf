@@ -589,20 +589,21 @@ export async function scoreClientAgainstChanges(
 // ── Approval-time client email draft ─────────────────────────────────────────
 const EMAIL_TIMEOUT_MS = 60_000;
 
-const EMAIL_SYSTEM = `You write a CLIENT-FACING monitoring email for a Canadian law firm whose client may be affected by a federal bill. Answer ONLY via the emit_client_email tool.
+const EMAIL_SYSTEM = `You write a short CLIENT-FACING email from a partner at a Canadian business-law firm to a client who may be affected by a federal bill the firm is monitoring. Answer ONLY via the emit_client_email tool.
 
-Tone (binding — the firm is liable for definitive statements):
-- INFORMATIVE, NOT ADVISORY. Frame everything the client might do as "may wish to", "could", "might consider" — never "must"/"will".
-- THE BILL IS NOT LAW. Conditional mood for everything it does: "would", "if enacted", "as proposed".
-- Name the bill's Act(s) when referring to provisions; never bare section numbers.
+Write it the way a real lawyer would dash off a thoughtful note: warm, direct, plain English. It must NOT read like a generated document or a filled-in template.
 
-Structure the body EXACTLY as five short sections, well under 400 words total:
-(1) a one-line intro — the firm is monitoring Bill X, which, if enacted, may affect the client;
-(2) "What the bill proposes" — a conditional summary;
-(3) "Potential areas to watch for <client>" — possibilities, never directives or certainties;
-(4) "How we can help" — pick the 2-3 most relevant: reviewing terms/contracts for exposures; a compliance gap assessment; ongoing regulatory monitoring; government-relations support; a tailored briefing;
-(5) a closing inviting a conversation.
-The subject is concise and names the bill and client. The body is never blank.`;
+Shape of the body:
+- Open with "Dear <Client> team," using the client's name from the message, then one sentence on why you are writing.
+- Two or three short paragraphs of flowing prose. No headings, no bullet lists, no bold labels. In your own words, cover: what the bill would do if it passed, what that could mean for THIS client specifically, and how the firm can help (pick the one or two that fit best: reviewing their contracts and policies for exposure, a focused compliance check, or keeping watch as the bill moves).
+- Close by offering a short call, then "Kind regards," on its own line, then "Legislative Monitoring" on the next.
+
+Hard rules (the firm is liable for definitive statements):
+- Informative, never advisory: "may", "could", "might consider", never "must" or "will".
+- The bill is NOT law: "would", "if enacted", "as proposed".
+- Name the bill's Act(s); never bare section numbers.
+- No cliches ("I hope this finds you well", "in today's landscape", "I wanted to reach out"), no em dashes, no semicolon lists. Keep it under 220 words.
+The subject is one specific line naming the bill (no "Re:"); the client's name may appear. The body is never blank.`;
 
 const EMIT_EMAIL: any = {
   name: "emit_client_email",

@@ -103,16 +103,12 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     try {
       // Same endpoint as before - routed through the guidance-capable helper
       // (no guidance here), so stage 4 has a single analyze entry point.
-      const { analysis: a, email } = await analyzeWithGuidance(
-        clientId,
-        billId,
-      );
+      // Stage-4 generation sends NO email: the counsel notification already
+      // fired once from the stage-3 scanner's Analyze, and the client email is
+      // a deliberate action via the "Send to client" button after approval.
+      const { analysis: a } = await analyzeWithGuidance(clientId, billId);
       setAnalysis(a);
-      nav.toast(
-        email.simulated
-          ? "Brief generated · Email simulated."
-          : "Brief generated · Email sent.",
-      );
+      nav.toast("Brief generated.");
     } catch (err: any) {
       nav.toast(`Could not generate brief: ${err.message ?? err}`);
     } finally {
@@ -179,15 +175,15 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     }
   }
 
-  async function emailLawyer() {
+  async function emailClient() {
     // Defense-in-depth: the button is disabled pre-approval, but the gate
-    // ("unapproved AI output cannot leave the building") must hold even if
-    // this handler is ever reached another way.
+    // ("an unapproved brief cannot reach a client") must hold even if this
+    // handler is ever reached another way.
     if (!analysis?.saved) return;
     setBusy(true);
     try {
-      const { email } = await api.clientImpact.emailLawyer(analysis.id);
-      nav.toast(email.simulated ? "Email simulated." : "Email sent to lawyer.");
+      const { email } = await api.clientImpact.emailClient(analysis.id);
+      nav.toast(email.simulated ? "Client email simulated." : "Email sent to client.");
     } finally {
       setBusy(false);
     }
@@ -360,11 +356,15 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
             <button
               className="btn"
               disabled={busy || !analysis.saved}
-              title={analysis.saved ? undefined : "Requires counsel approval"}
-              onClick={emailLawyer}
+              title={
+                analysis.saved
+                  ? "Send the approved draft to the client"
+                  : "Requires counsel approval"
+              }
+              onClick={emailClient}
             >
               <FontAwesomeIcon icon={faEnvelope} aria-hidden="true" />
-              Email lawyer
+              Send to client
             </button>
             <button
               className="btn primary"
@@ -611,16 +611,20 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
               open={openSections.email}
               onToggle={toggleSection}
               icon={<FontAwesomeIcon icon={faEnvelope} aria-hidden="true" />}
-              title="Email draft"
+              title="Client email"
               summary={
                 analysis.emailDraft
                   ? analysis.emailDraft.subject
-                  : "Generated when you approve the brief"
+                  : "Drafted for the client when you approve the brief"
               }
             >
               <div className="email-card-body">
                 {analysis.emailDraft ? (
                   <div data-testid="email-draft-content">
+                    <div className="kv kv-compact kv-email">
+                      <div className="k">To</div>
+                      <div className="v">{client?.name ?? "the client"}</div>
+                    </div>
                     <div className="kv kv-compact kv-email">
                       <div className="k">Subject</div>
                       <div className="v">{analysis.emailDraft.subject}</div>

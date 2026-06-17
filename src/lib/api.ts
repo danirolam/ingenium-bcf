@@ -155,12 +155,15 @@ export const api = {
       }),
   },
   clientImpact: {
+    // Stage-3 scanner entry point: notify:true so the ONE "Client Impact Ready"
+    // email is sent here, when a brief is generated from the scan. Stage-4's
+    // analyzeWithGuidance omits notify, so it never re-sends on a later regen.
     analyze: (clientId: string, billId: string) =>
       j<{ analysis: ClientImpactAnalysis; email: EmailResult }>(
         "/api/client-impact/analyze",
         {
           method: "POST",
-          body: JSON.stringify({ clientId, billId }),
+          body: JSON.stringify({ clientId, billId, notify: true }),
         },
       ),
     // The brief is keyed by (client, bill); returns the latest one or 404.
@@ -173,8 +176,10 @@ export const api = {
       j<ClientImpactAnalysis>(`/api/client-impact/${id}/save`, {
         method: "POST",
       }),
-    emailLawyer: (id: string) =>
-      j<{ email: EmailResult }>(`/api/client-impact/${id}/email-lawyer`, {
+    // Send the approved, client-facing draft to the client (stage 4). The
+    // counsel notification is a separate, earlier email (stage-3 scan).
+    emailClient: (id: string) =>
+      j<{ email: EmailResult }>(`/api/client-impact/${id}/email-client`, {
         method: "POST",
       }),
   },
