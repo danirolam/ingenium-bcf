@@ -69,13 +69,21 @@ function Cell({
 
 export function SplitRow({
   row,
+  rowIndex,
   focus = false,
+  dim = false,
   baseDepth = 0,
 }: {
   row: ProvisionDiffRow;
+  /** This row's index into delta.rows — used by the diff to scroll to a specific
+   *  row (e.g. the section header) on mount. */
+  rowIndex?: number;
   /** True when this row is one the current amendment produced (vs. surrounding
    *  context or a neighbouring change). */
   focus?: boolean;
+  /** True when this row is a CHANGE from a different amendment — dimmed so the
+   *  scrutinised change stands out. */
+  dim?: boolean;
   baseDepth?: number;
 }) {
   let leftIntent: Intent;
@@ -106,7 +114,11 @@ export function SplitRow({
   }
 
   return (
-    <div className={`dr-srow is-${row.status}${focus ? " is-focus" : ""}`}>
+    <div
+      className={`dr-srow is-${row.status}${focus ? " is-focus" : ""}${dim ? " is-dim" : ""}`}
+      data-ri={rowIndex}
+      title={dim ? "This change belongs to another amendment" : undefined}
+    >
       <Cell prov={row.before} intent={leftIntent} parts={leftParts} baseDepth={baseDepth} />
       <Cell prov={row.after} intent={rightIntent} parts={rightParts} baseDepth={baseDepth} />
     </div>

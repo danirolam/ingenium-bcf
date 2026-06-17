@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { api } from "./api";
+import { api, type ProvisionDeltaResult } from "./api";
 import type { AmendmentFailure, Bill, ProvisionDelta } from "../types";
 
 export interface ProvisionDeltaState {
@@ -65,7 +65,17 @@ export function useProvisionDelta(billId: string | null): ProvisionDeltaState {
       const b = await api.bills.get(billId, signal).catch(() => null);
       if (signal.aborted) return;
       setBill(b);
-      const res = await api.bills.provisionDelta(billId, forced, signal).catch(() => null);
+      // A forced recompute STREAMS its server logs so the Inspect panel fills live
+      // (the AI's steps appear one by one); a plain load just fetches the result.
+      let res: ProvisionDeltaResult | null;
+      if (forced) {
+        setLogs([]);
+        res = await api.bills
+          .provisionDeltaStream(billId, (line) => setLogs((prev) => [...prev, line]), signal)
+          .catch(() => null);
+      } else {
+        res = await api.bills.provisionDelta(billId, false, signal).catch(() => null);
+      }
       if (signal.aborted) return;
       if (res) {
         setDeltas(res.deltas ?? []);

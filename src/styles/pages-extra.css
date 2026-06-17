@@ -581,6 +581,11 @@
   color: var(--ink-2); font-size: 13px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
+.dr-topbar-src {
+  flex: none; color: var(--accent-warm); text-decoration: none;
+  font-size: 11.5px; white-space: nowrap;
+}
+.dr-topbar-src:hover { text-decoration: underline; }
 .dr-topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; }
 .dr-topbar-progress { font-size: 12px; color: var(--ink-3); white-space: nowrap; }
 .dr-topbar-progress b { color: var(--ink); }
@@ -640,14 +645,6 @@
   border-right: 1px solid var(--border);
   background: var(--sidebar);
 }
-.dr-pdf-bar {
-  flex: none; display: flex; align-items: center; gap: 10px;
-  padding: 9px 14px; border-bottom: 1px solid var(--border);
-  font-size: 12px; color: var(--ink-3);
-}
-.dr-pdf-title .tnum { color: var(--accent-warm); font-weight: 700; }
-.dr-pdf-link { margin-left: auto; color: var(--accent-warm); text-decoration: none; font-size: 11.5px; }
-.dr-pdf-link:hover { text-decoration: underline; }
 .dr-pdf-frame { flex: 1; min-height: 0; width: 100%; border: 0; background: #525659; }
 
 /* Right — the scrollable amendment list (the only scroll region). */
@@ -829,11 +826,6 @@
 .dr-diff-cols span:first-child {
   border-right: 1px solid var(--border-3);
 }
-.dr-diff-anc {
-  background: var(--panel-2);
-  border-top: 1px solid var(--border-3);
-}
-
 /* Context-unfold control (GitHub-style "show N more"). */
 .dr-expand {
   display: flex;
@@ -883,6 +875,16 @@
 }
 .dr-srow.is-focus {
   scroll-margin-top: 64px;
+  /* The change being scrutinised: a left accent stripe ties the produced rows
+     together and lifts them above the surrounding context + dimmed changes. */
+  box-shadow: inset 3px 0 0 0 var(--accent);
+}
+/* A change produced by a DIFFERENT amendment in this window — faded back so it
+   reads as context, not as part of the change under review. Stays muted; hovering
+   shows a tooltip explaining it belongs to another amendment. */
+.dr-srow.is-dim {
+  opacity: 0.4;
+  filter: saturate(0.6);
 }
 .dr-cell {
   display: flex;
@@ -1065,34 +1067,6 @@
 }
 .dr-diff-empty code { font-family: var(--mono); color: var(--high); }
 
-/* One provision row. Uniform padding for every status — the only differences are
-   the coloured sign and opacity, so nothing shifts horizontally between rows. */
-.dr-prov {
-  display: flex;
-  align-items: baseline;
-  gap: 7px;
-  padding: 4px 8px;
-  font-size: 12.5px;
-  line-height: 1.5;
-  opacity: 0.5; /* context is dim by default; focus rows below lift to full */
-}
-.dr-prov.is-focus { opacity: 1; }
-.dr-prov-sign {
-  flex: none; width: 10px; text-align: center;
-  font-family: var(--mono); font-weight: 700; color: var(--ink-4);
-}
-.dr-prov-label { font-weight: 700; color: var(--ink-3); margin-right: 5px; }
-.dr-prov-main { min-width: 0; flex: 1; }
-.dr-prov-mn { display: block; font-weight: 700; font-size: 11px; color: var(--ink-4); margin-bottom: 1px; }
-.dr-prov-text { color: var(--ink-3); }
-
-/* Status shown by the sign colour alone — no background fills. */
-.dr-prov.is-added .dr-prov-sign { color: var(--ok); }
-.dr-prov.is-added.is-focus .dr-prov-label { color: var(--ok); }
-.dr-prov.is-changed .dr-prov-sign { color: var(--high); }
-.dr-prov.is-repealed .dr-prov-sign { color: var(--crit); }
-.dr-prov.is-repealed .dr-prov-text { text-decoration: line-through; color: var(--ink-4); }
-.dr-prov.is-focus .dr-prov-text { color: var(--ink-2); }
 
 .dr-card-actions {
   flex: none;
@@ -1134,6 +1108,11 @@
   padding: 16px 18px; border-bottom: 1px solid var(--border);
 }
 .insp-title { font-size: 15px; font-weight: 700; color: var(--ink); }
+.insp-live {
+  margin-left: 9px; font-size: 11px; font-weight: 700; letter-spacing: 0.03em;
+  color: var(--ok); vertical-align: middle; animation: insp-pulse 1.1s ease-in-out infinite;
+}
+@keyframes insp-pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 .insp-sub { font-size: 12px; color: var(--ink-3); margin-top: 3px; }
 .insp-close {
   flex: none; width: 30px; height: 30px; border: 1px solid var(--border); border-radius: 8px;

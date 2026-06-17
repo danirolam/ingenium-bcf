@@ -356,12 +356,32 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
   const bill = await findById<Bill>(FILES.bills, req.params.id);
   if (!bill) return res.status(404).json({ error: "bill not_found" });
 
+  // Streaming mode (?stream=1): the response is NDJSON — one {type:"log",line} per
+  // server log line as it happens, then a final {type:"result",data}. Lets the
+  // Inspect panel show the AI's steps live. Plain JSON otherwise.
+  const streaming = req.query.stream === "1";
+  if (streaming) {
+    res.setHeader("Content-Type", "application/x-ndjson; charset=utf-8");
+    res.setHeader("Cache-Control", "no-cache, no-transform");
+    res.setHeader("X-Accel-Buffering", "no"); // don't let a proxy buffer the stream
+  }
+  // Either flush one NDJSON message (streaming) or buffer for the final res.json.
+  const send = (payload: Record<string, unknown>) => {
+    if (streaming) {
+      if (!res.writableEnded) { res.write(JSON.stringify({ type: "result", data: payload }) + "\n"); res.end(); }
+    } else {
+      res.json(payload);
+    }
+  };
+
   // Capture this request's server logs verbatim for the Inspect panel. Global
   // override (restored in finally) — demo-grade; concurrent runs may interleave.
   const logs: string[] = [];
   const origLog = console.log;
   console.log = (...a: any[]) => {
-    logs.push(a.map((x) => (typeof x === "string" ? x : JSON.stringify(x))).join(" "));
+    const line = a.map((x) => (typeof x === "string" ? x : JSON.stringify(x))).join(" ");
+    logs.push(line);
+    if (streaming && !res.writableEnded) res.write(JSON.stringify({ type: "log", line }) + "\n");
     origLog(...a);
   };
 
@@ -371,7 +391,7 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
   if (req.query.refresh !== "1") {
     const cached = await findById<CachedDelta>(FILES.provisionDeltas, bill.id);
     if (cached) {
-      return res.json({ deltas: cached.deltas, errors: cached.errors, failures: cached.failures ?? [], logs: cached.logs ?? [], cached: true, computedAt: cached.createdAt });
+      return send({ deltas: cached.deltas, errors: cached.errors, failures: cached.failures ?? [], logs: cached.logs ?? [], cached: true, computedAt: cached.createdAt });
     }
   }
 
@@ -391,7 +411,7 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
     try { xml = await fsp.readFile(path.join(REPO_ROOT, "data/bills", bill.session ?? "45-1", bill.billNumber, "bill.xml"), "utf8"); } catch { /* none */ }
   }
   if (!xml) {
-    return res.json({ deltas: [], errors: ["Could not load the bill's amending text (XML)."], failures: [], cached: false });
+    return send({ deltas: [], errors: ["Could not load the bill's amending text (XML)."], failures: [], cached: false });
   }
 
   // 2) Extract the discrete amendments (structural, no regex locating). Keep the
@@ -401,7 +421,7 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
 
   if (!process.env.ANTHROPIC_API_KEY) {
     const failures = units.map((u) => ({ clause: u.clause, actSlug: u.actSlugHint, instruction: u.instructionText, reason: "AI key missing — set ANTHROPIC_API_KEY to locate amendments" }));
-    return res.json({ deltas: [], errors: ["AI key missing — cannot locate amendments."], failures, cached: false });
+    return send({ deltas: [], errors: ["AI key missing — cannot locate amendments."], failures, cached: false });
   }
 
   // 3) Locate each amendment against the real Act (AI + verification tools), then
@@ -483,11 +503,14 @@ billsRouter.post("/:id/provision-delta", async (req, res) => {
     await upsert(FILES.provisionDeltas, { id: bill.id, deltas, errors, failures, logs, createdAt: new Date().toISOString() });
     await removeById(FILES.approvals, bill.id);
   }
-  res.json({ deltas, errors, failures, logs, cached: false, aiIncomplete: incomplete, aiIncompleteReason: aiBudget.reason, rateLimited: aiBudget.rateLimitHits });
+  send({ deltas, errors, failures, logs, cached: false, aiIncomplete: incomplete, aiIncompleteReason: aiBudget.reason, rateLimited: aiBudget.rateLimitHits });
   } catch (err) {
     console.error("[provision-delta]", err instanceof Error ? err.stack : err);
-    if (!res.headersSent) {
-      res.status(500).json({ deltas: [], errors: [`Delta computation failed: ${err instanceof Error ? err.message : String(err)}`], failures: [], cached: false });
+    const errPayload = { deltas: [], errors: [`Delta computation failed: ${err instanceof Error ? err.message : String(err)}`], failures: [], logs, cached: false };
+    if (streaming) {
+      if (!res.writableEnded) { res.write(JSON.stringify({ type: "result", data: errPayload }) + "\n"); res.end(); }
+    } else if (!res.headersSent) {
+      res.status(500).json(errPayload);
     }
   } finally {
     console.log = origLog;
