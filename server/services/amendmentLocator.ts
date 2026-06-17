@@ -8,7 +8,7 @@
 // <AmendedText> (carried on the unit).
 import type { AmendmentUnit } from "./billAmendments.js";
 import type { PositionStep } from "./amendmentEngine.js";
-import { compareLabels, LawNavigator, type ActNode, type ActTree } from "./lawTree.js";
+import { compareLabels, LawNavigator, normSeg, type ActNode, type ActTree } from "./lawTree.js";
 import type { AiBudget } from "./aiBudget.js";
 import { anthropicMessages } from "./anthropic.js";
 
@@ -144,6 +144,8 @@ const SYSTEM = `You locate where a Canadian bill amendment lands in an existing 
 
 FIRST decide HOW MANY operations the amendment contains. One instruction often bundles several — e.g. "Section 101 … is renumbered as subsection 101(1) AND is amended by adding the following: (2) …" is TWO operations: a relabel (§101 → §101(1)) and an add (§101(2)). List each one, in the order they apply.
 
+But a single block that ADDS a contiguous run of NEW provisions is ONE "add" operation, NOT one per provision. "The Act is amended by adding the following after section 30:" followed by sections 30.001 through 30.008 is ONE add (target it at the first new provision, e.g. §30.001 — the bill supplies the whole block); likewise "adding the following after paragraph (j): (j.01) … (j.02) …" is ONE add at (j.01). Only decompose when the instruction performs operations of DIFFERENT kinds or on DIFFERENT existing provisions (e.g. a renumber plus an add).
+
 OPERATIONS (classify by EFFECT, not the bill's wording — bills say "is amended by" for several):
 - "add": inserts a brand-new provision. The ancestors are the NEW provision's full path INCLUDING its bill-given leaf label (inserting "(j.01)" after paragraph (j) of subsection 30(1) → [section 30, subsection 1, paragraph j.01]). The leaf must NOT already exist; its parent MUST exist.
 - "replace": substitutes an ENTIRE existing provision with new full text the bill supplies ("X is replaced by the following:"). ancestors = the existing provision.
@@ -193,6 +195,41 @@ interface Final extends FinalOp {
   operations?: FinalOp[]; // the multi-op decision; single-op fields kept for fallback
   unlocatable?: boolean;
   reason?: string;
+}
+
+// A single <AmendedText> block is ONE physical insertion: its provisions are a
+// contiguous run bound for one parent. The model sometimes splits such a block into
+// one "add" op per provision; if each carried the whole `unit.inserts`, applyOperations
+// would splice the block once PER op — the C-265 "Emergency Access" division (§30.001–
+// §30.008) rendered 7×, the (j.01)/(j.02) pair 2×. So we MERGE consecutive add ops that
+// share a parent down to the first (the block is spliced once, and stays complete even
+// if the model under-enumerated its sections), and hand the bill's inserted subtree to
+// exactly ONE op. relabel/repeal/amend never consume inserts.
+function distributeInserts(ops: FinalOp[], unit: AmendmentUnit): LocatedOp[] {
+  const parentKey = (anc: PositionStep[]) =>
+    anc.slice(0, -1).map((s) => `${s.kind}:${normSeg(s.label)}`).join("/");
+  const merged: FinalOp[] = [];
+  for (const o of ops) {
+    const prev = merged[merged.length - 1];
+    if (o.op === "add" && prev?.op === "add" && parentKey(prev.ancestors!) === parentKey(o.ancestors!)) continue;
+    merged.push(o);
+  }
+  let insertsAssigned = false;
+  return merged.map<LocatedOp>((o) => {
+    const takesInserts = (o.op === "add" || o.op === "replace") && !insertsAssigned;
+    if (takesInserts) insertsAssigned = true;
+    return {
+      clause: unit.clause,
+      op: o.op!,
+      actSlug: o.actSlug!,
+      ancestors: o.ancestors!,
+      newAncestors: o.newAncestors,
+      confirmed: o.confirmed === true,
+      note: o.note ?? "",
+      instruction: unit.instructionText,
+      inserts: takesInserts ? unit.inserts : [],
+    };
+  });
 }
 
 async function locateOne(unit: AmendmentUnit, ctx: LocatorCtx, budget?: AiBudget): Promise<LocatedOp[] | LocateFailure> {
@@ -276,19 +313,7 @@ async function locateOne(unit: AmendmentUnit, ctx: LocatorCtx, budget?: AiBudget
           return fail(`validation failed: ${errs.join("; ")}`);
         }
         console.log(`${tag} ✓ ${ops.length} op(s): ${ops.map((o) => `${o.op!.toUpperCase()} ${o.ancestors!.map((a) => a.label).join("/")}${o.newAncestors?.length ? "→" + o.newAncestors.map((a) => a.label).join("/") : ""}`).join(" | ")} (${hop + 1} hops, ${secs()}s)`);
-        // The bill's inserted text rides with the whole unit; each op finds its own
-        // leaf by ancestor path at apply time (relabel/repeal/amend ignore inserts).
-        return ops.map<LocatedOp>((o) => ({
-          clause: unit.clause,
-          op: o.op!,
-          actSlug: o.actSlug!,
-          ancestors: o.ancestors!,
-          newAncestors: o.newAncestors,
-          confirmed: o.confirmed === true,
-          note: o.note ?? "",
-          instruction: unit.instructionText,
-          inserts: unit.inserts,
-        }));
+        return distributeInserts(ops, unit);
       }
 
       // Execute tool calls (each may lazily load an Act); log each call + a short
