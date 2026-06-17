@@ -1,4 +1,4 @@
-/* Stage 3 — Client Scan (bill-first batch scanner). Imported only by
+/* Stage 3 - Client Scan (bill-first batch scanner). Imported only by
    src/pages/ClientLawScanner.tsx; everything is namespaced `cs-` (plus a few
    modifiers on the shared .client-row) so nothing leaks into other pages. */
 
@@ -242,7 +242,7 @@
 .cs-scan-row:last-child {
   border-bottom: none;
 }
-/* Fixed five-column grid — name | status | band | chevron | action — so the
+/* Fixed five-column grid - name | status | band | chevron | action - so the
    pills and the single action slot line up across every row. Each cell is
    always rendered (empty when inapplicable); the action column is fixed-width
    and right-aligned, so swapping Analyze ↔ View brief never shifts columns. */
@@ -345,7 +345,7 @@
   }
 }
 
-/* Impact-band pill — same pill aesthetics as .dr-op, escalating severity:
+/* Impact-band pill - same pill aesthetics as .dr-op, escalating severity:
    low muted, medium amber (the palette's amber token is --high), high a
    strong red tint, critical filled red. */
 .cs-band {

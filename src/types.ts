@@ -66,7 +66,7 @@ export interface Bill {
   textStage?: string;
   textSourceUrl?: string;
 
-  // The path a bill travels — the centrepiece of the bill detail view.
+  // The path a bill travels - the centrepiece of the bill detail view.
   legislativePath?: BillStageEntry[];
   divisions?: BillDivision[];
 }
@@ -176,7 +176,7 @@ export interface ClientImpactAnalysis {
   lawyerVerificationQuestions: string[];
 
   // Generated only when the brief is APPROVED (POST /:id/save), not during
-  // /analyze — so regenerations don't burn tokens on a draft that's discarded.
+  // /analyze - so regenerations don't burn tokens on a draft that's discarded.
   // Absent until approval.
   emailDraft?: {
     subject: string;
@@ -210,7 +210,7 @@ export interface ActProvision {
   path?: { kind: string; label: string }[];
   /** Optional display layout from the formatter agent: the provision split into
    *  its statute lines (subsection/paragraph/subparagraph), each with a depth.
-   *  Absent ⇒ render the flat `text`. Display-only — does not affect scoring. */
+   *  Absent ⇒ render the flat `text`. Display-only - does not affect scoring. */
   lines?: { depth: number; text: string }[];
 }
 
@@ -222,11 +222,11 @@ export interface ProvisionDiffRow {
 }
 
 export interface BillAmendmentOp {
-  /** Stable approval identity, "<actSlug>#<opIndex>" — matches the approvals API. */
+  /** Stable approval identity, "<actSlug>#<opIndex>" - matches the approvals API. */
   key: string;
   clause?: string;
   op: "add" | "replace" | "repeal" | "amend" | "relabel";
-  /** Structured address of the target — the source of truth for location. For an
+  /** Structured address of the target - the source of truth for location. For an
    *  add it is the new provision's full path (incl. its bill-given leaf label). */
   ancestors: { kind: string; label: string }[];
   /** Composed display label derived from `ancestors` (e.g. "30(1)(j.01)"). */
@@ -244,7 +244,7 @@ export interface BillAmendmentOp {
   confirmed: boolean;
   /** How this op was resolved. "ai" = AI-located + deterministically applied. */
   resolution?: "structured" | "ai";
-  /** Full instruction text — what the bill says. */
+  /** Full instruction text - what the bill says. */
   instruction: string;
   /** Indices into `ProvisionDelta.rows` of the provisions this op produced. */
   producedRowIndices: number[];
@@ -252,7 +252,7 @@ export interface BillAmendmentOp {
   contextRowIndices: number[];
 }
 
-/** An amendment the locator could not place — surfaced subtly, never dropped. */
+/** An amendment the locator could not place - surfaced subtly, never dropped. */
 export interface AmendmentFailure {
   clause: string;
   actSlug: string | null;
@@ -267,7 +267,7 @@ export interface ProvisionDelta {
   summary: { added: number; changed: number; repealed: number; unchanged: number };
   operations: BillAmendmentOp[];
   rows: ProvisionDiffRow[];
-  /** Full Act text before/after the bill — the two sides of the diff. */
+  /** Full Act text before/after the bill - the two sides of the diff. */
   oldText?: string;
   newText?: string;
   /** How the delta was produced. "ai-located" = AI ancestor-path locating +
@@ -276,14 +276,14 @@ export interface ProvisionDelta {
   /** True when an AI call was cut short (rate limit / failure) so this Act's
    *  changes may be partial. */
   incomplete?: boolean;
-  /** The ingested Act text predates the current format — shown as a temporary
+  /** The ingested Act text predates the current format - shown as a temporary
    *  "outdated" warning in the UI. */
   outdated?: boolean;
   /** Link to the official Act PDF on the Justice Laws website. */
   actUrl?: string;
 }
 
-/** One row in the Stage-2 "Delta Library" — a bill that already has a generated
+/** One row in the Stage-2 "Delta Library" - a bill that already has a generated
  *  provision delta (GET /api/provision-deltas). The symmetric mirror of the
  *  Stage-4 brief index entry. */
 export interface DeltaIndexEntry {

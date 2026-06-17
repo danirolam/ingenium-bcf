@@ -1,4 +1,4 @@
-/* Ingenium — Federal bill intelligence
+/* Ingenium - Federal bill intelligence
    Aesthetic: gallery-white surfaces, near-black ink, one blue signal,
    hairline rules, restrained motion. Built to read like serious counsel
    software, not a dashboard template. */
@@ -17,13 +17,13 @@
   --sidebar-ink: #1d1d1f;
   --sidebar-ink-2: #6e6e73;
 
-  /* Text ramp — near-black to quiet gray */
+  /* Text ramp - near-black to quiet gray */
   --ink: #1d1d1f;
   --ink-2: #424245;
   --ink-3: #6e6e73;
   --ink-4: #86868b;
 
-  /* Borders / rules — light hairlines */
+  /* Borders / rules - light hairlines */
   --border: #d2d2d7;
   --border-2: #b9b9c0;
   --border-3: #e8e8ed;
@@ -49,7 +49,7 @@
   --ok: #1a7f37;
   --ok-bg: rgba(26, 127, 55, 0.12);
 
-  /* Diff — GitHub light add/del: a soft line tint + a stronger word tint */
+  /* Diff - GitHub light add/del: a soft line tint + a stronger word tint */
   --diff-del-bg: #ffebe9;
   --diff-del-word: #ffc9c2;
   --diff-del-ink: #82071e;
@@ -58,14 +58,14 @@
   --diff-add-ink: #116329;
   --diff-context-bg: #ffffff;
 
-  /* Soft, low-spread shadows — depth without weight */
+  /* Soft, low-spread shadows - depth without weight */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px -18px rgba(0, 0, 0, 0.12);
   --shadow-md:
     0 2px 6px rgba(0, 0, 0, 0.05), 0 24px 60px -30px rgba(0, 0, 0, 0.18);
 
   /* Inter everywhere (SF-adjacent, tight tracking at display sizes).
      --mono intentionally aliases the sans stack: labels, numbers, and
-     citations read as product UI, not terminal output — numerals stay
+     citations read as product UI, not terminal output - numerals stay
      aligned via font-variant-numeric where it matters. */
   --sans:
     "Inter", -apple-system, "SF Pro Text", "Segoe UI", system-ui,
@@ -77,7 +77,7 @@
     "Inter", -apple-system, "SF Pro Text", "Segoe UI", system-ui,
     "Helvetica Neue", "Arial", sans-serif;
 
-  /* shadcn HSL tokens — light variants for any ui/* components reading these */
+  /* shadcn HSL tokens - light variants for any ui/* components reading these */
   --background: 240 24% 96%;
   --foreground: 240 3% 12%;
   --card: 0 0% 100%;
@@ -365,7 +365,7 @@ a {
   background: var(--bg);
 }
 
-/* Page header — actual definition is below near the body block */
+/* Page header - actual definition is below near the body block */
 .ph-crumbs {
   font-family: var(--sans);
   font-size: 12.5px;
@@ -488,7 +488,7 @@ a {
   background: var(--panel-2);
 }
 
-/* Body — every page sits inside this. Centered with a max-width so
+/* Body - every page sits inside this. Centered with a max-width so
    tables don't sprawl on big monitors. */
 .body {
   padding: 28px 40px 80px;
@@ -503,7 +503,7 @@ a {
   max-width: 1600px;
 }
 
-/* Page header — also centered to match the body width below it */
+/* Page header - also centered to match the body width below it */
 .ph {
   border-bottom: 1px solid var(--border);
   background: var(--bg);
@@ -698,7 +698,7 @@ a {
   font-variant-numeric: tabular-nums;
 }
 .stat .accent-bar {
-  display: none; /* removed — too busy */
+  display: none; /* removed - too busy */
 }
 
 /* ───────── Filter bar ───────── */

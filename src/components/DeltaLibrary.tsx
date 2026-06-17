@@ -1,4 +1,4 @@
-// Stage-2 entry — the delta library, rendered by DeltaWorkspace when no bill is
+// Stage-2 entry - the delta library, rendered by DeltaWorkspace when no bill is
 // addressed. A flat, newest-first list of every bill that already has a GENERATED
 // provision delta, with an Approved / Needs-review tag, filterable by Category
 // and Status and searchable by text, paginated 16 at a time. The symmetric
@@ -75,7 +75,7 @@ export function DeltaLibrary({ nav }: { nav: Nav }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Dropdown options derive from the data itself — no extra endpoint.
+  // Dropdown options derive from the data itself - no extra endpoint.
   const categoryOptions = useMemo(() => {
     const seen = new Set<string>();
     for (const e of entries) for (const p of e.practiceAreas ?? []) seen.add(p);
@@ -124,9 +124,9 @@ export function DeltaLibrary({ nav }: { nav: Nav }) {
         title="Legal delta"
         hint={{
           title: "Delta library",
-          body: "Stage 2 of 4. Every delta Ingenium has generated — the change each bill makes to existing law. Open one to review and approve it, or start a new delta from any amending bill.",
+          body: "Stage 2 of 4. Every delta Ingenium has generated - the change each bill makes to existing law. Open one to review and approve it, or start a new delta from any amending bill.",
         }}
-        sub="Every delta you've generated — open one to review and approve, or start a new delta."
+        sub="Every delta you've generated - open one to review and approve, or start a new delta."
         actions={
           <button
             className="btn primary"
@@ -160,7 +160,7 @@ export function DeltaLibrary({ nav }: { nav: Nav }) {
 
             {loaded && entries.length === 0 && (
               <div className="rd-empty" data-testid="deltas-empty">
-                No deltas generated yet — pick a bill and Ingenium will compute the
+                No deltas generated yet - pick a bill and Ingenium will compute the
                 changes it makes to existing law.
                 <div className="dl-empty-cta">
                   <button

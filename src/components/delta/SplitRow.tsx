@@ -4,7 +4,7 @@ import { wordDiff, type WordPart } from "../../lib/wordDiff";
 
 // One diff row rendered GitHub-split / CanLII style: the current text on the
 // left, the amended text on the right. A changed provision is refined to the
-// word level — only the words that differ are tinted — while a wholly added or
+// word level - only the words that differ are tinted - while a wholly added or
 // repealed provision tints the whole line.
 
 type Intent = "add" | "del" | "context" | "empty";
@@ -38,7 +38,7 @@ function Cell({
 }) {
   if (!prov || intent === "empty") return <div className="dr-cell is-empty" aria-hidden="true" />;
   const indent = Math.max(0, provDepthOf(prov) - baseDepth);
-  // A Part/Division title: the text IS the heading — render it big with no label.
+  // A Part/Division title: the text IS the heading - render it big with no label.
   // The row's add/del tint still applies, so a bill-added heading shows green.
   if (prov.kind === "heading") {
     return (
@@ -75,13 +75,13 @@ export function SplitRow({
   baseDepth = 0,
 }: {
   row: ProvisionDiffRow;
-  /** This row's index into delta.rows — used by the diff to scroll to a specific
+  /** This row's index into delta.rows - used by the diff to scroll to a specific
    *  row (e.g. the section header) on mount. */
   rowIndex?: number;
   /** True when this row is one the current amendment produced (vs. surrounding
    *  context or a neighbouring change). */
   focus?: boolean;
-  /** True when this row is a CHANGE from a different amendment — dimmed so the
+  /** True when this row is a CHANGE from a different amendment - dimmed so the
    *  scrutinised change stands out. */
   dim?: boolean;
   baseDepth?: number;

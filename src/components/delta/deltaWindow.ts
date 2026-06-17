@@ -15,7 +15,7 @@ const isAncestorPath = (anc: Step[], full: Step[]) =>
   anc.length > 0 && anc.length < full.length && anc.every((s, i) => s.label === full[i].label);
 
 /** The ancestor chain (section/subsection headers) the change at `firstIdx` nests
- *  under — the real Act row when one exists in its section, else a synthesized
+ *  under - the real Act row when one exists in its section, else a synthesized
  *  header. (Moved verbatim from ProvisionDiff so the comparator pins headers the
  *  same way.) */
 export function ancestorRows(

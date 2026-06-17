@@ -1,8 +1,8 @@
-/* pages-extra.css — Agent C additions for Delta Workspace,
+/* pages-extra.css - Agent C additions for Delta Workspace,
    Client-Law Scanner, and Client Impact Analysis pages.
    Prefixes: .lj- (LegislativeJourney), .is- (ImpactScale),
              .lpg- (LawPickerGrid), .dw-, .cs-, .cia- (page tweaks).
-   No global selectors — uses tokens via var(--…). */
+   No global selectors - uses tokens via var(--…). */
 
 /* ───────── LegislativeJourney ─────────
    Geometry: pip cell is 28px wide. The vertical line sits at the
@@ -545,7 +545,7 @@
 
 .dr-page {
   /* Bound to the viewport below the 64px shell bar. `.shell` is min-height:100vh
-     (not a fixed height), so flex:1 alone can't constrain — an explicit height
+     (not a fixed height), so flex:1 alone can't constrain - an explicit height
      does. The panes scroll internally; the page itself never scrolls. */
   height: calc(100vh - 64px);
   min-height: 0;
@@ -554,7 +554,7 @@
   overflow: hidden;
 }
 
-/* Slim top bar — bill identity + always-present recompute/progress. */
+/* Slim top bar - bill identity + always-present recompute/progress. */
 .dr-topbar {
   flex: none;
   display: flex;
@@ -618,8 +618,27 @@
   grid-template-columns: minmax(0, 1fr); /* default: comparator full width (bill PDF hidden) */
 }
 .dr-grid.is-pdf-open {
-  grid-template-columns: var(--pdf-w, 33%) 6px minmax(0, 1fr);
+  grid-template-columns: var(--pdf-w, 45%) minmax(0, 1fr);
 }
+
+/* Bill PDF pane toolbar - sizing controls pinned to the top of the pane. */
+.dr-pdf-tools {
+  flex: none; display: flex; align-items: center; gap: 10px;
+  padding: 6px 10px; border-bottom: 1px solid var(--border);
+  background: var(--panel-2);
+}
+.dr-pdf-tools-name {
+  font: 700 10px/1 var(--sans); letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink-3);
+}
+.dr-pdf-tools-grp { margin-left: auto; display: flex; gap: 6px; }
+.dr-pdf-tool {
+  height: 26px; min-width: 28px; padding: 0 10px;
+  border: 1px solid var(--border); border-radius: 7px;
+  background: var(--panel); color: var(--ink-2);
+  font-size: 12px; font-weight: 600; line-height: 1; cursor: pointer;
+}
+.dr-pdf-tool:hover { background: var(--panel-3); color: var(--ink); }
 
 /* Drag handle between the panes. */
 .dr-resizer {
@@ -639,7 +658,7 @@
   inset: 0 -4px;
 }
 
-/* Left — official bill PDF. */
+/* Left - official bill PDF. */
 .dr-pdf {
   display: flex; flex-direction: column; min-height: 0;
   border-right: 1px solid var(--border);
@@ -647,7 +666,7 @@
 }
 .dr-pdf-frame { flex: 1; min-height: 0; width: 100%; border: 0; background: #525659; }
 
-/* Right — the scrollable amendment list (the only scroll region). */
+/* Right - the scrollable amendment list (the only scroll region). */
 .dr-list {
   min-height: 0;
   overflow-y: auto;
@@ -662,7 +681,7 @@
 }
 .dr-banner button { margin-left: auto; flex: none; }
 
-/* Unresolved amendments — a quiet, collapsible strip (never a hard error). */
+/* Unresolved amendments - a quiet, collapsible strip (never a hard error). */
 .dr-fails { flex: none; border-bottom: 1px solid var(--border); background: var(--panel-2); }
 .dr-fails-bar {
   width: 100%; display: flex; align-items: center; gap: 8px;
@@ -700,7 +719,7 @@
 .dr-nav:hover:not(:disabled) { background: var(--panel-3); color: var(--ink); }
 .dr-nav:disabled { opacity: 0.4; cursor: default; }
 
-/* The Act name — the big, centred title, filling the bar's height. */
+/* The Act name - the big, centred title, filling the bar's height. */
 .dr-pager-title {
   justify-self: center; display: flex; align-items: center; gap: 10px; max-width: 100%;
   font-size: 18px; font-weight: 700; color: var(--ink);
@@ -749,7 +768,7 @@
 }
 .dr-pager-body { flex: 1; min-height: 0; padding: 14px 16px; }
 
-/* Amendment card — fills the pager body; approving recolours the border. */
+/* Amendment card - fills the pager body; approving recolours the border. */
 .dr-card {
   height: 100%;
   display: flex; flex-direction: column;
@@ -792,7 +811,7 @@
   color: var(--ink); background: var(--panel-2); border-left: 2px solid var(--accent-warm); border-radius: 0 5px 5px 0;
 }
 
-/* The diff (where it lands in the Act) — a side-by-side (current | as-amended)
+/* The diff (where it lands in the Act) - a side-by-side (current | as-amended)
    window that fills the card's remaining height and scrolls within. */
 .dr-diff {
   position: relative;
@@ -803,7 +822,7 @@
   font-family: var(--mono);
 }
 /* Sticky header: the "Current / As amended" column labels and, beneath them, the
-   section/subsection the change nests under — pinned so the hierarchy and the
+   section/subsection the change nests under - pinned so the hierarchy and the
    two sides stay oriented while scrolling local context. */
 .dr-diff-head {
   position: sticky;
@@ -853,7 +872,7 @@
 
 /* The split body: each row is two equal cells. */
 /* A Part/Division title (e.g. "List of Therapeutic Products Pre-approved for Special
-   Access") — a normal diff cell, so it tints green/red when the bill adds/repeals it,
+   Access") - a normal diff cell, so it tints green/red when the bill adds/repeals it,
    but the title text reads big with no label. */
 .dr-cell-heading {
   padding-top: 12px;
@@ -879,7 +898,7 @@
      together and lifts them above the surrounding context + dimmed changes. */
   box-shadow: inset 3px 0 0 0 var(--accent);
 }
-/* A change produced by a DIFFERENT amendment in this window — faded back so it
+/* A change produced by a DIFFERENT amendment in this window - faded back so it
    reads as context, not as part of the change under review. Stays muted; hovering
    shows a tooltip explaining it belongs to another amendment. */
 .dr-srow.is-dim {
@@ -901,7 +920,7 @@
 .dr-cell:last-child {
   border-right: none;
 }
-/* An absent side (a wholly added or repealed provision) — faint hatch so the
+/* An absent side (a wholly added or repealed provision) - faint hatch so the
    eye reads "nothing here", not "unchanged". */
 .dr-cell.is-empty {
   background: repeating-linear-gradient(
@@ -940,7 +959,7 @@
   color: var(--crit);
 }
 /* The leaf label runs INLINE as the bold lead-in of the text (like the Act), so a
-   long label — e.g. a multi-word definition term — never squeezes the text into a
+   long label - e.g. a multi-word definition term - never squeezes the text into a
    narrow column. */
 .dr-cell-label {
   font-weight: 700;
@@ -1087,7 +1106,7 @@
 .dr-pick-title { font-size: 12.5px; color: var(--ink-2); line-height: 1.4; }
 
 @media (max-width: 920px) {
-  /* Collapse to a single column on narrow screens — the .is-pdf-open variant has
+  /* Collapse to a single column on narrow screens - the .is-pdf-open variant has
      higher specificity, so it must be named here to be overridden. */
   .dr-grid,
   .dr-grid.is-pdf-open { grid-template-columns: 1fr; }

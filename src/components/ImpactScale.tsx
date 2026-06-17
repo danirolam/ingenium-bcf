@@ -21,7 +21,7 @@ export function ImpactScale({ level }: { level: Level }) {
         Impact level{" "}
         <Tooltip
           title="How impact level is set"
-          body="The brief agent sets it (low / medium / high / critical) from the bill's counsel-approved changes and this client's profile — by how materially the changes would affect the client's obligations and operations. When the analysis spans several provision batches, the highest severity wins. (Distinct from the stage-3 scan band, a 0–100 relevance score.)"
+          body="The brief agent sets it (low / medium / high / critical) from the bill's counsel-approved changes and this client's profile - by how materially the changes would affect the client's obligations and operations. When the analysis spans several provision batches, the highest severity wins. (Distinct from the stage-3 scan band, a 0–100 relevance score.)"
         >
           <span
             data-testid="impact-level-info"

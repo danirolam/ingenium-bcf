@@ -35,7 +35,7 @@ function currentRoute(): Route {
 export default function App() {
   // The URL is the single source of truth for navigation. `go` pushes a new
   // history entry; the popstate listener re-reads the URL when the user hits
-  // the browser back/forward arrows — so the arrows step through the workflow.
+  // the browser back/forward arrows - so the arrows step through the workflow.
   const [route, setRoute] = useState<Route>(() => currentRoute());
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
@@ -47,7 +47,7 @@ export default function App() {
 
   const { surface, page, params } = route;
 
-  // Every page (and entering the app) opens at the top — never inherit the
+  // Every page (and entering the app) opens at the top - never inherit the
   // previous view's scroll position.
   useEffect(() => {
     window.scrollTo(0, 0);

@@ -1,4 +1,4 @@
-// Client-side export helpers — no dependencies. CSV for lists; a Word-openable
+// Client-side export helpers - no dependencies. CSV for lists; a Word-openable
 // .doc (HTML blob) and a print-to-PDF window for documents (briefs, deltas).
 
 function triggerDownload(blob: Blob, filename: string) {

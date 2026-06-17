@@ -2,7 +2,7 @@ import type { ActProvision } from "../../types";
 
 // Shared law-rendering primitives: how a provision maps to its hierarchy steps,
 // its indentation depth, and its leaf label. One source of truth for the diff
-// rows, the ancestor breadcrumb, and the PDF export — so labels + indentation
+// rows, the ancestor breadcrumb, and the PDF export - so labels + indentation
 // never disagree between them.
 
 export type Step = { kind: string; label: string };
@@ -29,7 +29,7 @@ export function segments(prov: ActProvision): Step[] {
 export const provDepthOf = (prov: ActProvision): number => Math.max(0, segments(prov).length - 1);
 
 // The leaf label as it appears in the Act: sections keep their number ("5.3"),
-// definitions their bare term ("pharmacist", bolded by the label style — like the
+// definitions their bare term ("pharmacist", bolded by the label style - like the
 // Act), everything else is bracketed ("(c)").
 export function leafLabel(prov: ActProvision): string {
   if (prov.kind === "schedule") return prov.label; // e.g. "SCHEDULE IV row 2222" (don't normalize)
@@ -41,7 +41,7 @@ export function leafLabel(prov: ActProvision): string {
 }
 
 // The text to render. A definition opens with its own term ("pharmacist means a
-// person who"), which is already shown as the bold leaf label — so drop the leading
+// person who"), which is already shown as the bold leaf label - so drop the leading
 // term, matching how the Act prints it (term, then "means …", not repeated).
 export function displayText(prov: ActProvision): string {
   const text = prov.text ?? "";

@@ -53,7 +53,7 @@ export function useApprovals(billId: string | null): ApprovalsState {
 
   const isApproved = useCallback((key: string) => approvedKeys.has(key), [approvedKeys]);
 
-  // Re-pull from the server — used after a recompute, which clears approvals
+  // Re-pull from the server - used after a recompute, which clears approvals
   // server-side (new delta ⇒ new placements to approve).
   const refetch = useCallback(() => {
     const id = billRef.current;

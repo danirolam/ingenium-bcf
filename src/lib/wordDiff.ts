@@ -1,7 +1,7 @@
 // A minimal word-level diff for statutory text. Tokenizes on whitespace
 // boundaries (words and the spaces between them, both kept) and runs a longest-
 // common-subsequence pass so a "changed" provision highlights only the words
-// that actually changed — CanLII / GitHub style — instead of repainting the
+// that actually changed - CanLII / GitHub style - instead of repainting the
 // whole paragraph red+green.
 
 export type WordPart = { text: string; kind: "same" | "del" | "add" };

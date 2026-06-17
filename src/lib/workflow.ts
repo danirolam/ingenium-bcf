@@ -41,7 +41,7 @@ export const WORKFLOW_STEPS: WorkflowStep[] = [
     label: "Legal delta",
     purpose: "See what each bill changes",
     detail:
-      "Compare a bill against the consolidated Acts it amends — added, repealed, and replaced sections shown side by side — then approve the delta so it can inform client work.",
+      "Compare a bill against the consolidated Acts it amends - added, repealed, and replaced sections shown side by side - then approve the delta so it can inform client work.",
     produces: "Hands a counsel-approved change to the client scan.",
     icon: faCodeCompare,
   },

@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import type { CSSProperties, MouseEvent as ReactMouseEvent } from "react";
+import { useEffect, useMemo, useState } from "react";
+import type { CSSProperties } from "react";
 import type { AmendmentFailure, Bill, BillAmendmentOp, ProvisionDelta } from "../../types";
 import type { ApprovalsState } from "../../lib/useApprovals";
 import { BillPdfPane } from "../../components/delta/BillPdfPane";
@@ -10,7 +10,7 @@ type Item = { delta: ProvisionDelta; op: BillAmendmentOp };
 
 // The review surface: bill PDF left, one full-height amendment right. The user
 // pages through amendments with ← / → (or arrow keys); approving doesn't collapse
-// anything — it recolours the card's border. Amendments are a flat ordered list
+// anything - it recolours the card's border. Amendments are a flat ordered list
 // across every affected Act (Act order preserved); the current Act is shown in the
 // pager bar, and export is gated per Act.
 export function DeltaReview({
@@ -41,37 +41,20 @@ export function DeltaReview({
 
   const [idx, setIdx] = useState(0);
   const [showFails, setShowFails] = useState(false);
-  // Acts already exported this session — the chip dims to "done" but stays clickable.
+  // Acts already exported this session - the chip dims to "done" but stays clickable.
   const [exported, setExported] = useState<Set<string>>(new Set());
   const at = Math.min(idx, Math.max(0, items.length - 1));
   const go = (step: number) => setIdx(() => Math.max(0, Math.min(items.length - 1, at + step)));
 
-  // Resizable PDF pane: default to a generous ~45% of the viewport so the bill
-  // text is readable without scrolling; counsel can drag the divider either way.
-  // Width lives in a CSS var so the responsive media query can still collapse the
-  // two-pane grid on narrow screens.
-  const gridRef = useRef<HTMLDivElement>(null);
-  const [pdfPx, setPdfPx] = useState(() =>
-    Math.round((typeof window !== "undefined" ? window.innerWidth : 1200) * 0.45),
-  );
-  const startDrag = (e: ReactMouseEvent) => {
-    e.preventDefault();
-    document.body.style.cursor = "col-resize";
-    document.body.style.userSelect = "none";
-    const move = (ev: MouseEvent) => {
-      const rect = gridRef.current?.getBoundingClientRect();
-      if (!rect) return;
-      setPdfPx(Math.max(300, Math.min(rect.width - 420, ev.clientX - rect.left)));
-    };
-    const up = () => {
-      document.body.style.cursor = "";
-      document.body.style.userSelect = "";
-      window.removeEventListener("mousemove", move);
-      window.removeEventListener("mouseup", up);
-    };
-    window.addEventListener("mousemove", move);
-    window.addEventListener("mouseup", up);
-  };
+  // The bill PDF stays in the left column; counsel sizes it from the toolbar at
+  // the top of the pane (collapse, narrower, wider, expand) rather than a drag
+  // edge. Width lives in a CSS var so the responsive media query can still
+  // collapse the two-pane grid on narrow screens. Default to a readable ~45%.
+  const vw = () => (typeof window !== "undefined" ? window.innerWidth : 1200);
+  const PDF_MIN = 320;
+  const [pdfPx, setPdfPx] = useState(() => Math.round(vw() * 0.45));
+  const sizePdf = (px: number) => setPdfPx(Math.max(PDF_MIN, Math.min(Math.round(vw() * 0.8), px)));
+  const stepPdf = (delta: number) => sizePdf(pdfPx + delta);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -119,8 +102,8 @@ export function DeltaReview({
         <div className="dr-banner" role="alert">
           <span>
             {incompleteReason === "rate-limit"
-              ? "Interpretation is partial — the AI hit its rate limit."
-              : "Interpretation is partial — an AI call failed."}{" "}
+              ? "Interpretation is partial - the AI hit its rate limit."
+              : "Interpretation is partial - an AI call failed."}{" "}
             Some amendments may be missing.
           </span>
           <button className="btn ghost sm" onClick={onRecompute} disabled={refreshing}>
@@ -133,7 +116,7 @@ export function DeltaReview({
           <button className="dr-fails-bar" onClick={() => setShowFails((v) => !v)} aria-expanded={showFails}>
             <span className="dr-fails-ic">⚠</span>
             <span>
-              {failures.length} amendment{failures.length === 1 ? "" : "s"} couldn’t be located — verify against the bill PDF
+              {failures.length} amendment{failures.length === 1 ? "" : "s"} couldn’t be located - verify against the bill PDF
             </span>
             <span className="dr-fails-chev">{showFails ? "▾" : "▸"}</span>
           </button>
@@ -152,17 +135,15 @@ export function DeltaReview({
       )}
       <div
         className={`dr-grid${bill ? " is-pdf-open" : ""}`}
-        ref={gridRef}
         style={{ "--pdf-w": `${pdfPx}px` } as CSSProperties}
       >
-        {bill && <BillPdfPane bill={bill} />}
         {bill && (
-          <div
-            className="dr-resizer"
-            role="separator"
-            aria-orientation="vertical"
-            title="Drag to resize the bill PDF"
-            onMouseDown={startDrag}
+          <BillPdfPane
+            bill={bill}
+            onCollapse={() => sizePdf(PDF_MIN)}
+            onNarrower={() => stepPdf(-140)}
+            onWider={() => stepPdf(140)}
+            onExpand={() => sizePdf(Math.round(vw() * 0.7))}
           />
         )}
         <div className="dr-pager">

@@ -1,4 +1,4 @@
-/* Stage 4 — Brief library (flat, filterable). Imported only by
+/* Stage 4 - Brief library (flat, filterable). Imported only by
    src/components/BriefPicker.tsx; everything is namespaced `bp-` so nothing
    leaks into other pages. Mirrors the app's card/list aesthetics (lpg cards,
    cs scoreboard rows) on the shared tokens. */

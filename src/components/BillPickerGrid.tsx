@@ -82,7 +82,7 @@ export function BillPickerGrid({
 
       {hiddenCount > 0 && (
         <div className="bpg-more">
-          +{hiddenCount} more — refine your search to narrow the list.
+          +{hiddenCount} more - refine your search to narrow the list.
         </div>
       )}
     </div>

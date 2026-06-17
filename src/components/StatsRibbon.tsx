@@ -62,7 +62,7 @@ export function StatsRibbon({ bills }: { bills: Bill[] }) {
       <Tooltip
         className="bm-cell"
         title="Royal assent"
-        body="Bills that have received royal assent — now in force as law."
+        body="Bills that have received royal assent - now in force as law."
         placement="bottom"
       >
         <div className="stat-l">Royal assent</div>
@@ -77,7 +77,7 @@ export function StatsRibbon({ bills }: { bills: Bill[] }) {
       >
         <div className="stat-l">Last ingest</div>
         <div className="stat-v tnum">
-          {stats.recencyDays === null ? "—" : `${stats.recencyDays}d`}
+          {stats.recencyDays === null ? "-" : `${stats.recencyDays}d`}
         </div>
       </Tooltip>
     </div>

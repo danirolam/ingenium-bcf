@@ -251,7 +251,7 @@ export function BillMonitor({ nav }: { nav: Nav }) {
           <div className="bm-toolbar-left">
             <Tooltip
               title="Session of Parliament"
-              body="Pick which session to browse — 45-1 is the current one. Choose ‘All sessions’ to search the full historical docket."
+              body="Pick which session to browse - 45-1 is the current one. Choose ‘All sessions’ to search the full historical docket."
               placement="bottom"
             >
             <label
@@ -320,7 +320,7 @@ export function BillMonitor({ nav }: { nav: Nav }) {
               Category
               <InfoHint
                 title="Browse by category"
-                body="Not sure which bill? Pick a practice area to see every bill that touches it — tagged automatically from each bill's title and subject."
+                body="Not sure which bill? Pick a practice area to see every bill that touches it - tagged automatically from each bill's title and subject."
               />
             </span>
             <div className="bm-practice-pills">

@@ -1,4 +1,4 @@
-/* Stage 2 — Delta library (flat, filterable, paginated) + the "New delta"
+/* Stage 2 - Delta library (flat, filterable, paginated) + the "New delta"
    picker modal. Imported only by src/components/DeltaLibrary.tsx; everything is
    namespaced `dl-` so nothing leaks. Mirrors the Stage-4 brief library (bp-*)
    on the shared tokens. */

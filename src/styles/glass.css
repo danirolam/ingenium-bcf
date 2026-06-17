@@ -101,14 +101,14 @@
   border-radius: 999px;
   padding-left: 16px;
 }
-/* Selected filter chip — ink-solid, instantly legible */
+/* Selected filter chip - ink-solid, instantly legible */
 .bm-pill.is-active {
   background: var(--ink);
   border-color: var(--ink);
   color: #ffffff;
 }
 
-/* Primary action — ink-solid, like the rest of the system */
+/* Primary action - ink-solid, like the rest of the system */
 .btn.primary {
   background: var(--ink);
   border-color: transparent;

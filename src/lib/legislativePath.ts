@@ -273,7 +273,7 @@ export function parseBillDetail(detail: any): ParsedBillDetail | null {
     : [];
 
   // Sequence the path by originating chamber, then the reviewing chamber, then
-  // the crown — the order a bill actually travels.
+  // the crown - the order a bill actually travels.
   const ordered = originatingHouse ? [...house, ...senate] : [...senate, ...house];
   const path = [...ordered, ...royal];
 

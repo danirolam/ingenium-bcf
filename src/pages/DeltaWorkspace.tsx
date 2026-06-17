@@ -17,7 +17,7 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
   const [inspectOpen, setInspectOpen] = useState(false);
 
   // A finished recompute clears approvals server-side (new delta ⇒ new placements
-  // to approve) — re-pull so the UI shows them reset.
+  // to approve) - re-pull so the UI shows them reset.
   const wasRefreshing = useRef(false);
   useEffect(() => {
     if (wasRefreshing.current && !delta.refreshing) approvals.refetch();
@@ -88,14 +88,14 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
       ) : delta.deltas.length === 0 ? (
         <div className="dr-state">
           <p>
-            No grounded delta for {delta.bill?.billNumber ?? "this bill"} — it creates a new Act,
+            No grounded delta for {delta.bill?.billNumber ?? "this bill"} - it creates a new Act,
             amends one we don’t track, or has no ingested text.
           </p>
           {delta.errors[0] && <p className="dr-state-err">{delta.errors[0]}</p>}
           {delta.failures.length > 0 && (
             <p className="dr-state-err">
               {delta.failures.length} amendment{delta.failures.length === 1 ? "" : "s"} couldn’t be
-              located — verify against the bill PDF.
+              located - verify against the bill PDF.
             </p>
           )}
         </div>

@@ -1,7 +1,7 @@
-// Stage-3 (Client Scan) API surface — the bill-first batch-scan endpoints.
+// Stage-3 (Client Scan) API surface - the bill-first batch-scan endpoints.
 // Kept separate from src/lib/api.ts so the shared client stays untouched;
 // mirrors its `j()` fetch-helper style. Wire types are re-declared locally
-// (the server's clientScanCore.ts is the source of truth — do not import
+// (the server's clientScanCore.ts is the source of truth - do not import
 // across the server/ boundary).
 import type { Client } from "../types";
 
@@ -17,7 +17,7 @@ async function j<T>(url: string, init?: RequestInit): Promise<T> {
   return (await res.json()) as T;
 }
 
-/** A bill with at least one counsel-approved amendment — eligible for scanning. */
+/** A bill with at least one counsel-approved amendment - eligible for scanning. */
 export interface ScanReadyBill {
   billId: string;
   billNumber: string;
@@ -74,12 +74,12 @@ export function fetchScanReadyDetail(
 
 // ── Impact scans (the fast scorer agent) ────────────────────────────────────
 
-/** Severity band of a fast impact scan — mirrors clientScanCore SCAN_BANDS. */
+/** Severity band of a fast impact scan - mirrors clientScanCore SCAN_BANDS. */
 export type ScanBand = "low" | "medium" | "high" | "critical";
 
 /**
  * One persisted scan as served to the client. The numeric 0–100 score is
- * backend-only (the server ranks with it and strips it from every response) —
+ * backend-only (the server ranks with it and strips it from every response) -
  * this view NEVER carries a `score` field. Mirrors ImpactScanView in
  * server/routes/clientImpact.ts (kept in sync by hand).
  */
@@ -97,7 +97,7 @@ export interface ImpactScanView {
 }
 
 /**
- * Fast impact score for ONE (client, bill) pair — seconds, not the ~30s brief.
+ * Fast impact score for ONE (client, bill) pair - seconds, not the ~30s brief.
  * Persisted latest-wins server-side; 400/404 on bad ids.
  */
 export function runScan(
@@ -111,7 +111,7 @@ export function runScan(
 }
 
 /**
- * All persisted scans for a bill — ALREADY ranked by the server (hidden score
+ * All persisted scans for a bill - ALREADY ranked by the server (hidden score
  * desc, client name asc on ties); orphaned clients are filtered server-side.
  */
 export function fetchScans(
@@ -140,11 +140,11 @@ export function deleteClient(id: string): Promise<{ ok: boolean }> {
 }
 
 // ── Brief library (stage-4 entry) ────────────────────────────────────────────
-// Wire shape for GET /api/client-impact/briefs — mirrored from
+// Wire shape for GET /api/client-impact/briefs - mirrored from
 // server/routes/clientImpact.ts (BriefIndexEntry); keep in sync. A FLAT index:
 // one entry per latest-(client, bill) pair, server-sorted newest first.
 // `approved` mirrors the analysis' saved flag (the counsel-approval gate).
-// Bands only — the numeric score never leaves the backend.
+// Bands only - the numeric score never leaves the backend.
 
 export interface BriefIndexEntry {
   analysisId: string;
@@ -159,7 +159,7 @@ export interface BriefIndexEntry {
   approved: boolean;
 }
 
-/** Every brief (latest per pair), chronological — newest first. */
+/** Every brief (latest per pair), chronological - newest first. */
 export function fetchBriefIndex(signal?: AbortSignal): Promise<BriefIndexEntry[]> {
   return j<BriefIndexEntry[]>("/api/client-impact/briefs", { signal });
 }
@@ -167,7 +167,7 @@ export function fetchBriefIndex(signal?: AbortSignal): Promise<BriefIndexEntry[]
 /**
  * Generate (or regenerate) the full brief for a pair, optionally with
  * reviewing-lawyer instructions the brief agent must follow. Guidance is
- * transient — it shapes this generation only and is never persisted. Stage 3
+ * transient - it shapes this generation only and is never persisted. Stage 3
  * keeps using api.clientImpact.analyze (no guidance there).
  */
 export function analyzeWithGuidance(

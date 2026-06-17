@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { Tooltip } from "./Tooltip";
 
 // A small "ⓘ" affordance for section headers and controls. Hover or focus it to
-// read what the thing does — the per-control help the workspace was missing.
+// read what the thing does - the per-control help the workspace was missing.
 export function InfoHint({
   title,
   body,

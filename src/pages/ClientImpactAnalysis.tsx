@@ -42,7 +42,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
   const [regenText, setRegenText] = useState("");
   const [regenBusy, setRegenBusy] = useState(false);
   // Counsel's answers to the brief's verification questions, keyed by index.
-  // Transient like guidance — they ride the same regen channel, never stored.
+  // Transient like guidance - they ride the same regen channel, never stored.
   const [reviewAnswers, setReviewAnswers] = useState<Record<number, string>>({});
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     why: true,
@@ -56,7 +56,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
   const { clientId, billId } = nav.params;
 
   useEffect(() => {
-    // A different pair owns the page now — its regen draft AND its question
+    // A different pair owns the page now - its regen draft AND its question
     // answers die with it (the page never unmounts across SPA navigation, so
     // stale answers would otherwise pair with the NEXT brief's questions).
     setRegenOpen(false);
@@ -84,7 +84,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clientId, billId]);
 
-  // Acts the bill touches — used in place of the old law-version's baseLawTitle.
+  // Acts the bill touches - used in place of the old law-version's baseLawTitle.
   const affectedActs = useMemo(() => {
     if (!bill) return [] as string[];
     const acts = new Set<string>();
@@ -101,7 +101,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     if (!clientId || !billId) return;
     setBusy(true);
     try {
-      // Same endpoint as before — routed through the guidance-capable helper
+      // Same endpoint as before - routed through the guidance-capable helper
       // (no guidance here), so stage 4 has a single analyze entry point.
       const { analysis: a, email } = await analyzeWithGuidance(
         clientId,
@@ -128,7 +128,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
         <PageHeader
           crumbs={["Workspace", "Client Brief"]}
           title="Client Brief"
-          sub="Browse generated briefs — pick a bill, then the client whose brief to open."
+          sub="Browse generated briefs - pick a bill, then the client whose brief to open."
         />
         <div className="body">
           <BriefPicker nav={nav} />
@@ -164,7 +164,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     );
   }
 
-  // Counsel approval — repurposes the stored `saved` flag (and the existing
+  // Counsel approval - repurposes the stored `saved` flag (and the existing
   // /save route). Approval is per-version: regenerating creates a fresh,
   // unapproved analysis, so the gate re-engages automatically.
   async function approve() {
@@ -173,7 +173,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     try {
       const updated = await api.clientImpact.save(analysis.id);
       setAnalysis(updated);
-      nav.toast("Brief approved — client email drafted; email and download unlocked.");
+      nav.toast("Brief approved - client email drafted; email and download unlocked.");
     } finally {
       setBusy(false);
     }
@@ -194,7 +194,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
   }
 
   // Regenerate the brief, optionally steered by reviewing-lawyer instructions
-  // (transient — never persisted). An empty textarea is a plain regen.
+  // (transient - never persisted). An empty textarea is a plain regen.
   async function regenerate() {
     if (!clientId || !billId || regenBusy) return;
     setRegenBusy(true);
@@ -212,7 +212,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
       setAnalysis(reloaded);
       setRegenOpen(false);
       setRegenText("");
-      // The new version has NEW questions — typed answers no longer pair.
+      // The new version has NEW questions - typed answers no longer pair.
       setReviewAnswers({});
       nav.toast("Brief regenerated.");
     } catch (err: any) {
@@ -224,7 +224,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
   }
 
   // Regenerate using counsel's ANSWERS to the brief's verification questions.
-  // Same transient guidance channel as free-form feedback — each answer is
+  // Same transient guidance channel as free-form feedback - each answer is
   // sent with its question's FULL TEXT so the agent reads the resolution in
   // context (the questions also reach it inside the PREVIOUS BRIEF block).
   async function regenerateWithAnswers() {
@@ -238,7 +238,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
       "COUNSEL ANSWERS TO THE BRIEF'S VERIFICATION QUESTIONS:\n" +
       pairs.map((p, i) => `Q${i + 1}: ${p.q}\nA${i + 1}: ${p.a}`).join("\n");
     if (composed.length > 2000) {
-      // The guidance channel caps at 2000 chars server-side — truncate at a
+      // The guidance channel caps at 2000 chars server-side - truncate at a
       // pair boundary so no half-answer goes through, and say so.
       const header = "COUNSEL ANSWERS TO THE BRIEF'S VERIFICATION QUESTIONS:\n";
       let cut = header;
@@ -248,12 +248,12 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
         cut += next;
       }
       if (cut === header) {
-        // Even the first pair doesn't fit — don't fire an answer-less regen.
-        nav.toast("That answer is too long for one regeneration — please shorten it.");
+        // Even the first pair doesn't fit - don't fire an answer-less regen.
+        nav.toast("That answer is too long for one regeneration - please shorten it.");
         return;
       }
       composed = cut.trimEnd();
-      nav.toast("Answers exceed the feedback limit — sending the first answers that fit.");
+      nav.toast("Answers exceed the feedback limit - sending the first answers that fit.");
     }
     setRegenBusy(true);
     try {
@@ -286,8 +286,8 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
       .join("");
     const body = `
       <div class="doc-label">Privileged &amp; confidential · Counsel work product</div>
-      <h1>Client exposure brief — ${esc(client?.name ?? "Client")}</h1>
-      <p class="doc-meta">${esc(bill?.billNumber ?? "")} — ${esc(bill?.title ?? "")}${
+      <h1>Client exposure brief - ${esc(client?.name ?? "Client")}</h1>
+      <p class="doc-meta">${esc(bill?.billNumber ?? "")} - ${esc(bill?.title ?? "")}${
         affectedActs.length ? ` · affecting ${esc(affectedActs.join(", "))}` : ""
       }</p>
       <h2>Assessment</h2>
@@ -304,7 +304,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     const slug = (client?.name ?? "client").replace(/\W+/g, "-").toLowerCase();
     downloadDoc(
       `brief-${slug}-${(bill?.billNumber ?? "bill").toLowerCase()}.doc`,
-      `Client brief — ${client?.name ?? "Client"}`,
+      `Client brief - ${client?.name ?? "Client"}`,
       body,
     );
     nav.toast("Brief downloaded (opens in Word; save as PDF from there).");
@@ -328,10 +328,10 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
           "Client Brief",
           client?.name ?? "Brief",
         ]}
-        title={`Client Brief — ${client?.name ?? "…"}`}
+        title={`Client Brief - ${client?.name ?? "…"}`}
         sub={
           bill
-            ? `Brief for ${bill.billNumber} — ${bill.title}.`
+            ? `Brief for ${bill.billNumber} - ${bill.title}.`
             : undefined
         }
         actions={
@@ -395,7 +395,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
                 <div className="card-title">Regenerate with feedback</div>
               </div>
               <div className="card-sub">
-                The analyst revises THIS brief (it travels along as context) —
+                The analyst revises THIS brief (it travels along as context) -
                 your notes can be instructions or feedback on it. Not stored.
                 Regenerating creates a new, unapproved version.
               </div>
@@ -575,7 +575,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
                             style={{ width: "100%", marginTop: 6 }}
                             value={reviewAnswers[i] ?? ""}
                             disabled={regenBusy}
-                            placeholder="Counsel's answer (optional) — feeds the next regeneration"
+                            placeholder="Counsel's answer (optional) - feeds the next regeneration"
                             onChange={(e) =>
                               setReviewAnswers((cur) => ({
                                 ...cur,
@@ -650,11 +650,11 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
             >
               <div className="kv kv-card">
                 <div className="k">Bill</div>
-                <div className="v">{bill?.billNumber} — {bill?.title}</div>
+                <div className="v">{bill?.billNumber} - {bill?.title}</div>
                 <div className="k">Status</div>
                 <div className="v">{bill?.status}</div>
                 <div className="k">Acts amended</div>
-                <div className="v">{affectedActs.join(", ") || "—"}</div>
+                <div className="v">{affectedActs.join(", ") || "-"}</div>
               </div>
             </InsightSection>
           </div>

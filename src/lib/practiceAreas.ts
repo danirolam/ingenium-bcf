@@ -1,6 +1,6 @@
 // BCF practice-group taxonomy and deterministic bill classification.
 // Bills are tagged by keyword matching against their title, categories, and
-// clause headings — no model calls, fully reproducible.
+// clause headings - no model calls, fully reproducible.
 
 export interface PracticeArea {
   id: string;

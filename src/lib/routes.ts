@@ -4,7 +4,7 @@
 //
 // `parsePath` turns the current location into the screen + params to render;
 // `buildPath` is the inverse, turning a screen + params into the URL to push.
-// App.tsx is the only consumer — pages keep using the unchanged `Nav` object.
+// App.tsx is the only consumer - pages keep using the unchanged `Nav` object.
 import type { PageId } from "../App";
 
 export type Surface = "landing" | "app";
@@ -73,7 +73,7 @@ export function parsePath(pathname: string, search = ""): Route {
       if (segments[2] === "delta") {
         const law = query.get("law");
         if (law) params.lawVersionId = law;
-        // Single review surface — approve cards then export inline (no phase axis).
+        // Single review surface - approve cards then export inline (no phase axis).
         return app("delta");
       }
       return app("bill");
@@ -97,7 +97,7 @@ export function parsePath(pathname: string, search = ""): Route {
       return app("impact");
 
     default:
-      // Unknown path — fall back to the workspace overview rather than 404.
+      // Unknown path - fall back to the workspace overview rather than 404.
       return app("overview");
   }
 }

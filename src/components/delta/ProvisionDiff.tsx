@@ -49,7 +49,7 @@ function pairReplacements(
   return out;
 }
 
-// The first row of the section a change lives in — so the section header + its
+// The first row of the section a change lives in - so the section header + its
 // subsection chapeau are always pulled into the window and shown inline, in
 // document order, the way the Act prints them. (The change's path[0] is its
 // section; walk back over rows sharing that section.)
@@ -107,12 +107,12 @@ export function ProvisionDiff({ delta, op }: { delta: ProvisionDelta; op: BillAm
       <div className="dr-diff-empty">
         No matching provision found in {delta.title}. The bill names{" "}
         <code>{op.anchor ?? "an unspecified location"}</code>, which we couldn't resolve in the
-        ingested Act — verify against the bill PDF.
+        ingested Act - verify against the bill PDF.
       </div>
     );
   }
 
-  // The change's own section — its header + subsection chapeau are shown INLINE,
+  // The change's own section - its header + subsection chapeau are shown INLINE,
   // in document order, exactly as the Act prints them (so a paragraph change reads
   // "5 (1) The Governor in Council… (b) …", not a faint floating breadcrumb). The
   // window always reaches up to this section's first row; it never trims the normal

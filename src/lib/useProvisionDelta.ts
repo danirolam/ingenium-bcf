@@ -6,7 +6,7 @@ export interface ProvisionDeltaState {
   bill: Bill | null;
   deltas: ProvisionDelta[];
   errors: string[];
-  /** Amendments the locator couldn't place — shown subtly, never dropped. */
+  /** Amendments the locator couldn't place - shown subtly, never dropped. */
   failures: AmendmentFailure[];
   /** The server logs from this run, verbatim, for the Inspect panel. */
   logs: string[];

@@ -53,8 +53,8 @@ interface ScanRow {
 /**
  * Fold the server's ranked scan list (hidden score desc, name asc) back into
  * the scoreboard: scored rows adopt the fresh server view (order + hasBrief),
- * non-scored local rows (e.g. failed) keep their status — a stale stored scan
- * must not paper over a failure — and rows the server never stored (failed
+ * non-scored local rows (e.g. failed) keep their status - a stale stored scan
+ * must not paper over a failure - and rows the server never stored (failed
  * with no prior scan) trail in their local order.
  */
 function mergeRanked(prev: ScanRow[], ranked: ImpactScanView[]): ScanRow[] {
@@ -92,7 +92,7 @@ function fmtWhen(iso: string): string {
   return d.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
 }
 
-// Stage 3 — bill-first batch scanner, two-phase. Pick a bill whose amendments
+// Stage 3 - bill-first batch scanner, two-phase. Pick a bill whose amendments
 // counsel approved in stage 2, select the clients to test it against, and run
 // a sequential FAST scan: every client gets an impact band on the scoreboard
 // (the numeric score stays server-side). The full ~30s brief (stage 4) is then
@@ -122,7 +122,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
   const [scanBillId, setScanBillId] = useState("");
   const [scanRows, setScanRows] = useState<ScanRow[]>([]);
   const [scansLoading, setScansLoading] = useState(false);
-  // Accordion: the clientId whose rationale panel is open — at most ONE.
+  // Accordion: the clientId whose rationale panel is open - at most ONE.
   const [openRationaleId, setOpenRationaleId] = useState<string | null>(null);
   // Clients in the ACTIVE run: their Analyze stays locked until the loop ends
   // (rows already scored from persistence remain analyzable mid-run).
@@ -204,7 +204,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedBillId, readyBills]);
 
-  // Scoreboard rows belong to the bill they were run against — switching bills
+  // Scoreboard rows belong to the bill they were run against - switching bills
   // clears them (rationale accordion and per-row analyzing flags die with the
   // rows) and retires the run. Bumping scanRunRef makes the orphaned loop
   // PERMANENTLY stale: without it, switching away and back to the same bill
@@ -261,7 +261,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
 
   // ── Client selection ──
   // Pre-scan picker: filter by name/industry, ordered A→Z. (The post-scan
-  // scoreboard keeps its server score-ranking — this only sorts the picker.)
+  // scoreboard keeps its server score-ranking - this only sorts the picker.)
   const clientQ = clientQuery.trim().toLowerCase();
   const visibleClients = [...clients]
     .filter(
@@ -372,7 +372,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
   async function runScan() {
     if (!canRun || !selectedReady) return;
     const billId = selectedReady.billId;
-    // Snapshot the selection in list order — edits during the run can't shift rows.
+    // Snapshot the selection in list order - edits during the run can't shift rows.
     const ids = clients
       .filter((c) => selectedClientIds.has(c.id))
       .map((c) => c.id);
@@ -430,7 +430,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
       if (stale()) return;
       setScanRows((prev) => mergeRanked(prev, ranked));
     } catch {
-      // Ranking refresh is cosmetic — keep the local order if it fails.
+      // Ranking refresh is cosmetic - keep the local order if it fails.
     }
     if (stale()) return;
     setScanning(false);
@@ -470,7 +470,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
     patchRow(clientId, { analyzing: true, analyzeError: undefined });
     try {
       const { analysis } = await api.clientImpact.analyze(clientId, billId);
-      // Rows only survive while their bill stays selected — if it changed,
+      // Rows only survive while their bill stays selected - if it changed,
       // drop the patch (the brief is persisted; hasBrief returns on re-seed).
       if (!mountedRef.current || selectedBillIdRef.current !== billId) return;
       setScanRows((rows) =>
@@ -503,9 +503,9 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
       <PageHeader
         crumbs={["Workspace", "Client Scan"]}
         title="Client Scan"
-        sub="Scan counsel-approved bill changes against your client base — every selected client gets an impact brief."
+        sub="Scan counsel-approved bill changes against your client base - every selected client gets an impact brief."
         hint={{
-          title: "Stage 3 — Client scan",
+          title: "Stage 3 - Client scan",
           body: "Pick a bill whose amendments counsel approved in stage 2, select the clients to test it against, then run the scan. Each client gets its own impact brief.",
         }}
         actions={
@@ -563,7 +563,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
               )}
               {clientsLoaded && clients.length === 0 && (
                 <div className="empty-small">
-                  No clients yet — add one with “New client”.
+                  No clients yet - add one with “New client”.
                 </div>
               )}
               {clientsLoaded &&
@@ -598,7 +598,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                       <div className="cs-client-info">
                         <div className="nm">{c.name}</div>
                         <div className="meta">
-                          {c.industry || "—"}
+                          {c.industry || "-"}
                           {(c.jurisdictions?.length ?? 0) > 0 &&
                             ` · ${(c.jurisdictions ?? []).join(", ")}`}
                         </div>
@@ -685,7 +685,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                 )}
                 {readyLoaded && readyBills.length === 0 && (
                   <div className="rd-empty" data-testid="ready-empty">
-                    No bills have approved changes yet — complete stage 2
+                    No bills have approved changes yet - complete stage 2
                     (Legal delta) first.
                     <div className="cs-empty-cta">
                       <button className="btn" onClick={() => nav.go("delta")}>
@@ -775,7 +775,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                   <div className="card-title-row">
                     <FontAwesomeIcon icon={faListCheck} aria-hidden="true" />
                     <div className="card-title">
-                      Approved changes — {selectedReady.billNumber}
+                      Approved changes - {selectedReady.billNumber}
                     </div>
                   </div>
                   <span className="cs-count">
@@ -871,7 +871,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                   <div className="k">Bill</div>
                   <div className="v">
                     {selectedReady
-                      ? `${selectedReady.billNumber} — ${selectedReady.shortTitle || selectedReady.title}`
+                      ? `${selectedReady.billNumber} - ${selectedReady.shortTitle || selectedReady.title}`
                       : "Select a ready bill above."}
                   </div>
                 </div>
@@ -890,7 +890,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                   <div className="empty-small">
                     {scansLoading
                       ? "Checking for stored scans…"
-                      : "No scan yet — select clients and run a scan."}
+                      : "No scan yet - select clients and run a scan."}
                   </div>
                 )}
                 {scanRows.length > 0 && (
@@ -910,7 +910,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                           data-testid="scan-row"
                           data-client-id={r.clientId}
                         >
-                          {/* Fixed five-column grid — every cell is ALWAYS
+                          {/* Fixed five-column grid - every cell is ALWAYS
                               rendered (empty when inapplicable) so the
                               columns never shift between rows. */}
                           <div className="cs-scan-line">
@@ -962,7 +962,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
                                 </button>
                               )}
                             </span>
-                            {/* The action slot — EXACTLY ONE control: Retry on
+                            {/* The action slot - EXACTLY ONE control: Retry on
                                 failed rows, Analyze until a brief exists, then
                                 View brief. Queued/scoring rows leave it empty
                                 (the status pill already says so). */}
@@ -1060,7 +1060,7 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
   );
 }
 
-// Create/edit modal — create posts a new client, edit pre-fills and PUTs.
+// Create/edit modal - create posts a new client, edit pre-fills and PUTs.
 function ClientModal({
   client,
   onClose,

@@ -21,7 +21,7 @@ const currentSession = (bills: Bill[]) =>
   [...new Set(bills.map((b) => b.session).filter(Boolean) as string[])].sort(
     (a, b) => sessionRank(a) - sessionRank(b),
   ).at(-1);
-// Bills that belong to the current parliamentary session — the workspace is
+// Bills that belong to the current parliamentary session - the workspace is
 // scoped to it, so every headline number describes the same set of bills.
 const sessionBills = (bills: Bill[]) => {
   const cur = currentSession(bills);
@@ -44,7 +44,7 @@ const activeBillCount = (bills: Bill[]) =>
   sessionBills(bills).filter(
     (b) => b.legislativeMomentum && b.legislativeMomentum !== "early",
   ).length;
-// Bills whose full statutory text is parsed — the set the delta engine can act
+// Bills whose full statutory text is parsed - the set the delta engine can act
 // on. Derived from the list-safe textStage field (the list API omits clauses).
 const fullTextBillsList = (bills: Bill[]) =>
   sessionBills(bills).filter((b) => b.textStage?.trim());
@@ -129,7 +129,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
   const [faq, setFaq] = useState<number | null>(0);
   const [bills, setBills] = useState<Bill[]>([]);
   const obsRef = useRef<IntersectionObserver | null>(null);
-  // Parallax targets — written to directly in a rAF-throttled scroll handler so
+  // Parallax targets - written to directly in a rAF-throttled scroll handler so
   // the hero drifts and the mock tilts with the scroll, with no React re-render.
   const heroRef = useRef<HTMLDivElement>(null);
   const mockRef = useRef<HTMLDivElement>(null);
@@ -150,7 +150,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
-    // Sections reveal once as they enter the viewport — no per-scroll-frame work,
+    // Sections reveal once as they enter the viewport - no per-scroll-frame work,
     // so scrolling stays smooth.
     obsRef.current = new IntersectionObserver(
       (entries) =>
@@ -261,7 +261,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
         </div>
       )}
 
-      {/* HERO — Montréal, softened to white at the base */}
+      {/* HERO - Montréal, softened to white at the base */}
       <section
         className={`hero-section relative min-h-screen flex flex-col items-center justify-start px-5 pt-24 md:pt-28 pb-20 transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${
           isLoaded ? "scale-100" : "scale-[1.02]"
@@ -326,14 +326,14 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
         </div>
       </section>
 
-      {/* METRICS — black band */}
+      {/* METRICS - black band */}
       <section id="impact" className="relative py-16 md:py-24 px-5 animate-on-scroll bg-black text-white">
         <div className="max-w-[1120px] w-full mx-auto">
           <h2 className="text-[32px] md:text-[48px] font-semibold tracking-[-0.02em] mb-4 text-center text-balance leading-[1.08]">
             The whole docket, <span className="grad-blue">in one place.</span>
           </h2>
           <p className="text-[#a1a1a6] text-[15px] md:text-[17px] mb-10 text-center max-w-[620px] mx-auto leading-relaxed">
-            The {sessionLabel(bills)} — tracked from the source, parsed to the
+            The {sessionLabel(bills)} - tracked from the source, parsed to the
             clause, and tied to the clients it touches.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-x-16 md:gap-y-10 max-w-[820px] mx-auto">
@@ -350,7 +350,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
         </div>
       </section>
 
-      {/* HOW IT WORKS — four quiet columns */}
+      {/* HOW IT WORKS - four quiet columns */}
       <section id="workflow" className="relative py-16 md:py-24 px-5 animate-on-scroll bg-white">
         <div className="max-w-[1080px] w-full mx-auto">
           <div className="text-center mb-12">
@@ -373,7 +373,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
         </div>
       </section>
 
-      {/* FAQ — hairline accordion */}
+      {/* FAQ - hairline accordion */}
       <section id="faq" className="relative py-16 md:py-24 px-5 animate-on-scroll bg-[#f5f5f7]">
         <div className="max-w-[760px] w-full mx-auto">
           <h2 className="text-[32px] md:text-[44px] font-semibold tracking-[-0.02em] mb-10 text-center text-balance leading-[1.08]">
@@ -408,7 +408,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
         </div>
       </section>
 
-      {/* CTA — quiet black band */}
+      {/* CTA - quiet black band */}
       <section className="relative py-16 md:py-24 px-5 animate-on-scroll bg-black text-white">
         <div className="max-w-[800px] w-full mx-auto text-center">
           <h2 className="text-[36px] md:text-[56px] font-semibold tracking-[-0.02em] mb-6 text-balance leading-[1.06]">
@@ -462,7 +462,7 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
   );
 }
 
-// A miniature of the command-center — the hero product shot, fed by the live
+// A miniature of the command-center - the hero product shot, fed by the live
 // docket and scoped to the current session like the rest of the workspace.
 function DashboardMock({ bills }: { bills: Bill[] }) {
   const fmt = (n: number) => n.toLocaleString("en-US");

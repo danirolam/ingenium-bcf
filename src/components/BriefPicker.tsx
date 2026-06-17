@@ -1,4 +1,4 @@
-// Stage-4 entry — the brief library, rendered by ClientImpactAnalysis when no
+// Stage-4 entry - the brief library, rendered by ClientImpactAnalysis when no
 // (client, bill) pair is addressed. A FLAT chronological list of every brief
 // (latest per pair, newest first) with Approved / Needs review tags, filterable
 // by bill and by client (combinable). Clicking an entry opens the brief at
@@ -10,7 +10,7 @@ import type { Nav } from "../App";
 import { fetchBriefIndex, type BriefIndexEntry } from "../lib/clientScan";
 import "../styles/briefpicker.css";
 
-// Same compact timestamp helper the scanner uses (copied, not imported —
+// Same compact timestamp helper the scanner uses (copied, not imported -
 // pages/components keep their tiny helpers local).
 function fmtWhen(iso: string): string {
   if (!iso) return "";
@@ -46,12 +46,12 @@ export function BriefPicker({ nav }: { nav: Nav }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Dropdown options derive from the data itself — no extra endpoint.
+  // Dropdown options derive from the data itself - no extra endpoint.
   const billOptions = useMemo(() => {
     const seen = new Map<string, string>();
     for (const e of entries) {
       if (!seen.has(e.billId)) {
-        seen.set(e.billId, `${e.billNumber} — ${e.billShortTitle || e.billTitle}`);
+        seen.set(e.billId, `${e.billNumber} - ${e.billShortTitle || e.billTitle}`);
       }
     }
     return [...seen.entries()].sort((a, b) => a[1].localeCompare(b[1]));
@@ -93,7 +93,7 @@ export function BriefPicker({ nav }: { nav: Nav }) {
 
         {loaded && entries.length === 0 && (
           <div className="rd-empty" data-testid="briefs-empty">
-            No briefs yet — run a scan in Client scan (stage 3) and analyze a
+            No briefs yet - run a scan in Client scan (stage 3) and analyze a
             client.
             <div className="bp-empty-cta">
               <button className="btn" onClick={() => nav.go("scanner")}>

@@ -1,4 +1,4 @@
-// Stage-2 "New delta" picker — a modal over the amending bills (those whose
+// Stage-2 "New delta" picker - a modal over the amending bills (those whose
 // title amends an Act), the way to START a delta for a bill that doesn't have
 // one yet. Searchable + paginated 16 at a time. Picking a bill navigates to
 // /bills/:billId/delta, where the delta generates and then joins the library.
@@ -88,11 +88,11 @@ export function NewDeltaPicker({
         className="dl-modal"
         data-testid="new-delta-modal"
         role="dialog"
-        aria-label="New delta — pick a bill"
+        aria-label="New delta - pick a bill"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="dl-modal-h">
-          <div className="card-title">New delta — pick a bill</div>
+          <div className="card-title">New delta - pick a bill</div>
           <button className="dl-modal-close" aria-label="Close" onClick={onClose}>
             <FontAwesomeIcon icon={faXmark} aria-hidden="true" />
           </button>

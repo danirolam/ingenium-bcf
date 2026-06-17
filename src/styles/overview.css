@@ -1,4 +1,4 @@
-/* Workspace overview — the command center. A dense map of the four-stage
+/* Workspace overview - the command center. A dense map of the four-stage
    pipeline with live counts and one-click entry, plus an actionable mover list
    and a portfolio breakdown. This is the answer to "what does it do and where
    do I start". */
@@ -24,7 +24,7 @@
   background: var(--border-2);
 }
 
-/* Clarity hero — what this is + the obvious first action */
+/* Clarity hero - what this is + the obvious first action */
 .ov-intro {
   padding: 6px 0 30px;
   margin-bottom: 10px;

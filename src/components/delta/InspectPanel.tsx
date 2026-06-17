@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from "react";
 
-// A floating panel showing this run's server logs verbatim — every back-and-forth
+// A floating panel showing this run's server logs verbatim - every back-and-forth
 // the locator had with the Act, line for line. During a recompute it STREAMS: each
 // step appears as the AI makes it (good for a demo). Plain text otherwise.
 export function InspectPanel({
@@ -9,7 +9,7 @@ export function InspectPanel({
   onClose,
 }: {
   logs: string[];
-  /** A recompute is in flight — lines are still arriving. */
+  /** A recompute is in flight - lines are still arriving. */
   streaming?: boolean;
   onClose: () => void;
 }) {
@@ -32,8 +32,8 @@ export function InspectPanel({
             </div>
             <div className="insp-sub">
               {streaming
-                ? `${logs.length} step${logs.length === 1 ? "" : "s"} so far — the AI is working…`
-                : `${logs.length} line${logs.length === 1 ? "" : "s"} — every AI step, verbatim`}
+                ? `${logs.length} step${logs.length === 1 ? "" : "s"} so far - the AI is working…`
+                : `${logs.length} line${logs.length === 1 ? "" : "s"} - every AI step, verbatim`}
             </div>
           </div>
           <button className="insp-close" onClick={onClose} aria-label="Close">×</button>
@@ -42,7 +42,7 @@ export function InspectPanel({
           {logs.length === 0
             ? streaming
               ? "Waiting for the AI's first step…"
-              : "No log captured yet — hit Recompute to generate one."
+              : "No log captured yet - hit Recompute to generate one."
             : logs.join("\n")}
         </pre>
       </aside>

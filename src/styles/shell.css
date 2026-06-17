@@ -2,7 +2,7 @@
    Replaces the old left sidebar. The product is a four-stage pipeline
    (Monitor → Legal delta → Client scan → Client brief). The rail shows where
    you are (breadcrumb), the whole flow (numbered stages joined by chevrons),
-   and explains every part on hover — dense, self-documenting chrome rather
+   and explains every part on hover - dense, self-documenting chrome rather
    than a set of interchangeable menu items. */
 
 .shell {
@@ -498,7 +498,7 @@
     display: none;
   }
   /* Pills keep their size and the strip scrolls if a narrow phone still can't
-     fit all four — never overlap. */
+     fit all four - never overlap. */
   .shell-flow {
     gap: 5px;
     padding: 0 4px;
