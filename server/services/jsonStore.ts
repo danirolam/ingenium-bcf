@@ -1,6 +1,13 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  blobRead,
+  blobWrite,
+  DURABLE_FILES,
+  isDurable,
+  isReadThrough,
+} from "./blobStore.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // The committed curated snapshot (162 bills, approved law versions, demo
@@ -20,6 +27,24 @@ async function ensureDir() {
 export async function readAll<T>(file: string): Promise<T[]> {
   await ensureDir();
   const p = path.join(DATA_DIR, file);
+  // Read-through the durable Blob store for the small mutable files, so every
+  // serverless instance sees the latest writes instead of its own stale /tmp.
+  // A Blob miss/hiccup falls through to the local file.
+  if (isReadThrough(file)) {
+    const text = await blobRead(file);
+    if (text != null) {
+      try {
+        const parsed = JSON.parse(text);
+        if (Array.isArray(parsed)) {
+          // Keep /tmp warm as a fallback for the next read if Blob blips.
+          void fs.writeFile(p, text, "utf-8").catch(() => {});
+          return parsed as T[];
+        }
+      } catch {
+        /* fall through to the local file */
+      }
+    }
+  }
   try {
     const buf = await fs.readFile(p, "utf-8");
     const parsed = JSON.parse(buf);
@@ -55,6 +80,9 @@ export async function writeAll<T>(file: string, items: T[]): Promise<void> {
     });
   writeChains.set(file, next);
   await next;
+  // Persist the durable mutable stores to Blob so other instances can read them.
+  // Best-effort: a Blob failure never blocks the local write that already landed.
+  if (isDurable(file)) await blobWrite(file, data);
 }
 
 export async function upsert<T extends { id: string }>(
@@ -121,6 +149,19 @@ export async function hydrateFromSnapshot(): Promise<void> {
       await fs.writeFile(dest, buf, "utf-8");
     } catch {
       /* snapshot file absent — seedDemo will fill it from data/ */
+    }
+  }
+  // Overlay the latest durable state from Blob over the committed seed, so a cold
+  // instance restores the user's runtime writes (briefs, approvals, deltas), not
+  // just the snapshot. No-op when Blob is unconfigured (local / e2e).
+  for (const file of DURABLE_FILES) {
+    const text = await blobRead(file);
+    if (text == null) continue;
+    try {
+      JSON.parse(text); // validate before overwriting the seed
+      await fs.writeFile(path.join(DATA_DIR, file), text, "utf-8");
+    } catch {
+      /* corrupt Blob payload — keep the seed */
     }
   }
 }

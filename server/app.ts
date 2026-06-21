@@ -66,6 +66,11 @@ export async function createApp(): Promise<Express> {
         },
       },
       email: { enabled: Boolean(process.env.RESEND_API_KEY) },
+      // Durable cross-instance store (Vercel Blob) for briefs/approvals/scans/
+      // deltas — on means runtime writes survive a cold serverless instance.
+      durable: {
+        enabled: Boolean(process.env.VERCEL && process.env.BLOB_READ_WRITE_TOKEN),
+      },
     }),
   );
   app.use("/api/bills", billsRouter);
