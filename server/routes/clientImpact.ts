@@ -24,6 +24,7 @@ import {
   type ScanReadyDetail,
   type ScoreBody,
 } from "../services/clientScanCore.js";
+import { rankBillsForClient } from "../services/exposureRank.js";
 import { sendClientBriefEmail, sendClientImpactCompleteEmail } from "../services/email.js";
 import { billAffectedActs } from "../services/gemini.js";
 import { flagImpactReview } from "../services/humanReview.js";
@@ -403,13 +404,41 @@ clientImpactRouter.get(
   }),
 );
 
-// All scans for ONE client across every bill — the client-first "exposure"
-// board's ranking feed. The inverse axis of /scans: same backend-only score
-// ranking (critical → low), same allowlist strip, plus the brief-approval flag
-// so the board can show "already advised". Registered BEFORE /:id.
-interface ExposureRow extends ImpactScanView {
-  /** The latest brief for this pair is counsel-approved (saved). */
+// Client-first exposure board (page 2): EVERY current-session bill ranked by how
+// dangerous it is to the chosen client, computed by a fast heuristic so the whole
+// docket orders the instant a client is picked — no approved delta required. The
+// sharper AI band is overlaid where a scan already exists, and each row carries
+// the bill metadata + review/brief status the board renders. The numeric score
+// (heuristic or AI) stays backend-only. Registered BEFORE /:id.
+interface ExposureRow {
+  billId: string;
+  billNumber: string;
+  title: string;
+  shortTitle?: string;
+  status: string;
+  session?: string;
+  legislativeMomentum?: string;
+  practiceAreas: string[];
+  actTitles: string[];
+  band: ScanBand;
+  rationale: string;
+  topAreas: string[];
+  source: "ai" | "heuristic";
+  /** Counsel-approved ops on this bill (0 = not yet reviewed in stage 2). */
+  approvedOpCount: number;
+  hasBrief: boolean;
+  analysisId?: string;
   approved: boolean;
+}
+
+function latestSession(bills: Bill[]): string | undefined {
+  const rank = (s?: string) => {
+    const [p, n] = String(s ?? "").split("-").map(Number);
+    return (p || 0) * 100 + (n || 0);
+  };
+  return [...new Set(bills.map((b) => b.session).filter(Boolean) as string[])]
+    .sort((a, b) => rank(a) - rank(b))
+    .at(-1);
 }
 
 clientImpactRouter.get(
@@ -420,30 +449,64 @@ clientImpactRouter.get(
     const client = await findRecord<Client>(FILES.clients, clientId);
     if (!client) return res.status(404).json({ error: "client not_found" });
 
-    const scans = presentOnly(await readAll<ImpactScan>(SCANS_FILE)).filter(
-      (s) => s.clientId === clientId,
-    );
-    // Drop scans whose bill no longer exists (deleted/refreshed away).
-    const billsById = new Map(
-      presentOnly(await readAll<Bill>(FILES.bills)).map((b) => [b.id, b]),
-    );
-    // Newest brief per (client, bill) for hasBrief/analysisId/approved.
-    const latestByPair = new Map<string, ClientImpactAnalysis>();
+    const allBills = presentOnly(await readAll<Bill>(FILES.bills));
+    const cur = latestSession(allBills);
+    const bills = cur ? allBills.filter((b) => b.session === cur) : allBills;
+
+    // Small joins (skip the 18MB provisionDeltas read): approved-op counts, the
+    // client's AI scans (sharper band overlay), and the latest brief per bill.
+    const approvedByBill = new Map<string, number>();
+    for (const rec of presentOnly(
+      await readAll<{ id: string; keys: string[] }>(FILES.approvals),
+    )) {
+      if (rec.keys?.length) approvedByBill.set(rec.id, rec.keys.length);
+    }
+    const scanByBill = new Map<string, ImpactScan>();
+    for (const s of presentOnly(await readAll<ImpactScan>(SCANS_FILE))) {
+      if (s.clientId === clientId) scanByBill.set(s.billId, s);
+    }
+    const briefByBill = new Map<string, ClientImpactAnalysis>();
     for (const a of presentOnly(await readAll<ClientImpactAnalysis>(FILES.impacts))) {
       if (a.clientId !== clientId) continue;
-      const k = a.billId;
-      const cur = latestByPair.get(k);
-      if (!cur || a.createdAt.localeCompare(cur.createdAt) > 0) latestByPair.set(k, a);
+      const prev = briefByBill.get(a.billId);
+      if (!prev || a.createdAt.localeCompare(prev.createdAt) > 0) briefByBill.set(a.billId, a);
     }
 
-    const rank = (s: ImpactScan) => (Number.isFinite(s.score) ? s.score : 0);
-    const out: ExposureRow[] = scans
-      .filter((s) => billsById.has(s.billId))
-      // Hidden score desc (danger first), stable billId tiebreak.
-      .sort((a, b) => rank(b) - rank(a) || a.billId.localeCompare(b.billId))
-      .map((s) => {
-        const brief = latestByPair.get(s.billId);
-        return { ...toScanView(s, brief), approved: brief?.saved === true };
+    const rankedById = new Map(rankBillsForClient(client, bills).map((r) => [r.billId, r]));
+    const effScore = (billId: string, heuristic: number) => {
+      const scan = scanByBill.get(billId);
+      return scan && Number.isFinite(scan.score) ? scan.score : heuristic;
+    };
+
+    const out: ExposureRow[] = bills
+      .map((bill) => {
+        const r = rankedById.get(bill.id)!;
+        return { bill, r, score: effScore(bill.id, r.score) };
+      })
+      // AI score where present, else heuristic; danger first.
+      .sort((a, b) => b.score - a.score || a.bill.id.localeCompare(b.bill.id))
+      .map(({ bill, r }) => {
+        const scan = scanByBill.get(bill.id);
+        const brief = briefByBill.get(bill.id);
+        return {
+          billId: bill.id,
+          billNumber: bill.billNumber,
+          title: bill.title,
+          ...(bill.shortTitle ? { shortTitle: bill.shortTitle } : {}),
+          status: bill.status,
+          session: bill.session,
+          legislativeMomentum: bill.legislativeMomentum,
+          practiceAreas: bill.practiceAreas ?? [],
+          actTitles: r.actTitles,
+          band: scan ? scan.band : r.band,
+          rationale: scan ? scan.rationale : r.rationale,
+          topAreas: scan ? scan.topAreas : r.topAreas,
+          source: scan ? "ai" : "heuristic",
+          approvedOpCount: approvedByBill.get(bill.id) ?? 0,
+          hasBrief: !!brief,
+          ...(brief ? { analysisId: brief.id } : {}),
+          approved: brief?.saved === true,
+        };
       });
     res.json(out);
   }),

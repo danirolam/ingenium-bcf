@@ -151,6 +151,20 @@
   gap: 5px;
   margin-top: 2px;
 }
+.cw-approved-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font: 600 10.5px/1.4 var(--sans);
+  color: var(--ok);
+  background: var(--ok-bg);
+  border-radius: 999px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+.cw-approved-pill .svg-inline--fa {
+  font-size: 9px;
+}
 
 /* Assessment cell: band button, live status, or the un-assessed chip. */
 .cw-assess {

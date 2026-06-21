@@ -128,24 +128,42 @@ export function fetchScans(
 }
 
 /**
- * One exposure row for the client-first board: a scan, plus whether the pair's
- * latest brief is counsel-approved. The numeric score never leaves the backend
- * (rows arrive pre-ranked by it). Mirrors ExposureRow in clientImpact.ts.
+ * One row of the client-first exposure board: a current-session bill ranked by
+ * how dangerous it is to the chosen client. The danger comes from a fast
+ * heuristic (source "heuristic"), overlaid with the sharper AI band where a scan
+ * exists (source "ai"). The numeric score never leaves the backend - rows arrive
+ * pre-ranked by it. Mirrors ExposureRow in server/routes/clientImpact.ts.
  */
-export interface ExposureScanView extends ImpactScanView {
+export interface ExposureRow {
+  billId: string;
+  billNumber: string;
+  title: string;
+  shortTitle?: string;
+  status: string;
+  session?: string;
+  legislativeMomentum?: string;
+  practiceAreas: string[];
+  actTitles: string[];
+  band: ScanBand;
+  rationale: string;
+  topAreas: string[];
+  source: "ai" | "heuristic";
+  /** Counsel-approved ops on this bill (0 = not reviewed in stage 2 yet). */
+  approvedOpCount: number;
+  hasBrief: boolean;
+  analysisId?: string;
   approved: boolean;
 }
 
 /**
- * Every persisted scan for ONE client across all bills - the inverse of
- * fetchScans, ALREADY ranked by the server (hidden score desc) so the most
- * dangerous bills lead. Orphaned bills are filtered server-side.
+ * Every current-session bill ranked against ONE client, most dangerous first.
+ * Server-ranked; the bill metadata and review/brief status are included.
  */
 export function fetchClientExposure(
   clientId: string,
   signal?: AbortSignal,
-): Promise<ExposureScanView[]> {
-  return j<ExposureScanView[]>(
+): Promise<ExposureRow[]> {
+  return j<ExposureRow[]>(
     `/api/client-impact/exposure?clientId=${encodeURIComponent(clientId)}`,
     { signal },
   );
