@@ -25,6 +25,7 @@ import {
   serializeBillStatus,
   serializeChanges,
   serializePriorBrief,
+  humanizeDashes,
   synthesizeEmailDraft,
   triageChangesForClient,
   type AnalysisBody,
@@ -423,7 +424,7 @@ export async function analyzeClientFromChanges(
   if (clientBlock.truncated) {
     reviewRequired = true;
     reasons.push(
-      "Client materials were truncated to fit the analysis window — verify against the full documents.",
+      "Client materials were truncated to fit the analysis window. Verify against the full documents.",
     );
   }
 
@@ -697,7 +698,7 @@ export async function generateClientEmailDraft(
     const subject = typeof input?.subject === "string" ? input.subject.trim() : "";
     const emailBody = typeof input?.body === "string" ? input.body.trim() : "";
     if (!subject || !emailBody) return fallback();
-    return { subject, body: emailBody };
+    return { subject: humanizeDashes(subject), body: humanizeDashes(emailBody) };
   } catch (err: any) {
     if (budget && !budget.signal.aborted && err?.name !== "TimeoutError") {
       budget.trip("ai-error");

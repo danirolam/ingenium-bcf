@@ -55,7 +55,7 @@ function writeScanCache(clientId: string, scans: ExposureScanView[]): void {
   try {
     window.localStorage.setItem(scanCacheKey(clientId), JSON.stringify(scans));
   } catch {
-    // storage full / disabled — the server copy still stands.
+    // storage full or disabled; the server copy still stands.
   }
 }
 
@@ -139,8 +139,8 @@ function buildRows(
 
 // Client-first entry (the "By client" orientation). Pick one client, scan every
 // counsel-approved bill against it, and rank the bills by how dangerous each is.
-// Each row drills to the legal delta (Stage 2) and to the client's brief + email
-// (Stage 4) — the same shared stages the law-first scanner feeds.
+// Each row drills to the legal delta (Stage 2) and to the client's brief and
+// email (Stage 4), the same shared stages the law-first scanner feeds.
 export function ClientWatch({ nav }: { nav: Nav }) {
   const clientId = nav.params.clientId ?? "";
 
@@ -322,7 +322,7 @@ export function ClientWatch({ nav }: { nav: Nav }) {
       })
     : rows;
 
-  // Band tally across scored rows — the client's exposure headline.
+  // Band tally across scored rows: the client's exposure headline.
   const bandCounts = useMemo(() => {
     const counts: Record<ScanBand, number> = {
       critical: 0,
@@ -410,8 +410,8 @@ export function ClientWatch({ nav }: { nav: Nav }) {
         return withFailures;
       });
     } catch {
-      // Ranking refresh failed — keep the local order, but still cache the bands
-      // we scored so navigating away and back doesn't lose them.
+      // Ranking refresh failed, so keep the local order, but still cache the
+      // bands we scored so navigating away and back doesn't lose them.
       setRows((prev) => {
         writeScanCache(
           cid,
@@ -443,7 +443,7 @@ export function ClientWatch({ nav }: { nav: Nav }) {
   }
 
   // Per-row brief generation (the slow ~30s agent). notify:true sends the ONE
-  // counsel "Client Impact Ready" email — the client email is a later, deliberate
+  // counsel "Client Impact Ready" email. The client email is a later, deliberate
   // action from the brief page after approval.
   async function analyzeRow(billId: string) {
     if (!clientId) return;
@@ -488,10 +488,10 @@ export function ClientWatch({ nav }: { nav: Nav }) {
       <PageHeader
         crumbs={["Workspace", "Client Watch"]}
         title="Client Watch"
-        sub="Pick a client and rank every counsel-approved bill by how dangerous it is to them — then brief and email the client on each."
+        sub="Pick a client and rank every counsel-approved bill by how dangerous it is to them, then brief and email the client on each."
         hint={{
           title: "Client-first: exposure",
-          body: "Choose a client, scan it against every bill whose changes counsel approved in stage 2, and work down the list — most dangerous first. Each bill opens its legal delta and the client's brief + email.",
+          body: "Choose a client, scan it against every bill whose changes counsel approved in stage 2, and work down the list, most dangerous first. Each bill opens its legal delta and the client's brief and email.",
         }}
         actions={
           <button

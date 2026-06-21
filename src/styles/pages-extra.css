@@ -893,7 +893,7 @@
   border-bottom: none;
 }
 .dr-srow.is-focus {
-  /* The change being scrutinised stands out by CONTRAST — surrounding context and
+  /* The change being scrutinised stands out by CONTRAST: surrounding context and
      other amendments' changes are muted; the focus rows keep full colour. */
   scroll-margin-top: 64px;
 }

@@ -55,7 +55,7 @@ function synthesizeFallback(bill: Bill, client: Client): ClientImpactAnalysis {
     affected: "unclear",
     impactLevel: "medium",
     urgency: "medium",
-    timing: `${bill.billNumber} is currently at: ${bill.status}. It is not law — if it were enacted, coming-into-force timing would depend on the final text and any transition provisions.`,
+    timing: `${bill.billNumber} is currently at: ${bill.status}. It is not law. If it were enacted, coming-into-force timing would depend on the final text and any transition provisions.`,
     whyItAffectsClient: `${client.name} operates in ${client.industry} across ${client.jurisdictions.join(", ")}. ${bill.billNumber} (which would amend ${actList}) may touch areas of the client's operations; counsel review would be needed to confirm scope and magnitude before anything is communicated as definitive.`,
     affectedClientAreas: [
       "Contractual terms",
@@ -64,10 +64,10 @@ function synthesizeFallback(bill: Bill, client: Client): ClientImpactAnalysis {
     ],
     requiredAdaptations: [
       {
-        area: `${actName} — areas counsel could review`,
+        area: `${actName}: areas counsel could review`,
         currentIssue: `The client's current posture has not yet been mapped against the changes proposed by ${bill.billNumber}.`,
         recommendation: `Counsel may wish to review the client's current obligations under ${actName} against each proposed amendment to identify potential gaps, should the bill advance.`,
-        reason: bill.summary ?? `${bill.billNumber} — ${bill.title}`,
+        reason: bill.summary ?? `${bill.billNumber}: ${bill.title}`,
       },
     ],
     relevantClientText: client.termsAndConditions
@@ -342,7 +342,7 @@ clientImpactRouter.post(
         score: 0,
         band: "low",
         rationale:
-          "No approved changes for this bill — run the stage-2 delta and approve amendments first.",
+          "No approved changes for this bill yet. Run the stage-2 delta and approve amendments first.",
         topAreas: [],
         source: "fallback",
       };

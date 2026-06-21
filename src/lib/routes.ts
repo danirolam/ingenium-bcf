@@ -100,7 +100,7 @@ export function parsePath(pathname: string, search = ""): Route {
       return app("impact");
 
     case "watch": {
-      // /watch, /watch/:clientId — the client-first exposure board.
+      // /watch, /watch/:clientId, the client-first exposure board.
       if (segments[1]) params.clientId = segments[1];
       return app("watch");
     }

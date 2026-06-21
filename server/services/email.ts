@@ -52,7 +52,7 @@ export async function sendBillUploadedEmail(bill: Bill): Promise<EmailResult> {
   return send({
     subject: `[New Bill Uploaded] ${bill.billNumber} is ready for legal delta review`,
     html: `<p>A new bill has been uploaded to Ingenium.</p>
-      <p><b>${bill.billNumber}</b> — ${bill.title}<br/>
+      <p><b>${bill.billNumber}</b>: ${bill.title}<br/>
       Status: ${bill.status}<br/>
       Legislative momentum: ${bill.legislativeMomentum}</p>
       <p>Open Delta Workspace to review the proposed legal delta.</p>`,
@@ -61,7 +61,7 @@ export async function sendBillUploadedEmail(bill: Bill): Promise<EmailResult> {
 
 export async function sendBillPassedEmail(bill: Bill): Promise<EmailResult> {
   return send({
-    subject: `[Bill Status] ${bill.billNumber} — ${bill.status}`,
+    subject: `[Bill Status] ${bill.billNumber}: ${bill.status}`,
     html: `<p>${bill.billNumber} status changed: <b>${bill.status}</b>. Re-review the linked LawVersion if needed.</p>`,
   });
 }
@@ -74,7 +74,7 @@ export async function sendClientImpactCompleteEmail(args: {
   const { analysis: a, client, bill } = args;
   return send({
     subject: `[Client Impact Ready] ${client.name} analysis completed for ${bill.billNumber}`,
-    html: `<p><b>${client.name}</b> analysis for <b>${bill.billNumber}</b> — ${bill.title}</p>
+    html: `<p><b>${client.name}</b> analysis for <b>${bill.billNumber}</b>: ${bill.title}</p>
       <ul>
         <li>Affected: <b>${a.affected}</b></li>
         <li>Impact level: <b>${a.impactLevel}</b></li>

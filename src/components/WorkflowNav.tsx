@@ -82,7 +82,7 @@ export function WorkflowNav({
   function pick(next: ViewMode) {
     setViewMode(next);
     if (next === mode) return;
-    // Land at that orientation's start — or back on the client you were working.
+    // Land at that orientation's start, or back on the client you were working.
     if (next === "client-first" && activeClientId) go("watch", { clientId: activeClientId });
     else go(entryPage(next));
   }

@@ -634,7 +634,7 @@ export function synthesizeEmailDraft(args: {
     ].join("\n"),
     NORMALIZE_EMAIL_BODY_MAX_CHARS,
   );
-  return { subject, body };
+  return { subject: humanizeDashes(subject), body: humanizeDashes(body) };
 }
 
 /**
@@ -655,12 +655,23 @@ export function normalizeAnalysis(raw: unknown): AnalysisBody {
     affected: oneOf(rec?.affected, ["yes", "no", "unclear"] as const, "unclear"),
     impactLevel: oneOf(rec?.impactLevel, ["low", "medium", "high", "critical"] as const, "medium"),
     urgency: oneOf(rec?.urgency, ["low", "medium", "high", "immediate"] as const, "medium"),
-    timing: asStr(rec?.timing),
-    whyItAffectsClient: asStr(rec?.whyItAffectsClient),
-    affectedClientAreas: asStrArray(rec?.affectedClientAreas),
-    requiredAdaptations: asAdaptations(rec?.requiredAdaptations),
-    relevantClientText: asClientText(rec?.relevantClientText),
-    lawyerVerificationQuestions: asStrArray(rec?.lawyerVerificationQuestions),
+    // Strip model dashes from every prose field the lawyer/client reads. The
+    // client's own quoted excerpt is left verbatim (it is their words).
+    timing: humanizeDashes(asStr(rec?.timing)),
+    whyItAffectsClient: humanizeDashes(asStr(rec?.whyItAffectsClient)),
+    affectedClientAreas: asStrArray(rec?.affectedClientAreas).map(humanizeDashes),
+    requiredAdaptations: asAdaptations(rec?.requiredAdaptations).map((a) => ({
+      area: humanizeDashes(a.area),
+      currentIssue: humanizeDashes(a.currentIssue),
+      recommendation: humanizeDashes(a.recommendation),
+      reason: humanizeDashes(a.reason),
+    })),
+    relevantClientText: asClientText(rec?.relevantClientText).map((r) => ({
+      source: r.source,
+      excerpt: r.excerpt,
+      issue: humanizeDashes(r.issue),
+    })),
+    lawyerVerificationQuestions: asStrArray(rec?.lawyerVerificationQuestions).map(humanizeDashes),
     confidence,
     // Conservative: anything other than an explicit boolean means "review it".
     humanReviewRequired:
@@ -691,10 +702,10 @@ export function coverageNote(
   if (capped.length > 0) sentences.push(`Not analyzed (volume cap): ${list(capped)}`);
   if (unavailable.length > 0) {
     sentences.push(
-      `Not analyzed (AI unavailable — rate limit or error): ${list(unavailable)}`,
+      `Not analyzed (AI unavailable, rate limit or error): ${list(unavailable)}`,
     );
   }
-  return `${sentences.join(". ")} — review these provisions manually.`;
+  return `${sentences.join(". ")}. Review these provisions manually.`;
 }
 
 // ── Impact score (stage-3 scorer agent) ───────────────────────────────────────
@@ -732,8 +743,24 @@ export function bandFromScore(score: number): ScanBand {
 const RATIONALE_MAX_CHARS = 400;
 const TOP_AREAS_MAX = 3;
 
+/**
+ * Replace em/en dashes with plain punctuation so generated prose never reads as
+ * machine-written: a spaced dash connector becomes a comma, a tight dash between
+ * words becomes a comma, and a numeric range (digit-dash-digit) keeps its dash.
+ * Applied to every model-produced field that reaches the client.
+ */
+export function humanizeDashes(s: string): string {
+  if (!s) return s;
+  return s
+    .replace(/\s+[—–]\s+/g, ", ")
+    .replace(/([A-Za-z])[—–]([A-Za-z])/g, "$1, $2")
+    .replace(/—/g, ", ")
+    .replace(/\s+([,.;:])/g, "$1")
+    .replace(/,\s*,/g, ",");
+}
+
 function capRationale(s: string): string {
-  const t = s.trim();
+  const t = humanizeDashes(s.trim());
   return t.length > RATIONALE_MAX_CHARS ? `${t.slice(0, RATIONALE_MAX_CHARS - 1)}…` : t;
 }
 

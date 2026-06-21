@@ -188,8 +188,8 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
               <FontAwesomeIcon icon={faSpinner} spin aria-hidden="true" />{" "}
               Generating the brief for <b>{client?.name ?? "this client"}</b> on{" "}
               <b>{bill?.billNumber ?? "this bill"}</b>. This usually takes about
-              30 seconds — analysing the approved changes against the client's
-              operations, policies and contracts.
+              30 seconds. It checks the approved changes against the client's
+              operations, policies, and contracts.
             </div>
           ) : (
             <div className="rd-empty">

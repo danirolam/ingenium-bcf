@@ -116,7 +116,7 @@ export function BillMonitor({ nav }: { nav: Nav }) {
 
   async function onRemove(bill: Bill) {
     // Testing aid: drop a bill so you can watch Refresh pull it back from
-    // Parliament. Confirm first — it persists to the durable store + Blob.
+    // Parliament. Confirm first; it persists to the durable store and Blob.
     if (
       !window.confirm(
         `Remove ${bill.billNumber} from the database?\n\nRefresh re-adds current-session bills from Parliament.`,

@@ -81,7 +81,7 @@ export function fetchScanReadyDetail(
 export type ScanBand = "low" | "medium" | "high" | "critical";
 
 /**
- * One persisted scan as served to the client. The numeric 0–100 score is
+ * One persisted scan as served to the client. The numeric 0-100 score is
  * backend-only (the server ranks with it and strips it from every response) -
  * this view NEVER carries a `score` field. Mirrors ImpactScanView in
  * server/routes/clientImpact.ts (kept in sync by hand).

@@ -1,4 +1,4 @@
-/* Client Watch — the client-first exposure board (the "By client" orientation).
+/* Client Watch, the client-first exposure board (the "By client" orientation).
    Imported only by src/pages/ClientWatch.tsx. Layout + board chrome live here
    under the `cw-` namespace; band pills, status pills, rationale panels, client
    icon buttons and confirm rows are reused from clientscan.css (the `cs-`

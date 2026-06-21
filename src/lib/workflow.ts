@@ -5,8 +5,8 @@
 // There are two orientations of the SAME pipeline (see src/lib/viewMode.ts):
 //   law-first    Monitor → Legal delta → Client scan → Client brief
 //   client-first Client  → Exposure    → Legal delta → Brief & email
-// They converge on the shared stages (Legal delta, the brief) — only the entry
-// differs — so a step carries both its identity (`id`) and its nav target
+// They converge on the shared stages (Legal delta, the brief); only the entry
+// differs, so a step carries both its identity (`id`) and its nav target
 // (`page`), which are the same for most steps but differ for the client-first
 // entry (two steps that both live on the `watch` page).
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
@@ -102,7 +102,7 @@ export const CLIENT_FIRST_STEPS: WorkflowStep[] = [
     label: "Client",
     purpose: "Choose a client to protect",
     detail:
-      "The starting point. Pick the client you want to protect — its industry, jurisdictions, operations, policies, and contracts are what every bill is measured against.",
+      "The starting point. Pick the client you want to protect. Its industry, jurisdictions, operations, policies, and contracts are what every bill is measured against.",
     produces: "Hands the chosen client to the exposure scan.",
     icon: faUsers,
   },
@@ -113,7 +113,7 @@ export const CLIENT_FIRST_STEPS: WorkflowStep[] = [
     label: "Exposure",
     purpose: "Rank the bills that threaten it",
     detail:
-      "Scan every counsel-approved bill against this client and rank them by how dangerous each is — critical to low — with the reason and the Acts each one touches.",
+      "Scan every counsel-approved bill against this client and rank them by how dangerous each is, from critical to low, with the reason and the Acts each one touches.",
     produces: "Hands a high-exposure bill to the legal-delta review.",
     icon: faShieldHalved,
   },
@@ -124,7 +124,7 @@ export const CLIENT_FIRST_STEPS: WorkflowStep[] = [
     label: "Legal delta",
     purpose: "See what the bill changes",
     detail:
-      "Open the bill that threatens this client and read exactly what it changes — added, repealed, and replaced sections of the Acts it amends, shown side by side.",
+      "Open the bill that threatens this client and read exactly what it changes: the added, repealed, and replaced sections of the Acts it amends, shown side by side.",
     produces: "Hands the change straight to this client's brief.",
     icon: faCodeCompare,
   },
