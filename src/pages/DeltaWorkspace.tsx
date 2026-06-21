@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import type { Nav } from "../App";
 import { DeltaLibrary } from "../components/DeltaLibrary";
 import { InspectPanel } from "../components/delta/InspectPanel";
 import { useApprovals } from "../lib/useApprovals";
 import { useProvisionDelta } from "../lib/useProvisionDelta";
+import { useActiveClientId, useViewMode } from "../lib/viewMode";
 import { DeltaReview } from "./delta/DeltaReview";
 
 // Orchestrator: resolve a bill, own its delta + approvals (the two data hooks),
@@ -15,6 +18,11 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
   const delta = useProvisionDelta(billId);
   const approvals = useApprovals(billId);
   const [inspectOpen, setInspectOpen] = useState(false);
+  // Forward handoff: in client-first the next step is this client's brief; in
+  // bill-first it's the client scan. Both keep the stages connected without
+  // forcing you through them (you can still open any stage on its own).
+  const viewMode = useViewMode();
+  const activeClientId = useActiveClientId();
 
   // A finished recompute clears approvals server-side (new delta ⇒ new placements
   // to approve) - re-pull so the UI shows them reset.
@@ -84,6 +92,28 @@ export function DeltaWorkspace({ nav }: { nav: Nav }) {
           >
             {delta.refreshing ? "Recomputing…" : "Recompute"}
           </button>
+          {/* Forward handoff to the next stage, once there is something to act on. */}
+          {total > 0 && billId && (
+            viewMode === "client-first" && activeClientId ? (
+              <button
+                className="btn primary sm"
+                onClick={() => nav.go("impact", { clientId: activeClientId, billId })}
+                title="Brief the client you are protecting on this bill"
+              >
+                Brief client
+                <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
+              </button>
+            ) : (
+              <button
+                className="btn primary sm"
+                onClick={() => nav.go("scanner", { billId })}
+                title="Scan this bill's approved changes against your clients"
+              >
+                Scan clients
+                <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
+              </button>
+            )
+          )}
         </div>
       </div>
 

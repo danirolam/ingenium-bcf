@@ -87,12 +87,14 @@ export function parsePath(pathname: string, search = ""): Route {
       return app("delta");
 
     case "clients": {
-      // /clients, /clients/:clientId/bills/:billId
+      // /clients, /clients?bill=, /clients/:clientId/bills/:billId
       if (segments[1] && segments[2] === "bills" && segments[3]) {
         params.clientId = segments[1];
         params.billId = segments[3];
         return app("impact");
       }
+      const bill = query.get("bill");
+      if (bill) params.billId = bill; // preselect a bill (handoff from the delta)
       return app("scanner");
     }
 
@@ -135,7 +137,9 @@ export function buildPath(page: PageId, params: Record<string, string> = {}): st
     }
 
     case "scanner":
-      return "/clients";
+      return params.billId
+        ? `/clients?bill=${encodeURIComponent(params.billId)}`
+        : "/clients";
 
     case "impact":
       return params.clientId && params.billId

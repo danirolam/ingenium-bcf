@@ -79,6 +79,8 @@ function flattenClauses(raw: any): BillClause[] {
   return out;
 }
 
+import { scrubBillDisplay } from "./textHygiene.js";
+
 export function normalizeBill(raw: any): Bill {
   const id =
     pickString(raw, ["id", "billId"]) ??
@@ -97,7 +99,7 @@ export function normalizeBill(raw: any): Bill {
 
   const clauses = flattenClauses(raw);
 
-  return {
+  return scrubBillDisplay({
     id,
     billNumber,
     title,
@@ -118,5 +120,5 @@ export function normalizeBill(raw: any): Bill {
     rawJson: raw,
     clauses,
     practiceAreas: derivePracticeAreas({ title, clauses, rawJson: raw }),
-  };
+  });
 }

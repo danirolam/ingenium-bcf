@@ -216,7 +216,11 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
       const updated = await api.clientImpact.save(analysis.id, analysis);
       setAnalysis(updated);
       cacheBrief(updated);
-      nav.toast("Brief approved. The client email is drafted; email and download are unlocked.");
+      // Reveal the freshly drafted email straight away (the section is collapsed
+      // by default, so otherwise the generated draft stays hidden and approval
+      // looks like it did nothing).
+      setOpenSections((s) => ({ ...s, email: true }));
+      nav.toast("Brief approved. The client email is drafted below, and email and download are unlocked.");
     } catch (err: any) {
       nav.toast(`Could not approve the brief: ${err?.message ?? err}`);
     } finally {

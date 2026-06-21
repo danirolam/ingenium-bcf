@@ -749,13 +749,17 @@ const TOP_AREAS_MAX = 3;
  * words becomes a comma, and a numeric range (digit-dash-digit) keeps its dash.
  * Applied to every model-produced field that reaches the client.
  */
+// Figure dash, en, em, horizontal bar, and the minus sign — every dash-like
+// glyph that reads as machine-written. Plain hyphen and non-breaking hyphen are
+// left alone (they are legitimate).
+const DASHES = /[‒-―−]/;
 export function humanizeDashes(s: string): string {
   if (!s) return s;
   return s
-    .replace(/\s+[—–]\s+/g, ", ")
-    .replace(/([A-Za-z])[—–]([A-Za-z])/g, "$1, $2")
-    .replace(/—/g, ", ")
-    .replace(/\s+([,.;:])/g, "$1")
+    .replace(/\s+[‒-―−]\s+/g, ", ") // spaced connector -> comma
+    .replace(/([A-Za-z0-9)])[‒-―−]([A-Za-z0-9(])/g, "$1-$2") // tight (Canada—UK, 0–100) -> hyphen
+    .replace(new RegExp(DASHES, "g"), ", ") // anything left -> comma
+    .replace(/ +([,.;:])/g, "$1")
     .replace(/,\s*,/g, ",");
 }
 

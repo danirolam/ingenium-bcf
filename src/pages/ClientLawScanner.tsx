@@ -147,6 +147,16 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
   // Bill-first stage: keep the rail's orientation in sync (see BillMonitor).
   useEffect(() => setViewMode("law-first"), []);
 
+  // Handoff from the delta (/clients?bill=…): preselect that bill once the
+  // scan-ready list has loaded, so the stages connect without a manual re-pick.
+  useEffect(() => {
+    const want = nav.params.billId;
+    if (want && !selectedBillId && readyBills.some((b) => b.billId === want)) {
+      setSelectedBillId(want);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [readyBills]);
+
   useEffect(() => {
     selectedBillIdRef.current = selectedBillId;
   }, [selectedBillId]);

@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 import { put } from "@vercel/blob";
 import type { Bill } from "../../src/types.js";
 import { writeAll, FILES } from "./jsonStore.js";
+import { scrubBillDisplay } from "./textHygiene.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, "..", "..");
@@ -75,7 +76,9 @@ export async function overlayBillsFromBlob(): Promise<void> {
   if (!process.env.VERCEL) return;
   const bills = await readBillsBlob();
   if (bills) {
-    await writeAll(FILES.bills, bills);
+    // Prod serves bills from this Blob overlay, so de-dash here: it is the one
+    // place every deployed bill passes through on a cold start.
+    await writeAll(FILES.bills, bills.map(scrubBillDisplay));
     console.log(`[billsBlob] overlaid ${bills.length} bills from Blob`);
   }
 }

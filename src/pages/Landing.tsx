@@ -114,12 +114,28 @@ const FAQS = [
     a: "The precise change a bill makes to existing law: the sections it adds, repeals, or replaces in each consolidated Act, shown side by side so counsel can review the exact wording before it informs client work.",
   },
   {
+    q: "Which Acts can it compare against?",
+    a: "The full federal corpus: all 964 consolidated Acts from the Justice Laws website. When a bill amends an Act in the corpus you get a true before-and-after; when it creates a new Act or amends one outside the set, the change is flagged for manual review rather than guessed.",
+  },
+  {
     q: "How are bills matched to our clients?",
-    a: "Approved deltas are scanned against each client's operations, policies, and contracts to flag who is exposed, how, and how urgently, turning a statutory change into a client-specific assessment.",
+    a: "Each approved change is scored against a client's profile, its industry, jurisdictions, operations, policies, and contracts, to flag who is exposed, how, and how urgently. A statutory change becomes a client-specific assessment instead of a general alert.",
+  },
+  {
+    q: "Can I start from a client instead of a bill?",
+    a: "Yes. Switch the workspace to “By client” to begin with one client and rank every approved bill by how dangerous it is to them, then brief and email on each. It is the same four stages, entered from the other end.",
+  },
+  {
+    q: "Who sees the impact score?",
+    a: "Exposure is shown as a band, from low to critical, with the reason and the areas it touches. The underlying numeric score stays on the server and never reaches the screen, so you get the ranking without a false-precision number in front of a client.",
+  },
+  {
+    q: "What does a client profile include?",
+    a: "A name, industry, and jurisdictions, plus the client's description and its terms and conditions, policies, and operations. That profile is what every change is measured against, so the exposure is specific to the client rather than generic.",
   },
   {
     q: "Is anything sent to a client without review?",
-    a: "No. Every updated Act and every client brief is structured for review and signed off by a lawyer before it leaves the building. Counsel approves the law, always.",
+    a: "No. Every updated Act and every client brief is structured for review and signed off by a lawyer before it leaves the building. The client email is drafted only once counsel approves the brief. Counsel approves the law, always.",
   },
 ];
 
@@ -128,6 +144,18 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [faq, setFaq] = useState<number | null>(0);
   const [bills, setBills] = useState<Bill[]>([]);
+  // The "see the pipeline in motion" reveal: a progress line that fills across
+  // the four stages, lighting each up in turn.
+  const [pipelineOpen, setPipelineOpen] = useState(false);
+  const [pipeFilled, setPipeFilled] = useState(false);
+  useEffect(() => {
+    if (!pipelineOpen) {
+      setPipeFilled(false);
+      return;
+    }
+    const t = window.setTimeout(() => setPipeFilled(true), 60);
+    return () => window.clearTimeout(t);
+  }, [pipelineOpen]);
   const obsRef = useRef<IntersectionObserver | null>(null);
   // Parallax targets - written to directly in a rAF-throttled scroll handler so
   // the hero drifts and the mock tilts with the scroll, with no React re-render.
@@ -367,6 +395,87 @@ export function Landing({ onLaunch }: { onLaunch: () => void }) {
               </div>
             ))}
           </div>
+          <div className="mt-12 flex justify-center">
+            <button
+              onClick={() => setPipelineOpen((v) => !v)}
+              aria-expanded={pipelineOpen}
+              className="text-[13px] font-medium text-[#0066cc] hover:underline underline-offset-4 inline-flex items-center gap-1.5"
+            >
+              {pipelineOpen ? "Hide the pipeline" : "See the pipeline in motion"}
+              <ChevronDown
+                className={`w-4 h-4 transition-transform ${pipelineOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+          </div>
+
+          {pipelineOpen && (
+            <div className="mt-10">
+              {/* Progress line that fills across the four stages on reveal. */}
+              <div className="hidden md:block relative h-[3px] bg-[#e8e8ed] rounded-full mb-7 mx-[12.5%]">
+                <div
+                  className="absolute inset-y-0 left-0 bg-[#1d1d1f] rounded-full transition-[width] duration-[1700ms] ease-out"
+                  style={{ width: pipeFilled ? "100%" : "0%" }}
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-5">
+                {[
+                  {
+                    n: "01",
+                    t: "Monitor",
+                    d: "Track every Canadian bill by practice area and momentum, from first reading to royal assent.",
+                    m: bills.length
+                      ? `${sessionBills(bills).length} bills this session`
+                      : "the live docket",
+                  },
+                  {
+                    n: "02",
+                    t: "Legal delta",
+                    d: "Diff the bill against the Acts it touches: the exact sections it adds, repeals, or replaces, side by side.",
+                    m: "964 consolidated Acts",
+                  },
+                  {
+                    n: "03",
+                    t: "Client scan",
+                    d: "Score the approved change against each client's operations, policies, and contracts to rank who is exposed.",
+                    m: "ranked by exposure",
+                  },
+                  {
+                    n: "04",
+                    t: "Client brief",
+                    d: "Turn one client's exposure into a clear memo and a ready-to-send email, signed off by counsel.",
+                    m: "counsel-approved",
+                  },
+                ].map((s, i) => (
+                  <div
+                    key={s.n}
+                    className="rounded-2xl border border-[#e8e8ed] bg-[#fafafa] p-5 transition-all duration-500"
+                    style={{
+                      opacity: pipeFilled ? 1 : 0,
+                      transform: pipeFilled ? "translateY(0)" : "translateY(8px)",
+                      transitionDelay: `${i * 130}ms`,
+                    }}
+                  >
+                    <div
+                      className="w-9 h-9 rounded-[10px] grid place-items-center text-[12px] font-semibold tracking-tight transition-colors duration-300"
+                      style={{
+                        background: pipeFilled ? "#1d1d1f" : "#e8e8ed",
+                        color: pipeFilled ? "#fff" : "#86868b",
+                        transitionDelay: `${i * 420}ms`,
+                      }}
+                    >
+                      {s.n}
+                    </div>
+                    <h4 className="text-[15px] font-semibold tracking-tight mt-3 mb-1.5">{s.t}</h4>
+                    <p className="text-[12.5px] text-[#6e6e73] leading-relaxed">{s.d}</p>
+                    <div className="mt-3 inline-flex items-center text-[11px] font-medium text-[#0066cc] bg-[#0071e3]/[0.08] border border-[#0071e3]/20 rounded-full px-2.5 py-1">
+                      {s.m}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <p className="text-center text-[13px] text-[#86868b] mt-12">
             Source-linked to Parliament &amp; Justice Canada throughout.
           </p>
