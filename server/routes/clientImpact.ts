@@ -555,7 +555,16 @@ clientImpactRouter.post(
     // find + upsert is a read-modify-write: take the impacts lock so a
     // concurrent /analyze prune can't clobber (or be clobbered by) the save.
     const id = String(req.params.id);
-    const existing = await findRecord<ClientImpactAnalysis>(FILES.impacts, id);
+    // Serverless instances don't share /tmp, so the brief written by the
+    // /analyze request can be absent from the instance handling this save (a
+    // cold/other instance hydrates only the committed snapshot). Accept the
+    // analysis in the request body as a recovery source and re-persist it, so
+    // approval never 404s just because the load balancer moved us. (Same shape
+    // as the law-versions approve route.)
+    const fromBody = req.body?.analysis as ClientImpactAnalysis | undefined;
+    const recovered = fromBody && fromBody.id === id ? fromBody : undefined;
+    const existing =
+      (await findRecord<ClientImpactAnalysis>(FILES.impacts, id)) ?? recovered;
     if (!existing) return res.status(404).json({ error: "not_found" });
 
     // Generate the client-facing email draft ONCE, at approval — not on every
@@ -575,14 +584,14 @@ clientImpactRouter.post(
     }
 
     const saved = await withFileLock(FILES.impacts, async () => {
-      const a = await findRecord<ClientImpactAnalysis>(FILES.impacts, id);
-      if (!a) return null;
+      // Fall back to the recovered record if this instance still can't see it.
+      const a =
+        (await findRecord<ClientImpactAnalysis>(FILES.impacts, id)) ?? existing;
       a.saved = true;
       if (emailDraft) a.emailDraft = emailDraft;
       await upsert(FILES.impacts, a);
       return a;
     });
-    if (!saved) return res.status(404).json({ error: "not_found" });
     res.json(saved);
   }),
 );
@@ -590,7 +599,13 @@ clientImpactRouter.post(
 clientImpactRouter.post(
   "/:id/email-client",
   safe(async (req, res) => {
-    const a = await findRecord<ClientImpactAnalysis>(FILES.impacts, String(req.params.id));
+    const id = String(req.params.id);
+    // Same cross-instance recovery as /save: the approved brief may live in a
+    // different instance's /tmp, so accept it from the request body too.
+    const fromBody = req.body?.analysis as ClientImpactAnalysis | undefined;
+    const a =
+      (await findRecord<ClientImpactAnalysis>(FILES.impacts, id)) ??
+      (fromBody && fromBody.id === id ? fromBody : undefined);
     if (!a) return res.status(404).json({ error: "not_found" });
     // The approval gate, enforced server-side: an unapproved brief — and the
     // unreviewed draft it carries — cannot be sent to a client, whatever the UI

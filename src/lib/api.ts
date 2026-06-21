@@ -172,15 +172,20 @@ export const api = {
         `/api/client-impact/by-pair?clientId=${encodeURIComponent(clientId)}&billId=${encodeURIComponent(billId)}`,
       ),
     get: (id: string) => j<ClientImpactAnalysis>(`/api/client-impact/${id}`),
-    save: (id: string) =>
+    // `analysis` is sent so the server can recover the brief if the request
+    // lands on a different serverless instance than the one /analyze wrote to
+    // (per-instance /tmp). Harmless when the instance already has it.
+    save: (id: string, analysis?: ClientImpactAnalysis) =>
       j<ClientImpactAnalysis>(`/api/client-impact/${id}/save`, {
         method: "POST",
+        body: JSON.stringify(analysis ? { analysis } : {}),
       }),
     // Send the approved, client-facing draft to the client (stage 4). The
     // counsel notification is a separate, earlier email (stage-3 scan).
-    emailClient: (id: string) =>
+    emailClient: (id: string, analysis?: ClientImpactAnalysis) =>
       j<{ email: EmailResult }>(`/api/client-impact/${id}/email-client`, {
         method: "POST",
+        body: JSON.stringify(analysis ? { analysis } : {}),
       }),
   },
 };

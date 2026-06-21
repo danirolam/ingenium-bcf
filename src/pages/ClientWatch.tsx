@@ -10,6 +10,7 @@ import {
   faPlus,
   faRotateRight,
   faShieldHalved,
+  faSpinner,
   faTrash,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
@@ -27,8 +28,46 @@ import {
   type ScanBand,
   type ScanReadyBill,
 } from "../lib/clientScan";
+import { setActiveClientId, setViewMode } from "../lib/viewMode";
 import type { Client, LegislativeMomentum } from "../types";
 import "../styles/clientwatch.css";
+
+// Per-client scan cache. The server store lives in a serverless instance's
+// /tmp, so a later request can land on an instance that never saw your scans
+// and return []. We mirror the bands client-side so the board never blanks out
+// when you navigate away and back; the server stays the source of truth when it
+// actually has the data.
+const scanCacheKey = (clientId: string) => `ingenium.watch.scans.${clientId}`;
+
+function readScanCache(clientId: string): ExposureScanView[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = window.localStorage.getItem(scanCacheKey(clientId));
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeScanCache(clientId: string, scans: ExposureScanView[]): void {
+  if (typeof window === "undefined" || !scans.length) return;
+  try {
+    window.localStorage.setItem(scanCacheKey(clientId), JSON.stringify(scans));
+  } catch {
+    // storage full / disabled — the server copy still stands.
+  }
+}
+
+/** Server rows win (ranked, fresh); cached rows the server has forgotten are
+ *  kept so a cold instance can't blank the board. */
+function mergeExposure(
+  server: ExposureScanView[],
+  cached: ExposureScanView[],
+): ExposureScanView[] {
+  const seen = new Set(server.map((s) => s.billId));
+  return [...server, ...cached.filter((c) => !seen.has(c.billId))];
+}
 
 type WatchStatus = "idle" | "queued" | "scoring" | "scored" | "failed";
 
@@ -113,6 +152,7 @@ export function ClientWatch({ nav }: { nav: Nav }) {
   const [rows, setRows] = useState<WatchRow[]>([]);
   const [exposureLoading, setExposureLoading] = useState(false);
   const [scanning, setScanning] = useState(false);
+  const [scanProgress, setScanProgress] = useState<{ done: number; total: number } | null>(null);
   const [openRationaleId, setOpenRationaleId] = useState<string | null>(null);
 
   const [clientQuery, setClientQuery] = useState("");
@@ -137,6 +177,13 @@ export function ClientWatch({ nav }: { nav: Nav }) {
   }, []);
   useEffect(() => {
     clientIdRef.current = clientId;
+  }, [clientId]);
+
+  // Client-first page: pin the rail's orientation, and remember the client so
+  // leaving for the delta/brief and coming back lands you right here.
+  useEffect(() => setViewMode("client-first"), []);
+  useEffect(() => {
+    if (clientId) setActiveClientId(clientId);
   }, [clientId]);
 
   const readyById = useMemo(
@@ -183,18 +230,24 @@ export function ClientWatch({ nav }: { nav: Nav }) {
     const ac = new AbortController();
     const runAtFetch = scanRunRef.current;
     setExposureLoading(true);
+    // Instant restore from the client-side cache so the board never flashes
+    // empty while the server answers (or if it has since forgotten the scans).
+    const cached = readScanCache(clientId);
+    if (cached.length) setRows(buildRows(readyBills, cached));
     fetchClientExposure(clientId, ac.signal)
       .then((exposure) => {
         if (ac.signal.aborted || scanRunRef.current !== runAtFetch) return;
-        setRows(buildRows(readyBills, exposure));
+        const merged = mergeExposure(exposure, cached);
+        writeScanCache(clientId, merged);
+        setRows(buildRows(readyBills, merged));
       })
       .catch((err: unknown) => {
         if (ac.signal.aborted) return;
         console.error(err);
         const msg = err instanceof Error ? err.message : String(err);
         nav.toast(`Could not load exposure: ${msg}`);
-        // Still show every scan-ready bill as un-assessed so the board is usable.
-        setRows(buildRows(readyBills, []));
+        // Fall back to the cache (or the bare scan-ready list) so it stays usable.
+        setRows(buildRows(readyBills, cached));
       })
       .finally(() => {
         if (!ac.signal.aborted) setExposureLoading(false);
@@ -301,6 +354,7 @@ export function ClientWatch({ nav }: { nav: Nav }) {
       !mountedRef.current || scanRunRef.current !== runId || clientIdRef.current !== cid;
 
     setScanning(true);
+    setScanProgress({ done: 0, total: billIds.length });
     setRows((rs) =>
       rs.map((r) =>
         billIds.includes(r.billId) ? { ...r, status: "queued", reason: undefined } : r,
@@ -309,8 +363,10 @@ export function ClientWatch({ nav }: { nav: Nav }) {
 
     let scored = 0;
     let failed = 0;
-    for (const billId of billIds) {
+    for (let i = 0; i < billIds.length; i++) {
+      const billId = billIds[i];
       if (stale()) return;
+      setScanProgress({ done: i, total: billIds.length });
       patchRow(billId, { status: "scoring" });
       try {
         const { scan } = await requestScan(cid, billId);
@@ -333,15 +389,18 @@ export function ClientWatch({ nav }: { nav: Nav }) {
     if (stale()) return;
 
     // Adopt the server's ranking (hidden score desc) + real approved flags;
-    // keep any failed rows where they are.
+    // keep any failed rows where they are. Always cache what we ended up with so
+    // a later visit (or a cold serverless instance) keeps these bands.
     try {
       const exposure = await fetchClientExposure(cid);
       if (stale()) return;
+      const merged = mergeExposure(exposure, readScanCache(cid));
+      writeScanCache(cid, merged);
       setRows((prev) => {
         const failedIds = new Set(
           prev.filter((r) => r.status === "failed").map((r) => r.billId),
         );
-        const rebuilt = buildRows(readyBills, exposure);
+        const rebuilt = buildRows(readyBills, merged);
         // Re-apply failures the exposure feed doesn't know about.
         const withFailures = rebuilt.map((r) =>
           failedIds.has(r.billId) && r.status !== "scored"
@@ -351,10 +410,19 @@ export function ClientWatch({ nav }: { nav: Nav }) {
         return withFailures;
       });
     } catch {
-      // Ranking refresh is cosmetic — keep the local order if it fails.
+      // Ranking refresh failed — keep the local order, but still cache the bands
+      // we scored so navigating away and back doesn't lose them.
+      setRows((prev) => {
+        writeScanCache(
+          cid,
+          prev.filter((r) => r.status === "scored" && r.scan).map((r) => r.scan!),
+        );
+        return prev;
+      });
     }
     if (stale()) return;
     setScanning(false);
+    setScanProgress(null);
     nav.toast(
       failed === 0
         ? `Scan complete · ${scored} assessed`
@@ -383,8 +451,8 @@ export function ClientWatch({ nav }: { nav: Nav }) {
     try {
       const { analysis } = await api.clientImpact.analyze(clientId, billId);
       if (!mountedRef.current || clientIdRef.current !== clientId) return;
-      setRows((rs) =>
-        rs.map((r) =>
+      setRows((rs) => {
+        const next = rs.map((r) =>
           r.billId === billId
             ? {
                 ...r,
@@ -395,8 +463,15 @@ export function ClientWatch({ nav }: { nav: Nav }) {
                   : r.scan,
               }
             : r,
-        ),
-      );
+        );
+        // Keep the cache in step so "brief ready" survives a navigation.
+        writeScanCache(
+          clientId,
+          next.filter((r) => r.status === "scored" && r.scan).map((r) => r.scan!),
+        );
+        return next;
+      });
+      nav.toast("Brief ready. Open it to review and email the client.");
     } catch (err: unknown) {
       if (!mountedRef.current || clientIdRef.current !== clientId) return;
       const msg = err instanceof Error ? err.message : String(err);
@@ -575,9 +650,15 @@ export function ClientWatch({ nav }: { nav: Nav }) {
                   onClick={scanPending}
                   title="Score every approved bill against this client"
                 >
-                  <FontAwesomeIcon icon={faPlay} aria-hidden="true" />
+                  <FontAwesomeIcon
+                    icon={scanning ? faSpinner : faPlay}
+                    spin={scanning}
+                    aria-hidden="true"
+                  />
                   {scanning
-                    ? "Scanning…"
+                    ? scanProgress
+                      ? `Scanning ${Math.min(scanProgress.done + 1, scanProgress.total)}/${scanProgress.total}…`
+                      : "Scanning…"
                     : pendingCount > 0
                       ? `Scan ${pendingCount} bill${pendingCount === 1 ? "" : "s"}`
                       : "Rescan all"}
@@ -642,7 +723,14 @@ export function ClientWatch({ nav }: { nav: Nav }) {
                   </div>
 
                   {exposureLoading && rows.length === 0 ? (
-                    <div className="empty-small">Loading exposure…</div>
+                    <div className="cw-rows" aria-busy="true" data-testid="watch-loading">
+                      {[0, 1, 2, 3].map((i) => (
+                        <div className="cw-row cw-skel-row" key={i}>
+                          <div className="cw-skel cw-skel-title" />
+                          <div className="cw-skel cw-skel-sub" />
+                        </div>
+                      ))}
+                    </div>
                   ) : visibleRows.length === 0 ? (
                     <div className="empty-small">No bills match “{billQuery}”.</div>
                   ) : (

@@ -16,6 +16,7 @@ import { SegmentedTabs } from "../components/SegmentedTabs";
 import { StatsRibbon } from "../components/StatsRibbon";
 import { api } from "../lib/api";
 import { PRACTICE_AREAS } from "../lib/practiceAreas";
+import { setViewMode } from "../lib/viewMode";
 import type { Bill, LegislativeMomentum } from "../types";
 
 type FilterValue = "all" | "active" | "late" | "assent" | "defeated";
@@ -44,6 +45,10 @@ export function BillMonitor({ nav }: { nav: Nav }) {
   const [practice, setPractice] = useState<string>(nav.params.practice ?? "all");
   const [session, setSession] = useState<string>(nav.params.session ?? "45-1");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Monitor is a law-first page: keep the rail's orientation in sync so leaving
+  // for a shared stage (delta/brief) doesn't snap back to the other mode.
+  useEffect(() => setViewMode("law-first"), []);
 
   useEffect(() => {
     let cancelled = false;

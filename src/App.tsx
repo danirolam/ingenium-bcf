@@ -77,13 +77,6 @@ export default function App() {
     [navigate],
   );
 
-  const setPageOnly = useCallback(
-    (p: PageId) => {
-      navigate(buildPath(p));
-    },
-    [navigate],
-  );
-
   if (surface === "landing") {
     return <Landing onLaunch={enterApp} />;
   }
@@ -100,7 +93,7 @@ export default function App() {
   else view = <ClientImpactAnalysisPage nav={nav} />;
 
   return (
-    <Layout page={page} params={params} setPage={setPageOnly} onExit={exitToLanding}>
+    <Layout page={page} params={params} go={go} onExit={exitToLanding}>
       {view}
       <Toast message={toastMsg} onDismiss={() => setToastMsg(null)} />
     </Layout>

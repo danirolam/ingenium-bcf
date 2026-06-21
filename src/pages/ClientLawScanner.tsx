@@ -27,6 +27,7 @@ import {
   type ScanReadyBill,
   type ScanReadyDetail,
 } from "../lib/clientScan";
+import { setViewMode } from "../lib/viewMode";
 import type { Client } from "../types";
 import "../styles/clientscan.css";
 
@@ -142,6 +143,9 @@ export function ClientLawScanner({ nav }: { nav: Nav }) {
       mountedRef.current = false;
     };
   }, []);
+
+  // Bill-first stage: keep the rail's orientation in sync (see BillMonitor).
+  useEffect(() => setViewMode("law-first"), []);
 
   useEffect(() => {
     selectedBillIdRef.current = selectedBillId;

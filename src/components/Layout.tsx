@@ -5,19 +5,19 @@ import { WorkflowNav } from "./WorkflowNav";
 export function Layout({
   page,
   params,
-  setPage,
+  go,
   onExit,
   children,
 }: {
   page: PageId;
   params: Record<string, string>;
-  setPage: (p: PageId) => void;
+  go: (p: PageId, params?: Record<string, string>) => void;
   onExit?: () => void;
   children: ReactNode;
 }) {
   return (
     <div className="shell">
-      <WorkflowNav page={page} params={params} setPage={setPage} onExit={onExit} />
+      <WorkflowNav page={page} params={params} go={go} onExit={onExit} />
       <main className="shell-main">{children}</main>
     </div>
   );

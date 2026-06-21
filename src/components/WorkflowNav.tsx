@@ -14,8 +14,14 @@ import {
   effectiveMode,
   entryPage,
   workflowSteps,
+  type WorkflowStep,
 } from "../lib/workflow";
-import { setViewMode, useViewMode, type ViewMode } from "../lib/viewMode";
+import {
+  setViewMode,
+  useActiveClientId,
+  useViewMode,
+  type ViewMode,
+} from "../lib/viewMode";
 import { Tooltip } from "./Tooltip";
 
 // The workspace top rail. It does four jobs at once: shows where you are
@@ -26,20 +32,28 @@ import { Tooltip } from "./Tooltip";
 export function WorkflowNav({
   page,
   params,
-  setPage,
+  go,
   onExit,
 }: {
   page: PageId;
   params: Record<string, string>;
-  setPage: (p: PageId) => void;
+  go: (p: PageId, params?: Record<string, string>) => void;
   onExit?: () => void;
 }) {
   const userMode = useViewMode();
+  const activeClientId = useActiveClientId();
   // The page you're on can force its orientation, so the visible steps always
   // match the page. Shared pages (delta, brief, overview) honor your choice.
   const mode = effectiveMode(userMode, page);
   const steps = workflowSteps(mode);
   const activeIndex = activeStepIndex(mode, page, params);
+
+  // Navigate to a step, carrying context so you don't lose your place: the
+  // client-first Exposure step returns to the client you were working.
+  const goStep = (s: WorkflowStep) => {
+    if (s.id === "exposure" && activeClientId) go("watch", { clientId: activeClientId });
+    else go(s.page);
+  };
 
   const [helpOpen, setHelpOpen] = useState(false);
   const helpRef = useRef<HTMLDivElement>(null);
@@ -67,7 +81,10 @@ export function WorkflowNav({
   // option never throws away your place).
   function pick(next: ViewMode) {
     setViewMode(next);
-    if (next !== mode) setPage(entryPage(next));
+    if (next === mode) return;
+    // Land at that orientation's start — or back on the client you were working.
+    if (next === "client-first" && activeClientId) go("watch", { clientId: activeClientId });
+    else go(entryPage(next));
   }
 
   const other: ViewMode = mode === "client-first" ? "law-first" : "client-first";
@@ -96,7 +113,7 @@ export function WorkflowNav({
           <button
             type="button"
             className={`shell-crumb${page === "overview" ? " is-current" : ""}`}
-            onClick={() => setPage("overview")}
+            onClick={() => go("overview")}
             aria-current={page === "overview" ? "page" : undefined}
           >
             Legislative workspace
@@ -166,7 +183,7 @@ export function WorkflowNav({
                 <button
                   type="button"
                   className={`shell-step${active ? " is-active" : ""}${done ? " is-done" : ""}`}
-                  onClick={() => setPage(s.page)}
+                  onClick={() => goStep(s)}
                   aria-current={active ? "page" : undefined}
                 >
                   <span className="shell-step-num">{s.num}</span>
@@ -225,7 +242,7 @@ export function WorkflowNav({
                     <button
                       type="button"
                       onClick={() => {
-                        setPage(s.page);
+                        goStep(s);
                         setHelpOpen(false);
                       }}
                     >

@@ -10,6 +10,7 @@ import {
   faRotateRight,
   faScaleBalanced,
   faShieldHalved,
+  faSpinner,
   faTriangleExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 import type { Nav } from "../App";
@@ -31,6 +32,35 @@ import { api } from "../lib/api";
 import { analyzeWithGuidance } from "../lib/clientScan";
 import { downloadDoc, esc } from "../lib/export";
 import type { Bill, Client, ClientImpactAnalysis } from "../types";
+
+// Briefs live in a serverless instance's /tmp, so a later page load can hit an
+// instance that never saw this one and 404. Mirror the latest brief per pair in
+// localStorage so reopening it never loses your work; the server stays the
+// source of truth whenever it actually answers.
+const briefKey = (clientId: string, billId: string) =>
+  `ingenium.brief.${clientId}.${billId}`;
+
+function cacheBrief(a: ClientImpactAnalysis): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(briefKey(a.clientId, a.billId), JSON.stringify(a));
+  } catch {
+    /* storage full / disabled */
+  }
+}
+
+function readCachedBrief(
+  clientId: string,
+  billId: string,
+): ClientImpactAnalysis | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(briefKey(clientId, billId));
+    return raw ? (JSON.parse(raw) as ClientImpactAnalysis) : null;
+  } catch {
+    return null;
+  }
+}
 
 export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
   const [analysis, setAnalysis] = useState<ClientImpactAnalysis | null>(null);
@@ -73,7 +103,10 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
       if (cancelled) return;
       setClient(c);
       setBill(b);
-      setAnalysis(a);
+      // Prefer the server's copy; fall back to the cached brief if this instance
+      // never saw it (cold /tmp). Refresh the cache when the server does answer.
+      if (a) cacheBrief(a);
+      setAnalysis(a ?? readCachedBrief(clientId, billId));
     })().catch((err) => {
       console.error(err);
       nav.toast(`Could not load brief: ${err.message ?? err}`);
@@ -108,6 +141,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
       // a deliberate action via the "Send to client" button after approval.
       const { analysis: a } = await analyzeWithGuidance(clientId, billId);
       setAnalysis(a);
+      cacheBrief(a);
       nav.toast("Brief generated.");
     } catch (err: any) {
       nav.toast(`Could not generate brief: ${err.message ?? err}`);
@@ -149,12 +183,22 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
           }
         />
         <div className="body">
-          <div className="rd-empty">
-            No brief has been generated for{" "}
-            <b>{client?.name ?? "this client"}</b> on{" "}
-            <b>{bill?.billNumber ?? "this bill"}</b> yet. Click{" "}
-            <b>Generate brief</b> to create one.
-          </div>
+          {busy ? (
+            <div className="rd-empty" data-testid="brief-generating" aria-busy="true">
+              <FontAwesomeIcon icon={faSpinner} spin aria-hidden="true" />{" "}
+              Generating the brief for <b>{client?.name ?? "this client"}</b> on{" "}
+              <b>{bill?.billNumber ?? "this bill"}</b>. This usually takes about
+              30 seconds — analysing the approved changes against the client's
+              operations, policies and contracts.
+            </div>
+          ) : (
+            <div className="rd-empty">
+              No brief has been generated for{" "}
+              <b>{client?.name ?? "this client"}</b> on{" "}
+              <b>{bill?.billNumber ?? "this bill"}</b> yet. Click{" "}
+              <b>Generate brief</b> to create one.
+            </div>
+          )}
         </div>
       </>
     );
@@ -167,9 +211,14 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     if (!analysis) return;
     setBusy(true);
     try {
-      const updated = await api.clientImpact.save(analysis.id);
+      // Pass the analysis so approval works even if this request lands on a
+      // serverless instance that never saw the brief.
+      const updated = await api.clientImpact.save(analysis.id, analysis);
       setAnalysis(updated);
-      nav.toast("Brief approved. The client email is drafted, and email and download are now unlocked.");
+      cacheBrief(updated);
+      nav.toast("Brief approved. The client email is drafted; email and download are unlocked.");
+    } catch (err: any) {
+      nav.toast(`Could not approve the brief: ${err?.message ?? err}`);
     } finally {
       setBusy(false);
     }
@@ -182,8 +231,14 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
     if (!analysis?.saved) return;
     setBusy(true);
     try {
-      const { email } = await api.clientImpact.emailClient(analysis.id);
-      nav.toast(email.simulated ? "Client email simulated." : "Email sent to client.");
+      const { email } = await api.clientImpact.emailClient(analysis.id, analysis);
+      nav.toast(
+        email.simulated
+          ? "Client email simulated (no email key is set on the server)."
+          : "Email sent to the client.",
+      );
+    } catch (err: any) {
+      nav.toast(`Could not send the client email: ${err?.message ?? err}`);
     } finally {
       setBusy(false);
     }
@@ -206,6 +261,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
         .byPair(clientId, billId)
         .catch(() => fresh);
       setAnalysis(reloaded);
+      cacheBrief(reloaded);
       setRegenOpen(false);
       setRegenText("");
       // The new version has NEW questions - typed answers no longer pair.
@@ -258,6 +314,7 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
         .byPair(clientId, billId)
         .catch(() => fresh);
       setAnalysis(reloaded);
+      cacheBrief(reloaded);
       setReviewAnswers({});
       nav.toast("Brief regenerated with counsel's answers.");
     } catch (err: any) {
