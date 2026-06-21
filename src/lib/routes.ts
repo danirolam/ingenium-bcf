@@ -22,6 +22,7 @@ const PAGES: PageId[] = [
   "delta",
   "scanner",
   "impact",
+  "watch",
 ];
 
 function isPageId(value: string): value is PageId {
@@ -41,6 +42,8 @@ function isPageId(value: string): value is PageId {
  *   /clients                           → scanner
  *   /clients/:clientId/bills/:billId   → impact       (the brief)
  *   /brief                             → impact       (empty state)
+ *   /watch                             → watch        (client-first: client picker)
+ *   /watch/:clientId                   → watch        (client-first: exposure board)
  *   (anything else)                    → overview
  */
 export function parsePath(pathname: string, search = ""): Route {
@@ -96,6 +99,12 @@ export function parsePath(pathname: string, search = ""): Route {
     case "brief":
       return app("impact");
 
+    case "watch": {
+      // /watch, /watch/:clientId — the client-first exposure board.
+      if (segments[1]) params.clientId = segments[1];
+      return app("watch");
+    }
+
     default:
       // Unknown path - fall back to the workspace overview rather than 404.
       return app("overview");
@@ -132,6 +141,9 @@ export function buildPath(page: PageId, params: Record<string, string> = {}): st
       return params.clientId && params.billId
         ? `/clients/${params.clientId}/bills/${params.billId}`
         : "/brief";
+
+    case "watch":
+      return params.clientId ? `/watch/${params.clientId}` : "/watch";
 
     default:
       return "/overview";

@@ -83,6 +83,10 @@ export interface ScanReadyBill {
   shortTitle?: string;
   status: string;
   session?: string;
+  /** Where the bill sits in its journey — lets the client-first board sort and
+   *  tag by how imminent the change is (the law-first scanner ignores it). */
+  legislativeMomentum?: string;
+  practiceAreas?: string[];
   approvedOpCount: number;
   actTitles: string[];
   computedAt: string;

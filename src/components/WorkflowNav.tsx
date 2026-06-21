@@ -4,26 +4,43 @@ import {
   faArrowRightFromBracket,
   faChevronRight,
   faCircleQuestion,
+  faScroll,
+  faUserShield,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import type { PageId } from "../App";
-import { WORKFLOW_STEPS, activeStepIndex } from "../lib/workflow";
+import {
+  activeStepIndex,
+  effectiveMode,
+  entryPage,
+  workflowSteps,
+} from "../lib/workflow";
+import { setViewMode, useViewMode, type ViewMode } from "../lib/viewMode";
 import { Tooltip } from "./Tooltip";
 
-// The workspace top rail. It does three jobs at once: shows where you are
-// (breadcrumb), shows the whole pipeline as a left-to-right flow (numbered
-// stages joined by chevrons), and explains every part on hover. The "?" opens
-// a guide that spells the flow out in full.
+// The workspace top rail. It does four jobs at once: shows where you are
+// (breadcrumb), lets you flip the pipeline's orientation (the mode switch),
+// shows the whole pipeline as a left-to-right flow (numbered stages joined by
+// chevrons), and explains every part on hover. The "?" opens a guide that
+// spells the current orientation out in full.
 export function WorkflowNav({
   page,
+  params,
   setPage,
   onExit,
 }: {
   page: PageId;
+  params: Record<string, string>;
   setPage: (p: PageId) => void;
   onExit?: () => void;
 }) {
-  const activeIndex = activeStepIndex(page);
+  const userMode = useViewMode();
+  // The page you're on can force its orientation, so the visible steps always
+  // match the page. Shared pages (delta, brief, overview) honor your choice.
+  const mode = effectiveMode(userMode, page);
+  const steps = workflowSteps(mode);
+  const activeIndex = activeStepIndex(mode, page, params);
+
   const [helpOpen, setHelpOpen] = useState(false);
   const helpRef = useRef<HTMLDivElement>(null);
 
@@ -44,6 +61,16 @@ export function WorkflowNav({
       document.removeEventListener("keydown", onKey);
     };
   }, [helpOpen]);
+
+  // Flip orientation: always persist the intent; navigate to the new pipeline's
+  // start only when the orientation actually changes (so re-clicking the active
+  // option never throws away your place).
+  function pick(next: ViewMode) {
+    setViewMode(next);
+    if (next !== mode) setPage(entryPage(next));
+  }
+
+  const other: ViewMode = mode === "client-first" ? "law-first" : "client-first";
 
   return (
     <header className="shell-bar">
@@ -77,8 +104,44 @@ export function WorkflowNav({
         </Tooltip>
       </div>
 
+      {/* Orientation switch: which end of the same pipeline you work from. */}
+      <div className="shell-mode" role="group" aria-label="Pipeline orientation">
+        <Tooltip
+          title="Work by bill"
+          body="Start from a bill, find the clients it exposes, then brief them. The classic pipeline."
+          placement="bottom"
+        >
+          <button
+            type="button"
+            className={`shell-mode-opt${mode === "law-first" ? " is-on" : ""}`}
+            data-testid="mode-law-first"
+            aria-pressed={mode === "law-first"}
+            onClick={() => pick("law-first")}
+          >
+            <FontAwesomeIcon icon={faScroll} aria-hidden="true" />
+            <span className="shell-mode-label">By bill</span>
+          </button>
+        </Tooltip>
+        <Tooltip
+          title="Work by client"
+          body="Start from a client, rank every bill by how dangerous it is to them, then brief them on each. The reverse view."
+          placement="bottom"
+        >
+          <button
+            type="button"
+            className={`shell-mode-opt${mode === "client-first" ? " is-on" : ""}`}
+            data-testid="mode-client-first"
+            aria-pressed={mode === "client-first"}
+            onClick={() => pick("client-first")}
+          >
+            <FontAwesomeIcon icon={faUserShield} aria-hidden="true" />
+            <span className="shell-mode-label">By client</span>
+          </button>
+        </Tooltip>
+      </div>
+
       <nav className="shell-flow" aria-label="Workflow stages">
-        {WORKFLOW_STEPS.map((s, i) => {
+        {steps.map((s, i) => {
           const active = i === activeIndex;
           const done = i < activeIndex;
           return (
@@ -103,7 +166,7 @@ export function WorkflowNav({
                 <button
                   type="button"
                   className={`shell-step${active ? " is-active" : ""}${done ? " is-done" : ""}`}
-                  onClick={() => setPage(s.id)}
+                  onClick={() => setPage(s.page)}
                   aria-current={active ? "page" : undefined}
                 >
                   <span className="shell-step-num">{s.num}</span>
@@ -152,16 +215,17 @@ export function WorkflowNav({
                 </button>
               </div>
               <p className="shell-help-lead">
-                Ingenium turns a Canadian bill into a client-ready memo in four
-                stages. Click any stage to jump to it.
+                {mode === "client-first"
+                  ? "Ingenium ranks the bills that threaten a client and turns each into a client-ready memo, in four stages. Click any stage to jump to it."
+                  : "Ingenium turns a Canadian bill into a client-ready memo in four stages. Click any stage to jump to it."}
               </p>
               <ol className="shell-help-steps">
-                {WORKFLOW_STEPS.map((s) => (
+                {steps.map((s) => (
                   <li key={s.id}>
                     <button
                       type="button"
                       onClick={() => {
-                        setPage(s.id);
+                        setPage(s.page);
                         setHelpOpen(false);
                       }}
                     >
@@ -174,6 +238,19 @@ export function WorkflowNav({
                   </li>
                 ))}
               </ol>
+              <button
+                type="button"
+                className="shell-help-flip"
+                onClick={() => {
+                  pick(other);
+                  setHelpOpen(false);
+                }}
+              >
+                {mode === "client-first"
+                  ? "Switch to work by bill instead"
+                  : "Switch to work by client instead"}
+                <FontAwesomeIcon icon={faArrowRightFromBracket} aria-hidden="true" />
+              </button>
             </div>
           )}
         </div>

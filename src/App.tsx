@@ -7,6 +7,7 @@ import { BillMonitor } from "./pages/BillMonitor";
 import { BillDetail } from "./pages/BillDetail";
 import { ClientImpactAnalysisPage } from "./pages/ClientImpactAnalysis";
 import { ClientLawScanner } from "./pages/ClientLawScanner";
+import { ClientWatch } from "./pages/ClientWatch";
 import { DeltaWorkspace } from "./pages/DeltaWorkspace";
 import { buildPath, parsePath, type Route } from "./lib/routes";
 
@@ -16,7 +17,8 @@ export type PageId =
   | "bill"
   | "delta"
   | "scanner"
-  | "impact";
+  | "impact"
+  | "watch";
 
 export type Nav = {
   go: (page: PageId, params?: Record<string, string>) => void;
@@ -94,10 +96,11 @@ export default function App() {
   else if (page === "bill") view = <BillDetail nav={nav} />;
   else if (page === "delta") view = <DeltaWorkspace nav={nav} />;
   else if (page === "scanner") view = <ClientLawScanner nav={nav} />;
+  else if (page === "watch") view = <ClientWatch nav={nav} />;
   else view = <ClientImpactAnalysisPage nav={nav} />;
 
   return (
-    <Layout page={page} setPage={setPageOnly} onExit={exitToLanding}>
+    <Layout page={page} params={params} setPage={setPageOnly} onExit={exitToLanding}>
       {view}
       <Toast message={toastMsg} onDismiss={() => setToastMsg(null)} />
     </Layout>

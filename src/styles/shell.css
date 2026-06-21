@@ -515,3 +515,87 @@
     padding-right: 12px;
   }
 }
+
+/* ── Orientation switch (work by bill ↔ by client) ── */
+.shell-mode {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--panel-2);
+}
+.shell-mode-opt {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 7px;
+  padding: 6px 11px;
+  font: 600 12.5px/1 var(--sans);
+  color: var(--ink-4);
+  white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+.shell-mode-opt .svg-inline--fa {
+  font-size: 12px;
+}
+.shell-mode-opt:hover {
+  color: var(--ink-2);
+}
+.shell-mode-opt.is-on {
+  color: var(--ink);
+  background: var(--panel);
+  box-shadow: 0 1px 2px rgba(66, 74, 83, 0.14), 0 0 0 1px var(--border-2);
+}
+.shell-mode-opt:focus-visible {
+  outline: 2px solid var(--accent-warm);
+  outline-offset: 1px;
+}
+
+/* The "switch orientation" link at the foot of the help popover. */
+.shell-help-flip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: calc(100% - 16px);
+  margin: 0 8px 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel-2);
+  color: var(--ink-2);
+  font: 600 12px/1.3 var(--sans);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.shell-help-flip:hover {
+  background: var(--panel-3);
+  border-color: var(--border-2);
+  color: var(--ink);
+}
+.shell-help-flip .svg-inline--fa {
+  flex: none;
+  opacity: 0.7;
+}
+
+@media (max-width: 1080px) {
+  /* Icons-only switch to keep the rail breathing on mid widths. */
+  .shell-mode-label {
+    display: none;
+  }
+  .shell-mode-opt {
+    padding: 6px 9px;
+  }
+}
+@media (max-width: 640px) {
+  .shell-mode-opt {
+    padding: 6px 8px;
+  }
+}

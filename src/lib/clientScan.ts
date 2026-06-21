@@ -25,6 +25,9 @@ export interface ScanReadyBill {
   shortTitle?: string;
   status: string;
   session?: string;
+  /** Journey stage + topics - used by the client-first board to sort/tag rows. */
+  legislativeMomentum?: string;
+  practiceAreas?: string[];
   approvedOpCount: number;
   actTitles: string[];
   computedAt: string;
@@ -120,6 +123,30 @@ export function fetchScans(
 ): Promise<ImpactScanView[]> {
   return j<ImpactScanView[]>(
     `/api/client-impact/scans?billId=${encodeURIComponent(billId)}`,
+    { signal },
+  );
+}
+
+/**
+ * One exposure row for the client-first board: a scan, plus whether the pair's
+ * latest brief is counsel-approved. The numeric score never leaves the backend
+ * (rows arrive pre-ranked by it). Mirrors ExposureRow in clientImpact.ts.
+ */
+export interface ExposureScanView extends ImpactScanView {
+  approved: boolean;
+}
+
+/**
+ * Every persisted scan for ONE client across all bills - the inverse of
+ * fetchScans, ALREADY ranked by the server (hidden score desc) so the most
+ * dangerous bills lead. Orphaned bills are filtered server-side.
+ */
+export function fetchClientExposure(
+  clientId: string,
+  signal?: AbortSignal,
+): Promise<ExposureScanView[]> {
+  return j<ExposureScanView[]>(
+    `/api/client-impact/exposure?clientId=${encodeURIComponent(clientId)}`,
     { signal },
   );
 }

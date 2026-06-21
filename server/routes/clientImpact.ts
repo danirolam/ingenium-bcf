@@ -251,6 +251,8 @@ clientImpactRouter.get(
         shortTitle: bill.shortTitle,
         status: bill.status,
         session: bill.session,
+        legislativeMomentum: bill.legislativeMomentum,
+        practiceAreas: bill.practiceAreas ?? [],
         approvedOpCount,
         actTitles,
         computedAt: deltaRec.createdAt ?? "",
@@ -397,6 +399,52 @@ clientImpactRouter.get(
       .filter((s) => clientsById.has(s.clientId))
       .sort((a, b) => rank(b) - rank(a) || name(a).localeCompare(name(b)))
       .map((s) => toScanView(s, latestByPair.get(`${s.clientId}|${s.billId}`)));
+    res.json(out);
+  }),
+);
+
+// All scans for ONE client across every bill — the client-first "exposure"
+// board's ranking feed. The inverse axis of /scans: same backend-only score
+// ranking (critical → low), same allowlist strip, plus the brief-approval flag
+// so the board can show "already advised". Registered BEFORE /:id.
+interface ExposureRow extends ImpactScanView {
+  /** The latest brief for this pair is counsel-approved (saved). */
+  approved: boolean;
+}
+
+clientImpactRouter.get(
+  "/exposure",
+  safe(async (req, res) => {
+    const clientId = String(req.query.clientId ?? "");
+    if (!clientId) return res.status(400).json({ error: "clientId required" });
+    const client = await findRecord<Client>(FILES.clients, clientId);
+    if (!client) return res.status(404).json({ error: "client not_found" });
+
+    const scans = presentOnly(await readAll<ImpactScan>(SCANS_FILE)).filter(
+      (s) => s.clientId === clientId,
+    );
+    // Drop scans whose bill no longer exists (deleted/refreshed away).
+    const billsById = new Map(
+      presentOnly(await readAll<Bill>(FILES.bills)).map((b) => [b.id, b]),
+    );
+    // Newest brief per (client, bill) for hasBrief/analysisId/approved.
+    const latestByPair = new Map<string, ClientImpactAnalysis>();
+    for (const a of presentOnly(await readAll<ClientImpactAnalysis>(FILES.impacts))) {
+      if (a.clientId !== clientId) continue;
+      const k = a.billId;
+      const cur = latestByPair.get(k);
+      if (!cur || a.createdAt.localeCompare(cur.createdAt) > 0) latestByPair.set(k, a);
+    }
+
+    const rank = (s: ImpactScan) => (Number.isFinite(s.score) ? s.score : 0);
+    const out: ExposureRow[] = scans
+      .filter((s) => billsById.has(s.billId))
+      // Hidden score desc (danger first), stable billId tiebreak.
+      .sort((a, b) => rank(b) - rank(a) || a.billId.localeCompare(b.billId))
+      .map((s) => {
+        const brief = latestByPair.get(s.billId);
+        return { ...toScanView(s, brief), approved: brief?.saved === true };
+      });
     res.json(out);
   }),
 );

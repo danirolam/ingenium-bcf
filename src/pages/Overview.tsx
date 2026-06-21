@@ -167,7 +167,7 @@ export function Overview({ nav }: { nav: Nav }) {
                   <button
                     type="button"
                     className="ov-stage"
-                    onClick={() => nav.go(s.id)}
+                    onClick={() => nav.go(s.page)}
                   >
                     <div className="ov-stage-head">
                       <span className="ov-stage-num">{s.num}</span>
