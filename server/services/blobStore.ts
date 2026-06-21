@@ -9,20 +9,20 @@
 // a complete no-op there and every store stays plain-file as before.
 import { put, list } from "@vercel/blob";
 
-// Mutable stores persisted to Blob on every write (write-through).
+// Mutable stores persisted to Blob, both write-through and read-through, so a
+// brief/approval/scan made on one instance is visible from every other one.
+// These are all small (KBs), so a Blob round-trip per read is cheap.
+//
+// provisionDeltas is deliberately NOT here: it is 18MB (Blob round-trips would
+// be far too heavy), the seeded demo deltas ship in the committed snapshot, and
+// a user-computed delta recomputes deterministically on demand. The approvals
+// it gates ARE durable (same op keys on recompute), so no human work is lost.
 const DURABLE = new Set([
   "clientImpactAnalyses.json",
   "approvals.json",
   "clientScans.json",
-  "provisionDeltas.json",
 ]);
-// Small stores ALSO read from Blob on every read (always fresh, cheap). The
-// large provisionDeltas cache is hydrated on cold start instead of per read.
-const READ_THROUGH = new Set([
-  "clientImpactAnalyses.json",
-  "approvals.json",
-  "clientScans.json",
-]);
+const READ_THROUGH = DURABLE;
 
 /** The full set of durable files, for cold-start hydration. */
 export const DURABLE_FILES = [...DURABLE];
