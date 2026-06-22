@@ -665,10 +665,14 @@ clientImpactRouter.post(
     const id = String(req.params.id);
     // Same cross-instance recovery as /save: the approved brief may live in a
     // different instance's /tmp, so accept it from the request body too.
+    // Prefer the caller's copy: it just came back from /save (approved, with the
+    // draft), so it is authoritative and avoids a stale cross-instance read of a
+    // brief whose approval hasn't propagated yet. Fall back to the store.
     const fromBody = req.body?.analysis as ClientImpactAnalysis | undefined;
     const a =
-      (await findRecord<ClientImpactAnalysis>(FILES.impacts, id)) ??
-      (fromBody && fromBody.id === id ? fromBody : undefined);
+      fromBody && fromBody.id === id
+        ? fromBody
+        : await findRecord<ClientImpactAnalysis>(FILES.impacts, id);
     if (!a) return res.status(404).json({ error: "not_found" });
     // The approval gate, enforced server-side: an unapproved brief — and the
     // unreviewed draft it carries — cannot be sent to a client, whatever the UI
