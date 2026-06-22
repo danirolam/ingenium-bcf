@@ -71,6 +71,7 @@ export async function blobRead(file: string): Promise<string | null> {
     const sep = found.url.includes("?") ? "&" : "?";
     const res = await fetch(`${found.url}${sep}_=${Date.now()}`, {
       cache: "no-store",
+      headers: { "cache-control": "no-cache", pragma: "no-cache" },
       signal: AbortSignal.timeout(10_000),
     });
     if (!res.ok) return null;

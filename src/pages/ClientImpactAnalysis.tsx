@@ -103,10 +103,24 @@ export function ClientImpactAnalysisPage({ nav }: { nav: Nav }) {
       if (cancelled) return;
       setClient(c);
       setBill(b);
-      // Prefer the server's copy; fall back to the cached brief if this instance
-      // never saw it (cold /tmp). Refresh the cache when the server does answer.
-      if (a) cacheBrief(a);
-      setAnalysis(a ?? readCachedBrief(clientId, billId));
+      // Reconcile the server copy with our local cache. The server read can lag a
+      // just-made approval (the durable store is eventually consistent), and a
+      // cold instance may not have the brief at all — so keep whichever is more
+      // complete for this session: same brief but approved / with the email
+      // draft, or simply newer.
+      const cached = readCachedBrief(clientId, billId);
+      let chosen = a ?? cached;
+      if (a && cached) {
+        if (cached.id === a.id) {
+          if ((cached.saved && !a.saved) || (cached.emailDraft && !a.emailDraft)) {
+            chosen = cached;
+          }
+        } else if (cached.createdAt > a.createdAt) {
+          chosen = cached;
+        }
+      }
+      if (chosen) cacheBrief(chosen);
+      setAnalysis(chosen);
     })().catch((err) => {
       console.error(err);
       nav.toast(`Could not load brief: ${err.message ?? err}`);
