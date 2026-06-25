@@ -209,6 +209,128 @@ export function fetchBriefIndex(signal?: AbortSignal): Promise<BriefIndexEntry[]
   return j<BriefIndexEntry[]>("/api/client-impact/briefs", { signal });
 }
 
+// ── Consolidated client briefing (all approved bills for one client) ─────────
+// One entry per latest APPROVED brief for the client; the consolidated email is
+// assembled from these. Mirrors ConsolidatedItem in server/routes/clientImpact.ts.
+
+export interface ConsolidatedItem {
+  analysisId: string;
+  billId: string;
+  billNumber: string;
+  billTitle: string;
+  billShortTitle?: string;
+  billStatus: string;
+  band?: ScanBand;
+  affected: "yes" | "no" | "unclear";
+  impactLevel: "low" | "medium" | "high" | "critical";
+  urgency: "low" | "medium" | "high" | "immediate";
+  whyItAffectsClient: string;
+  affectedClientAreas: string[];
+  hasDraft: boolean;
+  createdAt: string;
+}
+
+export interface ConsolidatedResponse {
+  client: { id: string; name: string };
+  items: ConsolidatedItem[];
+}
+
+/** Every human-approved bill affecting one client, severity-first. */
+export function fetchConsolidated(
+  clientId: string,
+  signal?: AbortSignal,
+): Promise<ConsolidatedResponse> {
+  return j<ConsolidatedResponse>(
+    `/api/client-impact/consolidated?clientId=${encodeURIComponent(clientId)}`,
+    { signal },
+  );
+}
+
+export interface ComposedEmail {
+  subject: string;
+  body: string;
+}
+
+/** Send one consolidated email across the selected approved bills. The server
+ *  forwards this exact draft (what you see is what is sent), after re-checking
+ *  the approval gate. */
+export function sendConsolidatedEmail(args: {
+  clientId: string;
+  billIds: string[];
+  email: ComposedEmail;
+}): Promise<{
+  email: ComposedEmail;
+  result: { sent: boolean; simulated?: boolean };
+  count: number;
+  billNumbers: string[];
+}> {
+  return j("/api/client-impact/consolidated-email", {
+    method: "POST",
+    body: JSON.stringify({
+      clientId: args.clientId,
+      billIds: args.billIds,
+      email: args.email,
+      send: true,
+    }),
+  });
+}
+
+/**
+ * Assemble the consolidated client email from the selected approved bills.
+ * Deterministic, no model call, no em dashes: one greeting, one short paragraph
+ * per bill, one close. The preview shows this and the send forwards it verbatim,
+ * so it mirrors the server's synthesizeConsolidatedEmail.
+ */
+export function composeConsolidatedDraft(
+  clientName: string,
+  items: ConsolidatedItem[],
+): ComposedEmail {
+  const client = (clientName || "the client").trim();
+  const list = items.filter((it) => it && it.billNumber);
+  const n = list.length;
+  const subject =
+    n === 1
+      ? `${list[0].billNumber.trim()}: a federal bill worth keeping an eye on`
+      : `${n} federal bills we are monitoring for ${client}`;
+  const intro =
+    n === 1
+      ? "I wanted to flag a federal bill we are watching on your behalf. It is not yet law, but if enacted it could matter to your business."
+      : "I wanted to bring together the federal bills we are watching on your behalf. None is yet law, but each could matter to your business if enacted, so I have set out below what we are tracking and why.";
+  const lines: string[] = [`Dear ${client} team,`, "", intro, ""];
+  for (const it of list) {
+    const title = (it.billTitle || "").trim();
+    const status = (it.billStatus || "").trim().toLowerCase();
+    const why = (it.whyItAffectsClient || "").trim();
+    const areas = (it.affectedClientAreas ?? [])
+      .map((a) => a.trim())
+      .filter(Boolean)
+      .slice(0, 3);
+    const areaList =
+      areas.length <= 1
+        ? areas[0] ?? ""
+        : `${areas.slice(0, -1).join(", ")} and ${areas[areas.length - 1]}`;
+    const whyLine = why
+      ? `${why.charAt(0).toUpperCase()}${why.slice(1)}`
+      : areaList
+        ? `If enacted in its current form, it could adjust obligations bearing on the parts of your business that touch ${areaList}.`
+        : "If enacted in its current form, it could adjust obligations bearing on your operations.";
+    lines.push(
+      `Bill ${it.billNumber.trim()}${title ? ` (${title})` : ""}${status ? `, currently ${status}` : ""}.`,
+      whyLine,
+      "",
+    );
+  }
+  lines.push(
+    "We would be glad to review your contracts and policies for exposure across these bills, run a focused compliance check where it helps, and keep watch as each one moves through Parliament so nothing catches you off guard.",
+    "",
+    "If it would help, I am happy to set up a short call to talk through what these could mean for you.",
+    "",
+    "Kind regards,",
+    "Legislative Monitoring",
+  );
+  return { subject, body: lines.join("\n") };
+}
+
 /**
  * Generate (or regenerate) the full brief for a pair, optionally with
  * reviewing-lawyer instructions the brief agent must follow. Guidance is

@@ -637,6 +637,83 @@ export function synthesizeEmailDraft(args: {
   return { subject: humanizeDashes(subject), body: humanizeDashes(body) };
 }
 
+/** One bill's already-approved takeaway, for a consolidated client briefing. */
+export interface ConsolidatedEmailItem {
+  billNumber: string;
+  billTitle: string;
+  billStatus?: string;
+  impactLevel?: string;
+  whyItAffectsClient?: string;
+  affectedClientAreas?: string[];
+}
+
+/**
+ * Compose ONE client-facing email covering several APPROVED bills at once — the
+ * "one briefing for everything we are watching for this client" the partner
+ * asked for. Deterministic and keyless: it folds each bill's already
+ * counsel-approved takeaway into a single note (one greeting, one short
+ * paragraph per bill, one close), so the consolidated send keeps the same
+ * approval guarantee as the per-bill draft. Items arrive most-pressing first.
+ */
+export function synthesizeConsolidatedEmail(args: {
+  clientName: string;
+  industry?: string;
+  items: ConsolidatedEmailItem[];
+}): { subject: string; body: string } {
+  const client = (args.clientName || "the client").trim();
+  const items = (args.items ?? []).filter((it) => it && it.billNumber);
+  const n = items.length;
+
+  const subject =
+    n === 1
+      ? `${items[0].billNumber.trim()}: a federal bill worth keeping an eye on`
+      : `${n} federal bills we are monitoring for ${client}`;
+
+  const intro =
+    n === 1
+      ? `I wanted to flag a federal bill we are watching on your behalf. It is not yet law, but if enacted it could matter to your business.`
+      : `I wanted to bring together the federal bills we are watching on your behalf. None is yet law, but each could matter to your business if enacted, so I have set out below what we are tracking and why.`;
+
+  const lines: string[] = [`Dear ${client} team,`, ``, intro, ``];
+
+  for (const it of items) {
+    const billNo = (it.billNumber || "the bill").trim();
+    const title = (it.billTitle || "").trim();
+    const status = (it.billStatus || "").trim().toLowerCase();
+    const why = (it.whyItAffectsClient || "").trim();
+    const areas = (it.affectedClientAreas ?? [])
+      .map((a) => a.trim())
+      .filter(Boolean)
+      .slice(0, 3);
+    const areaList =
+      areas.length <= 1
+        ? areas[0] ?? ""
+        : `${areas.slice(0, -1).join(", ")} and ${areas[areas.length - 1]}`;
+    const whyLine = why
+      ? `${why.charAt(0).toUpperCase()}${why.slice(1)}`
+      : areaList
+        ? `If enacted in its current form, it could adjust obligations bearing on the parts of your business that touch ${areaList}.`
+        : `If enacted in its current form, it could adjust obligations bearing on your operations.`;
+    lines.push(
+      `Bill ${billNo}${title ? ` (${title})` : ""}${status ? `, currently ${status}` : ""}.`,
+      whyLine,
+      ``,
+    );
+  }
+
+  lines.push(
+    `We would be glad to review your contracts and policies for exposure across these bills, run a focused compliance check where it helps, and keep watch as each one moves through Parliament so nothing catches you off guard.`,
+    ``,
+    `If it would help, I am happy to set up a short call to talk through what these could mean for you.`,
+    ``,
+    `Kind regards,`,
+    `Legislative Monitoring`,
+  );
+
+  const body = headOnly(lines.join("\n"), NORMALIZE_EMAIL_BODY_MAX_CHARS);
+  return { subject: humanizeDashes(subject), body: humanizeDashes(body) };
+}
+
 /**
  * Coerce ANY value (null, arrays, strings, garbage) into a valid AnalysisBody.
  * Never throws. Garbage defaults are conservative: unclear/medium/medium,

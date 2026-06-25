@@ -19,13 +19,18 @@ import {
 } from "../services/clientScan.js";
 import {
   SCAN_BANDS,
+  synthesizeConsolidatedEmail,
   type ScanBand,
   type ScanReadyBill,
   type ScanReadyDetail,
   type ScoreBody,
 } from "../services/clientScanCore.js";
 import { rankBillsForClient } from "../services/exposureRank.js";
-import { sendClientBriefEmail, sendClientImpactCompleteEmail } from "../services/email.js";
+import {
+  sendClientBriefEmail,
+  sendClientImpactCompleteEmail,
+  sendConsolidatedClientBriefEmail,
+} from "../services/email.js";
 import { billAffectedActs } from "../services/gemini.js";
 import { flagImpactReview } from "../services/humanReview.js";
 import { FILES, readAll, upsert, writeAll } from "../services/jsonStore.js";
@@ -581,6 +586,167 @@ clientImpactRouter.get(
       (a, b) => b.createdAt.localeCompare(a.createdAt) || a.analysisId.localeCompare(b.analysisId),
     );
     res.json(out);
+  }),
+);
+
+// ── Consolidated client briefing (all approved bills for one client) ─────────
+// The partner's ask: see every human-APPROVED bill affecting a client at once
+// and fold them into ONE client email. Approval = the brief's `saved` flag, so
+// this lists the latest approved brief per (client, bill) and exposes the
+// takeaway the consolidated email is built from. Registered BEFORE /:id.
+interface ConsolidatedItem {
+  analysisId: string;
+  billId: string;
+  billNumber: string;
+  billTitle: string;
+  billShortTitle?: string;
+  billStatus: string;
+  band?: ScanBand;
+  affected: ClientImpactAnalysis["affected"];
+  impactLevel: ClientImpactAnalysis["impactLevel"];
+  urgency: ClientImpactAnalysis["urgency"];
+  whyItAffectsClient: string;
+  affectedClientAreas: string[];
+  hasDraft: boolean;
+  createdAt: string;
+}
+
+const IMPACT_RANK: Record<string, number> = { critical: 3, high: 2, medium: 1, low: 0 };
+
+interface ApprovedBrief {
+  analysis: ClientImpactAnalysis;
+  bill: Bill;
+  band?: ScanBand;
+}
+
+/** Latest APPROVED brief per (client, bill) for one client, severity-first. */
+async function approvedBriefsForClient(clientId: string): Promise<ApprovedBrief[]> {
+  const latestByBill = new Map<string, ClientImpactAnalysis>();
+  for (const a of presentOnly(await readAll<ClientImpactAnalysis>(FILES.impacts))) {
+    if (a.clientId !== clientId || a.saved !== true) continue;
+    const cur = latestByBill.get(a.billId);
+    if (!cur || a.createdAt.localeCompare(cur.createdAt) > 0) latestByBill.set(a.billId, a);
+  }
+  const billsById = new Map(
+    presentOnly(await readAll<Bill>(FILES.bills)).map((b) => [b.id, b]),
+  );
+  const bandByBill = new Map<string, ScanBand>();
+  for (const s of presentOnly(await readAll<ImpactScan>(SCANS_FILE))) {
+    if (s.clientId === clientId) bandByBill.set(s.billId, s.band);
+  }
+  const out: ApprovedBrief[] = [];
+  for (const a of latestByBill.values()) {
+    const bill = billsById.get(a.billId);
+    if (!bill) continue; // bill deleted from the snapshot
+    out.push({ analysis: a, bill, band: bandByBill.get(a.billId) });
+  }
+  return sortBriefs(out);
+}
+
+function sortBriefs(rows: ApprovedBrief[]): ApprovedBrief[] {
+  return rows.sort(
+    (x, y) =>
+      (IMPACT_RANK[y.analysis.impactLevel] ?? 0) - (IMPACT_RANK[x.analysis.impactLevel] ?? 0) ||
+      y.analysis.createdAt.localeCompare(x.analysis.createdAt),
+  );
+}
+
+clientImpactRouter.get(
+  "/consolidated",
+  safe(async (req, res) => {
+    const clientId = String(req.query.clientId ?? "");
+    if (!clientId) return res.status(400).json({ error: "clientId required" });
+    const client = await findRecord<Client>(FILES.clients, clientId);
+    if (!client) return res.status(404).json({ error: "client not_found" });
+
+    const approved = await approvedBriefsForClient(clientId);
+    const items: ConsolidatedItem[] = approved.map(({ analysis: a, bill, band }) => ({
+      analysisId: a.id,
+      billId: a.billId,
+      billNumber: bill.billNumber,
+      billTitle: bill.title,
+      ...(bill.shortTitle ? { billShortTitle: bill.shortTitle } : {}),
+      billStatus: bill.status,
+      ...(band ? { band } : {}),
+      affected: a.affected,
+      impactLevel: a.impactLevel,
+      urgency: a.urgency,
+      whyItAffectsClient: a.whyItAffectsClient,
+      affectedClientAreas: a.affectedClientAreas ?? [],
+      hasDraft: !!a.emailDraft?.body?.trim(),
+      createdAt: a.createdAt,
+    }));
+    res.json({ client: { id: client.id, name: client.name }, items });
+  }),
+);
+
+// Compose (and optionally SEND) one consolidated email across the client's
+// approved bills. The page sends the exact draft it shows (server forwards it
+// verbatim — what you see is what is sent); the approval gate still requires at
+// least one approved brief among the selected bills before anything goes out.
+clientImpactRouter.post(
+  "/consolidated-email",
+  safe(async (req, res) => {
+    const clientId = String(req.body?.clientId ?? "");
+    if (!clientId) return res.status(400).json({ error: "clientId required" });
+    const client = await findRecord<Client>(FILES.clients, clientId);
+    if (!client) return res.status(404).json({ error: "client not_found" });
+
+    const billIds: string[] | undefined = Array.isArray(req.body?.billIds)
+      ? req.body.billIds.map((x: unknown) => String(x))
+      : undefined;
+    const idSet = billIds ? new Set(billIds) : null;
+
+    // Approved briefs visible to THIS instance, plus any the caller carries in
+    // the body (cross-instance recovery — same pattern as /email-client).
+    const byBill = new Map<string, ApprovedBrief>();
+    for (const r of await approvedBriefsForClient(clientId)) byBill.set(r.bill.id, r);
+    const fromBody = Array.isArray(req.body?.analyses)
+      ? (req.body.analyses as ClientImpactAnalysis[])
+      : [];
+    if (fromBody.length) {
+      const billsById = new Map(
+        presentOnly(await readAll<Bill>(FILES.bills)).map((b) => [b.id, b]),
+      );
+      for (const a of fromBody) {
+        if (!a || a.clientId !== clientId || a.saved !== true) continue;
+        const bill = byBill.get(a.billId)?.bill ?? billsById.get(a.billId);
+        if (!bill) continue;
+        const cur = byBill.get(a.billId);
+        if (!cur || a.createdAt.localeCompare(cur.analysis.createdAt) > 0) {
+          byBill.set(a.billId, { analysis: a, bill, band: cur?.band });
+        }
+      }
+    }
+
+    const all = sortBriefs([...byBill.values()]);
+    const selected = idSet ? all.filter((r) => idSet.has(r.bill.id)) : all;
+    if (selected.length === 0) return res.status(409).json({ error: "no_approved_briefs" });
+
+    // Prefer the caller's edited draft (WYSIWYG); else compose deterministically.
+    const provided = req.body?.email as { subject?: string; body?: string } | undefined;
+    const draft =
+      provided && provided.subject && provided.body?.trim()
+        ? { subject: String(provided.subject), body: String(provided.body) }
+        : synthesizeConsolidatedEmail({
+            clientName: client.name,
+            industry: client.industry,
+            items: selected.map((r) => ({
+              billNumber: r.bill.billNumber,
+              billTitle: r.bill.title,
+              billStatus: r.bill.status,
+              impactLevel: r.analysis.impactLevel,
+              whyItAffectsClient: r.analysis.whyItAffectsClient,
+              affectedClientAreas: r.analysis.affectedClientAreas ?? [],
+            })),
+          });
+
+    const billNumbers = selected.map((r) => r.bill.billNumber);
+    if (req.body?.send === true) {
+      const result = await sendConsolidatedClientBriefEmail({ client, draft });
+      return res.json({ email: draft, result, count: selected.length, billNumbers });
+    }
+    res.json({ email: draft, count: selected.length, billNumbers });
   }),
 );
 

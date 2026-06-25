@@ -160,7 +160,7 @@ export function entryPage(mode: ViewMode): PageId {
  */
 export function effectiveMode(mode: ViewMode, page: PageId): ViewMode {
   if (page === "monitor" || page === "bill" || page === "scanner") return "law-first";
-  if (page === "watch") return "client-first";
+  if (page === "watch" || page === "consolidated") return "client-first";
   return mode;
 }
 
@@ -181,7 +181,7 @@ export function activeStepIndex(
   if (mode === "client-first") {
     if (page === "watch") id = params.clientId ? "exposure" : "client";
     else if (page === "delta") id = "delta";
-    else if (page === "impact") id = "impact";
+    else if (page === "impact" || page === "consolidated") id = "impact";
   } else {
     if (page === "bill" || page === "monitor") id = "monitor";
     else if (page === "delta") id = "delta";

@@ -23,6 +23,7 @@ const PAGES: PageId[] = [
   "scanner",
   "impact",
   "watch",
+  "consolidated",
 ];
 
 function isPageId(value: string): value is PageId {
@@ -41,6 +42,7 @@ function isPageId(value: string): value is PageId {
  *   /delta                             → delta        (bill-chooser, no billId)
  *   /clients                           → scanner
  *   /clients/:clientId/bills/:billId   → impact       (the brief)
+ *   /clients/:clientId/package         → consolidated  (all approved bills, one email)
  *   /brief                             → impact       (empty state)
  *   /watch                             → watch        (client-first: client picker)
  *   /watch/:clientId                   → watch        (client-first: exposure board)
@@ -87,11 +89,16 @@ export function parsePath(pathname: string, search = ""): Route {
       return app("delta");
 
     case "clients": {
-      // /clients, /clients?bill=, /clients/:clientId/bills/:billId
+      // /clients, /clients?bill=, /clients/:clientId/bills/:billId,
+      // /clients/:clientId/package (the consolidated client briefing)
       if (segments[1] && segments[2] === "bills" && segments[3]) {
         params.clientId = segments[1];
         params.billId = segments[3];
         return app("impact");
+      }
+      if (segments[1] && segments[2] === "package") {
+        params.clientId = segments[1];
+        return app("consolidated");
       }
       const bill = query.get("bill");
       if (bill) params.billId = bill; // preselect a bill (handoff from the delta)
@@ -148,6 +155,9 @@ export function buildPath(page: PageId, params: Record<string, string> = {}): st
 
     case "watch":
       return params.clientId ? `/watch/${params.clientId}` : "/watch";
+
+    case "consolidated":
+      return params.clientId ? `/clients/${params.clientId}/package` : "/watch";
 
     default:
       return "/overview";

@@ -4,6 +4,7 @@ import {
   faChevronDown,
   faCircleCheck,
   faCodeCompare,
+  faEnvelope,
   faMagnifyingGlass,
   faPen,
   faPlus,
@@ -212,6 +213,10 @@ export function ClientWatch({ nav }: { nav: Nav }) {
     return counts;
   }, [rows]);
 
+  // How many of this client's bills already have a counsel-approved brief — the
+  // ones that can be folded into one consolidated client email.
+  const approvedCount = useMemo(() => rows.filter((r) => r.approved).length, [rows]);
+
   function toggleRationale(billId: string) {
     setOpenRationaleId((cur) => (cur === billId ? null : billId));
   }
@@ -370,9 +375,22 @@ export function ClientWatch({ nav }: { nav: Nav }) {
                   {selectedClient ? `Exposure · ${selectedClient.name}` : "Exposure"}
                 </div>
               </div>
-              {clientId && rows.length > 0 && (
-                <span className="cs-count">{rows.length} bills ranked</span>
-              )}
+              <div className="cw-board-actions">
+                {clientId && approvedCount > 0 && (
+                  <button
+                    className="btn primary sm"
+                    data-testid="watch-consolidate"
+                    title="Fold this client's approved bills into one email"
+                    onClick={() => nav.go("consolidated", { clientId })}
+                  >
+                    <FontAwesomeIcon icon={faEnvelope} aria-hidden="true" />
+                    Consolidate {approvedCount} approved
+                  </button>
+                )}
+                {clientId && rows.length > 0 && (
+                  <span className="cs-count">{rows.length} bills ranked</span>
+                )}
+              </div>
             </div>
 
             <div className="card-pad">

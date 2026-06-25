@@ -111,6 +111,29 @@ export async function sendClientBriefEmail(args: {
   });
 }
 
+/**
+ * The CONSOLIDATED client email: one note covering several counsel-approved
+ * bills at once. Same routing and rendering as the single-bill brief email —
+ * only the draft (already assembled from each approved bill's takeaway) differs.
+ */
+export async function sendConsolidatedClientBriefEmail(args: {
+  client: Client;
+  draft: { subject: string; body: string };
+}): Promise<EmailResult> {
+  const html = args.draft.body
+    .split(/\n{2,}/)
+    .map(
+      (para) =>
+        `<p style="margin:0 0 14px;line-height:1.65">${escapeHtml(para.trim()).replace(/\n/g, "<br/>")}</p>`,
+    )
+    .join("");
+  return send({
+    to: process.env.CLIENT_EMAIL || process.env.NOTIFY_EMAIL || "client@example.com",
+    subject: args.draft.subject,
+    html: `<div style="font-family:Georgia,'Times New Roman',serif;font-size:15px;color:#1a1a1a;max-width:560px;margin:0 auto">${html}</div>`,
+  });
+}
+
 export function simulateEmailIfMissingKey(): boolean {
   return !process.env.RESEND_API_KEY;
 }
